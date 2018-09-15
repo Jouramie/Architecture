@@ -1,6 +1,5 @@
-package ca.ulaval.glo4003.ws.infrastructure.contact;
+package ca.ulaval.glo4003.ws.infrastructure;
 
-import ca.ulaval.glo4003.ws.domain.contact.Contact;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

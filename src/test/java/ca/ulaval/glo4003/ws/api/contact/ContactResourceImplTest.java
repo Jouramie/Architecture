@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.contact;
 
 import ca.ulaval.glo4003.ws.api.contact.dto.ContactDto;
-import ca.ulaval.glo4003.ws.domain.contact.ContactService;
+
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
