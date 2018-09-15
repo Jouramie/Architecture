@@ -1,5 +1,8 @@
-# Anarchitectes
+# Les Anarchitectes
 
+```bash
+mvn clean
+```
 ```bash
 mvn compile
 ```
