@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws;
 
-import ca.ulaval.glo4003.TelephonyWsMain;
+import ca.ulaval.glo4003.InvestULMain;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ public class ContactResourceIT {
     Thread t = new Thread() {
       public void run() {
         try {
-          TelephonyWsMain.main(new String[] {});
+          InvestULMain.main(new String[] {});
         } catch (Exception e) {
           e.printStackTrace();
         }

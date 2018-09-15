@@ -35,7 +35,7 @@ import java.util.Set;
  * RESTApi setup without using DI or spring
  */
 @SuppressWarnings("all")
-public class TelephonyWsMain {
+public class InvestULMain {
   public static boolean isDev = true; // Would be a JVM argument or in a .property file
 
   public static void main(String[] args)
