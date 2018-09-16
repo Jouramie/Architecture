@@ -17,45 +17,11 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-/**
- * RESTApi setup without using DI or spring
- */
-@SuppressWarnings("all")
 public class InvestULMain {
-    public static boolean isDev = true; // Would be a JVM argument or in a .property file
 
-    public static void main(String[] args)
-        throws Exception {
-
-        // Setup resources (API)
-        PingResource pingResource = new PingResource();
-
-        // Setup API context (JERSEY + JETTY)
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/api/");
-        ResourceConfig resourceConfig = ResourceConfig.forApplication(new Application() {
-            @Override
-            public Set<Object> getSingletons() {
-                HashSet<Object> resources = new HashSet<>();
-                // Add resources to context
-                resources.add(pingResource);
-                return resources;
-            }
-        });
-        resourceConfig.register(CORSResponseFilter.class);
-
-        ServletContainer servletContainer = new ServletContainer(resourceConfig);
-        ServletHolder servletHolder = new ServletHolder(servletContainer);
-        context.addServlet(servletHolder, "/*");
-
-        // Setup static file context (WEBAPP)
-        WebAppContext webapp = new WebAppContext();
-        webapp.setResourceBase("src/main/webapp");
-        webapp.setContextPath("/");
-
-        // Setup http server
+    public static void main(String[] args) throws Exception {
         ContextHandlerCollection contexts = new ContextHandlerCollection();
-        contexts.setHandlers(new Handler[] {context, webapp});
+        contexts.setHandlers(new Handler[] {createApiHandler(), createUiHandler()});
         Server server = new Server(8080);
         server.setHandler(contexts);
 
@@ -65,5 +31,37 @@ public class InvestULMain {
         } finally {
             server.destroy();
         }
+    }
+
+    private static Handler createApiHandler() {
+        PingResource pingResource = new PingResource();
+
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/api/");
+        ResourceConfig resourceConfig = ResourceConfig.forApplication(new Application() {
+            @Override
+            public Set<Object> getSingletons() {
+                HashSet<Object> resources = new HashSet<>();
+
+                // Add resources to context
+                resources.add(pingResource);
+
+                return resources;
+            }
+        });
+        resourceConfig.register(CORSResponseFilter.class);
+
+        ServletContainer servletContainer = new ServletContainer(resourceConfig);
+        ServletHolder servletHolder = new ServletHolder(servletContainer);
+        context.addServlet(servletHolder, "/*");
+
+        return context;
+    }
+
+    private static Handler createUiHandler() {
+        WebAppContext webapp = new WebAppContext();
+        webapp.setResourceBase("src/main/webapp");
+        webapp.setContextPath("/");
+        return webapp;
     }
 }
