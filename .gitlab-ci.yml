@@ -17,13 +17,31 @@ variables:
 maven_compile:
   stage: build
   script:
-  - mvn $MAVEN_CLI_OPTS clean compile -B
+  - mvn $MAVEN_CLI_OPTS clean compile
   artifacts:
     paths:
       - target/
 
-
 maven_test:
   stage: unit_test
   script:
-  - mvn $MAVEN_CLI_OPTS test -B
+  - mvn $MAVEN_CLI_OPTS test
+
+maven_package:
+  stage: package
+  only:
+    - master
+    - develop
+  script:
+    - mvn $MAVEN_CLI_OPTS package
+  artifacts:
+    paths:
+      - target/*.jar
+
+maven_verify:
+  stage: integration_test
+  only:
+    - master
+    - develop
+  script:
+    - mvn $MAVEN_CLI_OPTS verify
