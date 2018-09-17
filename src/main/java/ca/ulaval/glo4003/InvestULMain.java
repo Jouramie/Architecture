@@ -18,6 +18,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import javax.ws.rs.core.Application;
+import java.net.URL;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,10 +26,15 @@ import java.util.stream.Stream;
 public class InvestULMain {
 
     public static void main(String[] args) throws Exception {
+        final int port = 8080;
         ContextHandlerCollection contexts = new ContextHandlerCollection();
         contexts.setHandlers(new Handler[] {createApiHandler(), createUiHandler()});
-        Server server = new Server(8080);
+        Server server = new Server(port);
         server.setHandler(contexts);
+
+        URL serverUrl = server.getURI().toURL();
+        URL apiUrl = new URL(serverUrl.getProtocol(), serverUrl.getHost(), port, serverUrl.getFile());
+        createSwaggerApi(apiUrl.toString());
 
         try {
             server.start();
@@ -59,25 +65,28 @@ public class InvestULMain {
         ServletHolder servletHolder = new ServletHolder(servletContainer);
         context.addServlet(servletHolder, "/*");
 
-        createSwaggerApi(application);
-
         return context;
     }
 
-    private static void createSwaggerApi(Application application) {
+    private static void createSwaggerApi(String apiUrl) {
         OpenAPI oas = new OpenAPI();
         Info info = new Info()
                 .title("Invest-UL")
                 .description("Logiciel transactionnel pour titres boursiers");
 
-        oas.info(info);
+        io.swagger.v3.oas.models.servers.Server server = new io.swagger.v3.oas.models.servers.Server();
+        server.setUrl(apiUrl);
+
+        oas
+            .info(info)
+            .servers(Stream.of(server).collect(Collectors.toList()));
+
         SwaggerConfiguration oasConfig = new SwaggerConfiguration()
                 .openAPI(oas)
                 .prettyPrint(true);
 
         try {
             new JaxrsOpenApiContextBuilder()
-                    .application(application)
                     .openApiConfiguration(oasConfig)
                     .buildContext(true);
         } catch (OpenApiConfigurationException e) {
