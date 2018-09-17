@@ -20,13 +20,20 @@ maven_test:
     paths:
       - target/
 
-maven_verify:
+.maven_verify: &maven_verify
   stage: integration_test
+  script:
+    - mvn $MAVEN_CLI_OPTS verify
+
+maven_verify:develop:
+  <<: *maven_verify
   only:
     - master
     - develop
-  script:
-    - mvn $MAVEN_CLI_OPTS verify
   artifacts:
     paths:
       - target/*.jar
+
+maven_verify:branch:
+  <<: *maven_verify
+  when: manual
