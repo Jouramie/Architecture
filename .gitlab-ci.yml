@@ -16,9 +16,11 @@ maven_test:
   stage: unit_test
   script:
   - mvn $MAVEN_CLI_OPTS test
+  - cat ./target/site/jacoco/index.html
   artifacts:
     paths:
       - target/
+  coverage: '/Total.*?([0-9]{1,3})%/'
 
 .maven_verify: &maven_verify
   stage: integration_test
