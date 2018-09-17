@@ -1,4 +1,4 @@
-image: maven:3.5-jdk-8-alpine
+image: maven:3-jdk-8-alpine
 
 cache:
   paths:
@@ -29,9 +29,9 @@ maven_test:
 
 maven_package:
   stage: package
-  only:
-    - master
-    - develop
+#  only:
+#    - master
+#    - develop
   script:
     - mvn $MAVEN_CLI_OPTS package
   artifacts:
@@ -40,8 +40,8 @@ maven_package:
 
 maven_verify:
   stage: integration_test
-  only:
-    - master
-    - develop
+#  only:
+#    - master
+#    - develop
   script:
     - mvn $MAVEN_CLI_OPTS verify
