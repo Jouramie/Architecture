@@ -1,0 +1,29 @@
+image: maven:3.5-jdk-8-alpine
+
+cache:
+  paths:
+    - .m2/
+
+stages:
+  - build
+  - unit_test
+  - package
+  - integration_test
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+
+maven_compile:
+  stage: build
+  script:
+  - mvn $MAVEN_CLI_OPTS clean compile -B
+  artifacts:
+    paths:
+      - target/
+
+
+maven_test:
+  stage: unit_test
+  script:
+  - mvn $MAVEN_CLI_OPTS test -B
