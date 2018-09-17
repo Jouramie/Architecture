@@ -5,43 +5,28 @@ cache:
     - .m2/
 
 stages:
-  - build
   - unit_test
-  - package
   - integration_test
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
 
-maven_compile:
-  stage: build
-  script:
-  - mvn $MAVEN_CLI_OPTS clean compile
-  artifacts:
-    paths:
-      - target/
-
 maven_test:
   stage: unit_test
   script:
   - mvn $MAVEN_CLI_OPTS test
-
-maven_package:
-  stage: package
-#  only:
-#    - master
-#    - develop
-  script:
-    - mvn $MAVEN_CLI_OPTS package
   artifacts:
     paths:
-      - target/*.jar
+      - target/
 
 maven_verify:
   stage: integration_test
-#  only:
-#    - master
-#    - develop
+  only:
+    - master
+    - develop
   script:
     - mvn $MAVEN_CLI_OPTS verify
+  artifacts:
+    paths:
+      - target/*.jar
