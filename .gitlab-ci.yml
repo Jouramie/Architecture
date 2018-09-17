@@ -16,7 +16,7 @@ maven_test:
   stage: unit_test
   script:
   - mvn $MAVEN_CLI_OPTS test
-  - cat ./target/site/jacoco/index.html
+  - cat ./target/site/jacoco/index.html && echo
   artifacts:
     paths:
       - target/
