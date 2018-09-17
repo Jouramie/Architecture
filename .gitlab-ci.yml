@@ -32,8 +32,11 @@ maven_verify:develop:
     - develop
   artifacts:
     paths:
-      - target/*.jar
+      - target/
 
 maven_verify:branch:
   <<: *maven_verify
+  except:
+    - master
+    - develop
   when: manual
