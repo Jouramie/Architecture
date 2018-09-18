@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.ws.api.PingResource;
+import ca.ulaval.glo4003.ws.api.PingResourceImpl;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
@@ -20,8 +21,10 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import javax.ws.rs.core.Application;
 import java.net.URL;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class InvestULMain {
 
@@ -45,14 +48,14 @@ public class InvestULMain {
     }
 
     private static Handler createApiHandler() {
-        PingResource pingResource = new PingResource();
+        PingResource pingResource = new PingResourceImpl();
         Application application = new Application() {
             @Override
             public Set<Object> getSingletons() {
                 return Stream.of(
                         pingResource,
                         new OpenApiResource() // Routes for Swagger integration
-                ).collect(Collectors.toSet());
+                ).collect(toSet());
             }
         };
 
@@ -79,7 +82,7 @@ public class InvestULMain {
 
         oas
             .info(info)
-            .servers(Stream.of(server).collect(Collectors.toList()));
+            .servers(Stream.of(server).collect(toList()));
 
         SwaggerConfiguration oasConfig = new SwaggerConfiguration()
                 .openAPI(oas)

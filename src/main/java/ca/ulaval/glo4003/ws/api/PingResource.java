@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import javax.ws.rs.*;
 
 @Path("/ping")
-public class PingResource {
+public interface PingResource {
     @GET
     @Operation(
         summary = "Ping the API for basic smoke-test",
@@ -25,16 +25,11 @@ public class PingResource {
             )
         }
     )
-    public PingDto ping(
+    PingDto ping(
         @Parameter(
             description = "Echo message to print back",
             required = true
         )
         @QueryParam("echo") String echo
-    ) {
-        if(echo == null || echo.isEmpty()) {
-            throw new BadRequestException("Missing echo query parameter");
-        }
-        return new PingDto(echo);
-    }
+    );
 }
