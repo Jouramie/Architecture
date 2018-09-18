@@ -19,18 +19,36 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public class InvestULMain {
 
+    private static Server server;
+
     public static void main(String[] args) throws Exception {
         ContextHandlerCollection contexts = new ContextHandlerCollection();
         contexts.setHandlers(new Handler[] {createApiHandler(), createUiHandler()});
-        Server server = new Server(8080);
+        server = new Server(8080);
         server.setHandler(contexts);
 
         try {
             server.start();
             server.join();
         } finally {
+            server.stop();
             server.destroy();
         }
+    }
+
+    public static void stop() throws Exception {
+        try{
+            server.stop();
+        } finally {
+            server.destroy();
+        }
+    }
+
+    public static boolean isStarted() {
+        if(server == null) {
+            return false;
+        }
+        return server.isStarted();
     }
 
     private static Handler createApiHandler() {
