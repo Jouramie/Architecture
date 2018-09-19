@@ -27,11 +27,20 @@ maven_test:
   script:
     - mvn $MAVEN_CLI_OPTS verify
 
-maven_verify:develop:
+maven_verify:master:
   <<: *maven_verify
   only:
     - master
+  artifacts:
+    paths:
+      - target/
+
+
+maven_verify:develop:
+  <<: *maven_verify
+  only:
     - develop
+  allow_failure: true
   artifacts:
     paths:
       - target/
