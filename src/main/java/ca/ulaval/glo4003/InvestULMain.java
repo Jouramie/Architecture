@@ -28,11 +28,13 @@ import static java.util.stream.Collectors.toSet;
 
 public class InvestULMain {
 
+    private static Server server;
+
     public static void main(String[] args) throws Exception {
         final int port = 8080;
         ContextHandlerCollection contexts = new ContextHandlerCollection();
         contexts.setHandlers(new Handler[] {createApiHandler(), createUiHandler()});
-        Server server = new Server(port);
+        server = new Server(port);
         server.setHandler(contexts);
 
         URL serverUrl = server.getURI().toURL();
@@ -43,8 +45,24 @@ public class InvestULMain {
             server.start();
             server.join();
         } finally {
+            server.stop();
             server.destroy();
         }
+    }
+
+    public static void stop() throws Exception {
+        try{
+            server.stop();
+        } finally {
+            server.destroy();
+        }
+    }
+
+    public static boolean isStarted() {
+        if(server == null) {
+            return false;
+        }
+        return server.isStarted();
     }
 
     private static Handler createApiHandler() {
