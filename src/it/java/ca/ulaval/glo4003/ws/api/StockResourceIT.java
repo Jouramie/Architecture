@@ -5,12 +5,11 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.get;
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 
 public class StockResourceIT {
-    private static final String API_STOCK_ROUTE = "/api/stock";
+    private static final String API_STOCK_ROUTE = "/api/stock/";
 
     private static final String TITLE = "title";
     private static final String STOCK_NAME = "stockName";
@@ -30,10 +29,7 @@ public class StockResourceIT {
 
     @Test
     public void whenGettingStockByTitle_thenStockInformationAreComplete() {
-        given().
-            param(TITLE, SOME_TITLE).
-        when().
-            get(API_STOCK_ROUTE).
+        get(API_STOCK_ROUTE  + TITLE + "/" + SOME_TITLE).
         then().
             statusCode(200).
             body(TITLE, equalTo(SOME_TITLE)).
@@ -47,10 +43,7 @@ public class StockResourceIT {
 
     @Test
     public void whenGettingStockByStockName_thenStockInformationAreComplete() {
-        given().
-            param(STOCK_NAME, SOME_STOCK_NAME).
-        when().
-            get(API_STOCK_ROUTE).
+        get(API_STOCK_ROUTE + STOCK_NAME + "/" + SOME_STOCK_NAME).
         then().
             statusCode(200).
             body(TITLE, equalTo(SOME_TITLE)).
@@ -63,39 +56,20 @@ public class StockResourceIT {
     }
 
     @Test
-    public void whenGettingStockWithoutParam_thenBadRequest() {
-        get(API_STOCK_ROUTE).
+    public void givenNoValue_whenGettingByTitle_thenBadRequest() {
+        get(API_STOCK_ROUTE  + TITLE + "/").
         then().statusCode(400);
     }
 
     @Test
-    public void whenGettingStockByTitleAndStockName_thenBadRequest() {
-        given().
-            param(TITLE, SOME_TITLE).
-            param(STOCK_NAME, SOME_STOCK_NAME).
-        when().
-            get(API_STOCK_ROUTE).
-        then().
-            statusCode(400);
+    public void givenNoValue_whenGettingByStockName_thenBadRequest() {
+        get(API_STOCK_ROUTE  + STOCK_NAME + "/").
+        then().statusCode(400);
     }
 
     @Test
-    public void whenGettingStockWithWrongParamValue_thenStockIsNotFound() {
-        given().
-            param(TITLE, "wrong").
-        when().
-            get(API_STOCK_ROUTE).
-        then().
-            statusCode(404);
-    }
-
-    @Test
-    public void whenGettingStockWithWrongParamName_thenBadRequest() {
-        given().
-            param("wrong", "").
-        when().
-            get(API_STOCK_ROUTE).
-        then().
-            statusCode(400);
+    public void whenGettingStockWithWrongValue_thenStockIsNotFound() {
+        get(API_STOCK_ROUTE  + TITLE + "/wrong").
+        then().statusCode(404);
     }
 }
