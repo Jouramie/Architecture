@@ -10,25 +10,28 @@ import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 
 public class PingResourceIT {
+    private static final String API_PING_ROUTE = "/api/ping";
+
+    private static final String SOME_ECHO = "Hello world!";
 
     @Rule
     public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 
     @Test
-    public void givenApplicationBooted_whenPinging_thenApplicationRespondWithEchoMessage() {
+    public void whenPinging_thenApplicationRespondWithEchoMessage() {
         given().
-            param("echo", "Hello world!").
+            param("echo", SOME_ECHO).
         when().
-            get("/api/ping").
+            get(API_PING_ROUTE).
         then().
             statusCode(200).
             body("version", any(String.class)).
             body("date", any(String.class)).
-            body("echo", equalTo("Hello world!"));
+            body("echo", equalTo(SOME_ECHO));
     }
 
     @Test
-    public void givenApplicationBooted_whenPingingWithoutEchoQueryParam_thenApplicationRespondWith400() {
-        get("/api/ping").then().statusCode(400);
+    public void whenPingingWithoutEchoQueryParam_thenBadRequest() {
+        get(API_PING_ROUTE).then().statusCode(400);
     }
 }
