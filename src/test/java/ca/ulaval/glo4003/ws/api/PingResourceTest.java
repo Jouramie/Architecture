@@ -11,8 +11,9 @@ public class PingResourceTest {
 
     @Test
     public void whenPinging_thenReturnPingDto() {
-        PingDto ping = pingResource.ping();
+        PingDto ping = pingResource.ping("echo");
 
         assertThat(ping).isNotNull();
+        assertThat(ping.echo).isEqualTo("echo");
     }
 }
