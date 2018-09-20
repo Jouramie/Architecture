@@ -28,7 +28,7 @@ public class StockResourceIT {
     public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 
     @Test
-    public void whenGettingStockByTitle_thenStockInformationAreComplete() {
+    public void whenGettingStockByTitle_thenReturnCompleteStockInformations() {
         get(API_STOCK_ROUTE  + TITLE + "/" + SOME_TITLE).
         then().
             statusCode(200).
@@ -42,7 +42,7 @@ public class StockResourceIT {
     }
 
     @Test
-    public void whenGettingStockByStockName_thenStockInformationAreComplete() {
+    public void whenGettingStockByStockName_thenReturnCompleteStockInformations() {
         get(API_STOCK_ROUTE + STOCK_NAME + "/" + SOME_STOCK_NAME).
         then().
             statusCode(200).
