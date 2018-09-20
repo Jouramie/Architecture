@@ -5,4 +5,9 @@ public class StockResourceImpl implements StockResource {
     public StockDto getStockByTitle(String title){
         return null;
     }
+
+    @Override
+    public StockDto getStockByStockName(String stockName){
+        return null;
+    }
 }
