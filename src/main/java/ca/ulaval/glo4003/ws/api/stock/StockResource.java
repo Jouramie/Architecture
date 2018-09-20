@@ -1,3 +1,4 @@
+package ca.ulaval.glo4003.ws.api.stock;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -8,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import javax.ws.rs.*;
 
 @Path("/stock")
-public interface StockRessource {
+public interface StockResource {
     @GET
     @Path("/title/{title}")
     @Operation(
