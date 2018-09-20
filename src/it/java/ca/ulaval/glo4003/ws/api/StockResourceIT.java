@@ -36,9 +36,9 @@ public class StockResourceIT {
             body(STOCK_NAME, equalTo(SOME_STOCK_NAME)).
             body(MARKET, equalTo(SOME_MARKET)).
             body(CATEGORY, equalTo(SOME_CATEGORY)).
-            body(OPEN, any(Integer.class)).
-            body(CURRENT, any(Integer.class)).
-            body(CLOSE, any(Integer.class));
+            body(OPEN, any(Double.class)).
+            body(CURRENT, any(Double.class)).
+            body(CLOSE, any(Double.class));
     }
 
     @Test
@@ -50,9 +50,9 @@ public class StockResourceIT {
             body(STOCK_NAME, equalTo(SOME_STOCK_NAME)).
             body(MARKET, equalTo(SOME_MARKET)).
             body(CATEGORY, equalTo(SOME_CATEGORY)).
-            body(OPEN, any(Integer.class)).
-            body(CURRENT, any(Integer.class)).
-            body(CLOSE, any(Integer.class));
+            body(OPEN, any(Double.class)).
+            body(CURRENT, any(Double.class)).
+            body(CLOSE, any(Double.class));
     }
 
     @Test
