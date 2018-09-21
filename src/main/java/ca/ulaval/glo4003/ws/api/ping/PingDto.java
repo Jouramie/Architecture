@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.dto;
+package ca.ulaval.glo4003.ws.api.ping;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

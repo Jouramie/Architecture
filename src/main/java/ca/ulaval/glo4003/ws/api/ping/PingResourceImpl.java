@@ -1,6 +1,4 @@
-package ca.ulaval.glo4003.ws.api;
-
-import ca.ulaval.glo4003.ws.api.dto.PingDto;
+package ca.ulaval.glo4003.ws.api.ping;
 
 import javax.ws.rs.BadRequestException;
 
