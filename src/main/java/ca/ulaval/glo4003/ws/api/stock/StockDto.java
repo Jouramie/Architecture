@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(
         name = "StockResponse",
         description = "Stock response containing title, market, stock name, category, " +
-                "stock value at market openning, current stock value and stock value at market close."
+                "stock value at market opening, current stock value and stock value at market close."
 )
 public class StockDto {
     @Schema(description = "Title")
@@ -16,7 +16,7 @@ public class StockDto {
     public final String name;
     @Schema(description = "Category")
     public final String category;
-    @Schema(description = "Stock value at market openning")
+    @Schema(description = "Stock value at market opening")
     public final double open;
     @Schema(description = "Current stock value")
     public final double current;

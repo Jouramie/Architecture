@@ -11,5 +11,4 @@ public class StockResourceImpl implements StockResource {
     public StockDto getStockByName(String name) {
         return null;
     }
-
 }

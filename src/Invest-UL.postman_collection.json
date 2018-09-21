@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "Stock",
+			"name": "Stocks",
 			"item": [
 				{
 					"name": "GetStockByTitle",
@@ -15,15 +15,14 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "localhost:8080/api/stock/title/RBS.l",
+							"raw": "localhost:8080/api/stocks/RBS.l",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"stock",
-								"title",
+								"stocks",
 								"RBS.l"
 							]
 						}
@@ -37,16 +36,20 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "localhost:8080/api/stock/stockName/Royal Bank of Scotland",
+							"raw": "localhost:8080/api/stocks?name=Royal Bank of Scotland",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"stock",
-								"stockName",
-								"Royal Bank of Scotland"
+								"stocks"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Royal Bank of Scotland"
+								}
 							]
 						}
 					},

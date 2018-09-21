@@ -8,15 +8,23 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import javax.ws.rs.*;
 
-@SuppressWarnings("ALL")
-@Path("/stock")
+@Path("/stocks")
 public interface StockResource {
     @GET
     @Path("/{title}")
-    @Operation(summary = "Stock informations for given title", description = "Return the stock title, market, stock name, category, " + "stock value at market openning, current stock value and stock value at market close.", responses = {@ApiResponse(description = "Stock informations", content = @Content(schema = @Schema(implementation = StockDto.class))), @ApiResponse(responseCode = "400", description = "Missing title"), @ApiResponse(responseCode = "404", description = "Stock does not exist")})
+    @Operation(summary = "Stock information for given title",
+            description = "Return the stock title, market, stock name, category, " +
+                    "stock value at market opening, current stock value and stock value at market close.",
+            responses = {@ApiResponse(description = "Stock information", content = @Content(schema = @Schema(implementation = StockDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Stock does not exist")})
     StockDto getStockByTitle(@Parameter(description = "Title", required = true) @PathParam("title") String title);
 
     @GET
-    @Operation(summary = "Search stock informations by name", description = "Return the stock title, market, stock name, category, " + "stock value at market openning, current stock value and stock value at market close.", responses = {@ApiResponse(description = "Stock informations", content = @Content(schema = @Schema(implementation = StockDto.class))), @ApiResponse(responseCode = "400", description = "Missing name query parameter"), @ApiResponse(responseCode = "404", description = "Stock does not exist")})
+    @Operation(summary = "Search stock information by name",
+            description = "Return the stock title, market, stock name, category, " +
+                    "stock value at market opening, current stock value and stock value at market close.",
+            responses = {@ApiResponse(description = "Stock information", content = @Content(schema = @Schema(implementation = StockDto.class))),
+                    @ApiResponse(responseCode = "400", description = "Missing name query parameter"),
+                    @ApiResponse(responseCode = "404", description = "Stock does not exist")})
     StockDto getStockByName(@Parameter(description = "Stock name", required = true) @QueryParam("name") String name);
 }
