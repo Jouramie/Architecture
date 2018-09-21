@@ -16,6 +16,7 @@
         <jetty.version>9.2.3.v20140905</jetty.version>
         <jersey.version>2.7</jersey.version>
         <javax.ws.rs.version>2.0</javax.ws.rs.version>
+        <live-stock-simulator.version>1.0.0</live-stock-simulator.version>
         <slf4j.version>1.7.5</slf4j.version>
         <swagger.version>2.0.0</swagger.version>
 
@@ -33,6 +34,14 @@
         <jacoco.version>0.7.9</jacoco.version>
         <jacoco.coverage.threshole><!-- TODO -->0.00</jacoco.coverage.threshole>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>live-stock-simulator</id>
+            <name>Live Stock Simulator</name>
+            <url>file://${project.basedir}/libs</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -79,6 +88,11 @@
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
             <version>${javax.ws.rs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>archi</groupId>
+            <artifactId>live-stock-simulator</artifactId>
+            <version>${live-stock-simulator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
