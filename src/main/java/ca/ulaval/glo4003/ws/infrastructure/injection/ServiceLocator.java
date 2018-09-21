@@ -9,6 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
+import org.reflections.Reflections;
+
 public class ServiceLocator {
 
     private Map<Class<?>, Class<?>> classes = new ConcurrentHashMap<>();
@@ -24,6 +26,10 @@ public class ServiceLocator {
 
     public void registerInstance(Class<?> interfaceClass, Object instance) {
         instances.put(interfaceClass, instance);
+    }
+
+    public void discoverPackage(String packagePrefix) {
+        new Reflections(packagePrefix).getTypesAnnotatedWith(Component.class).forEach(this::register);
     }
 
     public <T> T get(Class<T> type) {

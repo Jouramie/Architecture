@@ -9,9 +9,10 @@ import org.junit.Test;
 
 public class ServiceLocatorTest {
 
-    private ServiceLocator serviceLocator;
-    public static final SomeComponent SOME_COMPONENT_INSTANCE = new SomeComponent();
+    private static final SomeComponent SOME_COMPONENT_INSTANCE = new SomeComponent();
 
+    private ServiceLocator serviceLocator;
+    
     @Before
     public void initialize() {
         serviceLocator = new ServiceLocator();
@@ -45,6 +46,16 @@ public class ServiceLocatorTest {
     public void givenUnregisteredClass_whenGetting_thenThrowUnregisteredComponentException() {
         serviceLocator.get(SomeInjectableComponent.class);
     }
+
+    @Test
+    public void givenAnnotatedComponent_whenDiscoveringPackage_thenComponentIsRegisteredNormally() {
+        serviceLocator.discoverPackage(this.getClass().getPackage().getName());
+
+        ADiscoveredComponent gottenComponent = serviceLocator.get(ADiscoveredComponent.class);
+
+        assertTrue(gottenComponent != null);
+    }
+
 }
 
 class SomeComponent {
@@ -59,5 +70,11 @@ class SomeInjectableComponent {
 class AClassWithANonInjectableConstructor {
     public AClassWithANonInjectableConstructor(SomeComponent dependency) {
     }
+}
 
+@Component
+class ADiscoveredComponent {
+    @Inject
+    public ADiscoveredComponent(SomeComponent dependency) {
+    }
 }
