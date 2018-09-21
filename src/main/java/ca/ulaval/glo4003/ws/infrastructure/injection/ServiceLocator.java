@@ -3,9 +3,12 @@ package ca.ulaval.glo4003.ws.infrastructure.injection;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
@@ -40,6 +43,12 @@ public class ServiceLocator {
             return (T) injectConstructor(classes.get(type));
         }
         throw new UnregisteredComponentException(type);
+    }
+
+    public <T> List<T> getAll(Class<T> type) {
+        return (List<T>) Stream.concat(classes.keySet().stream(), instances.keySet().stream())
+            .filter((registeredClass) -> type.isAssignableFrom(registeredClass))
+            .map(this::get).collect(Collectors.toList());
     }
 
     private <T> T injectConstructor(Class<T> type) {
