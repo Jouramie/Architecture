@@ -2,6 +2,10 @@ package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.ws.api.PingResource;
 import ca.ulaval.glo4003.ws.api.PingResourceImpl;
+import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResource;
+import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResourceImpl;
+import ca.ulaval.glo4003.ws.api.authentication.UserResource;
+import ca.ulaval.glo4003.ws.api.authentication.UserResourceImpl;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
@@ -67,11 +71,16 @@ public class InvestULMain {
 
     private static Handler createApiHandler() {
         PingResource pingResource = new PingResourceImpl();
+        AuthenticationResource authenticationResource = new AuthenticationResourceImpl();
+        UserResource userResource = new UserResourceImpl();
+
         Application application = new Application() {
             @Override
             public Set<Object> getSingletons() {
                 return Stream.of(
                         pingResource,
+                        authenticationResource,
+                        userResource,
                         new OpenApiResource() // Routes for Swagger integration
                 ).collect(toSet());
             }
