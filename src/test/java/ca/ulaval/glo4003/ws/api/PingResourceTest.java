@@ -1,9 +1,9 @@
 package ca.ulaval.glo4003.ws.api;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ca.ulaval.glo4003.ws.api.dto.PingDto;
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class PingResourceTest {
 

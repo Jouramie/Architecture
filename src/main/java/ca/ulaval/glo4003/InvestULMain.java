@@ -1,5 +1,8 @@
 package ca.ulaval.glo4003;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import ca.ulaval.glo4003.ws.api.PingResource;
 import ca.ulaval.glo4003.ws.api.PingResourceImpl;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
@@ -9,6 +12,10 @@ import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import java.net.URL;
+import java.util.Set;
+import java.util.stream.Stream;
+import javax.ws.rs.core.Application;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
@@ -17,14 +24,6 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
-
-import javax.ws.rs.core.Application;
-import java.net.URL;
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 public class InvestULMain {
 
