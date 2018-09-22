@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
 @Path("/users")
 public interface UserResource {
@@ -24,5 +25,5 @@ public interface UserResource {
             )
         }
     )
-    UserDto createUser(UserCreationDto userCreationDto);
+    Response createUser(UserCreationDto userCreationDto);
 }
