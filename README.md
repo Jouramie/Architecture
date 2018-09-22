@@ -44,13 +44,16 @@ You should install the following plugins:
 - Save Actions
 
 ### CheckStyle-IDEA configuration
-![Checkstyle configuration](https://i.imgur.com/JVqsrk9.png)
+![Add a checkstyle configuration](https://i.imgur.com/UcDfAjb.png)
+![Browse to the configuration](https://i.imgur.com/zeYQwST.png)
+![Select google_check.xml](https://i.imgur.com/izzhuTn.png)
+![Press next](https://i.imgur.com/7mlSQb7.png)
+![Select the modified config](https://i.imgur.com/FUWMPKx.png)
 
 ### Save Actions configuration
-![Save Actions configuration](https://i.imgur.com/eQFTzW5.png)
+![Save Actions configuration](https://i.imgur.com/jc7MiWn.png)
 
 ### IntelliJ Code Style for auto-format
-To import the google code style to your IntelliJ configuration, follow the steps.
-![Import checkstyle configuration](https://i.imgur.com/XiHhEhm.png)
-Choose the `google_checks.xml` file in the root of the repository.
-![Choose google_checks.xml](https://i.imgur.com/qNcgos2.png)
+![Import checkstyle configuration](https://i.imgur.com/DWVAQmp.png)
+![Choose IntelliJ-codestyle.xml](https://i.imgur.com/osKkkt9.png)
+![Import to current scheme](https://i.imgur.com/OKVXlIf.png)
