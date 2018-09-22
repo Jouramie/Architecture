@@ -9,20 +9,20 @@ import java.time.LocalDateTime;
     description = "Ping response containing the version, the current time and an echo parameter."
 )
 public class PingDto {
-    @Schema(description = "Current version of the API")
-    public final String version;
-    @Schema(description = "Current date of the server")
-    public final LocalDateTime date;
-    @Schema(description = "Echo message")
-    public final String echo;
+  @Schema(description = "Current version of the API")
+  public final String version;
+  @Schema(description = "Current date of the server")
+  public final LocalDateTime date;
+  @Schema(description = "Echo message")
+  public final String echo;
 
-    private PingDto() {
-        this("test");
-    }
+  private PingDto() {
+    this("test");
+  }
 
-    public PingDto(String echo) {
-        this.version = "0.0.1";
-        this.date = LocalDateTime.now();
-        this.echo = echo;
-    }
+  public PingDto(String echo) {
+    version = "0.0.1";
+    date = LocalDateTime.now();
+    this.echo = echo;
+  }
 }

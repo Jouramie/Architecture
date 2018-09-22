@@ -11,24 +11,24 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class PingResourceIT {
 
-    @Rule
-    public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+  @Rule
+  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 
-    @Test
-    public void givenApplicationBooted_whenPinging_thenApplicationRespondWithEchoMessage() {
-        given().
-            param("echo", "Hello world!").
+  @Test
+  public void givenApplicationBooted_whenPinging_thenApplicationRespondWithEchoMessage() {
+    given().
+        param("echo", "Hello world!").
         when().
-            get("/api/ping").
+        get("/api/ping").
         then().
-            statusCode(200).
-            body("version", any(String.class)).
-            body("date", any(String.class)).
-            body("echo", equalTo("Hello world!"));
-    }
+        statusCode(200).
+        body("version", any(String.class)).
+        body("date", any(String.class)).
+        body("echo", equalTo("Hello world!"));
+  }
 
-    @Test
-    public void givenApplicationBooted_whenPingingWithoutEchoQueryParam_thenApplicationRespondWith400() {
-        get("/api/ping").then().statusCode(400);
-    }
+  @Test
+  public void givenApplicationBooted_whenPingingWithoutEchoQueryParam_thenApplicationRespondWith400() {
+    get("/api/ping").then().statusCode(400);
+  }
 }

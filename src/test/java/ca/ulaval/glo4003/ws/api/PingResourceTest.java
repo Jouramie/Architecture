@@ -7,13 +7,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PingResourceTest {
 
-    private PingResource pingResource = new PingResourceImpl();
+  private final PingResource pingResource = new PingResourceImpl();
 
-    @Test
-    public void whenPinging_thenReturnPingDto() {
-        PingDto ping = pingResource.ping("echo");
+  @Test
+  public void whenPinging_thenReturnPingDto() {
+    PingDto ping = pingResource.ping("echo");
 
-        assertThat(ping).isNotNull();
-        assertThat(ping.echo).isEqualTo("echo");
-    }
+    assertThat(ping).isNotNull();
+    assertThat(ping.echo).isEqualTo("echo");
+  }
 }
