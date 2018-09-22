@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
+import ca.ulaval.glo4003.service.stock.StockDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
