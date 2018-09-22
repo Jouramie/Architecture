@@ -4,10 +4,11 @@ import static javax.ws.rs.core.Response.Status.CREATED;
 
 import ca.ulaval.glo4003.ws.application.user.UserCreationService;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
-
+@Resource
 public class UserResourceImpl implements UserResource {
 
     private UserCreationService userCreationService;

@@ -5,11 +5,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import org.reflections.Reflections;
@@ -32,7 +32,10 @@ public class ServiceLocator {
     }
 
     public void discoverPackage(String packagePrefix) {
-        new Reflections(packagePrefix).getTypesAnnotatedWith(Component.class).forEach(this::register);
+        Reflections reflections = new Reflections(packagePrefix);
+        reflections.getTypesAnnotatedWith(Component.class).forEach(this::register);
+        reflections.getTypesAnnotatedWith(ErrorMapper.class).forEach(this::register);
+        reflections.getTypesAnnotatedWith(Resource.class).forEach(this::register);
     }
 
     public <T> T get(Class<T> type) {

@@ -38,6 +38,9 @@ public class UserResourceIT {
 
     @Test
     public void givenAlreadyUsedUserName_whenCreatingUser_thenBadRequest() {
+        //TODO do not call previous test
+        whenCreatingUser_thenReturnCreatedUserInformation();
+
         given().body(A_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON)
             .post(USERS_ROUTE)
             .then()

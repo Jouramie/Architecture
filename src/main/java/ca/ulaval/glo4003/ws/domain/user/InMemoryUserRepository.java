@@ -11,6 +11,9 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
+        if (content.containsKey(user.getUsername())) {
+            throw new UserAlreadyExistsException();
+        }
         content.put(user.getUsername(), user);
     }
 
