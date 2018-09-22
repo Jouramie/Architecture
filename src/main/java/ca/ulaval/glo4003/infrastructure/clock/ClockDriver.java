@@ -1,17 +1,20 @@
-package ca.ulaval.glo4003.infrastructure.simulator;
+package ca.ulaval.glo4003.infrastructure.clock;
 
+import ca.ulaval.glo4003.domain.clock.Clock;
+
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.Thread.sleep;
 
-public class LiveStockUpdater {
-    private final LiveStockSimulator simulator;
-    private final long updateFreqMs;
+public class ClockDriver {
+    private final Clock clock;
+    private final Duration updateFreqMs;
     private Thread thread;
     private AtomicBoolean isRunning;
 
-    public LiveStockUpdater(LiveStockSimulator simulator, long updateFreqMs) {
-        this.simulator = simulator;
+    public ClockDriver(Clock clock, Duration updateFreqMs) {
+        this.clock = clock;
         this.updateFreqMs = updateFreqMs;
         this.isRunning = new AtomicBoolean(false);
     }
@@ -37,8 +40,8 @@ public class LiveStockUpdater {
     private void run() {
         try {
             while(isRunning.get()) {
-                this.simulator.update();
-                sleep(this.updateFreqMs);
+                this.clock.tick();
+                sleep(this.updateFreqMs.toMillis());
             }
         } catch (InterruptedException e) {}
     }
