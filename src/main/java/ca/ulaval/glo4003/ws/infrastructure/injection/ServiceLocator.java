@@ -47,24 +47,28 @@ public class ServiceLocator {
 
     public <T> List<T> getAll(Class<T> type) {
         return (List<T>) Stream.concat(classes.keySet().stream(), instances.keySet().stream())
-            .filter((registeredClass) -> type.isAssignableFrom(registeredClass))
+            .filter(type::isAssignableFrom)
             .map(this::get).collect(Collectors.toList());
     }
 
     private <T> T injectConstructor(Class<T> type) {
-        Optional<Constructor<?>> injectableConstructor =
-            Arrays.stream(type.getDeclaredConstructors())
-                .filter((constructor) -> constructor.isAnnotationPresent(Inject.class))
-                .findFirst();
-        if (!injectableConstructor.isPresent()) {
-            throw new NonInjectableConstructorException(type);
-        }
-        Constructor<?> constructor = injectableConstructor.get();
-        Object[] parameters = Arrays.stream(constructor.getParameterTypes()).map(this::get).toArray();
+        Constructor<?> injectableConstructor = findInjectableConstructorForType(type);
+        Object[] parameters = Arrays.stream(injectableConstructor.getParameterTypes()).map(this::get).toArray();
+        return instantiateClass(injectableConstructor, parameters);
+    }
+
+    private <T> Constructor<?> findInjectableConstructorForType(Class<T> type) {
+        return Arrays.stream(type.getDeclaredConstructors())
+            .filter(constructor -> constructor.isAnnotationPresent(Inject.class))
+            .findFirst()
+            .orElseThrow(() -> new NonInjectableConstructorException(type));
+    }
+
+    private <T> T instantiateClass(Constructor<?> injectableConstructor, Object[] parameters) {
         try {
-            return (T) constructor.newInstance(parameters);
+            return (T) injectableConstructor.newInstance(parameters);
         } catch (java.lang.InstantiationException | InvocationTargetException | IllegalAccessException e) {
-            throw new InstantiationException(type);
+            throw new InstantiationException(injectableConstructor.getDeclaringClass());
         }
     }
 }

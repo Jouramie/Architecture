@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.infrastructure.injection;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -35,7 +36,7 @@ public class ServiceLocatorTest {
 
         SomeInjectableComponent gottenComponent = serviceLocator.get(SomeInjectableComponent.class);
 
-        assertTrue(gottenComponent != null);
+        assertThat(gottenComponent).isNotNull();
     }
 
     @Test(expected = NonInjectableConstructorException.class)
@@ -56,16 +57,17 @@ public class ServiceLocatorTest {
 
         ADiscoveredComponent gottenComponent = serviceLocator.get(ADiscoveredComponent.class);
 
-        assertTrue(gottenComponent != null);
+        assertThat(gottenComponent).isNotNull();
     }
 
     @Test
     public void whenGettingAll_thenReturnAllInheritors() {
         serviceLocator.registerInstance(SomeChildClass.class, new SomeChildClass());
+        int expectedNumberOfComponents = 2;
 
         List<SomeComponent> gottenComponents = serviceLocator.getAll(SomeComponent.class);
 
-        assertEquals(2, gottenComponents.size());
+        assertThat(gottenComponents).hasSize(expectedNumberOfComponents);
     }
 }
 
