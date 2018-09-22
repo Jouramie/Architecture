@@ -18,7 +18,8 @@ public interface PingResource {
         responses = {
             @ApiResponse(
                 description = "Ping value",
-                content = @Content(schema = @Schema(implementation = PingDto.class))
+                content = @Content(schema = @Schema(implementation = PingDto.class)),
+                responseCode = "200"
             ),
             @ApiResponse(
                 responseCode = "400", description = "Missing echo query parameter"
