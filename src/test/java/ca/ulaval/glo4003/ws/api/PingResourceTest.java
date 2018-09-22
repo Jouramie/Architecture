@@ -1,6 +1,8 @@
 package ca.ulaval.glo4003.ws.api;
 
-import ca.ulaval.glo4003.ws.api.dto.PingDto;
+import ca.ulaval.glo4003.ws.api.ping.PingDto;
+import ca.ulaval.glo4003.ws.api.ping.PingResource;
+import ca.ulaval.glo4003.ws.api.ping.PingResourceImpl;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
