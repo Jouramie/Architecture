@@ -15,6 +15,7 @@ variables:
 maven_test:
   stage: unit_test
   script:
+    - mvn checkstyle:check
     - mvn $MAVEN_CLI_OPTS clean test
     - cat ./target/site/jacoco/index.html && echo
   artifacts:
