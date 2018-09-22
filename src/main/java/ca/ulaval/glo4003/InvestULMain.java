@@ -1,11 +1,9 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.ws.api.PingResource;
-import ca.ulaval.glo4003.ws.api.PingResourceImpl;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResource;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResourceImpl;
 import ca.ulaval.glo4003.ws.api.authentication.UserResource;
-import ca.ulaval.glo4003.ws.api.authentication.UserResourceImpl;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.infrastructure.config.ServiceLocatorInitializer;
 import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
@@ -75,7 +73,7 @@ public class InvestULMain {
     }
 
     private static Handler createApiHandler(ServiceLocator serviceLocator) {
-        PingResource pingResource = new PingResourceImpl();
+        PingResource pingResource = serviceLocator.get(PingResource.class);
         AuthenticationResource authenticationResource = new AuthenticationResourceImpl();
         UserResource userResource = serviceLocator.get(UserResource.class);
 

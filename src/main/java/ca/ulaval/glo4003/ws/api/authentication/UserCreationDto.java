@@ -24,4 +24,9 @@ public class UserCreationDto {
         this.password = password;
         this.role = role;
     }
+
+    //For Jackson
+    private UserCreationDto() {
+        this(null, null, null);
+    }
 }

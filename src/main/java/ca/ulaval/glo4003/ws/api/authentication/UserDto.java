@@ -20,4 +20,9 @@ public class UserDto {
         this.username = username;
         this.role = role;
     }
+
+    //For Jackson
+    private UserDto() {
+        this(null, null);
+    }
 }
