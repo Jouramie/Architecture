@@ -59,7 +59,7 @@ public class ServiceLocator {
 
     private <T> Constructor<?> findInjectableConstructorForType(Class<T> type) {
         return Arrays.stream(type.getDeclaredConstructors())
-            .filter(constructor -> constructor.isAnnotationPresent(Inject.class))
+            .filter(constructor -> constructor.isAnnotationPresent(Inject.class) || constructor.getParameterTypes().length == 0)
             .findFirst()
             .orElseThrow(() -> new NonInjectableConstructorException(type));
     }

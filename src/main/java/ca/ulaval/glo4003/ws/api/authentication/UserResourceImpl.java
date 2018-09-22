@@ -1,8 +1,20 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
-public class UserResourceImpl implements UserResource{
+import ca.ulaval.glo4003.ws.application.user.UserCreationService;
+
+import javax.inject.Inject;
+
+public class UserResourceImpl implements UserResource {
+
+    private UserCreationService userCreationService;
+
+    @Inject
+    public UserResourceImpl(UserCreationService userCreationService) {
+        this.userCreationService = userCreationService;
+    }
+
     @Override
     public UserDto createUser(UserCreationDto userCreationDto) {
-        return null;
+        return userCreationService.createUser(userCreationDto);
     }
 }

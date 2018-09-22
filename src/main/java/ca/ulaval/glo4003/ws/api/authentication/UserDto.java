@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
+import ca.ulaval.glo4003.ws.domain.user.UserRole;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(

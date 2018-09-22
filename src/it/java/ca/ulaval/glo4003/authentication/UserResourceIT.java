@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.authentication;
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.authentication.UserDto;
-import ca.ulaval.glo4003.ws.api.authentication.UserRole;
+import ca.ulaval.glo4003.ws.domain.user.UserRole;
 import org.junit.Rule;
 import org.junit.Test;
 

@@ -69,6 +69,15 @@ public class ServiceLocatorTest {
 
         assertThat(gottenComponents).hasSize(expectedNumberOfComponents);
     }
+
+    @Test
+    public void givenImplicitlyDeclaredEmptyConstructor_whenInstantiating_thenInjectConstructorAnyway() {
+        serviceLocator.register(SomeComponent.class);
+
+        SomeComponent gottenComponent = serviceLocator.get(SomeComponent.class);
+
+        assertThat(gottenComponent).isNotNull();
+    }
 }
 
 class SomeComponent {

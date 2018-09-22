@@ -7,6 +7,9 @@ import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResourceImpl;
 import ca.ulaval.glo4003.ws.api.authentication.UserResource;
 import ca.ulaval.glo4003.ws.api.authentication.UserResourceImpl;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
+import ca.ulaval.glo4003.ws.infrastructure.config.ServiceLocatorInitializer;
+import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
+
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
@@ -23,6 +26,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import javax.ws.rs.core.Application;
+
 import java.net.URL;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -36,8 +40,12 @@ public class InvestULMain {
 
     public static void main(String[] args) throws Exception {
         final int port = 8080;
+
+        ServiceLocator serviceLocator = new ServiceLocator();
+        new ServiceLocatorInitializer().initializeServiceLocator(serviceLocator);
+
         ContextHandlerCollection contexts = new ContextHandlerCollection();
-        contexts.setHandlers(new Handler[] {createApiHandler(), createUiHandler()});
+        contexts.setHandlers(new Handler[] {createApiHandler(serviceLocator), createUiHandler()});
         server = new Server(port);
         server.setHandler(contexts);
 
@@ -55,7 +63,7 @@ public class InvestULMain {
     }
 
     public static void stop() throws Exception {
-        try{
+        try {
             server.stop();
         } finally {
             server.destroy();
@@ -63,25 +71,22 @@ public class InvestULMain {
     }
 
     public static boolean isStarted() {
-        if(server == null) {
-            return false;
-        }
-        return server.isStarted();
+        return server != null && server.isStarted();
     }
 
-    private static Handler createApiHandler() {
+    private static Handler createApiHandler(ServiceLocator serviceLocator) {
         PingResource pingResource = new PingResourceImpl();
         AuthenticationResource authenticationResource = new AuthenticationResourceImpl();
-        UserResource userResource = new UserResourceImpl();
+        UserResource userResource = serviceLocator.get(UserResource.class);
 
         Application application = new Application() {
             @Override
             public Set<Object> getSingletons() {
                 return Stream.of(
-                        pingResource,
-                        authenticationResource,
-                        userResource,
-                        new OpenApiResource() // Routes for Swagger integration
+                    pingResource,
+                    authenticationResource,
+                    userResource,
+                    new OpenApiResource() // Routes for Swagger integration
                 ).collect(toSet());
             }
         };
@@ -101,8 +106,8 @@ public class InvestULMain {
     private static void createSwaggerApi(String apiUrl) {
         OpenAPI oas = new OpenAPI();
         Info info = new Info()
-                .title("Invest-UL")
-                .description("Logiciel transactionnel pour titres boursiers");
+            .title("Invest-UL")
+            .description("Logiciel transactionnel pour titres boursiers");
 
         io.swagger.v3.oas.models.servers.Server server = new io.swagger.v3.oas.models.servers.Server();
         server.setUrl(apiUrl);
@@ -112,13 +117,13 @@ public class InvestULMain {
             .servers(Stream.of(server).collect(toList()));
 
         SwaggerConfiguration oasConfig = new SwaggerConfiguration()
-                .openAPI(oas)
-                .prettyPrint(true);
+            .openAPI(oas)
+            .prettyPrint(true);
 
         try {
             new JaxrsOpenApiContextBuilder()
-                    .openApiConfiguration(oasConfig)
-                    .buildContext(true);
+                .openApiConfiguration(oasConfig)
+                .buildContext(true);
         } catch (OpenApiConfigurationException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
