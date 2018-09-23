@@ -19,4 +19,11 @@ public class InMemoryUserRepositoryTest {
 
         assertThat(gottenUser).isEqualTo(USER);
     }
+
+    @Test(expected = UserAlreadyExistsException.class)
+    public void givenUserAlreadyExists_whenSavingUser_thenExceptionIsThrown() {
+        inMemoryUserRepository.save(USER);
+
+        inMemoryUserRepository.save(USER);
+    }
 }
