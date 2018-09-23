@@ -38,4 +38,19 @@ public class MoneyAmount {
     public BigDecimal toUsd() {
         return this.currency.toUsd(this.amount);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if(this == other) return true;
+        if(!(other instanceof MoneyAmount)) return false;
+
+        final MoneyAmount otherAmount = (MoneyAmount)other;
+        return this.getAmount().equals(otherAmount.getAmount()) &&
+               this.getCurrency().equals(otherAmount.getCurrency());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getAmount().hashCode() ^ this.getCurrency().hashCode();
+    }
 }

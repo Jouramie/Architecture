@@ -26,8 +26,11 @@ public class MarketTest {
     private static final LocalTime SOME_OPENING_TIME = LocalTime.of(14, 30, 0);
     private static final LocalTime SOME_CLOSING_TIME = LocalTime.of(21, 0, 0);
     private static final LocalDateTime SOME_TIME = LocalDateTime.of(2018, 9, 22, 15, 0, 0);
-    private final Stock SOME_STOCK = new Stock("STO1", "Stock 1", SOME_MARKET_ID);
-    private final Stock SOME_OTHER_STOCK = new Stock("STO2", "Stock 2", SOME_MARKET_ID);
+
+    @Mock
+    private Stock someStock;
+    @Mock
+    private Stock someOtherStock;
 
     @Mock
     StockRepository stockRepository;
@@ -50,7 +53,7 @@ public class MarketTest {
         haltedMarket = new Market(SOME_MARKET_ID, SOME_OPENING_TIME, SOME_CLOSING_TIME, stockRepository, stockValueRetriever);
         haltedMarket.halt();
 
-        given(stockRepository.getStocksOfMarket(SOME_MARKET_ID)).willReturn(Arrays.asList(SOME_STOCK, SOME_OTHER_STOCK));
+        given(stockRepository.getStocksOfMarket(SOME_MARKET_ID)).willReturn(Arrays.asList(someStock, someOtherStock));
     }
 
     @Test
@@ -123,7 +126,15 @@ public class MarketTest {
         openMarket.updateAllStockValues();
 
         verify(stockValueRetriever, times(2)).updateStockValue(any());
-        verify(stockValueRetriever).updateStockValue(SOME_STOCK);
-        verify(stockValueRetriever).updateStockValue(SOME_OTHER_STOCK);
+        verify(stockValueRetriever).updateStockValue(someStock);
+        verify(stockValueRetriever).updateStockValue(someOtherStock);
+    }
+
+    @Test
+    public void whenCloseAllStocks_thenCloseAllStocks() {
+        openMarket.closeAllStocks();
+
+        verify(someStock).close();
+        verify(someOtherStock).close();
     }
 }

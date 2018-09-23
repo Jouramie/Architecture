@@ -1,18 +1,19 @@
 package ca.ulaval.glo4003.domain.stock;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
+import ca.ulaval.glo4003.domain.money.MoneyAmount;
 
 public class Stock {
     private final String title;
     private final String name;
     private final MarketId marketId;
-    private double value;
+    private StockValue value;
 
-    public Stock(String title, String name, MarketId marketId) {
+    public Stock(String title, String name, MarketId marketId, MoneyAmount startValue) {
         this.title = title;
         this.name = name;
         this.marketId = marketId;
-        this.value = 100.0;
+        this.value = new StockValue(startValue);
     }
 
     public String getTitle() {
@@ -28,11 +29,16 @@ public class Stock {
     }
 
     public synchronized void updateValue(double variation) {
-        this.value += variation;
+        MoneyAmount moneyVariation = new MoneyAmount(variation, this.value.getCurrentValue().getCurrency());
+        MoneyAmount newMoneyAmount = this.value.getCurrentValue().add(moneyVariation);
+        this.value.setValue(newMoneyAmount);
     }
 
-    // TODO: use MoneyAmount instead of double.
-    public synchronized double getValue() {
+    public synchronized StockValue getValue() {
         return this.value;
+    }
+
+    public synchronized void close() {
+        this.value.close();
     }
 }

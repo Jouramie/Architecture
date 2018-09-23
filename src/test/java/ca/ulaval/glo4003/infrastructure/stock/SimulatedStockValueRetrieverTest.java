@@ -18,7 +18,7 @@ public class SimulatedStockValueRetrieverTest {
     private SimulatedStockValueRetriever simulator;
 
     @Before
-    public void setupLiveStockSimulator() {
+    public void setupSimulatedStockValueRetriever() {
         simulator = new SimulatedStockValueRetriever();
     }
 

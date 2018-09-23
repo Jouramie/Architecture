@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MoneyAmountTest {
@@ -98,5 +99,57 @@ public class MoneyAmountTest {
 
         assertThat(result.getAmount().doubleValue()).isEqualTo(-39.91);
         assertThat(result.getCurrency()).isEqualTo(someCurrency);
+    }
+
+    @Test
+    public void givenNull_whenEquals_thenReturnFalse() {
+        boolean result = amount.equals(null);
+
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void givenDifferentAmounts_whenEquals_thenReturnFalse() {
+        boolean result = amount.equals(new MoneyAmount(SOME_OTHER_AMOUNT, someCurrency));
+
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void givenSameAmountsWithDifferentCurrencies_whenEquals_thenReturnFalse() {
+        boolean result = amount.equals(new MoneyAmount(SOME_AMOUNT, mock(Currency.class)));
+
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void givenSameAmounts_whenEquals_thenReturnTrue() {
+        boolean result = amount.equals(new MoneyAmount(SOME_AMOUNT, someCurrency));
+
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void givenDifferentAmounts_whenHashCode_thenReturnDifferentHashes(){
+        int firstHash = amount.hashCode();
+        int secondHash = new MoneyAmount(SOME_OTHER_AMOUNT, someCurrency).hashCode();
+
+        assertThat(firstHash).isNotEqualTo(secondHash);
+    }
+
+    @Test
+    public void givenSameAmountsWithDifferentCurrencies_whenHashCode_thenReturnDifferentHashes() {
+        int firstHash = amount.hashCode();
+        int secondHash = new MoneyAmount(SOME_AMOUNT, mock(Currency.class)).hashCode();
+
+        assertThat(firstHash).isNotEqualTo(secondHash);
+    }
+
+    @Test
+    public void givenSameAmounts_whenHashCode_thenReturnSameHash() {
+        int firstHash = amount.hashCode();
+        int secondHash = new MoneyAmount(SOME_AMOUNT, someCurrency).hashCode();
+
+        assertThat(firstHash).isEqualTo(secondHash);
     }
 }

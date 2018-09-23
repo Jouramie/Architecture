@@ -42,10 +42,11 @@ public class OpenMarketStateTest {
     }
 
     @Test
-    public void whenTimeClosesTheMarket_thenUpdateAllStockAndChangeStateToClose() {
+    public void whenTimeClosesTheMarket_thenUpdateAndCloseAllStockAndChangeStateToClose() {
         state.update(market, SOME_CLOSED_TIME);
 
         verify(market).updateAllStockValues();
+        verify(market).closeAllStocks();
         verify(market).setState(any(CloseMarketState.class));
     }
 }

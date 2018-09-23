@@ -59,6 +59,10 @@ public class Market {
     }
 
     public void updateAllStockValues() {
-        this.stockRepository.getStocksOfMarket(this.id).stream().forEach(this.stockValueRetriever::updateStockValue);
+        this.stockRepository.getStocksOfMarket(this.getId()).stream().forEach(this.stockValueRetriever::updateStockValue);
+    }
+
+    public void closeAllStocks() {
+        this.stockRepository.getStocksOfMarket(this.getId()).stream().forEach((stock) -> stock.close());
     }
 }

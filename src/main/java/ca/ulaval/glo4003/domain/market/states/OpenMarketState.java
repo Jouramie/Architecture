@@ -14,6 +14,7 @@ public class OpenMarketState implements MarketState {
         LocalTime time = currentTime.toLocalTime();
         LocalTime closingTime = market.getClosingTime();
         if(time.equals(closingTime) || time.isAfter(closingTime)) {
+            market.closeAllStocks();
             market.setState(new CloseMarketState());
         }
     }
