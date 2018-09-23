@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "3bbd75da-ae0a-463d-b4db-7f033796e794",
+		"_postman_id": "14ea531d-5f39-4e40-bd9d-1f9de9bc58fd",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Stock",
+			"name": "Stocks",
 			"item": [
 				{
 					"name": "GetStockByTitle",
@@ -18,15 +18,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8080/api/stock/title/RBS.l",
+							"raw": "localhost:8080/api/stocks/RBS.l",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"stock",
-								"title",
+								"stocks",
 								"RBS.l"
 							]
 						}
@@ -43,16 +42,20 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8080/api/stock/stockName/Royal Bank of Scotland",
+							"raw": "localhost:8080/api/stocks?name=Royal Bank of Scotland",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"stock",
-								"stockName",
-								"Royal Bank of Scotland"
+								"stocks"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Royal Bank of Scotland"
+								}
 							]
 						}
 					},
