@@ -5,7 +5,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import org.junit.Before;
@@ -61,6 +63,16 @@ public class ServiceLocatorTest {
     }
 
     @Test
+    public void givenDiscoveredPackage_whenGettingClassesForAnnotation_thenAllClassesAreReturned() {
+        serviceLocator.discoverPackage(this.getClass().getPackage().getName());
+        int expectedNumberOfClasses = 2;
+
+        Set<?> gottenClasses = serviceLocator.getAllClassesForAnnotation(ErrorMapper.class);
+
+        assertThat(gottenClasses).hasSize(expectedNumberOfClasses);
+    }
+
+    @Test
     public void whenGettingAll_thenReturnAllInheritors() {
         serviceLocator.registerInstance(SomeChildClass.class, new SomeChildClass());
         int expectedNumberOfComponents = 2;
@@ -100,6 +112,12 @@ class ADiscoveredComponent {
     public ADiscoveredComponent(SomeComponent dependency) {
     }
 }
+
+@ErrorMapper
+class AnAnnotatedClass{}
+
+@ErrorMapper
+class AnotherAnnotatedClass{}
 
 class SomeChildClass extends SomeComponent {
 }

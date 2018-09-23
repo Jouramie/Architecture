@@ -1,31 +1,9 @@
 package ca.ulaval.glo4003;
 
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-
-import ca.ulaval.glo4003.ws.api.PingResource;
-import ca.ulaval.glo4003.ws.api.PingResourceImpl;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResource;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResourceImpl;
-import ca.ulaval.glo4003.ws.api.authentication.UserAlreadyExistsExceptionMapper;
-import ca.ulaval.glo4003.ws.api.authentication.UserResource;
-import ca.ulaval.glo4003.ws.api.authentication.UserResourceImpl;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.infrastructure.config.ServiceLocatorInitializer;
 import ca.ulaval.glo4003.ws.infrastructure.injection.ErrorMapper;
 import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
-
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
-
-import javax.annotation.Resource;
-import javax.ws.rs.core.Application;
-
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
@@ -40,7 +18,17 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
-import org.reflections.Reflections;
+
+import javax.annotation.Resource;
+import javax.ws.rs.core.Application;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class InvestULMain {
 
@@ -83,15 +71,11 @@ public class InvestULMain {
     }
 
     private static Handler createApiHandler(ServiceLocator serviceLocator) {
-        List<?> resourceInstances = getResourceClasses().stream().map(serviceLocator::get).collect(toList());
-        List<?> errorMapperClasses = getErrorMapperClasses().stream().map(serviceLocator::get).collect(toList());
-
-        Set<Object> instances = Stream.of(resourceInstances, errorMapperClasses, Collections.singletonList(new OpenApiResource())).flatMap(Collection::stream).collect(toSet());
 
         Application application = new Application() {
             @Override
             public Set<Object> getSingletons() {
-                return instances;
+                return createInstances(serviceLocator);
             }
         };
 
@@ -105,14 +89,6 @@ public class InvestULMain {
         context.addServlet(servletHolder, "/*");
 
         return context;
-    }
-
-    private static Set<Class<?>> getResourceClasses() {
-        return new Reflections("ca.ulaval.glo4003.ws").getTypesAnnotatedWith(Resource.class);
-    }
-
-    private static Collection<Class<?>> getErrorMapperClasses() {
-        return new Reflections("ca.ulaval.glo4003.ws").getTypesAnnotatedWith(ErrorMapper.class);
     }
 
     private static void createSwaggerApi(String apiUrl) {
@@ -146,5 +122,13 @@ public class InvestULMain {
         webapp.setResourceBase("src/main/webapp");
         webapp.setContextPath("/");
         return webapp;
+    }
+
+    private static Set<Object> createInstances(ServiceLocator serviceLocator) {
+        Set<?> resourceInstances = serviceLocator.getAllClassesForAnnotation(Resource.class);
+        Set<?> errorMapperClasses = serviceLocator.getAllClassesForAnnotation(ErrorMapper.class);
+        return Stream.of(resourceInstances, errorMapperClasses, Collections.singletonList(new OpenApiResource()))
+                .flatMap(Collection::stream)
+                .collect(toSet());
     }
 }
