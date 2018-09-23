@@ -20,14 +20,14 @@ public class PingResourceIT {
     @Test
     public void whenPinging_thenApplicationRespondWithEchoMessage() {
         given().
-            param("echo", SOME_ECHO).
+                param("echo", SOME_ECHO).
         when().
-            get(API_PING_ROUTE).
+                get(API_PING_ROUTE).
         then().
             statusCode(200).
             body("version", any(String.class)).
             body("date", any(String.class)).
-            body("echo", equalTo(SOME_ECHO));
+                body("echo", equalTo(SOME_ECHO));
     }
 
     @Test

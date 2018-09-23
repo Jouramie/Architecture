@@ -73,9 +73,7 @@ public class InvestULMain {
         Application application = new Application() {
             @Override
             public Set<Object> getSingletons() {
-                return Stream.of(
-                        pingResource,
-                        stockResource,
+                return Stream.of(pingResource, stockResource,
                         new OpenApiResource() // Routes for Swagger integration
                 ).collect(toSet());
             }

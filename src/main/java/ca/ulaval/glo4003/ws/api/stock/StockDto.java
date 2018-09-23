@@ -2,11 +2,7 @@ package ca.ulaval.glo4003.ws.api.stock;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(
-        name = "StockResponse",
-        description = "Stock response containing title, market, stock name, category, " +
-                "stock value at market opening, current stock value and stock value at market close."
-)
+@Schema(name = "StockResponse", description = "Stock response containing title, market, stock name, category, " + "stock value at market opening, current stock value and stock value at market close.")
 public class StockDto {
     @Schema(description = "Title")
     public final String title;
@@ -23,8 +19,7 @@ public class StockDto {
     @Schema(description = "Stock value at market close")
     public final double close;
 
-    public StockDto(String title, String market, String name, String category,
-                    double open, double current, double close) {
+    public StockDto(String title, String market, String name, String category, double open, double current, double close) {
         this.title = title;
         this.market = market;
         this.name = name;

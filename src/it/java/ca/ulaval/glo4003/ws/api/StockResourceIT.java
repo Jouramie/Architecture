@@ -30,53 +30,53 @@ public class StockResourceIT {
 
     @Test
     public void whenGettingByTitle_thenReturnStockInformation() {
-        get(API_STOCK_ROUTE  + "/" + SOME_TITLE).
-        then().
-            statusCode(200).
-            body(TITLE, equalTo(SOME_TITLE)).
-            body(NAME, equalTo(SOME_NAME)).
-            body(MARKET, equalTo(SOME_MARKET)).
-            body(CATEGORY, equalTo(SOME_CATEGORY)).
-            body(OPEN, any(Double.class)).
-            body(CURRENT, any(Double.class)).
-            body(CLOSE, any(Double.class));
+        get(API_STOCK_ROUTE + "/" + SOME_TITLE).
+                then().
+                statusCode(200).
+                body(TITLE, equalTo(SOME_TITLE)).
+                body(NAME, equalTo(SOME_NAME)).
+                body(MARKET, equalTo(SOME_MARKET)).
+                body(CATEGORY, equalTo(SOME_CATEGORY)).
+                body(OPEN, any(Double.class)).
+                body(CURRENT, any(Double.class)).
+                body(CLOSE, any(Double.class));
     }
 
     @Test
     public void whenGettingByName_thenReturnStockInformation() {
         given().
-            param(NAME, SOME_NAME).
-        when().
-            get(API_STOCK_ROUTE).
-        then().
-            statusCode(200).
-            body(TITLE, equalTo(SOME_TITLE)).
-            body(NAME, equalTo(SOME_NAME)).
-            body(MARKET, equalTo(SOME_MARKET)).
-            body(CATEGORY, equalTo(SOME_CATEGORY)).
-            body(OPEN, any(Double.class)).
-            body(CURRENT, any(Double.class)).
-            body(CLOSE, any(Double.class));
+                param(NAME, SOME_NAME).
+                when().
+                get(API_STOCK_ROUTE).
+                then().
+                statusCode(200).
+                body(TITLE, equalTo(SOME_TITLE)).
+                body(NAME, equalTo(SOME_NAME)).
+                body(MARKET, equalTo(SOME_MARKET)).
+                body(CATEGORY, equalTo(SOME_CATEGORY)).
+                body(OPEN, any(Double.class)).
+                body(CURRENT, any(Double.class)).
+                body(CLOSE, any(Double.class));
     }
 
     @Test
     public void givenWrongValue_whenGettingByTitle_thenStockIsNotFound() {
-        get(API_STOCK_ROUTE  + "/wrong").
+        get(API_STOCK_ROUTE + "/wrong").
                 then().statusCode(404);
     }
 
     @Test
     public void givenWrongValue_whenGettingByName_thenStockIsNotFound() {
         given().
-            param(NAME, "wrong").
-        when().
-            get(API_STOCK_ROUTE).
-        then().statusCode(404);
+                param(NAME, "wrong").
+                when().
+                get(API_STOCK_ROUTE).
+                then().statusCode(404);
     }
 
     @Test
     public void givenNoValue_whenGettingByName_thenBadRequest() {
         get(API_STOCK_ROUTE).
-        then().statusCode(400);
+                then().statusCode(400);
     }
 }
