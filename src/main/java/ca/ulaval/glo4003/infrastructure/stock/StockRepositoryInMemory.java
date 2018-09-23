@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.infrastructure.stock;
 
+import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
@@ -32,6 +33,11 @@ public class StockRepositoryInMemory implements StockRepository {
         return stocks.values().stream().filter((stock) -> stock.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new StockNotFoundException("Cannot find stock with name " + name));
+    }
+
+    @Override
+    public List<Stock> getStocksOfMarket(MarketId marketId) {
+        return stocks.values().stream().filter((stock) -> stock.getMarketId().equals(marketId)).collect(Collectors.toList());
     }
 
     @Override

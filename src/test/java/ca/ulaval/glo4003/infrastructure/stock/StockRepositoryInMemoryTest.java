@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.infrastructure.stock;
 
+import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import org.junit.Before;
@@ -11,15 +12,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class StockRepositoryInMemoryTest {
+    private final MarketId SOME_MARKET_ID = new MarketId("NASDAQ");
+    private final Stock SOME_STOCK = new Stock("STO1", "Stock 1", SOME_MARKET_ID);
+    private final Stock SOME_OTHER_STOCK = new Stock("STO2", "Stock 2", SOME_MARKET_ID);
+    private final Stock SOME_STOCK_IN_DIFFERENT_MARKET = new Stock("STO3", "Stock 3", new MarketId("TMX"));
+
     private StockRepositoryInMemory repository;
-    private Stock SOME_STOCK = new Stock("STO1", "Stock 1");
-    private Stock SOME_OTHER_STOCK = new Stock("STO2", "Stock 2");
 
     @Before
     public void setupStockRepository() {
         repository = new StockRepositoryInMemory();
         repository.add(SOME_STOCK);
         repository.add(SOME_OTHER_STOCK);
+        repository.add(SOME_STOCK_IN_DIFFERENT_MARKET);
     }
 
     @Test
@@ -53,6 +58,13 @@ public class StockRepositoryInMemoryTest {
     @Test
     public void whenGetAll_thenReturnAllStocks() {
         List<Stock> result = repository.getAll();
+
+        assertThat(result).containsExactlyInAnyOrder(SOME_STOCK, SOME_OTHER_STOCK, SOME_STOCK_IN_DIFFERENT_MARKET);
+    }
+
+    @Test
+    public void whenGetAllByMarket_thenReturnAllStocksOfMarket() {
+        List<Stock> result = repository.getStocksOfMarket(SOME_MARKET_ID);
 
         assertThat(result).containsExactlyInAnyOrder(SOME_STOCK, SOME_OTHER_STOCK);
     }
