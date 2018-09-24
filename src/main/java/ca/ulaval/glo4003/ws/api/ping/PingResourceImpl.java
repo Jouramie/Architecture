@@ -1,6 +1,5 @@
-package ca.ulaval.glo4003.ws.api;
+package ca.ulaval.glo4003.ws.api.ping;
 
-import ca.ulaval.glo4003.ws.api.dto.PingDto;
 import javax.ws.rs.BadRequestException;
 
 public class PingResourceImpl implements PingResource {

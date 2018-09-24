@@ -1,6 +1,5 @@
-package ca.ulaval.glo4003.ws.api;
+package ca.ulaval.glo4003.ws.api.ping;
 
-import ca.ulaval.glo4003.ws.api.dto.PingDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,7 +18,8 @@ public interface PingResource {
       responses = {
           @ApiResponse(
               description = "Ping value",
-              content = @Content(schema = @Schema(implementation = PingDto.class))
+              content = @Content(schema = @Schema(implementation = PingDto.class)),
+              responseCode = "200"
           ),
           @ApiResponse(
               responseCode = "400", description = "Missing echo query parameter"
