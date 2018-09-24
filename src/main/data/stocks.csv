@@ -1,0 +1,36 @@
+title,market,stock name,category
+RBS.l,London,Royal Bank of Scotland,Banking
+LSE.l,London,Londo Stock Exchage Group,Stock market
+SKY.l,London,Sky,Telecom
+VOD.l,London,Vodafone,Telecom
+PVCS.l,London,PV Crystalox Solar,Green technologies
+STP,New York,Suntech Power Holdings,Green technologies
+OPTT,Nasdaq,Ocean Power Technologies,Green technologies
+SXI.to,TMX,Synex International,Green technologies
+INE.to,TMX,Innergex Renewable Energy,Green technologies
+600875,Shanghai,Dongfang Electric Corp,Green technologies
+BA,New York,Boeing,Transportation
+MMM,New York,3M,Manufacturing
+T,New York,AT&T,Telecom
+BRK.b,New York,Berkshire Hathaway Inc,Investing
+AAPL,Nasdaq,Apple,Tech
+AMZN,Nasdaq,Amazon,Technologies
+MSFT,Nasdaq,Microsoft,Technologies
+GOOG,Nasdaq,Google,Technologies
+601169,Shanghai,Bank of Beijing,Banking
+600050,Shanghai,China United Network,Telecom
+601857,Shanghai,PetroChina,Natural Resources
+601390,Shanghai,China Railway group,Transportation
+BCE.to,TMX,Bell Canada Enterprises,Telecom
+DOO.to,TMX,BRP,Transportation
+BMO.to,TMX,Bank of Montreal,Banking
+BNP.pa,Euronext,BNP Paribas,Banking
+OR.pa,Euronext,L'Or�al,Manufacturing
+SW.pa,Euronext,Sodexo S.A.,Food services
+AIR.pa,Euronext,Airbus,Transportation
+VIV.pa,Euronext,Vivendi,Media
+7203.t,Tokyo,Toyota Motor Corporation,Transportation
+7733.t,Tokyo,Olympus Cor,Manufacturing
+9984.t,Tokyo,SoftBank Group Corp.,Investing
+6762.t,Tokyo,TDK Corporation,Technologies
+7951.t,Tokyo,Yamaha Corporation,Manufacturing
