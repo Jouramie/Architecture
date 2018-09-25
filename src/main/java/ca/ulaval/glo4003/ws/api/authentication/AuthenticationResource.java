@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
 @Path("/authenticate")
 public interface AuthenticationResource {
@@ -23,5 +24,5 @@ public interface AuthenticationResource {
           )
       }
   )
-  AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest);
+  Response authenticate(AuthenticationRequestDto authenticationRequest);
 }
