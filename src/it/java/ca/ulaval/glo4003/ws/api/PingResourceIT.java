@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api;
 
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -19,19 +19,26 @@ public class PingResourceIT {
 
   @Test
   public void whenPinging_thenApplicationRespondWithEchoMessage() {
+    //@formatter:off
     given()
         .param("echo", SOME_ECHO)
-        .when()
+    .when()
         .get(API_PING_ROUTE)
-        .then()
+    .then()
         .statusCode(200)
         .body("version", any(String.class))
         .body("date", any(String.class))
         .body("echo", equalTo(SOME_ECHO));
+    //@formatter:on
   }
 
   @Test
   public void whenPingingWithoutEchoQueryParam_thenBadRequest() {
-    get(API_PING_ROUTE).then().statusCode(400);
+    //@formatter:off
+    when()
+        .get(API_PING_ROUTE)
+    .then()
+        .statusCode(400);
+    //@formatter:on
   }
 }

@@ -57,3 +57,4 @@ You should install the following plugins:
 ![Import checkstyle configuration](https://i.imgur.com/DWVAQmp.png)
 ![Choose IntelliJ-codestyle.xml](https://i.imgur.com/osKkkt9.png)
 ![Import to current scheme](https://i.imgur.com/OKVXlIf.png)
+![Activate no formatting comments](https://i.imgur.com/cc5ERDX.png)

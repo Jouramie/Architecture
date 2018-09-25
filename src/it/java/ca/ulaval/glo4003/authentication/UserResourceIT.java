@@ -25,18 +25,28 @@ public class UserResourceIT {
 
   @Test
   public void whenCreatingUser_thenReturnCreatedUserInformation() {
-    given().body(A_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON)
+    //@formatter:off
+    given()
+        .body(A_CREATION_REQUEST)
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
         .post(USERS_ROUTE)
-        .then()
+    .then()
         .statusCode(CREATED.getStatusCode())
         .body(any(UserDto.class));
+    //@formatter:on
   }
 
   @Test
   public void givenAlreadyUsedUserName_whenCreatingUser_thenBadRequest() {
-    given().body(A_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON)
+    //@formatter:off
+    given()
+        .body(A_CREATION_REQUEST)
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
         .post(USERS_ROUTE)
-        .then()
+    .then()
         .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
   }
 }

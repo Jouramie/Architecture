@@ -27,6 +27,12 @@
         <property name="eachLine" value="true"/>
     </module>
 
+    <module name="RegexpMultiline">
+        <property name="message" value="There should be no blank line at end of a block." />
+        <property name="format" value="(?&lt;!\{\s{0,99}$)^$(?=^\s{0,99}\})" />
+        <property name="fileExtensions" value="java" />
+    </module>
+
     <module name="TreeWalker">
         <module name="OuterTypeFilename"/>
         <module name="IllegalTokenText">

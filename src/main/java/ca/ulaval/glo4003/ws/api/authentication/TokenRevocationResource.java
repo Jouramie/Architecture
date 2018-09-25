@@ -21,5 +21,4 @@ public interface TokenRevocationResource {
       }
   )
   void revokeToken();
-
 }

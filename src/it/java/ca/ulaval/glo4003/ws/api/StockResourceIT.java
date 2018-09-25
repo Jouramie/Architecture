@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api;
 
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -30,8 +30,10 @@ public class StockResourceIT {
 
   @Test
   public void whenGettingByTitle_thenReturnStockInformation() {
-    get(API_STOCK_ROUTE + "/" + SOME_TITLE)
-        .then()
+    //@formatter:off
+    when()
+        .get(API_STOCK_ROUTE + "/" + SOME_TITLE)
+    .then()
         .statusCode(200)
         .body(TITLE, equalTo(SOME_TITLE))
         .body(NAME, equalTo(SOME_NAME))
@@ -40,15 +42,17 @@ public class StockResourceIT {
         .body(OPEN, any(Double.class))
         .body(CURRENT, any(Double.class))
         .body(CLOSE, any(Double.class));
+    //@formatter:on
   }
 
   @Test
   public void whenGettingByName_thenReturnStockInformation() {
+    //@formatter:off
     given()
         .param(NAME, SOME_NAME)
-        .when()
+    .when()
         .get(API_STOCK_ROUTE)
-        .then()
+    .then()
         .statusCode(200)
         .body(TITLE, equalTo(SOME_TITLE))
         .body(NAME, equalTo(SOME_NAME))
@@ -57,26 +61,38 @@ public class StockResourceIT {
         .body(OPEN, any(Double.class))
         .body(CURRENT, any(Double.class))
         .body(CLOSE, any(Double.class));
+    //@formatter:on
   }
 
   @Test
   public void givenWrongValue_whenGettingByTitle_thenStockIsNotFound() {
-    get(API_STOCK_ROUTE + "/wrong")
-        .then().statusCode(404);
+    //@formatter:off
+    when()
+        .get(API_STOCK_ROUTE + "/wrong")
+    .then()
+        .statusCode(404);
+    //@formatter:on
   }
 
   @Test
   public void givenWrongValue_whenGettingByName_thenStockIsNotFound() {
+    //@formatter:off
     given()
         .param(NAME, "wrong")
-        .when()
+    .when()
         .get(API_STOCK_ROUTE)
-        .then().statusCode(404);
+    .then()
+        .statusCode(404);
+    //@formatter:on
   }
 
   @Test
   public void givenNoValue_whenGettingByName_thenBadRequest() {
-    get(API_STOCK_ROUTE)
-        .then().statusCode(400);
+    //@formatter:off
+    when()
+        .get(API_STOCK_ROUTE)
+    .then()
+        .statusCode(400);
+    //@formatter:on
   }
 }
