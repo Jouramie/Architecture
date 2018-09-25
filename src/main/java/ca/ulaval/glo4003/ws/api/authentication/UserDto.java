@@ -8,14 +8,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class UserDto {
 
-    @Schema(description = "Username")
-    public final String username;
+  @Schema(description = "Username")
+  public final String username;
 
-    @Schema(description = "User role")
-    public final UserRole role;
+  @Schema(description = "User role")
+  public final UserRole role;
 
-    public UserDto(String username, UserRole role) {
-        this.username = username;
-        this.role = role;
-    }
+  public UserDto(String username, UserRole role) {
+    this.username = username;
+    this.role = role;
+  }
 }

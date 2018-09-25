@@ -1,5 +1,8 @@
 package ca.ulaval.glo4003;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResource;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResourceImpl;
 import ca.ulaval.glo4003.ws.api.authentication.UserResource;
@@ -15,6 +18,10 @@ import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import java.net.URL;
+import java.util.Set;
+import java.util.stream.Stream;
+import javax.ws.rs.core.Application;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
@@ -24,114 +31,106 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-import javax.ws.rs.core.Application;
-import java.net.URL;
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-
 public class InvestULMain {
 
-    private static Server server;
+  private static Server server;
 
-    public static void main(String[] args) throws Exception {
-        final int port = 8080;
-        ContextHandlerCollection contexts = new ContextHandlerCollection();
-        contexts.setHandlers(new Handler[] {createApiHandler(), createUiHandler()});
-        server = new Server(port);
-        server.setHandler(contexts);
+  public static void main(String[] args) throws Exception {
+    int port = 8080;
+    ContextHandlerCollection contexts = new ContextHandlerCollection();
+    contexts.setHandlers(new Handler[] {createApiHandler(), createUiHandler()});
+    server = new Server(port);
+    server.setHandler(contexts);
 
-        URL serverUrl = server.getURI().toURL();
-        URL apiUrl = new URL(serverUrl.getProtocol(), serverUrl.getHost(), port, serverUrl.getFile());
-        createSwaggerApi(apiUrl.toString());
+    URL serverUrl = server.getURI().toURL();
+    URL apiUrl = new URL(serverUrl.getProtocol(), serverUrl.getHost(), port, serverUrl.getFile());
+    createSwaggerApi(apiUrl.toString());
 
-        try {
-            server.start();
-            server.join();
-        } finally {
-            server.stop();
-            server.destroy();
-        }
+    try {
+      server.start();
+      server.join();
+    } finally {
+      server.stop();
+      server.destroy();
     }
+  }
 
-    public static void stop() throws Exception {
-        try{
-            server.stop();
-        } finally {
-            server.destroy();
-        }
+  public static void stop() throws Exception {
+    try {
+      server.stop();
+    } finally {
+      server.destroy();
     }
+  }
 
-    public static boolean isStarted() {
-        if(server == null) {
-            return false;
-        }
-        return server.isStarted();
+  static boolean isStarted() {
+    if (server == null) {
+      return false;
     }
+    return server.isStarted();
+  }
 
-    private static Handler createApiHandler() {
-        PingResource pingResource = new PingResourceImpl();
-        StockResource stockResource = new StockResourceImpl();
-        AuthenticationResource authenticationResource = new AuthenticationResourceImpl();
-        UserResource userResource = new UserResourceImpl();
+  private static Handler createApiHandler() {
+    PingResource pingResource = new PingResourceImpl();
+    StockResource stockResource = new StockResourceImpl();
+    AuthenticationResource authenticationResource = new AuthenticationResourceImpl();
+    UserResource userResource = new UserResourceImpl();
 
-        Application application = new Application() {
-            @Override
-            public Set<Object> getSingletons() {
-                return Stream.of(
-                        pingResource,
-                        stockResource,
-                        authenticationResource,
-                        userResource,
-                        new OpenApiResource() // Routes for Swagger integration
-                ).collect(toSet());
-            }
-        };
+    Application application = new Application() {
+      @Override
+      public Set<Object> getSingletons() {
+        return Stream.of(
+            pingResource,
+            stockResource,
+            authenticationResource,
+            userResource,
+            new OpenApiResource() // Routes for Swagger integration
+        ).collect(toSet());
+      }
+    };
 
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/api/");
-        ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
-        resourceConfig.register(CORSResponseFilter.class);
+    ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+    context.setContextPath("/api/");
+    ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
+    resourceConfig.register(CORSResponseFilter.class);
 
-        ServletContainer servletContainer = new ServletContainer(resourceConfig);
-        ServletHolder servletHolder = new ServletHolder(servletContainer);
-        context.addServlet(servletHolder, "/*");
+    ServletContainer servletContainer = new ServletContainer(resourceConfig);
+    ServletHolder servletHolder = new ServletHolder(servletContainer);
+    context.addServlet(servletHolder, "/*");
 
-        return context;
+    return context;
+  }
+
+  private static void createSwaggerApi(String apiUrl) {
+    OpenAPI oas = new OpenAPI();
+    Info info = new Info()
+        .title("Invest-UL")
+        .description("Logiciel transactionnel pour titres boursiers");
+
+    io.swagger.v3.oas.models.servers.Server server = new io.swagger.v3.oas.models.servers.Server();
+    server.setUrl(apiUrl);
+
+    oas
+        .info(info)
+        .servers(Stream.of(server).collect(toList()));
+
+    SwaggerConfiguration oasConfig = new SwaggerConfiguration()
+        .openAPI(oas)
+        .prettyPrint(true);
+
+    try {
+      new JaxrsOpenApiContextBuilder()
+          .openApiConfiguration(oasConfig)
+          .buildContext(true);
+    } catch (OpenApiConfigurationException e) {
+      throw new RuntimeException(e.getMessage(), e);
     }
+  }
 
-    private static void createSwaggerApi(String apiUrl) {
-        OpenAPI oas = new OpenAPI();
-        Info info = new Info()
-                .title("Invest-UL")
-                .description("Logiciel transactionnel pour titres boursiers");
-
-        io.swagger.v3.oas.models.servers.Server server = new io.swagger.v3.oas.models.servers.Server();
-        server.setUrl(apiUrl);
-
-        oas
-            .info(info)
-            .servers(Stream.of(server).collect(toList()));
-
-        SwaggerConfiguration oasConfig = new SwaggerConfiguration()
-                .openAPI(oas)
-                .prettyPrint(true);
-
-        try {
-            new JaxrsOpenApiContextBuilder()
-                    .openApiConfiguration(oasConfig)
-                    .buildContext(true);
-        } catch (OpenApiConfigurationException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    private static Handler createUiHandler() {
-        WebAppContext webapp = new WebAppContext();
-        webapp.setResourceBase("src/main/webapp");
-        webapp.setContextPath("/");
-        return webapp;
-    }
+  private static Handler createUiHandler() {
+    WebAppContext webapp = new WebAppContext();
+    webapp.setResourceBase("src/main/webapp");
+    webapp.setContextPath("/");
+    return webapp;
+  }
 }
