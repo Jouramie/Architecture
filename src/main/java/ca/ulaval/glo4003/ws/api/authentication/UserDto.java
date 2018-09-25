@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
 import ca.ulaval.glo4003.ws.domain.user.UserRole;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
@@ -10,19 +9,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class UserDto {
 
-    @Schema(description = "Username")
-    public final String username;
+  @Schema(description = "Username")
+  public final String username;
 
-    @Schema(description = "User role")
-    public final UserRole role;
+  @Schema(description = "User role")
+  public final UserRole role;
 
-    public UserDto(String username, UserRole role) {
-        this.username = username;
-        this.role = role;
-    }
+  public UserDto(String username, UserRole role) {
+    this.username = username;
+    this.role = role;
+  }
 
-    //For Jackson
-    private UserDto() {
-        this(null, null);
-    }
+  //For Jackson
+  private UserDto() {
+    this(null, null);
+  }
 }

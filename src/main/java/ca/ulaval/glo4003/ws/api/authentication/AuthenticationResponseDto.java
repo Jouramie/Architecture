@@ -8,10 +8,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class AuthenticationResponseDto {
 
-    @Schema(description = "Authentication token")
-    public final String token;
+  @Schema(description = "Authentication token")
+  public final String token;
 
-    public AuthenticationResponseDto(String token) {
-        this.token = token;
-    }
+  public AuthenticationResponseDto(String token) {
+    this.token = token;
+  }
 }

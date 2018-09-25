@@ -1,8 +1,10 @@
 package ca.ulaval.glo4003.ws.infrastructure.injection;
 
-public class InstantiationException extends RuntimeException {
+class InstantiationException extends RuntimeException {
 
-    public InstantiationException(Class<?> type) {
-        super(String.format("Cannot instantiate object of class %s.", type.toString()));
-    }
+  private static final long serialVersionUID = 6279385361862887881L;
+
+  InstantiationException(Class<?> type) {
+    super(String.format("Cannot instantiate object of class %s.", type.toString()));
+  }
 }

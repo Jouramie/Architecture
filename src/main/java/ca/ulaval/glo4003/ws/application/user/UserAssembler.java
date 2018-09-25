@@ -7,7 +7,7 @@ import ca.ulaval.glo4003.ws.infrastructure.injection.Component;
 @Component
 public class UserAssembler {
 
-    public UserDto toDto(User user) {
-        return new UserDto(user.getUsername(), user.getRole());
-    }
+  UserDto toDto(User user) {
+    return new UserDto(user.getUsername(), user.getRole());
+  }
 }

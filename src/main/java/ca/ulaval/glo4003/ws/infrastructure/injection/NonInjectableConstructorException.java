@@ -1,8 +1,10 @@
 package ca.ulaval.glo4003.ws.infrastructure.injection;
 
-public class NonInjectableConstructorException extends InstantiationException {
+class NonInjectableConstructorException extends InstantiationException {
 
-    public NonInjectableConstructorException(Class<?> type) {
-        super(type);
-    }
+  private static final long serialVersionUID = 5258243115652838203L;
+
+  NonInjectableConstructorException(Class<?> type) {
+    super(type);
+  }
 }
