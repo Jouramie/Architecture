@@ -1,15 +1,11 @@
 package ca.ulaval.glo4003.ws.infrastructure.injection;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -28,7 +24,7 @@ public class ServiceLocator {
     classes.put(interfaceClass, implementedClass);
   }
 
-  void registerInstance(Class<?> interfaceClass, Object instance) {
+  public void registerInstance(Class<?> interfaceClass, Object instance) {
     instances.put(interfaceClass, instance);
   }
 
@@ -55,9 +51,9 @@ public class ServiceLocator {
         .map(this::get).collect(toList());
   }
 
-  public Set<?> getInstancesForAnnotation(String packagePrefix, Class<? extends Annotation> annotation) {
-    return new Reflections(packagePrefix)
-        .getTypesAnnotatedWith(annotation).stream().map(this::get).collect(toSet());
+  public Set<Class<?>> getClassesForAnnotation(String packagePrefix, Class<? extends Annotation> annotation) {
+    return new HashSet<>(new Reflections(packagePrefix)
+        .getTypesAnnotatedWith(annotation));
   }
 
   private <T> T injectConstructor(Class<T> type) {

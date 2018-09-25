@@ -7,10 +7,12 @@ import ca.ulaval.glo4003.ws.domain.user.InMemoryUserRepository;
 import ca.ulaval.glo4003.ws.domain.user.UserRepository;
 import ca.ulaval.glo4003.ws.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.infrastructure.injection.ErrorMapper;
+import ca.ulaval.glo4003.ws.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.annotation.Resource;
@@ -24,16 +26,19 @@ public class ServiceLocatorInitializer {
   }
 
   public void initializeServiceLocator(ServiceLocator serviceLocator) {
-    serviceLocator.discoverPackage(packagePrefix, Stream.of(Resource.class, ErrorMapper.class, Component.class).collect(toList()));
+    serviceLocator.discoverPackage(packagePrefix, Arrays.asList(Resource.class, ErrorMapper.class, Component.class, FilterRegistration.class));
     serviceLocator.register(UserRepository.class, InMemoryUserRepository.class);
+    serviceLocator.registerInstance(OpenApiResource.class, new OpenApiResource());
   }
 
   public Set<Object> createInstances(ServiceLocator serviceLocator) {
-    Set<?> resourceInstances = serviceLocator.getInstancesForAnnotation(packagePrefix, Resource.class);
-    Set<?> errorMapperClasses = serviceLocator.getInstancesForAnnotation(packagePrefix, ErrorMapper.class);
-    Set<?> componentClasses = serviceLocator.getInstancesForAnnotation(packagePrefix, Component.class);
-    return Stream.of(resourceInstances, errorMapperClasses, componentClasses, Collections.singletonList(new OpenApiResource()))
-        .flatMap(Collection::stream)
+    List<Class<?>> registeredClasses = Stream.of(Resource.class, ErrorMapper.class, Component.class)
+        .map(annotation -> serviceLocator.getClassesForAnnotation(packagePrefix, annotation))
+        .flatMap(Collection::stream).collect(toList());
+    registeredClasses.add(OpenApiResource.class);
+
+    return registeredClasses.stream()
+        .map(serviceLocator::get)
         .collect(toSet());
   }
 }

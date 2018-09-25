@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.infrastructure.config.ServiceLocatorInitializer;
+import ca.ulaval.glo4003.ws.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
@@ -11,8 +12,10 @@ import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import java.net.URL;
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Stream;
+import javax.servlet.DispatcherType;
 import javax.ws.rs.core.Application;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -25,16 +28,19 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public class InvestULMain {
 
+  private static final String PACKAGE_PREFIX = "ca.ulaval.glo4003.ws";
   private static Server server;
 
   public static void main(String[] args) throws Exception {
     int port = 8080;
     ServiceLocator serviceLocator = new ServiceLocator();
-    ServiceLocatorInitializer serviceLocatorInitializer = new ServiceLocatorInitializer("ca.ulaval.glo4003.ws");
+    ServiceLocatorInitializer serviceLocatorInitializer = new ServiceLocatorInitializer(PACKAGE_PREFIX);
     serviceLocatorInitializer.initializeServiceLocator(serviceLocator);
 
     ContextHandlerCollection contexts = new ContextHandlerCollection();
     contexts.setHandlers(new Handler[] {createApiHandler(serviceLocatorInitializer, serviceLocator), createUiHandler()});
+
+
     server = new Server(port);
     server.setHandler(contexts);
 
@@ -74,6 +80,9 @@ public class InvestULMain {
 
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
     context.setContextPath("/api/");
+    serviceLocator.getClassesForAnnotation(PACKAGE_PREFIX, FilterRegistration.class)
+        .forEach((filterClass) -> context.addFilter((Class<? extends javax.servlet.Filter>) filterClass, "/*", EnumSet.of(DispatcherType.REQUEST)));
+
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     resourceConfig.register(CORSResponseFilter.class);
 

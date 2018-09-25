@@ -63,7 +63,7 @@ public class ServiceLocatorTest {
   public void givenDiscoveredPackage_whenGettingClassesForAnnotation_thenAllClassesAreReturned() {
     int expectedNumberOfClasses = 1;
 
-    Set<?> gottenClasses = serviceLocator.getInstancesForAnnotation(getClass().getPackage().getName(), AnAnnotation.class);
+    Set<?> gottenClasses = serviceLocator.getClassesForAnnotation(getClass().getPackage().getName(), AnAnnotation.class);
 
     assertThat(gottenClasses).hasSize(expectedNumberOfClasses);
   }
