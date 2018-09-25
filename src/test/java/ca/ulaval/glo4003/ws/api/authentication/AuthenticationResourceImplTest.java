@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.ws.application.AuthenticationService;
+import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationService;
 import javax.ws.rs.core.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
