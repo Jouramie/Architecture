@@ -58,3 +58,26 @@ You should install the following plugins:
 ![Choose IntelliJ-codestyle.xml](https://i.imgur.com/osKkkt9.png)
 ![Import to current scheme](https://i.imgur.com/OKVXlIf.png)
 ![Activate no formatting comments](https://i.imgur.com/cc5ERDX.png)
+
+## RestAssured integration tests format
+Unfortunately, the formatter break the cute indentation format we gave to the RestAssured integration tests. But, by disabling the formatter, we can keep our integration tests readable! Make sure you add the `//@formatter:off` and `//@formatter:on` before and after the test.
+```java
+public class SomeRestAssuredIT {
+    @Test
+    public void whenPinging_thenApplicationRespondWithEchoMessage() {
+        //@formatter:off
+        given()
+            .param("echo", SOME_ECHO)
+        .when()
+            .get(API_PING_ROUTE)
+        .then()
+            .statusCode(200)
+            .body("version", any(String.class))
+            .body("date", any(String.class))
+            .body("echo", equalTo(SOME_ECHO));
+        //@formatter:on
+    }
+}
+```
+
+Also, make sure to always use the statically imported `given()`, `when()` and `then()` methods to keep the test ordered.
