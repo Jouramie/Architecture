@@ -1,27 +1,31 @@
 package ca.ulaval.glo4003.domain.market;
 
 public class MarketId {
-    private final String id;
+  private final String id;
 
-    public MarketId(String id) {
-        this.id = id;
+  public MarketId(String id) {
+    this.id = id;
+  }
+
+  public String getValue() {
+    return id;
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof MarketId)) {
+      return false;
     }
 
-    public String getValue() {
-        return this.id;
-    }
+    MarketId otherId = (MarketId) other;
+    return id.equals(otherId.id);
+  }
 
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) return true;
-        if ( !(other instanceof MarketId) ) return false;
-
-        final MarketId otherId = (MarketId)other;
-        return this.id.equals(otherId.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.id.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
 }

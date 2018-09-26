@@ -4,41 +4,41 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 
 public class Stock {
-    private final String title;
-    private final String name;
-    private final MarketId marketId;
-    private StockValue value;
+  private final String title;
+  private final String name;
+  private final MarketId marketId;
+  private final StockValue value;
 
-    public Stock(String title, String name, MarketId marketId, MoneyAmount startValue) {
-        this.title = title;
-        this.name = name;
-        this.marketId = marketId;
-        this.value = new StockValue(startValue);
-    }
+  public Stock(String title, String name, MarketId marketId, MoneyAmount startValue) {
+    this.title = title;
+    this.name = name;
+    this.marketId = marketId;
+    value = new StockValue(startValue);
+  }
 
-    public String getTitle() {
-        return this.title;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public String getName() {
-        return this.name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public MarketId getMarketId() {
-        return this.marketId;
-    }
+  public MarketId getMarketId() {
+    return marketId;
+  }
 
-    public synchronized void updateValue(double variation) {
-        MoneyAmount moneyVariation = new MoneyAmount(variation, this.value.getCurrentValue().getCurrency());
-        MoneyAmount newMoneyAmount = this.value.getCurrentValue().add(moneyVariation);
-        this.value.setValue(newMoneyAmount);
-    }
+  public synchronized void updateValue(double variation) {
+    MoneyAmount moneyVariation = new MoneyAmount(variation, value.getCurrentValue().getCurrency());
+    MoneyAmount newMoneyAmount = value.getCurrentValue().add(moneyVariation);
+    value.setValue(newMoneyAmount);
+  }
 
-    public synchronized StockValue getValue() {
-        return this.value;
-    }
+  public synchronized StockValue getValue() {
+    return value;
+  }
 
-    public synchronized void close() {
-        this.value.close();
-    }
+  public synchronized void close() {
+    value.close();
+  }
 }

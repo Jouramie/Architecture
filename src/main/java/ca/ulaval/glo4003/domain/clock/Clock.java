@@ -6,27 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Clock {
-    private LocalDateTime currentTime;
-    private final Duration tickStep;
-    List<ClockObserver> observers;
+  private final Duration tickStep;
+  private final List<ClockObserver> observers;
+  private LocalDateTime currentTime;
 
-    public Clock(LocalDateTime startTime, Duration tickStep) {
-        this.currentTime = startTime;
-        this.tickStep = tickStep;
-        this.observers = new ArrayList<>();
-    }
+  Clock(LocalDateTime startTime, Duration tickStep) {
+    currentTime = startTime;
+    this.tickStep = tickStep;
+    observers = new ArrayList<>();
+  }
 
-    public LocalDateTime getCurrentTime() {
-        return this.currentTime;
-    }
+  LocalDateTime getCurrentTime() {
+    return currentTime;
+  }
 
-    public void tick() {
-        this.currentTime = this.currentTime.plus(this.tickStep);
+  public void tick() {
+    currentTime = currentTime.plus(tickStep);
 
-        observers.stream().forEach((observer -> observer.onTick(this.currentTime)));
-    }
+    observers.stream().forEach((observer -> observer.onTick(currentTime)));
+  }
 
-    public void register(ClockObserver observer) {
-        this.observers.add(observer);
-    }
+  public void register(ClockObserver observer) {
+    observers.add(observer);
+  }
 }
