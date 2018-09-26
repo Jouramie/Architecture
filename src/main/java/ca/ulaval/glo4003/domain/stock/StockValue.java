@@ -1,34 +1,44 @@
 package ca.ulaval.glo4003.domain.stock;
 
-import ca.ulaval.glo4003.domain.MoneyAmount;
+import ca.ulaval.glo4003.domain.money.MoneyAmount;
 
 public class StockValue {
+    private MoneyAmount currentValue;
+    private MoneyAmount openValue;
+    private MoneyAmount closeValue;
 
-    private MoneyAmount open;
-    private MoneyAmount close;
-    private MoneyAmount current;
-
-    public StockValue() {
-
-    }
-
-    public StockValue(MoneyAmount open, MoneyAmount close, MoneyAmount current) {
-        this.open = open;
-        this.close = close;
-        this.current = current;
-
-    }
-
-    public MoneyAmount getOpenValue() {
-        return open;
-    }
-
-    public MoneyAmount getCloseValue() {
-        return close;
+    public StockValue(MoneyAmount startValue) {
+        this.currentValue = startValue;
+        this.openValue = startValue;
+        this.closeValue = startValue;
     }
 
     public MoneyAmount getCurrentValue() {
-        return current;
+        return this.currentValue;
+    }
+
+    public MoneyAmount getOpenValue() {
+        return this.openValue;
+    }
+
+    public MoneyAmount getCloseValue() {
+        return this.closeValue;
+    }
+
+    public boolean isClosed() {
+        return this.closeValue != null;
+    }
+
+    public void setValue(MoneyAmount currentValue) {
+        if(this.closeValue != null) {
+            this.openValue = currentValue;
+            this.closeValue = null;
+        }
+
+        this.currentValue = currentValue;
+    }
+
+    public void close() {
+        this.closeValue = this.currentValue;
     }
 }
-
