@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
+import static org.mockito.Mockito.verify;
+
 import ca.ulaval.glo4003.ws.application.user.UserCreationService;
 import ca.ulaval.glo4003.ws.domain.user.UserRole;
 import org.junit.Test;
@@ -8,24 +10,22 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.verify;
-
 @RunWith(MockitoJUnitRunner.class)
 public class UserResourceImplTest {
 
-    public static final UserCreationDto CREATION_REQUEST =
-            new UserCreationDto("username", "password", UserRole.ADMINISTRATOR);
+  public static final UserCreationDto CREATION_REQUEST =
+      new UserCreationDto("username", "password", UserRole.ADMINISTRATOR);
 
-    @Mock
-    private UserCreationService userCreationService;
+  @Mock
+  private UserCreationService userCreationService;
 
-    @InjectMocks
-    private UserResourceImpl userResource;
+  @InjectMocks
+  private UserResourceImpl userResource;
 
-    @Test
-    public void whenCreatingUser_thenUserIsCreated() {
-        userResource.createUser(CREATION_REQUEST);
+  @Test
+  public void whenCreatingUser_thenUserIsCreated() {
+    userResource.createUser(CREATION_REQUEST);
 
-        verify(userCreationService).createUser(CREATION_REQUEST);
-    }
+    verify(userCreationService).createUser(CREATION_REQUEST);
+  }
 }

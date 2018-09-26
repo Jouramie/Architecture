@@ -1,93 +1,91 @@
 package ca.ulaval.glo4003.ws.infrastructure.injection;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
-
 import javax.annotation.Resource;
 import javax.inject.Inject;
-
 import org.reflections.Reflections;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 public class ServiceLocator {
 
-    private final List<String> packagesDiscovered;
+  private final List<String> packagesDiscovered;
 
-    private Map<Class<?>, Class<?>> classes = new ConcurrentHashMap<>();
-    private Map<Class<?>, Object> instances = new ConcurrentHashMap<>();
+  private final Map<Class<?>, Class<?>> classes = new ConcurrentHashMap<>();
+  private final Map<Class<?>, Object> instances = new ConcurrentHashMap<>();
 
-    public ServiceLocator() {
-        this.packagesDiscovered = new ArrayList<>();
+  public ServiceLocator() {
+    packagesDiscovered = new ArrayList<>();
+  }
+
+  public void register(Class<?> registered) {
+    register(registered, registered);
+  }
+
+  public void register(Class<?> interfaceClass, Class<?> implementedClass) {
+    classes.put(interfaceClass, implementedClass);
+  }
+
+  void registerInstance(Class<?> interfaceClass, Object instance) {
+    instances.put(interfaceClass, instance);
+  }
+
+  public void discoverPackage(String packagePrefix) {
+    Reflections reflections = new Reflections(packagePrefix);
+    reflections.getTypesAnnotatedWith(Component.class).forEach(this::register);
+    reflections.getTypesAnnotatedWith(ErrorMapper.class).forEach(this::register);
+    reflections.getTypesAnnotatedWith(Resource.class).forEach(this::register);
+    packagesDiscovered.add(packagePrefix);
+  }
+
+  public <T> T get(Class<T> type) {
+    if (instances.containsKey(type)) {
+      return (T) instances.get(type);
     }
-
-    public void register(Class<?> registered) {
-        register(registered, registered);
+    if (classes.containsKey(type)) {
+      return (T) injectConstructor(classes.get(type));
     }
+    throw new UnregisteredComponentException(type);
+  }
 
-    public void register(Class<?> interfaceClass, Class<?> implementedClass) {
-        classes.put(interfaceClass, implementedClass);
-    }
+  <T> List<T> getAll(Class<T> type) {
+    return (List<T>) Stream.concat(classes.keySet().stream(), instances.keySet().stream())
+        .filter(type::isAssignableFrom)
+        .map(this::get).collect(toList());
+  }
 
-    public void registerInstance(Class<?> interfaceClass, Object instance) {
-        instances.put(interfaceClass, instance);
-    }
+  public Set<?> getAllClassesForAnnotation(Class<? extends Annotation> annotation) {
+    return packagesDiscovered.stream().map(Reflections::new)
+        .map(reflection -> reflection.getTypesAnnotatedWith(annotation))
+        .flatMap(Collection::stream)
+        .map(this::get)
+        .collect(toSet());
+  }
 
-    public void discoverPackage(String packagePrefix) {
-        Reflections reflections = new Reflections(packagePrefix);
-        reflections.getTypesAnnotatedWith(Component.class).forEach(this::register);
-        reflections.getTypesAnnotatedWith(ErrorMapper.class).forEach(this::register);
-        reflections.getTypesAnnotatedWith(Resource.class).forEach(this::register);
-        packagesDiscovered.add(packagePrefix);
-    }
+  private <T> T injectConstructor(Class<T> type) {
+    Constructor<?> injectableConstructor = findInjectableConstructorForType(type);
+    Object[] parameters = Arrays.stream(injectableConstructor.getParameterTypes()).map(this::get).toArray();
+    return instantiateClass(injectableConstructor, parameters);
+  }
 
-    public <T> T get(Class<T> type) {
-        if (instances.containsKey(type)) {
-            return (T) instances.get(type);
-        }
-        if (classes.containsKey(type)) {
-            return (T) injectConstructor(classes.get(type));
-        }
-        throw new UnregisteredComponentException(type);
-    }
+  private <T> Constructor<?> findInjectableConstructorForType(Class<T> type) {
+    return Arrays.stream(type.getDeclaredConstructors())
+        .filter(constructor -> constructor.isAnnotationPresent(Inject.class) || constructor.getParameterTypes().length == 0)
+        .findFirst()
+        .orElseThrow(() -> new NonInjectableConstructorException(type));
+  }
 
-    public <T> List<T> getAll(Class<T> type) {
-        return (List<T>) Stream.concat(classes.keySet().stream(), instances.keySet().stream())
-            .filter(type::isAssignableFrom)
-            .map(this::get).collect(toList());
+  private <T> T instantiateClass(Constructor<?> injectableConstructor, Object[] parameters) {
+    try {
+      return (T) injectableConstructor.newInstance(parameters);
+    } catch (java.lang.InstantiationException | InvocationTargetException | IllegalAccessException e) {
+      throw new InstantiationException(injectableConstructor.getDeclaringClass());
     }
-
-    public Set<?> getAllClassesForAnnotation(Class<? extends Annotation> annotation) {
-        return packagesDiscovered.stream().map(Reflections::new)
-                .map(reflection -> reflection.getTypesAnnotatedWith(annotation))
-                .flatMap(Collection::stream)
-                .map(this::get)
-                .collect(toSet());
-    }
-
-    private <T> T injectConstructor(Class<T> type) {
-        Constructor<?> injectableConstructor = findInjectableConstructorForType(type);
-        Object[] parameters = Arrays.stream(injectableConstructor.getParameterTypes()).map(this::get).toArray();
-        return instantiateClass(injectableConstructor, parameters);
-    }
-
-    private <T> Constructor<?> findInjectableConstructorForType(Class<T> type) {
-        return Arrays.stream(type.getDeclaredConstructors())
-            .filter(constructor -> constructor.isAnnotationPresent(Inject.class) || constructor.getParameterTypes().length == 0)
-            .findFirst()
-            .orElseThrow(() -> new NonInjectableConstructorException(type));
-    }
-
-    private <T> T instantiateClass(Constructor<?> injectableConstructor, Object[] parameters) {
-        try {
-            return (T) injectableConstructor.newInstance(parameters);
-        } catch (java.lang.InstantiationException | InvocationTargetException | IllegalAccessException e) {
-            throw new InstantiationException(injectableConstructor.getDeclaringClass());
-        }
-    }
+  }
 }

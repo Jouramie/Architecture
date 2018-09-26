@@ -5,8 +5,8 @@ import javax.annotation.Resource;
 @Resource
 public class AuthenticationResourceImpl implements AuthenticationResource {
 
-    @Override
-    public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest) {
-        return null;
-    }
+  @Override
+  public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest) {
+    return null;
+  }
 }

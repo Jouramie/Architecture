@@ -6,8 +6,8 @@ import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
 
 public class ServiceLocatorInitializer {
 
-    public void initializeServiceLocator(ServiceLocator serviceLocator) {
-        serviceLocator.discoverPackage("ca.ulaval.glo4003.ws");
-        serviceLocator.register(UserRepository.class, InMemoryUserRepository.class);
-    }
+  public void initializeServiceLocator(ServiceLocator serviceLocator) {
+    serviceLocator.discoverPackage("ca.ulaval.glo4003.ws");
+    serviceLocator.register(UserRepository.class, InMemoryUserRepository.class);
+  }
 }
