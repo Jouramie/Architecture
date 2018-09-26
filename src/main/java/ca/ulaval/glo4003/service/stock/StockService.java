@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.service.stock;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 
-class StockService {
+public class StockService {
   private final StockRepository stockRepository;
   private final StockAssembler stockAssembler;
 
@@ -12,12 +12,12 @@ class StockService {
     this.stockAssembler = stockAssembler;
   }
 
-  StockDto getStockByTitle(String title) {
+  public StockDto getStockByTitle(String title) {
     Stock stock = stockRepository.getByTitle(title);
     return stockAssembler.toDto(stock);
   }
 
-  StockDto getStockByName(String name) {
+  public StockDto getStockByName(String name) {
     Stock stock = stockRepository.getByName(name);
     return stockAssembler.toDto(stock);
   }

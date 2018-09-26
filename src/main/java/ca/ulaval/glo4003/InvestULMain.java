@@ -72,7 +72,7 @@ public class InvestULMain {
 
   private static Handler createApiHandler() {
     PingResource pingResource = new PingResourceImpl();
-    StockResource stockResource = new StockResourceImpl();
+    StockResource stockResource = new StockResourceImpl(null); //TODO: Use ServiceLocator
     AuthenticationResource authenticationResource = new AuthenticationResourceImpl();
     UserResource userResource = new UserResourceImpl();
 
