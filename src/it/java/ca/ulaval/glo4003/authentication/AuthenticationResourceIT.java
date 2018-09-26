@@ -24,18 +24,28 @@ public class AuthenticationResourceIT {
 
   @Test
   public void givenUserInformation_whenAuthenticating_thenReturnAuthenticationToken() {
-    given().body(AN_AUTHENTICATION_REQUEST).contentType(MediaType.APPLICATION_JSON)
+    //@formatter:off
+    given()
+        .body(AN_AUTHENTICATION_REQUEST)
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
         .post(AUTHENTICATION_ROUTE)
-        .then()
+    .then()
         .statusCode(OK.getStatusCode())
         .body(any(AuthenticationResponseDto.class));
+    //@formatter:on
   }
 
   @Test
   public void givenIncorrectUserInformation_whenAuthenticating_thenReturnBadRequest() {
-    given().body(AN_AUTHENTICATION_REQUEST).contentType(MediaType.APPLICATION_JSON)
+    //@formatter:off
+    given()
+        .body(AN_AUTHENTICATION_REQUEST)
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
         .post(AUTHENTICATION_ROUTE)
-        .then()
+    .then()
         .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
   }
 }

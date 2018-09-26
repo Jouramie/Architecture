@@ -19,7 +19,7 @@ public interface AuthenticationResource {
               responseCode = "200", content = @Content(schema = @Schema(implementation = AuthenticationResponseDto.class))
           ),
           @ApiResponse(
-              responseCode = "400", description = "wrong user password"
+              responseCode = "400", description = "Invalid username or password"
           )
       }
   )

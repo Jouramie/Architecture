@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.dto;
+package ca.ulaval.glo4003.ws.api.ping;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -20,8 +20,8 @@ public class PingDto {
   }
 
   public PingDto(String echo) {
-    this.version = "0.0.1";
-    this.date = LocalDateTime.now();
+    version = "0.0.1";
+    date = LocalDateTime.now();
     this.echo = echo;
   }
 }

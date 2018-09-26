@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.infrastructure.injection;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
 
 import java.util.List;
 import java.util.Set;
@@ -25,7 +25,7 @@ public class ServiceLocatorTest {
   public void givenRegisteredInstance_whenGetting_thenAlwaysReturnsTheSameInstance() {
     SomeComponent gottenComponent = serviceLocator.get(SomeComponent.class);
 
-    assertTrue(SOME_COMPONENT_INSTANCE == gottenComponent);
+    assertSame(SOME_COMPONENT_INSTANCE, gottenComponent);
   }
 
   @Test
@@ -109,6 +109,9 @@ class ADiscoveredComponent {
   }
 }
 
+class SomeChildClass extends SomeComponent {
+}
+
 @ErrorMapper
 class AnAnnotatedClass {
 }
@@ -117,5 +120,4 @@ class AnAnnotatedClass {
 class AnotherAnnotatedClass {
 }
 
-class SomeChildClass extends SomeComponent {
-}
+
