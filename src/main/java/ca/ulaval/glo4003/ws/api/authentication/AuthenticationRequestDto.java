@@ -8,14 +8,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class AuthenticationRequestDto {
 
-    @Schema(description = "Username")
-    public final String username;
+  @Schema(description = "Username")
+  public final String username;
 
-    @Schema(description = "Password")
-    public final String password;
+  @Schema(description = "Password")
+  public final String password;
 
-    public AuthenticationRequestDto(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+  public AuthenticationRequestDto(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
 }

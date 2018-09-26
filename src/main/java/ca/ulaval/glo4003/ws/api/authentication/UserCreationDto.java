@@ -8,18 +8,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class UserCreationDto {
 
-    @Schema(description = "Requested username")
-    public final String username;
+  @Schema(description = "Requested username")
+  public final String username;
 
-    @Schema(description = "Password")
-    public final String password;
+  @Schema(description = "Password")
+  public final String password;
 
-    @Schema(description = "User role")
-    public final UserRole role;
+  @Schema(description = "User role")
+  public final UserRole role;
 
-    public UserCreationDto(String username, String password, UserRole role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
+  public UserCreationDto(String username, String password, UserRole role) {
+    this.username = username;
+    this.password = password;
+    this.role = role;
+  }
 }
