@@ -14,7 +14,7 @@ import javax.ws.rs.QueryParam;
 public interface StockResource {
   @GET
   @Path("/{title}")
-  @Operation(summary = "Stock information for given title",
+  @Operation(summary = "Stock information for given title.",
       description = "Return the stock title, market, stock name, category, "
           + "stock value at market opening, current stock value and stock value at market close.",
       responses = {@ApiResponse(description = "Stock information", content = @Content(schema = @Schema(implementation = StockDto.class))),
@@ -22,7 +22,7 @@ public interface StockResource {
   StockDto getStockByTitle(@Parameter(description = "Title", required = true) @PathParam("title") String title);
 
   @GET
-  @Operation(summary = "Search stock information by name",
+  @Operation(summary = "Search stock information by name.",
       description = "Return the stock title, market, stock name, category, "
           + "stock value at market opening, current stock value and stock value at market close.",
       responses = {@ApiResponse(description = "Stock information", content = @Content(schema = @Schema(implementation = StockDto.class))),

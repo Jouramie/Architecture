@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "14ea531d-5f39-4e40-bd9d-1f9de9bc58fd",
+		"_postman_id": "59a9ccdf-a9b0-4db3-ae9d-d9712ac7bcdd",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -81,12 +81,13 @@
 							"raw": "{\n\t\"username\": \"Atreides\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/users",
+							"raw": "localhost:8080/api/users",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+								"api",
 								"users"
 							]
 						}
@@ -108,13 +109,170 @@
 							"raw": "{\n\t\"username\": \"Atreides\",\n\t\"password\": \"foobar\"\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/authenticate",
+							"raw": "localhost:8080/api/authenticate",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+								"api",
 								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "GetCart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:8080/api/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddStockInCart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"RBS.l\",\n\t\"quantity\": 1\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateStockInCart",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"RBS.l\",\n\t\"quantity\": 42\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteStockInCart",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"RBS.l\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EmptyCart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CheckoutCart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/cart/checkout",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart",
+								"checkout"
 							]
 						}
 					},
