@@ -1,5 +1,8 @@
 package ca.ulaval.glo4003.ws.api.ping;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
@@ -15,11 +18,8 @@ public class PingDto {
   @Schema(description = "Echo message")
   public final String echo;
 
-  private PingDto() {
-    this("test");
-  }
-
-  public PingDto(String echo) {
+  @JsonCreator
+  public PingDto(@JsonProperty("echo") String echo) {
     version = "0.0.1";
     date = LocalDateTime.now();
     this.echo = echo;
