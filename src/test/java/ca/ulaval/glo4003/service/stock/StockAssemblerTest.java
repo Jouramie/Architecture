@@ -12,6 +12,13 @@ import org.junit.Test;
 
 public class StockAssemblerTest {
 
+  public static final String SOME_TITLE = "someTitle";
+  public static final String SOME_NAME = "someName";
+  public static final String SOME_MARKET_ID = "NASDAQ";
+  public static final double SOME_AMOUNT = 15.3;
+  public static final String SOME_CATEGORY = "someCategory";
+  public static final String SOME_RATE = "0.77";
+  public static final String SOME_RATE_NAME = "CAD";
   private Stock stock;
   private StockAssembler stockAssembler;
 
@@ -21,17 +28,17 @@ public class StockAssemblerTest {
   }
 
   @Test
-  public void givenStock_whenAssemblerToDto_thenStockDtoIsCreated() {
+  public void whenAssemblerToDto_thenStockDtoIsCreated() {
     Stock someStock = buildStock();
 
     StockDto resultStockDto = stockAssembler.toDto(someStock);
 
     assertThat(resultStockDto).extracting("title", "name", "category", "market", "open", "current", "close")
         .containsExactly(
-            "someTitle",
-            "someName",
-            "someCategory",
-            "NASDAQ",
+            SOME_TITLE,
+            SOME_NAME,
+            SOME_CATEGORY,
+            SOME_MARKET_ID,
             someStock.getValue().getOpenValue().toUsd().doubleValue(),
             someStock.getValue().getCurrentValue().toUsd().doubleValue(),
             someStock.getValue().getCloseValue().toUsd().doubleValue());
@@ -39,11 +46,11 @@ public class StockAssemblerTest {
 
   public Stock buildStock() {
     stock = new Stock(
-        "someTitle",
-        "someName",
-        "someCategory",
-        new MarketId("NASDAQ"),
-        new MoneyAmount(15.3, new Currency("CAD", new BigDecimal("0.77"))));
+        SOME_TITLE,
+        SOME_NAME,
+        SOME_CATEGORY,
+        new MarketId(SOME_MARKET_ID),
+        new MoneyAmount(SOME_AMOUNT, new Currency(SOME_RATE_NAME, new BigDecimal(SOME_RATE))));
     return stock;
   }
 }
