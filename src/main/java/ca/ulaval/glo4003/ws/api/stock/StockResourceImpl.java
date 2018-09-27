@@ -1,5 +1,8 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
+import javax.annotation.Resource;
+
+@Resource
 public class StockResourceImpl implements StockResource {
   @Override
 
