@@ -21,7 +21,7 @@ public class StockAssemblerTest {
   }
 
   @Test
-  public void whenCreateStockDto_thenReturnStockDto() {
+  public void givenStock_whenAssemblerToDto_thenStockDtoIsCreated() {
     Stock someStock = buildStock();
 
     StockDto resultStockDto = stockAssembler.toDto(someStock);
