@@ -32,9 +32,10 @@ public class StockCsvLoader {
     for (CSVRecord record : records) {
       String title = record.get("title");
       String name = record.get("stock name");
+      String category = record.get("category");
       MarketId marketId = new MarketId(record.get("market"));
 
-      Stock stock = new Stock(title, name, marketId, DEFAULT_START_AMOUNT);
+      Stock stock = new Stock(title, name, category, marketId, DEFAULT_START_AMOUNT);
       stockRepository.add(stock);
     }
   }

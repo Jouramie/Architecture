@@ -6,12 +6,14 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 public class Stock {
   private final String title;
   private final String name;
+  private final String category;
   private final MarketId marketId;
   private final StockValue value;
 
-  public Stock(String title, String name, MarketId marketId, MoneyAmount startValue) {
+  public Stock(String title, String name, String category, MarketId marketId, MoneyAmount startValue) {
     this.title = title;
     this.name = name;
+    this.category = category;
     this.marketId = marketId;
     value = new StockValue(startValue);
   }
@@ -22,6 +24,10 @@ public class Stock {
 
   public String getName() {
     return name;
+  }
+
+  public String getCategory() {
+    return category;
   }
 
   public MarketId getMarketId() {

@@ -21,9 +21,9 @@ public class StockDto {
   @Schema(description = "Stock value at market close")
   public final double close;
   @Schema(description = "Category")
-  private final String category;
+  public final String category;
 
-  public StockDto(String title, String market, String name, String category,
+  public StockDto(String title, String name, String category, String market,
                   double open, double current, double close) {
     this.title = title;
     this.market = market;

@@ -17,11 +17,11 @@ public class StockValue {
     return currentValue;
   }
 
-  MoneyAmount getOpenValue() {
+  public MoneyAmount getOpenValue() {
     return openValue;
   }
 
-  MoneyAmount getCloseValue() {
+  public MoneyAmount getCloseValue() {
     return closeValue;
   }
 
