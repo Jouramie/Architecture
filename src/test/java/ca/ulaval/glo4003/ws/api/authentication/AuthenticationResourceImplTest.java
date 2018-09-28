@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.ws.api.authentication;
 
 
 import static javax.ws.rs.core.Response.Status.CREATED;
+import static javax.ws.rs.core.Response.Status.OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -40,7 +41,7 @@ public class AuthenticationResourceImplTest {
   public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenResponseStatusIsOK() {
     Response response = authenticationResource.authenticate(AUTHENTICATION_REQUEST);
 
-    assertThat(response.getStatus()).isEqualTo(CREATED.getStatusCode());
+    assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
   }
 
   @Test
