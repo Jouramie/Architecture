@@ -5,16 +5,15 @@ import ca.ulaval.glo4003.domain.market.MarketState;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class OpenMarketState implements MarketState {
+public class ClosedMarketState implements MarketState {
   @Override
   public void update(Market market, LocalDateTime currentTime) {
-    market.updateAllStockValues();
-
     LocalTime time = currentTime.toLocalTime();
+    LocalTime openingTime = market.getOpeningTime();
     LocalTime closingTime = market.getClosingTime();
-    if (time.equals(closingTime) || time.isAfter(closingTime)) {
-      market.closeAllStocks();
-      market.setState(new CloseMarketState());
+    if ((time.equals(openingTime) || time.isAfter(openingTime)) && time.isBefore(closingTime)) {
+      market.setState(new OpenedMarketState());
+      market.updateAllStockValues();
     }
   }
 }

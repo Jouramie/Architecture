@@ -13,16 +13,16 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HaltMarketStateTest {
+public class HaltedMarketStateTest {
   private static final LocalDateTime SOME_TIME = LocalDateTime.of(2018, 9, 22, 14, 30, 0);
   @Mock
   Market market;
 
-  private HaltMarketState state;
+  private HaltedMarketState state;
 
   @Before
   public void setupHaltMarketState() {
-    state = new HaltMarketState();
+    state = new HaltedMarketState();
   }
 
   @Test

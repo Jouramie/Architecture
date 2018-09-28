@@ -10,7 +10,7 @@ public class Clock {
   private final List<ClockObserver> observers;
   private LocalDateTime currentTime;
 
-  Clock(LocalDateTime startTime, Duration tickStep) {
+  public Clock(LocalDateTime startTime, Duration tickStep) {
     currentTime = startTime;
     this.tickStep = tickStep;
     observers = new ArrayList<>();

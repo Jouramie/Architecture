@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.verify;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 
-import ca.ulaval.glo4003.domain.market.states.OpenMarketState;
+import ca.ulaval.glo4003.domain.market.states.OpenedMarketState;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
@@ -49,7 +49,7 @@ public class MarketTest {
     closeMarket = new Market(SOME_MARKET_ID, SOME_OPENING_TIME, SOME_CLOSING_TIME, someCurrency, stockRepository, stockValueRetriever);
 
     openMarket = new Market(SOME_MARKET_ID, SOME_OPENING_TIME, SOME_CLOSING_TIME, someCurrency, stockRepository, stockValueRetriever);
-    openMarket.setState(new OpenMarketState());
+    openMarket.setState(new OpenedMarketState());
 
     haltedMarket = new Market(SOME_MARKET_ID, SOME_OPENING_TIME, SOME_CLOSING_TIME, someCurrency, stockRepository, stockValueRetriever);
     haltedMarket.halt();

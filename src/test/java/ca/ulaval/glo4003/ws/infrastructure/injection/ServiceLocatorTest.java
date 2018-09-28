@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertSame;
 
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +59,16 @@ public class ServiceLocatorTest {
   }
 
   @Test
+  public void givenDiscoveredPackage_whenGettingClassesForAnnotation_thenAllClassesAreReturned() {
+    serviceLocator.discoverPackage(getClass().getPackage().getName());
+    int expectedNumberOfClasses = 2;
+
+    Set<?> gottenClasses = serviceLocator.getAllClassesForAnnotation(ErrorMapper.class);
+
+    assertThat(gottenClasses).hasSize(expectedNumberOfClasses);
+  }
+
+  @Test
   public void whenGettingAll_thenReturnAllInheritors() {
     serviceLocator.registerInstance(SomeChildClass.class, new SomeChildClass());
     int expectedNumberOfComponents = 2;
@@ -67,29 +78,46 @@ public class ServiceLocatorTest {
     assertThat(gottenComponents).hasSize(expectedNumberOfComponents);
   }
 
-  private static class SomeComponent {
-  }
+  @Test
+  public void givenImplicitlyDeclaredEmptyConstructor_whenInstantiating_thenInjectConstructorAnyway() {
+    serviceLocator.register(SomeComponent.class);
 
-  private static class SomeInjectableComponent {
-    @Inject
-    public SomeInjectableComponent(SomeComponent dependency) {
-    }
-  }
+    SomeComponent gottenComponent = serviceLocator.get(SomeComponent.class);
 
-  private static class AClassWithANonInjectableConstructor {
-    public AClassWithANonInjectableConstructor(SomeComponent dependency) {
-    }
+    assertThat(gottenComponent).isNotNull();
   }
+}
 
-  @Component
-  private static class ADiscoveredComponent {
-    @Inject
-    public ADiscoveredComponent(SomeComponent dependency) {
-    }
-  }
+class SomeComponent {
+}
 
-  private class SomeChildClass extends SomeComponent {
+class SomeInjectableComponent {
+  @Inject
+  public SomeInjectableComponent(SomeComponent dependency) {
   }
+}
+
+class AClassWithANonInjectableConstructor {
+  public AClassWithANonInjectableConstructor(SomeComponent dependency) {
+  }
+}
+
+@Component
+class ADiscoveredComponent {
+  @Inject
+  public ADiscoveredComponent(SomeComponent dependency) {
+  }
+}
+
+class SomeChildClass extends SomeComponent {
+}
+
+@ErrorMapper
+class AnAnnotatedClass {
+}
+
+@ErrorMapper
+class AnotherAnnotatedClass {
 }
 
 

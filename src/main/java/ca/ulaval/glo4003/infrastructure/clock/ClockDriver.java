@@ -12,7 +12,7 @@ public class ClockDriver {
   private final AtomicBoolean isRunning;
   private Thread thread;
 
-  ClockDriver(Clock clock, Duration updateFreqMs) {
+  public ClockDriver(Clock clock, Duration updateFreqMs) {
     this.clock = clock;
     this.updateFreqMs = updateFreqMs;
     isRunning = new AtomicBoolean(false);

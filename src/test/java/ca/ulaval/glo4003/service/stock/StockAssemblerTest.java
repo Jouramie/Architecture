@@ -15,7 +15,7 @@ public class StockAssemblerTest {
   private static final String SOME_TITLE = "someTitle";
   private static final String SOME_NAME = "someName";
   private static final String SOME_MARKET_ID = "NASDAQ";
-  private static final double SOME_AMOUNT = 15.3;
+  private static final BigDecimal SOME_AMOUNT = new BigDecimal(15.3);
   private static final String SOME_CATEGORY = "someCategory";
   private static final String SOME_RATE = "0.77";
   private static final String SOME_RATE_NAME = "CAD";
@@ -39,9 +39,9 @@ public class StockAssemblerTest {
             SOME_NAME,
             SOME_CATEGORY,
             SOME_MARKET_ID,
-            someStock.getValue().getOpenValue().toUsd().doubleValue(),
-            someStock.getValue().getCurrentValue().toUsd().doubleValue(),
-            someStock.getValue().getCloseValue().toUsd().doubleValue());
+            someStock.getValue().getOpenValue().toUsd(),
+            someStock.getValue().getCurrentValue().toUsd(),
+            someStock.getValue().getCloseValue().toUsd());
   }
 
   private Stock buildStock() {

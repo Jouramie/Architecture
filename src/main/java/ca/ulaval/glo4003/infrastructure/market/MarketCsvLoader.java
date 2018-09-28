@@ -26,7 +26,7 @@ public class MarketCsvLoader {
   private final StockRepository stockRepository;
   private final StockValueRetriever stockValueRetriever;
 
-  MarketCsvLoader(MarketRepository marketRepository, StockRepository stockRepository, StockValueRetriever stockValueRetriever) {
+  public MarketCsvLoader(MarketRepository marketRepository, StockRepository stockRepository, StockValueRetriever stockValueRetriever) {
     this.marketRepository = marketRepository;
     this.stockRepository = stockRepository;
     this.stockValueRetriever = stockValueRetriever;

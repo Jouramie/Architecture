@@ -25,10 +25,8 @@ public class ResetServerBetweenTest implements TestRule {
     };
   }
 
-
   private void startServer() throws Exception {
     thread = new Thread(this::executeMain);
-    thread.setDaemon(true);
     thread.start();
     waitForServerToBeUp();
   }

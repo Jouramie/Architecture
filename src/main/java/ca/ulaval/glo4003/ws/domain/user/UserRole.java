@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.authentication;
+package ca.ulaval.glo4003.ws.domain.user;
 
 public enum UserRole {
   INVESTOR,

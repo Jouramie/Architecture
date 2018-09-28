@@ -44,6 +44,7 @@ public class StockCsvLoaderTest {
     Stock randomStock = stockRepository.getByTitle("MSFT");
     assertThat(randomStock.getTitle()).isEqualTo("MSFT");
     assertThat(randomStock.getName()).isEqualTo("Microsoft");
+    assertThat(randomStock.getCategory()).isEqualTo("Technologies");
     assertThat(randomStock.getMarketId().getValue()).isEqualTo("Nasdaq");
   }
 

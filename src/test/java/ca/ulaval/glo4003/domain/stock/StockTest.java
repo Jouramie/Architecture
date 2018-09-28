@@ -40,6 +40,13 @@ public class StockTest {
   }
 
   @Test
+  public void whenGetName_thenReturnCategory() {
+    String category = stock.getCategory();
+
+    assertThat(category).isEqualTo(SOME_CATEGORY);
+  }
+
+  @Test
   public void whenGetMarketId_thenReturnMarketId() {
     MarketId marketId = stock.getMarketId();
 

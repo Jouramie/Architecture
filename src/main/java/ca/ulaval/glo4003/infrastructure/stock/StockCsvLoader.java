@@ -15,13 +15,13 @@ import org.apache.commons.csv.CSVRecord;
 
 public class StockCsvLoader {
   // TODO: Base start amount on latest historic value
-  private static final double DEFAULT_START_AMOUNT = 100.00;
+  private static final double DEFAULT_START_AMOUNT = 76.00;
   private static final String STOCKS_FILE_PATH = "src/main/data/stocks.csv";
 
   private final StockRepository stockRepository;
   private final MarketRepository marketRepository;
 
-  StockCsvLoader(StockRepository stockRepository, MarketRepository marketRepository) {
+  public StockCsvLoader(StockRepository stockRepository, MarketRepository marketRepository) {
     this.stockRepository = stockRepository;
     this.marketRepository = marketRepository;
   }
@@ -44,7 +44,7 @@ public class StockCsvLoader {
   }
 
   private MoneyAmount getStartValue(MarketId marketId) {
-    Currency currency = this.marketRepository.getById(marketId).getCurrency();
+    Currency currency = marketRepository.getById(marketId).getCurrency();
 
     return new MoneyAmount(DEFAULT_START_AMOUNT, currency);
   }
