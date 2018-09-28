@@ -27,7 +27,7 @@ public class PingResourceIT {
     .then()
         .statusCode(200)
         .body("version", any(String.class))
-        .body("date", any(String.class))
+        .body("date", any(Object.class))
         .body("echo", equalTo(SOME_ECHO));
     //@formatter:on
   }

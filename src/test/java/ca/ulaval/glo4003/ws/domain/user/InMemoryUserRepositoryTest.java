@@ -7,16 +7,15 @@ import org.junit.Test;
 
 public class InMemoryUserRepositoryTest {
 
-  private static final User USER = new UserBuilder().build();
+  private static final User USER = new UserBuilder().buildDefault();
   private final InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
 
   @Test
   public void whenSavingUser_thenUserIsStored() {
     inMemoryUserRepository.save(USER);
 
-    User gottenUser = inMemoryUserRepository.find(USER.getUsername());
-
-    assertThat(gottenUser).isEqualTo(USER);
+    User retrievedUser = inMemoryUserRepository.find(USER.getUsername());
+    assertThat(retrievedUser).isEqualTo(USER);
   }
 
   @Test(expected = UserAlreadyExistsException.class)

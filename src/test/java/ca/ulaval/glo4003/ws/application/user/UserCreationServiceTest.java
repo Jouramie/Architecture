@@ -26,7 +26,7 @@ public class UserCreationServiceTest {
   private static final UserRole ROLE = UserRole.ADMINISTRATOR;
   private static final UserDto USER_DTO = new UserDto(USERNAME, ROLE);
   private static final UserCreationDto CREATION_REQUEST = new UserCreationDto(USERNAME, PASSWORD, ROLE);
-  private static final User USER = new UserBuilder().build();
+  private static final User USER = new UserBuilder().buildDefault();
 
   @Mock
   private UserFactory userFactory;
@@ -39,12 +39,18 @@ public class UserCreationServiceTest {
   private UserCreationService service;
 
   @Test
-  public void whenCreatingUser_thenUserIsCreatedAndSaved() {
-    given(userFactory.create(USERNAME, PASSWORD, ROLE)).willReturn(USER);
+  public void whenCreatingUser_thenUserIsCreated() {
 
     service.createUser(CREATION_REQUEST);
 
     verify(userFactory).create(USERNAME, PASSWORD, ROLE);
+  }
+
+  @Test
+  public void whenCreatingUser_thenUserIsSaved() {
+    given(userFactory.create(USERNAME, PASSWORD, ROLE)).willReturn(USER);
+
+    service.createUser(CREATION_REQUEST);
     verify(userRepository).save(USER);
   }
 

@@ -40,7 +40,7 @@ public class User {
     return token;
   }
 
-  public boolean isAuthenticatedBy(AuthenticationToken token) {
+  boolean isAuthenticatedBy(AuthenticationToken token) {
     return emittedTokens.stream().anyMatch(savedToken -> savedToken.equals(token));
   }
 }
