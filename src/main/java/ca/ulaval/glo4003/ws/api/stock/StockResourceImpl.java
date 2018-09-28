@@ -4,8 +4,8 @@ import javax.annotation.Resource;
 
 @Resource
 public class StockResourceImpl implements StockResource {
-  @Override
 
+  @Override
   public StockDto getStockByTitle(String title) {
     return null;
   }
