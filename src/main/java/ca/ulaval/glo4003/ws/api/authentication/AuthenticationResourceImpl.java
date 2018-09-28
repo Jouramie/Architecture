@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
-import static javax.ws.rs.core.Response.Status.CREATED;
+import static javax.ws.rs.core.Response.Status.OK;
 
 import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationService;
 import javax.annotation.Resource;
@@ -21,6 +21,6 @@ public class AuthenticationResourceImpl implements AuthenticationResource {
   public Response authenticate(AuthenticationRequestDto authenticationRequest) {
     AuthenticationResponseDto authenticationResponse
         = authenticationService.authenticate(authenticationRequest);
-    return Response.status(CREATED).entity(authenticationResponse).build();
+    return Response.status(OK).entity(authenticationResponse).build();
   }
 }

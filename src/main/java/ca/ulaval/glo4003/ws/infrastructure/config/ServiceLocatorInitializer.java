@@ -27,7 +27,7 @@ public class ServiceLocatorInitializer {
 
   public void initializeServiceLocator(ServiceLocator serviceLocator) {
     serviceLocator.discoverPackage(packagePrefix, Arrays.asList(Resource.class, ErrorMapper.class, Component.class, FilterRegistration.class));
-    serviceLocator.register(UserRepository.class, InMemoryUserRepository.class);
+    serviceLocator.registerInstance(UserRepository.class, new InMemoryUserRepository());
     serviceLocator.registerInstance(OpenApiResource.class, new OpenApiResource());
   }
 

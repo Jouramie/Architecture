@@ -27,7 +27,8 @@ public class AuthenticationService {
 
   public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest) {
     User user = userRepository.find(authenticationRequest.username);
-    AuthenticationToken token = user.authenticateByPassword(authenticationRequest.password, tokenFactory);
+    AuthenticationToken token =
+        user.authenticateByPassword(authenticationRequest.password, tokenFactory);
     return responseAssembler.toDto(token);
   }
 }
