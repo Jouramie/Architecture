@@ -21,7 +21,7 @@ public class StockRepositoryInMemoryTest {
   private final Stock SOME_STOCK_IN_DIFFERENT_MARKET = new Stock("STO3", "Stock 3", "Banking", new MarketId("TMX"), SOME_START_AMOUNT);
 
   private StockRepositoryInMemory repository;
-
+ 
   @Before
   public void setupStockRepository() {
     repository = new StockRepositoryInMemory();

@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.domain.market;
 import ca.ulaval.glo4003.domain.market.states.CloseMarketState;
 import ca.ulaval.glo4003.domain.market.states.HaltMarketState;
 import ca.ulaval.glo4003.domain.market.states.OpenMarketState;
+import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
@@ -13,14 +14,16 @@ public class Market {
   private final MarketId id;
   private final LocalTime openingTime;
   private final LocalTime closingTime;
+  private final Currency currency;
   private final StockRepository stockRepository;
   private final StockValueRetriever stockValueRetriever;
   private MarketState currentState;
 
-  public Market(MarketId id, LocalTime openingTime, LocalTime closingTime, StockRepository stockRepository, StockValueRetriever stockValueRetriever) {
+  public Market(MarketId id, LocalTime openingTime, LocalTime closingTime, Currency currency, StockRepository stockRepository, StockValueRetriever stockValueRetriever) {
     this.id = id;
     this.openingTime = openingTime;
     this.closingTime = closingTime;
+    this.currency = currency;
     this.stockRepository = stockRepository;
     this.stockValueRetriever = stockValueRetriever;
     currentState = new CloseMarketState();
@@ -36,6 +39,10 @@ public class Market {
 
   public LocalTime getClosingTime() {
     return closingTime;
+  }
+
+  public Currency getCurrency() {
+    return this.currency;
   }
 
   public void halt() {

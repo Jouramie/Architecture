@@ -33,18 +33,18 @@ public class MarketCsvLoader {
   }
 
   public void load() throws IOException {
-    Map<String, Currency> exchangeRates = loadExchangeRates();
+    Map<MarketId, Currency> currency = loadExchangeRates();
 
     Reader file = new FileReader(MARKETS_FILE_PATH);
     Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(file);
     CSVParser.parse(file, CSVFormat.EXCEL);
     for (CSVRecord record : records) {
-      String id = record.get("market");
+      MarketId marketId = new MarketId(record.get("market"));
       LocalTime open = parseTime(record.get("open"));
       LocalTime close = parseTime(record.get("close"));
       boolean halt = Boolean.parseBoolean(record.get("tradinghalt"));
 
-      Market market = new Market(new MarketId(id), open, close, stockRepository, stockValueRetriever);
+      Market market = new Market(marketId, open, close, currency.get(marketId), stockRepository, stockValueRetriever);
       if (halt) {
         market.halt();
       }
@@ -53,8 +53,8 @@ public class MarketCsvLoader {
     }
   }
 
-  private Map<String, Currency> loadExchangeRates() throws IOException {
-    Map<String, Currency> exchangeRates = new HashMap<>();
+  private Map<MarketId, Currency> loadExchangeRates() throws IOException {
+    Map<MarketId, Currency> exchangeRates = new HashMap<>();
 
     Reader file = new FileReader(EXCHANGE_RATES_PATH);
     Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(file);
@@ -64,7 +64,7 @@ public class MarketCsvLoader {
       BigDecimal rate = new BigDecimal(record.get("convert_rate_to_USD"));
       String currencyName = record.get("Currency");
 
-      exchangeRates.put(market, new Currency(currencyName, rate));
+      exchangeRates.put(new MarketId(market), new Currency(currencyName, rate));
     }
 
     return exchangeRates;

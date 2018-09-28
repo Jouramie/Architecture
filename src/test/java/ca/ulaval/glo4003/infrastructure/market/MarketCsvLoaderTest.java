@@ -40,5 +40,6 @@ public class MarketCsvLoaderTest {
     assertThat(randomMarket.getId()).isEqualTo(new MarketId("New York"));
     assertThat(randomMarket.getOpeningTime()).isEqualTo(LocalTime.of(14, 30, 0));
     assertThat(randomMarket.getClosingTime()).isEqualTo(LocalTime.of(21, 0, 0));
+    assertThat(randomMarket.getCurrency().getName()).isEqualTo("USD");
   }
 }

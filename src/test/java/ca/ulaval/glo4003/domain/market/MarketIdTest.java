@@ -1,69 +1,69 @@
 package ca.ulaval.glo4003.domain.market;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class MarketIdTest {
-    private final String SOME_MARKET_NAME = "NASDAQ";
-    private final String SOME_OTHER_MARKET_NAME = "TMX";
+  private final String SOME_MARKET_NAME = "NASDAQ";
+  private final String SOME_OTHER_MARKET_NAME = "TMX";
 
-    private MarketId id;
+  private MarketId id;
 
-    @Before
-    public void setupMarketId() {
-        id = new MarketId(SOME_MARKET_NAME);
-    }
+  @Before
+  public void setupMarketId() {
+    id = new MarketId(SOME_MARKET_NAME);
+  }
 
-    @Test
-    public void whenGetValue_thenReturnMarketName() {
-        String value = id.getValue();
+  @Test
+  public void whenGetValue_thenReturnMarketName() {
+    String value = id.getValue();
 
-        assertThat(value).isEqualTo(SOME_MARKET_NAME);
-    }
+    assertThat(value).isEqualTo(SOME_MARKET_NAME);
+  }
 
-    @Test
-    public void givenOtherNullObject_whenEquals_thenReturnFalse() {
-        boolean result = id.equals(null);
+  @Test
+  public void givenOtherNullObject_whenEquals_thenReturnFalse() {
+    boolean result = id.equals(null);
 
-        assertThat(result).isFalse();
-    }
+    assertThat(result).isFalse();
+  }
 
-    @Test
-    public void givenOtherObjectType_whenEquals_thenReturnFalse() {
-        boolean result = id.equals(42);
+  @Test
+  public void givenOtherObjectType_whenEquals_thenReturnFalse() {
+    boolean result = id.equals(42);
 
-        assertThat(result).isFalse();
-    }
+    assertThat(result).isFalse();
+  }
 
-    @Test
-    public void givenOtherMarketIdWithDifferentValue_whenEquals_thenReturnFalse() {
-        boolean result = id.equals(new MarketId(SOME_OTHER_MARKET_NAME));
+  @Test
+  public void givenOtherMarketIdWithDifferentValue_whenEquals_thenReturnFalse() {
+    boolean result = id.equals(new MarketId(SOME_OTHER_MARKET_NAME));
 
-        assertThat(result).isFalse();
-    }
+    assertThat(result).isFalse();
+  }
 
-    @Test
-    public void givenOtherIdenticalMarketId_whenEquals_thenReturnTrue() {
-        boolean result = id.equals(new MarketId(SOME_MARKET_NAME));
+  @Test
+  public void givenOtherIdenticalMarketId_whenEquals_thenReturnTrue() {
+    boolean result = id.equals(new MarketId(SOME_MARKET_NAME));
 
-        assertThat(result).isTrue();
-    }
+    assertThat(result).isTrue();
+  }
 
-    @Test
-    public void givenDifferentMarketId_whenHashCode_thenReturnDifferentHashes() {
-        int firstHash = id.hashCode();
-        int secondHash = new MarketId(SOME_OTHER_MARKET_NAME).hashCode();
+  @Test
+  public void givenDifferentMarketId_whenHashCode_thenReturnDifferentHashes() {
+    int firstHash = id.hashCode();
+    int secondHash = new MarketId(SOME_OTHER_MARKET_NAME).hashCode();
 
-        assertThat(firstHash).isNotEqualTo(secondHash);
-    }
+    assertThat(firstHash).isNotEqualTo(secondHash);
+  }
 
-    @Test
-    public void givenIdenticalMarketId_whenHashCode_thenReturnSameHash() {
-        int firstHash = id.hashCode();
-        int secondHash = new MarketId(SOME_MARKET_NAME).hashCode();
+  @Test
+  public void givenIdenticalMarketId_whenHashCode_thenReturnSameHash() {
+    int firstHash = id.hashCode();
+    int secondHash = new MarketId(SOME_MARKET_NAME).hashCode();
 
-        assertThat(firstHash).isEqualTo(secondHash);
-    }
+    assertThat(firstHash).isEqualTo(secondHash);
+  }
 }

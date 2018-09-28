@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class PingResourceTest {
 
-  private PingResource pingResource = new PingResourceImpl();
+  private final PingResource pingResource = new PingResourceImpl();
 
   @Test
   public void whenPinging_thenReturnPingDto() {
