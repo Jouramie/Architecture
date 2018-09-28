@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
-import ca.ulaval.glo4003.ws.api.InputErrorResponseModel;
+import ca.ulaval.glo4003.ws.api.validation.InputErrorResponseModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

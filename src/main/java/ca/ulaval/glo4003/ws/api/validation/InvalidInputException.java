@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api;
+package ca.ulaval.glo4003.ws.api.validation;
 
 import static java.util.stream.Collectors.toList;
 
@@ -11,7 +11,7 @@ public class InvalidInputException extends RuntimeException {
   private final InputErrorResponseModel inputErrors;
 
   public <T> InvalidInputException(Set<ConstraintViolation<T>> violations) {
-    this.inputErrors =
+    inputErrors =
         new InputErrorResponseModel(violations.stream()
             .map(this::buildErrorMessage)
             .collect(toList()));

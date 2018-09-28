@@ -4,12 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.ws.api.InvalidInputException;
+import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
+import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import ca.ulaval.glo4003.ws.application.user.UserCreationService;
 import ca.ulaval.glo4003.ws.domain.user.UserRole;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -27,11 +28,19 @@ public class UserResourceImplTest {
 
   private static final UserCreationDto CREATION_REQUEST =
       new UserCreationDto("username", "password", UserRole.ADMINISTRATOR);
+
   @Mock
   private UserCreationService userCreationService;
 
-  @InjectMocks
+  private RequestValidator requestValidator;
+
   private UserResourceImpl userResource;
+
+  @Before
+  public void setup() {
+    requestValidator = new RequestValidator();
+    userResource = new UserResourceImpl(userCreationService, requestValidator);
+  }
 
   @Test
   public void whenCreatingUser_thenUserIsCreated() {

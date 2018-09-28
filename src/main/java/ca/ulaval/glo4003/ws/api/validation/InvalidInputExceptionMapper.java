@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api;
+package ca.ulaval.glo4003.ws.api.validation;
 
 import ca.ulaval.glo4003.ws.infrastructure.injection.ErrorMapper;
 import javax.ws.rs.core.Response;

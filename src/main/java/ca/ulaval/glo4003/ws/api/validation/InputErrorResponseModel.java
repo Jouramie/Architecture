@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api;
+package ca.ulaval.glo4003.ws.api.validation;
 
 import java.util.List;
 
