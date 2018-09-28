@@ -34,6 +34,7 @@ public class ClockDriver {
         thread.join();
       }
     } catch (InterruptedException e) {
+      // Catch all interruptions
     }
   }
 
@@ -44,6 +45,7 @@ public class ClockDriver {
         sleep(updateFreqMs.toMillis());
       }
     } catch (InterruptedException e) {
+      // Catch all interruptions
     }
   }
 }

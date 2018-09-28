@@ -30,7 +30,7 @@ public class StockValue {
   }
 
   public void setValue(MoneyAmount currentValue) {
-    if (closeValue != null) {
+    if (isClosed()) {
       openValue = currentValue;
       closeValue = null;
     }

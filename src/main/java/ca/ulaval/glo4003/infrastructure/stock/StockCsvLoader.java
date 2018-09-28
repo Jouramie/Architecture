@@ -18,8 +18,9 @@ public class StockCsvLoader {
   private static final Currency DEFAULT_CURRENCY = new Currency("CAD", new BigDecimal(0.77));
   // TODO: Base start amount on latest historic value
   private static final MoneyAmount DEFAULT_START_AMOUNT = new MoneyAmount(100.00, DEFAULT_CURRENCY);
+  private static final String STOCKS_FILE_PATH = "src/main/data/stocks.csv";
+  
   private final StockRepository stockRepository;
-  private final String STOCKS_FILE_PATH = "src/main/data/stocks.csv";
 
   StockCsvLoader(StockRepository stockRepository) {
     this.stockRepository = stockRepository;

@@ -12,13 +12,13 @@ import org.junit.Test;
 
 public class StockAssemblerTest {
 
-  public static final String SOME_TITLE = "someTitle";
-  public static final String SOME_NAME = "someName";
-  public static final String SOME_MARKET_ID = "NASDAQ";
-  public static final double SOME_AMOUNT = 15.3;
-  public static final String SOME_CATEGORY = "someCategory";
-  public static final String SOME_RATE = "0.77";
-  public static final String SOME_RATE_NAME = "CAD";
+  private static final String SOME_TITLE = "someTitle";
+  private static final String SOME_NAME = "someName";
+  private static final String SOME_MARKET_ID = "NASDAQ";
+  private static final double SOME_AMOUNT = 15.3;
+  private static final String SOME_CATEGORY = "someCategory";
+  private static final String SOME_RATE = "0.77";
+  private static final String SOME_RATE_NAME = "CAD";
   private Stock stock;
   private StockAssembler stockAssembler;
 
@@ -44,7 +44,7 @@ public class StockAssemblerTest {
             someStock.getValue().getCloseValue().toUsd().doubleValue());
   }
 
-  public Stock buildStock() {
+  private Stock buildStock() {
     stock = new Stock(
         SOME_TITLE,
         SOME_NAME,

@@ -19,12 +19,12 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public class MarketCsvLoader {
+  private static final String EXCHANGE_RATES_PATH = "src/main/data/exchange_rates.csv";
+  private static final String MARKETS_FILE_PATH = "src/main/data/markets.csv";
+
   private final MarketRepository marketRepository;
   private final StockRepository stockRepository;
   private final StockValueRetriever stockValueRetriever;
-
-  private final String EXCHANGE_RATHS_PATH = "src/main/data/exchange_rates.csv";
-  private final String MARKETS_FILE_PATH = "src/main/data/markets.csv";
 
   MarketCsvLoader(MarketRepository marketRepository, StockRepository stockRepository, StockValueRetriever stockValueRetriever) {
     this.marketRepository = marketRepository;
@@ -56,7 +56,7 @@ public class MarketCsvLoader {
   private Map<String, Currency> loadExchangeRates() throws IOException {
     Map<String, Currency> exchangeRates = new HashMap<>();
 
-    Reader file = new FileReader(EXCHANGE_RATHS_PATH);
+    Reader file = new FileReader(EXCHANGE_RATES_PATH);
     Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(file);
     CSVParser.parse(file, CSVFormat.EXCEL);
     for (CSVRecord record : records) {

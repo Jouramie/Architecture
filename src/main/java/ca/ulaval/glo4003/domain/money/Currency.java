@@ -8,9 +8,9 @@ public class Currency {
   private final String name;
   private final BigDecimal rateToUsd;
 
-  public Currency(String name, BigDecimal rateToUSD) {
+  public Currency(String name, BigDecimal rateToUsd) {
     this.name = name;
-    rateToUsd = rateToUSD;
+    this.rateToUsd = rateToUsd;
   }
 
   public String getName() {

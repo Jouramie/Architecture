@@ -23,7 +23,7 @@ public class Clock {
   public void tick() {
     currentTime = currentTime.plus(tickStep);
 
-    observers.stream().forEach((observer -> observer.onTick(currentTime)));
+    observers.forEach(observer -> observer.onTick(currentTime));
   }
 
   public void register(ClockObserver observer) {
