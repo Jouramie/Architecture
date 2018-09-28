@@ -14,9 +14,8 @@ public class InMemoryUserRepositoryTest {
   public void whenSavingUser_thenUserIsStored() {
     inMemoryUserRepository.save(USER);
 
-    User gottenUser = inMemoryUserRepository.find(USER.getUsername());
-
-    assertThat(gottenUser).isEqualTo(USER);
+    User retrievedUser = inMemoryUserRepository.find(USER.getUsername());
+    assertThat(retrievedUser).isEqualTo(USER);
   }
 
   @Test(expected = UserAlreadyExistsException.class)

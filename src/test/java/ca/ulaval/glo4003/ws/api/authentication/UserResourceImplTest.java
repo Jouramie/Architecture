@@ -8,6 +8,7 @@ import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import ca.ulaval.glo4003.ws.application.user.UserCreationService;
 import ca.ulaval.glo4003.ws.domain.user.UserRole;
+import java.util.regex.Pattern;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,8 @@ public class UserResourceImplTest {
 
   private static final UserCreationDto CREATION_REQUEST =
       new UserCreationDto("username", "password", UserRole.ADMINISTRATOR);
+
+  private static final String ERROR_MESSAGE_PATTERN = "%s.+";
 
   @Mock
   private UserCreationService userCreationService;
@@ -56,7 +59,7 @@ public class UserResourceImplTest {
 
     assertThat(thrown).isInstanceOf(InvalidInputException.class);
     InvalidInputException exception = (InvalidInputException) thrown;
-    assertThat(exception.getInputErrors().inputErrors).contains("username must not be blank");
+    assertThatExceptionContainsErrorFor(exception, "username");
   }
 
   @Test
@@ -66,8 +69,7 @@ public class UserResourceImplTest {
 
     assertThat(thrown).isInstanceOf(InvalidInputException.class);
     InvalidInputException exception = (InvalidInputException) thrown;
-    assertThat(exception.getInputErrors().inputErrors)
-        .contains("password size must be between 1 and " + Integer.MAX_VALUE);
+    assertThatExceptionContainsErrorFor(exception, "password");
   }
 
   @Test
@@ -76,6 +78,12 @@ public class UserResourceImplTest {
 
     assertThat(thrown).isInstanceOf(InvalidInputException.class);
     InvalidInputException exception = (InvalidInputException) thrown;
-    assertThat(exception.getInputErrors().inputErrors).contains("role must not be null");
+    assertThatExceptionContainsErrorFor(exception, "role");
+  }
+
+  private void assertThatExceptionContainsErrorFor(InvalidInputException exception, String field) {
+    String expectMessageErrorPattern = String.format(ERROR_MESSAGE_PATTERN, field);
+    assertThat(exception.getInputErrors().inputErrors)
+        .anyMatch(errorMessage -> Pattern.matches(expectMessageErrorPattern, errorMessage));
   }
 }
