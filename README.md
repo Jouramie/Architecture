@@ -51,7 +51,8 @@ You should install the following plugins:
 ![Select the modified config](https://i.imgur.com/FUWMPKx.png)
 
 ### Save Actions configuration
-![Save Actions configuration](https://i.imgur.com/jc7MiWn.png)
+Reproduce the following configuration. Make sure the *Change visibility on field or methods to lower access* option is unchecked.
+![Save Actions configuration](https://i.imgur.com/kCNn7Eh.png)
 
 ### IntelliJ Code Style for auto-format
 ![Import checkstyle configuration](https://i.imgur.com/DWVAQmp.png)
