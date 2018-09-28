@@ -81,12 +81,13 @@
 							"raw": "{\n\t\"username\": \"Atreides\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/users",
+							"raw": "localhost:8080/api/users",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+								"api",
 								"users"
 							]
 						}
@@ -108,12 +109,13 @@
 							"raw": "{\n\t\"username\": \"Atreides\",\n\t\"password\": \"foobar\"\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/authenticate",
+							"raw": "localhost:8080/api/authenticate",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+								"api",
 								"authenticate"
 							]
 						}

@@ -3,15 +3,10 @@ package ca.ulaval.glo4003;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResource;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResourceImpl;
-import ca.ulaval.glo4003.ws.api.authentication.UserResource;
-import ca.ulaval.glo4003.ws.api.authentication.UserResourceImpl;
-import ca.ulaval.glo4003.ws.api.ping.PingResource;
-import ca.ulaval.glo4003.ws.api.ping.PingResourceImpl;
-import ca.ulaval.glo4003.ws.api.stock.StockResource;
-import ca.ulaval.glo4003.ws.api.stock.StockResourceImpl;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
+import ca.ulaval.glo4003.ws.infrastructure.config.ServiceLocatorInitializer;
+import ca.ulaval.glo4003.ws.infrastructure.injection.ErrorMapper;
+import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
@@ -19,8 +14,11 @@ import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Stream;
+import javax.annotation.Resource;
 import javax.ws.rs.core.Application;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -37,8 +35,12 @@ public class InvestULMain {
 
   public static void main(String[] args) throws Exception {
     int port = 8080;
+
+    ServiceLocator serviceLocator = new ServiceLocator();
+    new ServiceLocatorInitializer().initializeServiceLocator(serviceLocator);
+
     ContextHandlerCollection contexts = new ContextHandlerCollection();
-    contexts.setHandlers(new Handler[] {createApiHandler(), createUiHandler()});
+    contexts.setHandlers(new Handler[] {createApiHandler(serviceLocator), createUiHandler()});
     server = new Server(port);
     server.setHandler(contexts);
 
@@ -64,28 +66,15 @@ public class InvestULMain {
   }
 
   static boolean isStarted() {
-    if (server == null) {
-      return false;
-    }
-    return server.isStarted();
+    return server != null && server.isStarted();
   }
 
-  private static Handler createApiHandler() {
-    PingResource pingResource = new PingResourceImpl();
-    StockResource stockResource = new StockResourceImpl();
-    AuthenticationResource authenticationResource = new AuthenticationResourceImpl();
-    UserResource userResource = new UserResourceImpl();
+  private static Handler createApiHandler(ServiceLocator serviceLocator) {
 
     Application application = new Application() {
       @Override
       public Set<Object> getSingletons() {
-        return Stream.of(
-            pingResource,
-            stockResource,
-            authenticationResource,
-            userResource,
-            new OpenApiResource() // Routes for Swagger integration
-        ).collect(toSet());
+        return createInstances(serviceLocator);
       }
     };
 
@@ -132,5 +121,13 @@ public class InvestULMain {
     webapp.setResourceBase("src/main/webapp");
     webapp.setContextPath("/");
     return webapp;
+  }
+
+  private static Set<Object> createInstances(ServiceLocator serviceLocator) {
+    Set<?> resourceInstances = serviceLocator.getAllClassesForAnnotation(Resource.class);
+    Set<?> errorMapperClasses = serviceLocator.getAllClassesForAnnotation(ErrorMapper.class);
+    return Stream.of(resourceInstances, errorMapperClasses, Collections.singletonList(new OpenApiResource()))
+        .flatMap(Collection::stream)
+        .collect(toSet());
   }
 }
