@@ -10,7 +10,7 @@ public class InvalidInputException extends RuntimeException {
   private static final long serialVersionUID = -5723443749381881618L;
   private final InputErrorResponseModel inputErrors;
 
-  public <T> InvalidInputException(Set<ConstraintViolation<T>> violations) {
+  <T> InvalidInputException(Set<ConstraintViolation<T>> violations) {
     inputErrors =
         new InputErrorResponseModel(violations.stream()
             .map(this::buildErrorMessage)

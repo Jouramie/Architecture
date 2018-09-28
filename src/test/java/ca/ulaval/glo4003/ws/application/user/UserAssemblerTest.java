@@ -9,11 +9,11 @@ import org.junit.Test;
 
 public class UserAssemblerTest {
 
-  private UserAssembler assembler = new UserAssembler();
+  private final UserAssembler assembler = new UserAssembler();
 
   @Test
   public void whenAssemblingToDto_thenAssembleFieldByField() {
-    User someUser = new UserBuilder().build();
+    User someUser = new UserBuilder().buildDefault();
 
     UserDto createdUser = assembler.toDto(someUser);
 

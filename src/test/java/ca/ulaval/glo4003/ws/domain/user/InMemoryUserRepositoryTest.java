@@ -7,8 +7,8 @@ import org.junit.Test;
 
 public class InMemoryUserRepositoryTest {
 
-  public static final User USER = new UserBuilder().build();
-  private InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+  private static final User USER = new UserBuilder().buildDefault();
+  private final InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
 
   @Test
   public void whenSavingUser_thenUserIsStored() {
