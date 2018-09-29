@@ -1,10 +1,11 @@
-package ca.ulaval.glo4003.ws.infrastructure.injection.persistence;
+package ca.ulaval.glo4003.ws.infrastructure.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.ws.domain.user.User;
 import ca.ulaval.glo4003.ws.domain.user.UserAlreadyExistsException;
-import ca.ulaval.glo4003.ws.infrastructure.persistence.InMemoryUserRepository;
+import ca.ulaval.glo4003.ws.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.ws.util.UserBuilder;
 import org.junit.Test;
 
@@ -26,5 +27,11 @@ public class InMemoryUserRepositoryTest {
     inMemoryUserRepository.save(USER);
 
     inMemoryUserRepository.save(USER);
+  }
+
+  @Test
+  public void givenUserDoesNotExist_whenGettingUser_thenUserNotFoundExceptionIsThrown() {
+    assertThatThrownBy(() -> inMemoryUserRepository.find(USER.getUsername()))
+        .isInstanceOf(UserNotFoundException.class);
   }
 }

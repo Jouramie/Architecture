@@ -1,11 +1,10 @@
-package ca.ulaval.glo4003.ws.infrastructure.injection.persistence;
+package ca.ulaval.glo4003.ws.infrastructure.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.ws.domain.user.authentication.NoTokenFoundException;
-import ca.ulaval.glo4003.ws.infrastructure.persistence.InMemoryAuthenticationTokenRepository;
 import org.junit.Before;
 import org.junit.Test;
 
