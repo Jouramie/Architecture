@@ -1,7 +1,10 @@
-package ca.ulaval.glo4003.ws.domain.user;
+package ca.ulaval.glo4003.ws.infrastructure.injection.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ca.ulaval.glo4003.ws.domain.user.User;
+import ca.ulaval.glo4003.ws.domain.user.UserAlreadyExistsException;
+import ca.ulaval.glo4003.ws.infrastructure.persistence.InMemoryUserRepository;
 import ca.ulaval.glo4003.ws.util.UserBuilder;
 import org.junit.Test;
 

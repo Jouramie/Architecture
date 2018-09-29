@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.ws.application.user.authentication;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
+import ca.ulaval.glo4003.ws.domain.user.CurrentUserRepository;
 import ca.ulaval.glo4003.ws.domain.user.User;
 import ca.ulaval.glo4003.ws.domain.user.UserRepository;
 import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationErrorException;
@@ -20,18 +21,21 @@ public class AuthenticationService {
   private final AuthenticationTokenFactory tokenFactory;
   private final AuthenticationTokenRepository authenticationTokenRepository;
   private final AuthenticationResponseAssembler responseAssembler;
+  private final CurrentUserRepository currentUserRepository;
 
   @Inject
   public AuthenticationService(UserRepository userRepository,
                                AuthenticationTokenAssembler authenticationTokenAssembler,
                                AuthenticationTokenFactory tokenFactory,
                                AuthenticationTokenRepository authenticationTokenRepository,
-                               AuthenticationResponseAssembler responseAssembler) {
+                               AuthenticationResponseAssembler responseAssembler,
+                               CurrentUserRepository currentUserRepository) {
     this.userRepository = userRepository;
     this.authenticationTokenAssembler = authenticationTokenAssembler;
     this.tokenFactory = tokenFactory;
     this.authenticationTokenRepository = authenticationTokenRepository;
     this.responseAssembler = responseAssembler;
+    this.currentUserRepository = currentUserRepository;
   }
 
   public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest) {
@@ -45,11 +49,14 @@ public class AuthenticationService {
   }
 
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {
-    AuthenticationToken authenticationToken =
+    AuthenticationToken savedToken =
         authenticationTokenRepository.getTokenForUser(authenticationTokenDto.username);
     AuthenticationToken requestToken = authenticationTokenAssembler.toModel(authenticationTokenDto);
-    if (!authenticationToken.equals(requestToken)) {
-      throw new InvalidTokenException();
+    if (savedToken.equals(requestToken)) {
+      User currentUser = userRepository.find(savedToken.username);
+      currentUserRepository.setCurrentUser(currentUser);
+      return;
     }
+    throw new InvalidTokenException();
   }
 }

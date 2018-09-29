@@ -1,5 +1,8 @@
-package ca.ulaval.glo4003.ws.domain.user;
+package ca.ulaval.glo4003.ws.infrastructure.persistence;
 
+import ca.ulaval.glo4003.ws.domain.user.User;
+import ca.ulaval.glo4003.ws.domain.user.UserAlreadyExistsException;
+import ca.ulaval.glo4003.ws.domain.user.UserRepository;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;

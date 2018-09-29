@@ -13,6 +13,7 @@ import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationRespon
 import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationService;
 import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationTokenAssembler;
 import ca.ulaval.glo4003.ws.application.user.authentication.InvalidTokenException;
+import ca.ulaval.glo4003.ws.domain.user.CurrentUserRepository;
 import ca.ulaval.glo4003.ws.domain.user.User;
 import ca.ulaval.glo4003.ws.domain.user.UserRepository;
 import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationErrorException;
@@ -52,6 +53,9 @@ public class AuthenticationServiceTest {
   private AuthenticationTokenRepository tokenRepository;
 
   @Mock
+  private CurrentUserRepository currentUserRepository;
+
+  @Mock
   private AuthenticationTokenFactory tokenFactory;
 
   private AuthenticationResponseAssembler responseAssembler;
@@ -65,7 +69,7 @@ public class AuthenticationServiceTest {
     tokenAssembler = new AuthenticationTokenAssembler();
     responseAssembler = new AuthenticationResponseAssembler();
     authenticationService = new AuthenticationService(userRepository,
-        tokenAssembler, tokenFactory, tokenRepository, responseAssembler);
+        tokenAssembler, tokenFactory, tokenRepository, responseAssembler, currentUserRepository);
     user = new UserBuilder().buildDefault();
   }
 
@@ -119,7 +123,9 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenValidAuthenticationToken_whenValidatingToken_thenNothingHappen() {
+  public void givenValidAuthenticationToken_whenValidatingToken_thenCurrentUserSet() {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
+
+    verify(currentUserRepository).setCurrentUser(user);
   }
 }

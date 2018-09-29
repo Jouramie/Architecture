@@ -1,14 +1,17 @@
-package ca.ulaval.glo4003.ws.domain.user.authentication;
+package ca.ulaval.glo4003.ws.infrastructure.injection.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationToken;
+import ca.ulaval.glo4003.ws.domain.user.authentication.NoTokenFoundException;
+import ca.ulaval.glo4003.ws.infrastructure.persistence.InMemoryAuthenticationTokenRepository;
 import org.junit.Before;
 import org.junit.Test;
 
 public class InMemoryAuthenticationTokenRepositoryTest {
 
-  public static final String USERNAME = "username";
+  private static final String USERNAME = "username";
   private final AuthenticationToken token
       = new AuthenticationToken("token", USERNAME);
 

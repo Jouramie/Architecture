@@ -1,5 +1,8 @@
-package ca.ulaval.glo4003.ws.domain.user.authentication;
+package ca.ulaval.glo4003.ws.infrastructure.persistence;
 
+import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationToken;
+import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationTokenRepository;
+import ca.ulaval.glo4003.ws.domain.user.authentication.NoTokenFoundException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
