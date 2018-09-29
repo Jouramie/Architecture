@@ -91,7 +91,7 @@ public class AuthenticationServiceTest {
   public void givenValidAuthenticationInformation_whenAuthenticatingUser_thenTokenIsSaved() {
     authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
-    verify(tokenRepository).addTokenForUser(AUTHENTICATION_TOKEN);
+    verify(tokenRepository).addToken(AUTHENTICATION_TOKEN);
   }
 
   @Test

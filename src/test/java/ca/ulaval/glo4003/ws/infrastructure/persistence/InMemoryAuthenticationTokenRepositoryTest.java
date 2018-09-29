@@ -23,7 +23,7 @@ public class InMemoryAuthenticationTokenRepositoryTest {
 
   @Test
   public void whenAddingToken_thenTokenIsSaved() {
-    inMemoryAuthenticationTokenRepository.addTokenForUser(token);
+    inMemoryAuthenticationTokenRepository.addToken(token);
 
     AuthenticationToken retrievedToken =
         inMemoryAuthenticationTokenRepository.getTokenForUser(USERNAME);

@@ -17,7 +17,7 @@ public class InMemoryAuthenticationTokenRepository implements AuthenticationToke
   }
 
   @Override
-  public void addTokenForUser(AuthenticationToken token) {
+  public void addToken(AuthenticationToken token) {
     tokens.put(token.username, token);
   }
 }

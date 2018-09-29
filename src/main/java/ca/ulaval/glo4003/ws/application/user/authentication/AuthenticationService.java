@@ -42,7 +42,7 @@ public class AuthenticationService {
     User user = userRepository.find(authenticationRequest.username);
     if (user.isThisYourPassword(authenticationRequest.password)) {
       AuthenticationToken token = tokenFactory.createToken(authenticationRequest.username);
-      authenticationTokenRepository.addTokenForUser(token);
+      authenticationTokenRepository.addToken(token);
       return responseAssembler.toDto(token);
     }
     throw new AuthenticationErrorException();
