@@ -5,6 +5,7 @@ import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
 import ca.ulaval.glo4003.ws.domain.user.User;
 import ca.ulaval.glo4003.ws.domain.user.UserRepository;
+import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationErrorException;
 import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationTokenFactory;
 import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationTokenRepository;
@@ -35,9 +36,12 @@ public class AuthenticationService {
 
   public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest) {
     User user = userRepository.find(authenticationRequest.username);
-    AuthenticationToken token =
-        user.authenticateByPassword(authenticationRequest.password, tokenFactory);
-    return responseAssembler.toDto(token);
+    if (user.isThisYourPassword(authenticationRequest.password)) {
+      AuthenticationToken token = tokenFactory.createToken(authenticationRequest.username);
+      authenticationTokenRepository.addTokenForUser(token);
+      return responseAssembler.toDto(token);
+    }
+    throw new AuthenticationErrorException();
   }
 
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {

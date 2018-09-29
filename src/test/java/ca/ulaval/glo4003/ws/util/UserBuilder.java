@@ -4,8 +4,8 @@ import ca.ulaval.glo4003.ws.domain.user.User;
 import ca.ulaval.glo4003.ws.domain.user.UserRole;
 
 public class UserBuilder {
-  private static final String DEFAULT_USERNAME = "username";
-  private static final String DEFAULT_PASSWORD = "password";
+  public static final String DEFAULT_USERNAME = "username";
+  public static final String DEFAULT_PASSWORD = "password";
   private static final UserRole DEFAULT_USER_ROLE = UserRole.INVESTOR;
 
   private final UserRole userRole = DEFAULT_USER_ROLE;
