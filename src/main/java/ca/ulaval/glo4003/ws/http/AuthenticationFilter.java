@@ -23,7 +23,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
   private final AuthenticationService authenticationService;
 
-  AuthenticationFilter() {
+  public AuthenticationFilter() {
     authenticationService = ServiceLocator.INSTANCE.get(AuthenticationService.class);
   }
 
