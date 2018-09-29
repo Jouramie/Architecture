@@ -19,7 +19,7 @@ public class AuthenticationResourceIT {
   private static final String USERNAME = "username";
 
   private static final String PASSWORD = "password";
-  
+
   private static final UserCreationDto A_CREATION_REQUEST =
       new UserCreationDto(USERNAME, PASSWORD, UserRole.ADMINISTRATOR);
 
@@ -45,7 +45,7 @@ public class AuthenticationResourceIT {
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .post(AUTHENTICATION_ROUTE)
-    .then()
+        .then()
         .statusCode(OK.getStatusCode())
         .body("token", any(String.class));
     //@formatter:on
