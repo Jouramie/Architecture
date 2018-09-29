@@ -21,7 +21,7 @@ public class ServiceLocatorTest {
   public void initialize() {
     serviceLocator = new ServiceLocator();
     serviceLocator.registerInstance(SomeComponent.class, SOME_COMPONENT_INSTANCE);
-    serviceLocator.discoverPackage(getClass().getPackage().getName(), Collections.singletonList(AnAnnotation.class));
+    serviceLocator.discoverPackage(getClass().getPackage().getName(), AnAnnotation.class);
   }
 
   @Test

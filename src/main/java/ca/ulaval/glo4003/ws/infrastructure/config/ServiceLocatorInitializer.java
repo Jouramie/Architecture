@@ -14,7 +14,6 @@ import ca.ulaval.glo4003.ws.infrastructure.persistence.InMemoryAuthenticationTok
 import ca.ulaval.glo4003.ws.infrastructure.persistence.InMemoryCurrentUserRepository;
 import ca.ulaval.glo4003.ws.infrastructure.persistence.InMemoryUserRepository;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
