@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.ws.http;
 
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
 import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationService;
 import ca.ulaval.glo4003.ws.application.user.authentication.InvalidTokenException;
@@ -21,7 +23,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
   private final AuthenticationService authenticationService;
 
-  public AuthenticationFilter() {
+  AuthenticationFilter() {
     authenticationService = ServiceLocator.INSTANCE.get(AuthenticationService.class);
   }
 
@@ -33,7 +35,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     try {
       authenticationService.validateAuthentication(authenticationTokenDto);
     } catch (InvalidTokenException | NoTokenFoundException e) {
-      containerRequestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+      containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
     }
   }
 
