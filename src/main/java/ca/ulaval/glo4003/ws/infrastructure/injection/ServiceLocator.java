@@ -29,7 +29,7 @@ public class ServiceLocator {
     instances.put(interfaceClass, instance);
   }
 
-  public void discoverPackage(String packagePrefix, List<Class<?>> annotationClasses) {
+  public void discoverPackage(String packagePrefix, Class<?>... annotationClasses) {
     Reflections reflections = new Reflections(packagePrefix);
     for (Class annotation : annotationClasses) {
       reflections.getTypesAnnotatedWith(annotation).forEach((foundClass) -> register((Class) foundClass));

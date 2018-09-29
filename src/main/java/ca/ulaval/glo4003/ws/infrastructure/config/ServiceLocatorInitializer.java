@@ -30,7 +30,7 @@ public class ServiceLocatorInitializer {
   }
 
   public void initializeServiceLocator() {
-    ServiceLocator.INSTANCE.discoverPackage(packagePrefix, Arrays.asList(Resource.class, ErrorMapper.class, Component.class, FilterRegistration.class));
+    ServiceLocator.INSTANCE.discoverPackage(packagePrefix, Resource.class, ErrorMapper.class, Component.class, FilterRegistration.class);
     ServiceLocator.INSTANCE.registerInstance(UserRepository.class, new InMemoryUserRepository());
     ServiceLocator.INSTANCE.registerInstance(AuthenticationTokenRepository.class, new InMemoryAuthenticationTokenRepository());
     ServiceLocator.INSTANCE.registerInstance(CurrentUserRepository.class, new InMemoryCurrentUserRepository());
