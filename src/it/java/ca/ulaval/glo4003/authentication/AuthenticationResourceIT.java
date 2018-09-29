@@ -45,7 +45,7 @@ public class AuthenticationResourceIT {
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .post(AUTHENTICATION_ROUTE)
-        .then()
+    .then()
         .statusCode(OK.getStatusCode())
         .body("token", any(String.class));
     //@formatter:on

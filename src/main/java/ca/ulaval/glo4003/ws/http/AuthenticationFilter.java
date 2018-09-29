@@ -23,7 +23,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
   private final AuthenticationService authenticationService;
 
-  AuthenticationFilter() {
+  public AuthenticationFilter() {
     authenticationService = ServiceLocator.INSTANCE.get(AuthenticationService.class);
   }
 
@@ -34,7 +34,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         = extractAuthenticationInfo(containerRequestContext.getHeaders());
     try {
       authenticationService.validateAuthentication(authenticationTokenDto);
-    } catch (InvalidTokenException | NoTokenFoundException e) {
+    } catch (InvalidTokenException | NoTokenFoundException | NullPointerException e) {
       containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
     }
   }

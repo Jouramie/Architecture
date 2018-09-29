@@ -18,7 +18,7 @@ public interface TokenRevocationResource {
               responseCode = "200", description = "The token was successfully revoked."
           ),
           @ApiResponse(
-              responseCode = "400", description = "The provided token is invalid."
+              responseCode = "401", description = "The provided token is invalid."
           )
       }
   )
