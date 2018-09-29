@@ -13,6 +13,7 @@ import org.reflections.Reflections;
 
 public class ServiceLocator {
 
+  public static final ServiceLocator INSTANCE = new ServiceLocator();
   private final Map<Class<?>, Class<?>> classes = new ConcurrentHashMap<>();
   private final Map<Class<?>, Object> instances = new ConcurrentHashMap<>();
 

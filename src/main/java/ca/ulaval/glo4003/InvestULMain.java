@@ -12,10 +12,8 @@ import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import java.net.URL;
-import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Stream;
-import javax.servlet.DispatcherType;
 import javax.ws.rs.core.Application;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -33,12 +31,11 @@ public class InvestULMain {
 
   public static void main(String[] args) throws Exception {
     int port = 8080;
-    ServiceLocator serviceLocator = new ServiceLocator();
     ServiceLocatorInitializer serviceLocatorInitializer = new ServiceLocatorInitializer(PACKAGE_PREFIX);
-    serviceLocatorInitializer.initializeServiceLocator(serviceLocator);
+    serviceLocatorInitializer.initializeServiceLocator();
 
     ContextHandlerCollection contexts = new ContextHandlerCollection();
-    contexts.setHandlers(new Handler[] {createApiHandler(serviceLocatorInitializer, serviceLocator), createUiHandler()});
+    contexts.setHandlers(new Handler[] {createApiHandler(serviceLocatorInitializer), createUiHandler()});
 
 
     server = new Server(port);
@@ -69,22 +66,21 @@ public class InvestULMain {
     return server != null && server.isStarted();
   }
 
-  private static Handler createApiHandler(ServiceLocatorInitializer serviceLocatorInitializer, ServiceLocator serviceLocator) {
+  private static Handler createApiHandler(ServiceLocatorInitializer serviceLocatorInitializer) {
 
     Application application = new Application() {
       @Override
       public Set<Object> getSingletons() {
-        return serviceLocatorInitializer.createInstances(serviceLocator);
+        return serviceLocatorInitializer.createInstances();
       }
     };
 
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
     context.setContextPath("/api/");
-    serviceLocator.getClassesForAnnotation(PACKAGE_PREFIX, FilterRegistration.class)
-        .forEach((filterClass) -> context.addFilter((Class<? extends javax.servlet.Filter>) filterClass, "/*", EnumSet.of(DispatcherType.REQUEST)));
-
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     resourceConfig.register(CORSResponseFilter.class);
+    ServiceLocator.INSTANCE.getClassesForAnnotation(PACKAGE_PREFIX, FilterRegistration.class)
+        .forEach(resourceConfig::register);
 
     ServletContainer servletContainer = new ServletContainer(resourceConfig);
     ServletHolder servletHolder = new ServletHolder(servletContainer);
