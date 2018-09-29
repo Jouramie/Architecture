@@ -1,9 +1,11 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
+import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
 @Path("/revoke-token")
 public interface TokenRevocationResource {
@@ -20,5 +22,6 @@ public interface TokenRevocationResource {
           )
       }
   )
-  void revokeToken();
+  @AuthenticationRequiredBinding
+  Response revokeToken();
 }

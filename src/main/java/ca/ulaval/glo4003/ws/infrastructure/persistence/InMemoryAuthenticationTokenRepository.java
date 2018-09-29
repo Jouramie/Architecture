@@ -20,4 +20,9 @@ public class InMemoryAuthenticationTokenRepository implements AuthenticationToke
   public void addToken(AuthenticationToken token) {
     tokens.put(token.username, token);
   }
+
+  @Override
+  public void removeTokenOfUser(String username) {
+    tokens.remove(username);
+  }
 }

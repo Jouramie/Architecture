@@ -35,4 +35,14 @@ public class InMemoryAuthenticationTokenRepositoryTest {
     assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(USERNAME))
         .isInstanceOf(NoTokenFoundException.class);
   }
+
+  @Test
+  public void whenRemovingTokenOfUser_thenTokenIsRemoved() {
+    inMemoryAuthenticationTokenRepository.addToken(token);
+
+    inMemoryAuthenticationTokenRepository.removeTokenOfUser(USERNAME);
+
+    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(USERNAME))
+        .isInstanceOf(NoTokenFoundException.class);
+  }
 }
