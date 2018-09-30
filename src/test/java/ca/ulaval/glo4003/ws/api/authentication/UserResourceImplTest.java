@@ -30,10 +30,12 @@ public class UserResourceImplTest {
       new UserCreationDto("username", "passord", null);
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
+
   @Mock
   private UserCreationService userCreationService;
 
   private RequestValidator requestValidator;
+
   private UserResourceImpl userResource;
 
   @Before

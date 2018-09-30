@@ -3,14 +3,18 @@ package ca.ulaval.glo4003.ws.api.authentication;
 
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
+import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationService;
+import java.util.regex.Pattern;
 import javax.ws.rs.core.Response;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -23,11 +27,27 @@ public class AuthenticationResourceImplTest {
   private static final AuthenticationResponseDto SOME_AUTHENTICATION_RESPONSE
       = new AuthenticationResponseDto("TOKEN");
 
+  private static final AuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_USERNAME =
+      new AuthenticationRequestDto(null, "password");
+
+  private static final AuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_PASSWORD =
+      new AuthenticationRequestDto("username", null);
+
+  private static final String ERROR_MESSAGE_PATTERN = "%s.+";
+
   @Mock
   private AuthenticationService authenticationService;
 
-  @InjectMocks
+  private RequestValidator requestValidator;
+
   private AuthenticationResourceImpl authenticationResource;
+
+  @Before
+  public void setup() {
+    requestValidator = new RequestValidator();
+    authenticationResource
+        = new AuthenticationResourceImpl(authenticationService, requestValidator);
+  }
 
   @Test
   public void whenAuthenticatingUser_thenUserIsAuthenticated() {
@@ -51,5 +71,31 @@ public class AuthenticationResourceImplTest {
     Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
     assertThat(response.getEntity()).isEqualTo(SOME_AUTHENTICATION_RESPONSE);
+  }
+
+  @Test
+  public void givenNullUsername_whenAuthenticatingUser_thenInvalidInputExceptionShouldBeThrown() {
+    Throwable thrown = catchThrowable(
+        () -> authenticationResource.authenticate(AUTHENTICATION_REQUEST_WITHOUT_USERNAME));
+
+    assertThat(thrown).isInstanceOf(InvalidInputException.class);
+    InvalidInputException exception = (InvalidInputException) thrown;
+    assertThatExceptionContainsErrorFor(exception, "username");
+  }
+
+  @Test
+  public void givenNullPassword_whenAuthenticatingUser_thenInvalidInputExceptionShouldBeThrown() {
+    Throwable thrown = catchThrowable(
+        () -> authenticationResource.authenticate(AUTHENTICATION_REQUEST_WITHOUT_PASSWORD));
+
+    assertThat(thrown).isInstanceOf(InvalidInputException.class);
+    InvalidInputException exception = (InvalidInputException) thrown;
+    assertThatExceptionContainsErrorFor(exception, "password");
+  }
+
+  private void assertThatExceptionContainsErrorFor(InvalidInputException exception, String field) {
+    String expectMessageErrorPattern = String.format(ERROR_MESSAGE_PATTERN, field);
+    assertThat(exception.getInputErrors().inputErrors)
+        .anyMatch(errorMessage -> Pattern.matches(expectMessageErrorPattern, errorMessage));
   }
 }
