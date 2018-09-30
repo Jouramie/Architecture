@@ -9,6 +9,7 @@ import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import ca.ulaval.glo4003.ws.domain.user.UserRole;
+import java.util.List;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,6 +29,9 @@ public class AuthenticationResourceIT {
 
   private static final AuthenticationRequestDto WRONG_PASSWORD_AUTHENTICATION_REQUEST =
       new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD + "wrong");
+
+  private static final AuthenticationRequestDto AN_INVALID_AUTHENTICATION_REQUEST
+      = new AuthenticationRequestDto(null, null);
 
   private static final String USERS_ROUTE = "/api/users";
 
@@ -62,6 +66,20 @@ public class AuthenticationResourceIT {
         .post(AUTHENTICATION_ROUTE)
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenInvalidInputs_whenAuthenticatingUser_thenBadRequest() {
+    //@formatter:off
+    given()
+        .body(AN_INVALID_AUTHENTICATION_REQUEST)
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
+        .post(AUTHENTICATION_ROUTE)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode())
+        .body("inputErrors", any(List.class));
     //@formatter:on
   }
 
