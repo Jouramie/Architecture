@@ -11,7 +11,7 @@ import org.junit.Test;
 public class InMemoryAuthenticationTokenRepositoryTest {
 
   private static final String SOME_USERNAME = "username";
-  
+
   private final AuthenticationToken token
       = new AuthenticationToken("token", SOME_USERNAME);
 
@@ -34,6 +34,12 @@ public class InMemoryAuthenticationTokenRepositoryTest {
   @Test
   public void givenNoTokenForAUser_whenGettingTokenOfUser_thenTokenNotFoundExceptionIsThrown() {
     assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(SOME_USERNAME))
+        .isInstanceOf(NoTokenFoundException.class);
+  }
+
+  @Test
+  public void givenNullUsername_whenGettingTokenOfUser_thenTokenNotFoundExceptionIsThrown() {
+    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(null))
         .isInstanceOf(NoTokenFoundException.class);
   }
 
