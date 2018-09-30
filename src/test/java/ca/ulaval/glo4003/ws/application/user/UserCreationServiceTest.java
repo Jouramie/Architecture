@@ -41,7 +41,6 @@ public class UserCreationServiceTest {
 
   @Test
   public void whenCreatingUser_thenUserIsCreated() {
-
     service.createUser(SOME_CREATION_REQUEST);
 
     verify(userFactory).create(SOME_USERNAME, SOME_PASSWORD, SOME_ROLE);
