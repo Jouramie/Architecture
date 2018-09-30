@@ -69,6 +69,10 @@ public class Market {
     stockRepository.getStocksOfMarket(getId()).forEach(stockValueRetriever::updateStockValue);
   }
 
+  public void openAllStocks() {
+    stockRepository.getStocksOfMarket(getId()).forEach(Stock::open);
+  }
+
   public void closeAllStocks() {
     stockRepository.getStocksOfMarket(getId()).forEach(Stock::close);
   }

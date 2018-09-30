@@ -8,14 +8,17 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import javafx.util.Pair;
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public class StockCsvLoader {
-  // TODO: Base start amount on latest historic value
-  private static final double DEFAULT_START_AMOUNT = 76.00;
+  private static final String STOCKS_DATA_ZIP_PATH = "src/main/data/stocks_data.zip";
   private static final String STOCKS_FILE_PATH = "src/main/data/stocks.csv";
 
   private final StockRepository stockRepository;
@@ -29,23 +32,35 @@ public class StockCsvLoader {
   public void load() throws IOException {
     Reader file = new FileReader(STOCKS_FILE_PATH);
     Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(file);
-    CSVParser.parse(file, CSVFormat.EXCEL);
     for (CSVRecord record : records) {
       String title = record.get("title");
       String name = record.get("stock name");
       String category = record.get("category");
       MarketId marketId = new MarketId(record.get("market"));
 
-      MoneyAmount startAmount = getStartValue(marketId);
+      Pair<MoneyAmount, MoneyAmount> lastValues = getLastValues(title, marketId);
 
-      Stock stock = new Stock(title, name, category, marketId, startAmount);
+      Stock stock = new Stock(title, name, category, marketId, lastValues.getKey(), lastValues.getValue());
       stockRepository.add(stock);
     }
+
+    file.close();
   }
 
-  private MoneyAmount getStartValue(MarketId marketId) {
-    Currency currency = marketRepository.getById(marketId).getCurrency();
+  private Pair<MoneyAmount, MoneyAmount> getLastValues(String title, MarketId marketId) throws IOException {
+    ZipFile zipFile = new ZipFile(STOCKS_DATA_ZIP_PATH);
+    ZipEntry zipEntry = zipFile.getEntry(title + ".csv");
+    InputStream fileStream = zipFile.getInputStream(zipEntry);
 
-    return new MoneyAmount(DEFAULT_START_AMOUNT, currency);
+    Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(new InputStreamReader(fileStream));
+    CSVRecord firstRecord = records.iterator().next();
+    double openValue = Double.parseDouble(firstRecord.get("open"));
+    double closeValue = Double.parseDouble(firstRecord.get("close"));
+
+    fileStream.close();
+    zipFile.close();
+
+    Currency currency = marketRepository.getById(marketId).getCurrency();
+    return new Pair<>(new MoneyAmount(openValue, currency), new MoneyAmount(closeValue, currency));
   }
 }

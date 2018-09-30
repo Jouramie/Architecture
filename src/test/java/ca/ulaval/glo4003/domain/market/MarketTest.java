@@ -139,6 +139,14 @@ public class MarketTest {
   }
 
   @Test
+  public void whenOpenAllStock_thenOpenAllStocks() {
+    openMarket.openAllStocks();
+
+    verify(someStock).open();
+    verify(someOtherStock).open();
+  }
+
+  @Test
   public void whenCloseAllStocks_thenCloseAllStocks() {
     openMarket.closeAllStocks();
 

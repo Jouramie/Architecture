@@ -15,6 +15,7 @@ public class RequestValidator {
     ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
     Validator validator = validatorFactory.getValidator();
     validatorFactory.close();
+
     Set<ConstraintViolation<T>> violations = validator.validate(requestToValidate);
     if (!violations.isEmpty()) {
       throw new InvalidInputException(violations);

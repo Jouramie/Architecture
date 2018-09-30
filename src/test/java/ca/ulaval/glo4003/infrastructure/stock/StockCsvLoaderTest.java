@@ -55,4 +55,13 @@ public class StockCsvLoaderTest {
     Stock randomStock = stockRepository.getByTitle("MMM");
     assertThat(randomStock.getValue().getCurrentValue().getCurrency()).isEqualTo(SOME_CURRENCY);
   }
+
+  @Test
+  public void whenLoad_thenStockHasLastOpenAndCloseValues() throws IOException {
+    loader.load();
+
+    Stock randomStock = stockRepository.getByTitle("MSFT");
+    assertThat(randomStock.getValue().getOpenValue().getAmount().doubleValue()).isEqualTo(113.36);
+    assertThat(randomStock.getValue().getCloseValue().getAmount().doubleValue()).isEqualTo(113.37);
+  }
 }

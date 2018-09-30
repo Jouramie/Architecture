@@ -37,7 +37,6 @@ public class MarketCsvLoader {
 
     Reader file = new FileReader(MARKETS_FILE_PATH);
     Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(file);
-    CSVParser.parse(file, CSVFormat.EXCEL);
     for (CSVRecord record : records) {
       MarketId marketId = new MarketId(record.get("market"));
       LocalTime open = parseTime(record.get("open"));
@@ -51,6 +50,8 @@ public class MarketCsvLoader {
 
       marketRepository.add(market);
     }
+
+    file.close();
   }
 
   private Map<MarketId, Currency> loadExchangeRates() throws IOException {
@@ -66,6 +67,8 @@ public class MarketCsvLoader {
 
       exchangeRates.put(new MarketId(market), new Currency(currencyName, rate));
     }
+
+    file.close();
 
     return exchangeRates;
   }

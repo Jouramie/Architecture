@@ -16,12 +16,12 @@ import org.junit.Test;
 public class StockRepositoryInMemoryTest {
   private final MarketId SOME_MARKET_ID = new MarketId("NASDAQ");
   private final MoneyAmount SOME_START_AMOUNT = new MoneyAmount(12.34, new Currency("CAD", new BigDecimal(0.77)));
-  private final Stock SOME_STOCK = new Stock("STO1", "Stock 1", "Banking", SOME_MARKET_ID, SOME_START_AMOUNT);
-  private final Stock SOME_OTHER_STOCK = new Stock("STO2", "Stock 2", "Banking", SOME_MARKET_ID, SOME_START_AMOUNT);
-  private final Stock SOME_STOCK_IN_DIFFERENT_MARKET = new Stock("STO3", "Stock 3", "Banking", new MarketId("TMX"), SOME_START_AMOUNT);
+  private final Stock SOME_STOCK = new Stock("STO1", "Stock 1", "Banking", SOME_MARKET_ID, SOME_START_AMOUNT, SOME_START_AMOUNT);
+  private final Stock SOME_OTHER_STOCK = new Stock("STO2", "Stock 2", "Banking", SOME_MARKET_ID, SOME_START_AMOUNT, SOME_START_AMOUNT);
+  private final Stock SOME_STOCK_IN_DIFFERENT_MARKET = new Stock("STO3", "Stock 3", "Banking", new MarketId("TMX"), SOME_START_AMOUNT, SOME_START_AMOUNT);
 
   private StockRepositoryInMemory repository;
- 
+
   @Before
   public void setupStockRepository() {
     repository = new StockRepositoryInMemory();

@@ -11,6 +11,7 @@ import org.junit.Test;
 public class StockValueTest {
   private final Currency SOME_CURRENCY = new Currency("CAD", new BigDecimal(0.77));
   private final MoneyAmount SOME_START_VALUE = new MoneyAmount(100.00, SOME_CURRENCY);
+  private final MoneyAmount SOME_CLOSE_VALUE = new MoneyAmount(110.00, SOME_CURRENCY);
   private final MoneyAmount SOME_NEW_VALUE = new MoneyAmount(120.00, SOME_CURRENCY);
 
   private StockValue stockValue;
@@ -26,6 +27,16 @@ public class StockValueTest {
     assertThat(stockValue.getCurrentValue()).isEqualTo(SOME_START_VALUE);
     assertThat(stockValue.getCloseValue()).isEqualTo(SOME_START_VALUE);
     assertThat(stockValue.isClosed()).isTrue();
+  }
+
+  @Test
+  public void whenCreatedWithCloseValue_thenCurrentAndCloseValuesAreSetToCloseValue() {
+    StockValue newStockValue = new StockValue(SOME_START_VALUE, SOME_CLOSE_VALUE);
+
+    assertThat(newStockValue.getOpenValue()).isEqualTo(SOME_START_VALUE);
+    assertThat(newStockValue.getCurrentValue()).isEqualTo(SOME_CLOSE_VALUE);
+    assertThat(newStockValue.getCloseValue()).isEqualTo(SOME_CLOSE_VALUE);
+    assertThat(newStockValue.isClosed()).isTrue();
   }
 
   @Test

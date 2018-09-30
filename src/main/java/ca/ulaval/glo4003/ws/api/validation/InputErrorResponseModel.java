@@ -6,7 +6,7 @@ public class InputErrorResponseModel {
 
   public final List<String> inputErrors;
 
-  public InputErrorResponseModel(List<String> inputErrors) {
+  InputErrorResponseModel(List<String> inputErrors) {
     this.inputErrors = inputErrors;
   }
 }

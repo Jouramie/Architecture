@@ -7,6 +7,7 @@ import org.junit.Test;
 
 public class MarketIdTest {
   private final String SOME_MARKET_NAME = "NASDAQ";
+  private final String SOME_MARKET_NAME_WITH_DIFFERENT_CASE = "Nasdaq";
   private final String SOME_OTHER_MARKET_NAME = "TMX";
 
   private MarketId id;
@@ -52,6 +53,13 @@ public class MarketIdTest {
   }
 
   @Test
+  public void givenOtherIdenticalMarketIdWithDifferentCase_whenEquals_thenReturnTrue() {
+    boolean result = id.equals(new MarketId(SOME_MARKET_NAME_WITH_DIFFERENT_CASE));
+
+    assertThat(result).isTrue();
+  }
+
+  @Test
   public void givenDifferentMarketId_whenHashCode_thenReturnDifferentHashes() {
     int firstHash = id.hashCode();
     int secondHash = new MarketId(SOME_OTHER_MARKET_NAME).hashCode();
@@ -65,5 +73,12 @@ public class MarketIdTest {
     int secondHash = new MarketId(SOME_MARKET_NAME).hashCode();
 
     assertThat(firstHash).isEqualTo(secondHash);
+  }
+
+  @Test
+  public void givenIdenticalMarketIdWithDifferentCase_whenHashCode_thenReturnSameHash() {
+    boolean result = id.equals(new MarketId(SOME_MARKET_NAME_WITH_DIFFERENT_CASE));
+
+    assertThat(result).isTrue();
   }
 }

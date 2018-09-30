@@ -6,11 +6,11 @@ import ca.ulaval.glo4003.domain.market.MarketRepository;
 import java.time.LocalDateTime;
 import javax.inject.Inject;
 
-public class MarketUpdater implements ClockObserver {
+public class MarketsUpdater implements ClockObserver {
   private final MarketRepository marketRepository;
 
   @Inject
-  public MarketUpdater(Clock clock, MarketRepository marketRepository) {
+  public MarketsUpdater(Clock clock, MarketRepository marketRepository) {
     clock.register(this);
     this.marketRepository = marketRepository;
   }
@@ -18,10 +18,5 @@ public class MarketUpdater implements ClockObserver {
   @Override
   public void onTick(LocalDateTime currentTime) {
     marketRepository.getAll().forEach(market -> market.update(currentTime));
-
-    System.out.println("===== " + currentTime.toString() + " =====");
-    marketRepository.getAll().forEach(market -> {
-      System.out.println(market.getId().getValue() + ": " + market.isOpen());
-    });
   }
 }

@@ -13,6 +13,12 @@ public class StockValue {
     closeValue = startValue;
   }
 
+  StockValue(MoneyAmount openValue, MoneyAmount closeValue) {
+    currentValue = closeValue;
+    this.openValue = openValue;
+    this.closeValue = closeValue;
+  }
+
   public MoneyAmount getCurrentValue() {
     return currentValue;
   }

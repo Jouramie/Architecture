@@ -10,12 +10,12 @@ public class Stock {
   private final MarketId marketId;
   private final StockValue value;
 
-  public Stock(String title, String name, String category, MarketId marketId, MoneyAmount startValue) {
+  public Stock(String title, String name, String category, MarketId marketId, MoneyAmount lastOpenValue, MoneyAmount lastCloseValue) {
     this.title = title;
     this.name = name;
     this.category = category;
     this.marketId = marketId;
-    value = new StockValue(startValue);
+    value = new StockValue(lastOpenValue, lastCloseValue);
   }
 
   public String getTitle() {
@@ -42,6 +42,10 @@ public class Stock {
 
   public synchronized StockValue getValue() {
     return value;
+  }
+
+  public synchronized void open() {
+    value.setValue(value.getCloseValue());
   }
 
   public synchronized void close() {

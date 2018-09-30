@@ -45,12 +45,13 @@ public class StockAssemblerTest {
   }
 
   private Stock buildStock() {
+    MoneyAmount amount = new MoneyAmount(SOME_AMOUNT, new Currency(SOME_RATE_NAME, new BigDecimal(SOME_RATE)));
     stock = new Stock(
         SOME_TITLE,
         SOME_NAME,
         SOME_CATEGORY,
         new MarketId(SOME_MARKET_ID),
-        new MoneyAmount(SOME_AMOUNT, new Currency(SOME_RATE_NAME, new BigDecimal(SOME_RATE))));
+        amount, amount);
     return stock;
   }
 }

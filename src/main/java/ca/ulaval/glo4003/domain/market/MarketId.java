@@ -21,11 +21,11 @@ public class MarketId {
     }
 
     MarketId otherId = (MarketId) other;
-    return id.equals(otherId.id);
+    return id.equalsIgnoreCase(otherId.id);
   }
 
   @Override
   public int hashCode() {
-    return id.hashCode();
+    return id.toUpperCase().hashCode();
   }
 }
