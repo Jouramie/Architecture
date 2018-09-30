@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.application;
+package ca.ulaval.glo4003.ws.application.user.authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -9,10 +9,6 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
-import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationResponseAssembler;
-import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationService;
-import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationTokenAssembler;
-import ca.ulaval.glo4003.ws.application.user.authentication.InvalidTokenException;
 import ca.ulaval.glo4003.ws.domain.user.CurrentUserRepository;
 import ca.ulaval.glo4003.ws.domain.user.User;
 import ca.ulaval.glo4003.ws.domain.user.UserRepository;
@@ -44,7 +40,11 @@ public class AuthenticationServiceTest {
   private static final AuthenticationToken AUTHENTICATION_TOKEN
       = new AuthenticationToken(SOME_TOKEN, SOME_USERNAME);
 
-  private User user;
+  private static final User SOME_USER = new UserBuilder().buildDefault();
+
+  private final AuthenticationResponseAssembler responseAssembler = new AuthenticationResponseAssembler();
+
+  private final AuthenticationTokenAssembler tokenAssembler = new AuthenticationTokenAssembler();
 
   @Mock
   private UserRepository userRepository;
@@ -58,24 +58,17 @@ public class AuthenticationServiceTest {
   @Mock
   private AuthenticationTokenFactory tokenFactory;
 
-  private AuthenticationResponseAssembler responseAssembler;
-
-  private AuthenticationTokenAssembler tokenAssembler;
-
   private AuthenticationService authenticationService;
 
   @Before
-  public void initialize() {
-    tokenAssembler = new AuthenticationTokenAssembler();
-    responseAssembler = new AuthenticationResponseAssembler();
+  public void setup() {
     authenticationService = new AuthenticationService(userRepository,
         tokenAssembler, tokenFactory, tokenRepository, responseAssembler, currentUserRepository);
-    user = new UserBuilder().buildDefault();
   }
 
   @Before
   public void initializeMocks() {
-    given(userRepository.find(any())).willReturn(user);
+    given(userRepository.find(any())).willReturn(SOME_USER);
     given(tokenRepository.getTokenForUser(any())).willReturn(AUTHENTICATION_TOKEN);
     given(tokenFactory.createToken(any())).willReturn(AUTHENTICATION_TOKEN);
   }
@@ -126,6 +119,6 @@ public class AuthenticationServiceTest {
   public void givenValidAuthenticationToken_whenValidatingToken_thenCurrentUserSet() {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    verify(currentUserRepository).setCurrentUser(user);
+    verify(currentUserRepository).setCurrentUser(SOME_USER);
   }
 }
