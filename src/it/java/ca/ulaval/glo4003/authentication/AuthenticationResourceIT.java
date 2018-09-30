@@ -30,6 +30,9 @@ public class AuthenticationResourceIT {
   private static final AuthenticationRequestDto WRONG_PASSWORD_AUTHENTICATION_REQUEST =
       new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD + "wrong");
 
+  private static final AuthenticationRequestDto WRONG_USER_AUTHENTICATION_REQUEST =
+      new AuthenticationRequestDto("zero janvier", SOME_PASSWORD);
+
   private static final AuthenticationRequestDto AN_INVALID_AUTHENTICATION_REQUEST
       = new AuthenticationRequestDto(null, null);
 
@@ -61,6 +64,20 @@ public class AuthenticationResourceIT {
     //@formatter:off
     given()
         .body(WRONG_PASSWORD_AUTHENTICATION_REQUEST)
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
+        .post(AUTHENTICATION_ROUTE)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenNonExistingUser_whenAuthenticating_thenReturnBadRequest() {
+    givenUserAlreadyRegistered();
+    //@formatter:off
+    given()
+        .body(WRONG_USER_AUTHENTICATION_REQUEST)
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .post(AUTHENTICATION_ROUTE)
