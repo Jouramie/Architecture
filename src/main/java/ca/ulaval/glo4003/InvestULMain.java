@@ -26,12 +26,13 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public class InvestULMain {
 
-  private static final String PACKAGE_PREFIX = "ca.ulaval.glo4003.ws";
+  private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003.ws";
   private static Server server;
 
   public static void main(String[] args) throws Exception {
     int port = 8080;
-    ServiceLocatorInitializer serviceLocatorInitializer = new ServiceLocatorInitializer(PACKAGE_PREFIX);
+    ServiceLocatorInitializer serviceLocatorInitializer
+        = new ServiceLocatorInitializer(WEB_SERVICE_PACKAGE_PREFIX);
     serviceLocatorInitializer.initializeServiceLocator();
 
     ContextHandlerCollection contexts = new ContextHandlerCollection();
@@ -79,7 +80,7 @@ public class InvestULMain {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     resourceConfig.register(CORSResponseFilter.class);
-    ServiceLocator.INSTANCE.getClassesForAnnotation(PACKAGE_PREFIX, FilterRegistration.class)
+    ServiceLocator.INSTANCE.getClassesForAnnotation(WEB_SERVICE_PACKAGE_PREFIX, FilterRegistration.class)
         .forEach(resourceConfig::register);
 
     ServletContainer servletContainer = new ServletContainer(resourceConfig);
