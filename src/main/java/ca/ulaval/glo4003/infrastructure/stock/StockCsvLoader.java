@@ -13,9 +13,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import javafx.util.Pair;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.javatuples.Pair;
 
 public class StockCsvLoader {
   private static final String STOCKS_DATA_ZIP_PATH = "src/main/data/stocks_data.zip";
@@ -40,7 +40,7 @@ public class StockCsvLoader {
 
       Pair<MoneyAmount, MoneyAmount> lastValues = getLastValues(title, marketId);
 
-      Stock stock = new Stock(title, name, category, marketId, lastValues.getKey(), lastValues.getValue());
+      Stock stock = new Stock(title, name, category, marketId, lastValues.getValue0(), lastValues.getValue1());
       stockRepository.add(stock);
     }
 
