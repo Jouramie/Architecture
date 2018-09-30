@@ -33,7 +33,7 @@ public class InvestULMain {
     int port = 8080;
     ServiceLocatorInitializer serviceLocatorInitializer
         = new ServiceLocatorInitializer(WEB_SERVICE_PACKAGE_PREFIX);
-    serviceLocatorInitializer.initializeServiceLocator();
+    serviceLocatorInitializer.initializeServiceLocator(ServiceLocator.INSTANCE);
 
     ContextHandlerCollection contexts = new ContextHandlerCollection();
     contexts.setHandlers(new Handler[] {createApiHandler(serviceLocatorInitializer), createUiHandler()});
@@ -72,7 +72,7 @@ public class InvestULMain {
     Application application = new Application() {
       @Override
       public Set<Object> getSingletons() {
-        return serviceLocatorInitializer.createInstances();
+        return serviceLocatorInitializer.createInstances(ServiceLocator.INSTANCE);
       }
     };
 
