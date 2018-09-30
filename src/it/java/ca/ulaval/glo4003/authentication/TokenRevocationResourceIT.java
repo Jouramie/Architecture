@@ -21,16 +21,16 @@ public class TokenRevocationResourceIT {
 
   private static final String AUTHENTICATION_ROUTE = "/api/authenticate";
 
-  private static final String USERNAME = "a username";
+  private static final String SOME_USERNAME = "a username";
 
-  private static final String PASSWORD = "a password";
+  private static final String SOME_PASSWORD = "a password";
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(USERNAME, PASSWORD, UserRole.ADMINISTRATOR);
+      new UserCreationDto(SOME_USERNAME, SOME_PASSWORD, UserRole.ADMINISTRATOR);
 
   private static final AuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(USERNAME, PASSWORD);
-  private final Header userHeader = new Header("username", USERNAME);
+      new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
+  private final Header userHeader = new Header("username", SOME_USERNAME);
   @Rule
   public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 

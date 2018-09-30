@@ -11,6 +11,7 @@ import org.junit.Test;
 public class InMemoryAuthenticationTokenRepositoryTest {
 
   private static final String SOME_USERNAME = "username";
+  
   private final AuthenticationToken token
       = new AuthenticationToken("token", SOME_USERNAME);
 
