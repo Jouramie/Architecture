@@ -28,22 +28,22 @@ public class ServiceLocatorInitializer {
     this.packagePrefix = packagePrefix;
   }
 
-  public void initializeServiceLocator() {
-    ServiceLocator.INSTANCE.discoverPackage(packagePrefix, Resource.class, ErrorMapper.class, Component.class, FilterRegistration.class);
-    ServiceLocator.INSTANCE.registerInstance(UserRepository.class, new InMemoryUserRepository());
-    ServiceLocator.INSTANCE.registerInstance(AuthenticationTokenRepository.class, new InMemoryAuthenticationTokenRepository());
-    ServiceLocator.INSTANCE.registerInstance(CurrentUserRepository.class, new InMemoryCurrentUserRepository());
-    ServiceLocator.INSTANCE.registerInstance(OpenApiResource.class, new OpenApiResource());
+  public void initializeServiceLocator(ServiceLocator serviceLocator) {
+    serviceLocator.discoverPackage(packagePrefix, Resource.class, ErrorMapper.class, Component.class, FilterRegistration.class);
+    serviceLocator.registerInstance(UserRepository.class, new InMemoryUserRepository());
+    serviceLocator.registerInstance(AuthenticationTokenRepository.class, new InMemoryAuthenticationTokenRepository());
+    serviceLocator.registerInstance(CurrentUserRepository.class, new InMemoryCurrentUserRepository());
+    serviceLocator.registerInstance(OpenApiResource.class, new OpenApiResource());
   }
 
-  public Set<Object> createInstances() {
+  public Set<Object> createInstances(ServiceLocator serviceLocator) {
     List<Class<?>> registeredClasses = Stream.of(Resource.class, ErrorMapper.class, Component.class)
-        .map(annotation -> ServiceLocator.INSTANCE.getClassesForAnnotation(packagePrefix, annotation))
+        .map(annotation -> serviceLocator.getClassesForAnnotation(packagePrefix, annotation))
         .flatMap(Collection::stream).collect(toList());
     registeredClasses.add(OpenApiResource.class);
 
     return registeredClasses.stream()
-        .map(ServiceLocator.INSTANCE::get)
+        .map(serviceLocator::get)
         .collect(toSet());
   }
 }
