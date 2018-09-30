@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.application;
+package ca.ulaval.glo4003.ws.application.user.authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -9,10 +9,6 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
-import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationResponseAssembler;
-import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationService;
-import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationTokenAssembler;
-import ca.ulaval.glo4003.ws.application.user.authentication.InvalidTokenException;
 import ca.ulaval.glo4003.ws.domain.user.CurrentUserRepository;
 import ca.ulaval.glo4003.ws.domain.user.User;
 import ca.ulaval.glo4003.ws.domain.user.UserRepository;
@@ -21,6 +17,7 @@ import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationTokenFactory;
 import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.ws.util.UserBuilder;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,21 +27,25 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationServiceTest {
 
-  private static final String TOKEN = "token";
-  private static final String PASSWORD = UserBuilder.DEFAULT_PASSWORD;
-  private static final String USERNAME = UserBuilder.DEFAULT_USERNAME;
+  private static final String SOME_TOKEN = "token";
+  private static final String SOME_PASSWORD = UserBuilder.DEFAULT_PASSWORD;
+  private static final String SOME_USERNAME = UserBuilder.DEFAULT_USERNAME;
   private static final AuthenticationRequestDto AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(USERNAME, PASSWORD);
+      = new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
   private static final AuthenticationRequestDto INVALID_AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(USERNAME, PASSWORD + "wrong");
+      = new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD + "wrong");
   private static final AuthenticationTokenDto AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(USERNAME, TOKEN);
+      = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN);
   private static final AuthenticationTokenDto INVALID_AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(USERNAME, TOKEN + "invalid");
+      = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN + "invalid");
   private static final AuthenticationToken AUTHENTICATION_TOKEN
-      = new AuthenticationToken(TOKEN, USERNAME);
+      = new AuthenticationToken(SOME_TOKEN, SOME_USERNAME);
 
-  private User user;
+  private static final User SOME_USER = new UserBuilder().buildDefault();
+
+  private final AuthenticationResponseAssembler responseAssembler = new AuthenticationResponseAssembler();
+
+  private final AuthenticationTokenAssembler tokenAssembler = new AuthenticationTokenAssembler();
 
   @Mock
   private UserRepository userRepository;
@@ -58,24 +59,17 @@ public class AuthenticationServiceTest {
   @Mock
   private AuthenticationTokenFactory tokenFactory;
 
-  private AuthenticationResponseAssembler responseAssembler;
-
-  private AuthenticationTokenAssembler tokenAssembler;
-
   private AuthenticationService authenticationService;
 
   @Before
-  public void initialize() {
-    tokenAssembler = new AuthenticationTokenAssembler();
-    responseAssembler = new AuthenticationResponseAssembler();
+  public void setup() {
     authenticationService = new AuthenticationService(userRepository,
         tokenAssembler, tokenFactory, tokenRepository, responseAssembler, currentUserRepository);
-    user = new UserBuilder().buildDefault();
   }
 
   @Before
   public void initializeMocks() {
-    given(userRepository.find(any())).willReturn(user);
+    given(userRepository.find(any())).willReturn(SOME_USER);
     given(tokenRepository.getTokenForUser(any())).willReturn(AUTHENTICATION_TOKEN);
     given(tokenFactory.createToken(any())).willReturn(AUTHENTICATION_TOKEN);
   }
@@ -88,24 +82,26 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenValidAuthenticationInformation_whenAuthenticatingUser_thenTokenIsSaved() {
+  public void whenAuthenticatingUser_thenTokenIsSaved() {
     authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
     verify(tokenRepository).addToken(AUTHENTICATION_TOKEN);
   }
 
   @Test
-  public void givenValidAuthenticationInformation_whenAuthenticatingUser_thenTokenIsReturned() {
+  public void whenAuthenticatingUser_thenTokenIsReturned() {
     AuthenticationResponseDto responseDto
         = authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
-    assertThat(responseDto.token).isEqualTo(TOKEN);
+    assertThat(responseDto.token).isEqualTo(SOME_TOKEN);
   }
 
   @Test
   public void givenInvalidAuthenticationInformation_whenAuthenticatingUser_thenExceptionIsThrown() {
-    assertThatThrownBy(() -> authenticationService.authenticate(INVALID_AUTHENTICATION_REQUEST))
-        .isInstanceOf(AuthenticationErrorException.class);
+    ThrowableAssert.ThrowingCallable authenticateUser
+        = () -> authenticationService.authenticate(INVALID_AUTHENTICATION_REQUEST);
+
+    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationErrorException.class);
   }
 
   @Test
@@ -117,16 +113,17 @@ public class AuthenticationServiceTest {
 
   @Test
   public void givenInvalidToken_whenValidatingToken_thenInvalidTokenExceptionIsThrown() {
-    assertThatThrownBy(
-        () -> authenticationService.validateAuthentication(INVALID_AUTHENTICATION_TOKEN_DTO))
-        .isInstanceOf(InvalidTokenException.class);
+    ThrowableAssert.ThrowingCallable validateToken
+        = () -> authenticationService.validateAuthentication(INVALID_AUTHENTICATION_TOKEN_DTO);
+
+    assertThatThrownBy(validateToken).isInstanceOf(InvalidTokenException.class);
   }
 
   @Test
-  public void givenValidAuthenticationToken_whenValidatingToken_thenCurrentUserSet() {
+  public void whenValidatingToken_thenCurrentUserSet() {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    verify(currentUserRepository).setCurrentUser(user);
+    verify(currentUserRepository).setCurrentUser(SOME_USER);
   }
 
   @Test

@@ -6,13 +6,13 @@ import org.junit.Test;
 
 public class AuthenticationTokenFactoryTest {
 
-  private static final String USERNAME = "username";
+  private static final String SOME_USERNAME = "username";
   private final AuthenticationTokenFactory authenticationTokenFactory = new AuthenticationTokenFactory();
 
   @Test
   public void whenCreatingAuthenticationToken_thenReturnANewlyGeneratedToken() {
-    AuthenticationToken token = authenticationTokenFactory.createToken(USERNAME);
+    AuthenticationToken token = authenticationTokenFactory.createToken(SOME_USERNAME);
 
-    assertEquals(USERNAME, token.username);
+    assertEquals(SOME_USERNAME, token.username);
   }
 }

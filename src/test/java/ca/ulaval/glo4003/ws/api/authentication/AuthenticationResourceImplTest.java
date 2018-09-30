@@ -17,10 +17,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationResourceImplTest {
 
-  private static final AuthenticationRequestDto AUTHENTICATION_REQUEST =
+  private static final AuthenticationRequestDto SOME_AUTHENTICATION_REQUEST =
       new AuthenticationRequestDto("username", "password");
 
-  private static final AuthenticationResponseDto AUTHENTICATION_RESPONSE
+  private static final AuthenticationResponseDto SOME_AUTHENTICATION_RESPONSE
       = new AuthenticationResponseDto("TOKEN");
 
   @Mock
@@ -31,25 +31,25 @@ public class AuthenticationResourceImplTest {
 
   @Test
   public void whenAuthenticatingUser_thenUserIsAuthenticated() {
-    authenticationResource.authenticate(AUTHENTICATION_REQUEST);
+    authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
-    verify(authenticationService).authenticate(AUTHENTICATION_REQUEST);
+    verify(authenticationService).authenticate(SOME_AUTHENTICATION_REQUEST);
   }
 
   @Test
   public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenResponseStatusIsOK() {
-    Response response = authenticationResource.authenticate(AUTHENTICATION_REQUEST);
+    Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
     assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
   }
 
   @Test
   public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenTokenIsReturned() {
-    given(authenticationService.authenticate(AUTHENTICATION_REQUEST))
-        .willReturn(AUTHENTICATION_RESPONSE);
+    given(authenticationService.authenticate(SOME_AUTHENTICATION_REQUEST))
+        .willReturn(SOME_AUTHENTICATION_RESPONSE);
 
-    Response response = authenticationResource.authenticate(AUTHENTICATION_REQUEST);
+    Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
-    assertThat(response.getEntity()).isEqualTo(AUTHENTICATION_RESPONSE);
+    assertThat(response.getEntity()).isEqualTo(SOME_AUTHENTICATION_RESPONSE);
   }
 }

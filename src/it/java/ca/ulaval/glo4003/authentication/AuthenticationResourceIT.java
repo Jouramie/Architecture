@@ -16,18 +16,18 @@ import org.junit.Test;
 public class AuthenticationResourceIT {
 
 
-  private static final String USERNAME = "username";
+  private static final String SOME_USERNAME = "username";
 
-  private static final String PASSWORD = "password";
+  private static final String SOME_PASSWORD = "password";
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(USERNAME, PASSWORD, UserRole.ADMINISTRATOR);
+      new UserCreationDto(SOME_USERNAME, SOME_PASSWORD, UserRole.ADMINISTRATOR);
 
   private static final AuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(USERNAME, PASSWORD);
+      new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
 
   private static final AuthenticationRequestDto WRONG_PASSWORD_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(USERNAME, PASSWORD + "wrong");
+      new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD + "wrong");
 
   private static final String USERS_ROUTE = "/api/users";
 

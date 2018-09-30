@@ -16,12 +16,12 @@ import org.junit.Test;
 
 public class UserResourceIT {
 
-  private static final String USER_NAME = "name";
+  private static final String SOME_USERNAME = "name";
 
-  private static final UserRole ROLE = UserRole.ADMINISTRATOR;
+  private static final UserRole SOME_ROLE = UserRole.ADMINISTRATOR;
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(USER_NAME, "password", ROLE);
+      new UserCreationDto(SOME_USERNAME, "password", SOME_ROLE);
 
   private static final UserCreationDto AN_INVALID_CREATION_REQUEST =
       new UserCreationDto("", "", null);
@@ -41,8 +41,8 @@ public class UserResourceIT {
         .post(USERS_ROUTE)
     .then()
         .statusCode(CREATED.getStatusCode())
-        .body("username", equalTo(USER_NAME))
-        .body("role", equalTo(ROLE.toString()));
+        .body("username", equalTo(SOME_USERNAME))
+        .body("role", equalTo(SOME_ROLE.toString()));
     //@formatter:on
   }
 

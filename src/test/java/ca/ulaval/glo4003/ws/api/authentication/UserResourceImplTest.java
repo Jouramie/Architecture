@@ -18,7 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UserResourceImplTest {
 
-  private static final UserCreationDto CREATION_REQUEST =
+  private static final UserCreationDto SOME_CREATION_REQUEST =
       new UserCreationDto("username", "password", UserRole.ADMINISTRATOR);
   private static final UserCreationDto CREATION_REQUEST_WITH_INVALID_USERNAME =
       new UserCreationDto("", "password", UserRole.ADMINISTRATOR);
@@ -44,9 +44,9 @@ public class UserResourceImplTest {
 
   @Test
   public void whenCreatingUser_thenUserIsCreated() {
-    userResource.createUser(CREATION_REQUEST);
+    userResource.createUser(SOME_CREATION_REQUEST);
 
-    verify(userCreationService).createUser(CREATION_REQUEST);
+    verify(userCreationService).createUser(SOME_CREATION_REQUEST);
   }
 
   @Test

@@ -9,24 +9,24 @@ import org.junit.Test;
 
 public class UserTest {
 
-  private static final String USERNAME = "a username";
-  private static final String PASSWORD = "a password";
-  private static final String WRONG_PASSWORD = PASSWORD + "wrong";
+  private static final String SOME_4USERNAME = "a username";
+  private static final String SOME_PASSWORD = "a password";
+  private static final String WRONG_PASSWORD = SOME_PASSWORD + "wrong";
   private final AuthenticationTokenFactory tokenFactory = new AuthenticationTokenFactory();
   private User user;
 
   @Before
   public void initialize() {
-    user = new UserBuilder().withUsername(USERNAME).withPassword(PASSWORD).build();
+    user = new UserBuilder().withUsername(SOME_4USERNAME).withPassword(SOME_PASSWORD).build();
   }
 
   @Test
   public void givenRightPassword_whenCheckingIfPasswordBelongsToUser_thenItDoes() {
-    assertThat(user.isThisYourPassword(PASSWORD)).isTrue();
+    assertThat(user.isThisYourPassword(SOME_PASSWORD)).isTrue();
   }
 
   @Test
-  public void givenWrongPassword_whenCheckingIfPasswordBelongsToUser_thenItDoes() {
+  public void givenWrongPassword_whenCheckingIfPasswordBelongsToUser_thenItDoesNot() {
     assertThat(user.isThisYourPassword(WRONG_PASSWORD)).isFalse();
   }
 }
