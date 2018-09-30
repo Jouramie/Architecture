@@ -30,19 +30,19 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationServiceTest {
 
-  private static final String TOKEN = "token";
-  private static final String PASSWORD = UserBuilder.DEFAULT_PASSWORD;
-  private static final String USERNAME = UserBuilder.DEFAULT_USERNAME;
+  private static final String SOME_TOKEN = "token";
+  private static final String SOME_PASSWORD = UserBuilder.DEFAULT_PASSWORD;
+  private static final String SOME_USERNAME = UserBuilder.DEFAULT_USERNAME;
   private static final AuthenticationRequestDto AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(USERNAME, PASSWORD);
+      = new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
   private static final AuthenticationRequestDto INVALID_AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(USERNAME, PASSWORD + "wrong");
+      = new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD + "wrong");
   private static final AuthenticationTokenDto AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(USERNAME, TOKEN);
+      = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN);
   private static final AuthenticationTokenDto INVALID_AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(USERNAME, TOKEN + "invalid");
+      = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN + "invalid");
   private static final AuthenticationToken AUTHENTICATION_TOKEN
-      = new AuthenticationToken(TOKEN, USERNAME);
+      = new AuthenticationToken(SOME_TOKEN, SOME_USERNAME);
 
   private User user;
 
@@ -99,7 +99,7 @@ public class AuthenticationServiceTest {
     AuthenticationResponseDto responseDto
         = authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
-    assertThat(responseDto.token).isEqualTo(TOKEN);
+    assertThat(responseDto.token).isEqualTo(SOME_TOKEN);
   }
 
   @Test

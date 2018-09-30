@@ -21,11 +21,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UserCreationServiceTest {
 
-  private static final String USERNAME = "username";
-  private static final String PASSWORD = "password";
-  private static final UserRole ROLE = UserRole.ADMINISTRATOR;
-  private static final UserDto USER_DTO = new UserDto(USERNAME, ROLE);
-  private static final UserCreationDto CREATION_REQUEST = new UserCreationDto(USERNAME, PASSWORD, ROLE);
+  private static final String SOME_USERNAME = "username";
+  private static final String SOME_PASSWORD = "password";
+  private static final UserRole SOME_ROLE = UserRole.ADMINISTRATOR;
+  private static final UserDto USER_DTO = new UserDto(SOME_USERNAME, SOME_ROLE);
+  private static final UserCreationDto SOME_CREATION_REQUEST
+      = new UserCreationDto(SOME_USERNAME, SOME_PASSWORD, SOME_ROLE);
   private static final User USER = new UserBuilder().buildDefault();
 
   @Mock
@@ -41,16 +42,16 @@ public class UserCreationServiceTest {
   @Test
   public void whenCreatingUser_thenUserIsCreated() {
 
-    service.createUser(CREATION_REQUEST);
+    service.createUser(SOME_CREATION_REQUEST);
 
-    verify(userFactory).create(USERNAME, PASSWORD, ROLE);
+    verify(userFactory).create(SOME_USERNAME, SOME_PASSWORD, SOME_ROLE);
   }
 
   @Test
   public void whenCreatingUser_thenUserIsSaved() {
-    given(userFactory.create(USERNAME, PASSWORD, ROLE)).willReturn(USER);
+    given(userFactory.create(SOME_USERNAME, SOME_PASSWORD, SOME_ROLE)).willReturn(USER);
 
-    service.createUser(CREATION_REQUEST);
+    service.createUser(SOME_CREATION_REQUEST);
     verify(userRepository).save(USER);
   }
 
@@ -58,7 +59,7 @@ public class UserCreationServiceTest {
   public void whenCreatingUser_thenReturnsUserDto() {
     given(userAssembler.toDto(any())).willReturn(USER_DTO);
 
-    UserDto createdUser = service.createUser(CREATION_REQUEST);
+    UserDto createdUser = service.createUser(SOME_CREATION_REQUEST);
 
     assertThat(createdUser).isEqualTo(USER_DTO);
   }

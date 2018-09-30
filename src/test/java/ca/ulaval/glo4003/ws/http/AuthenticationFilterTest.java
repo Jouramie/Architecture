@@ -26,10 +26,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationFilterTest {
 
-  private static final String USERNAME = "a username";
+  private static final String SOME_USERNAME = "a username";
 
-  private static final String TOKEN = "a-token";
-  ArgumentCaptor<Response> responseCaptor;
+  private static final String SOME_TOKEN = "a-token";
+  private ArgumentCaptor<Response> responseCaptor;
   private ArgumentCaptor<AuthenticationTokenDto> tokenDtoCaptor;
   private MultivaluedMap<String, String> headers;
 
@@ -53,8 +53,8 @@ public class AuthenticationFilterTest {
   @Before
   public void initializeRequestContext() {
     headers = new MultivaluedHashMap<>();
-    headers.putSingle("username", USERNAME);
-    headers.putSingle("token", TOKEN);
+    headers.putSingle("username", SOME_USERNAME);
+    headers.putSingle("token", SOME_TOKEN);
     given(requestContext.getHeaders()).willReturn(headers);
   }
 
@@ -62,7 +62,7 @@ public class AuthenticationFilterTest {
   public void whenFiltering_thenTokenIsValidated() throws Exception {
     authenticationFilter.filter(requestContext);
 
-    AuthenticationTokenDto expectedTokenDto = new AuthenticationTokenDto(USERNAME, TOKEN);
+    AuthenticationTokenDto expectedTokenDto = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN);
     verify(authenticationService).validateAuthentication(tokenDtoCaptor.capture());
     assertThat(tokenDtoCaptor.getValue()).isEqualToComparingFieldByField(expectedTokenDto);
   }

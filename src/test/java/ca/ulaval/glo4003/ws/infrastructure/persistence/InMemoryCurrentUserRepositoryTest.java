@@ -8,14 +8,14 @@ import org.junit.Test;
 
 public class InMemoryCurrentUserRepositoryTest {
 
-  private static final User USER = new UserBuilder().buildDefault();
+  private static final User SOME_USER = new UserBuilder().buildDefault();
   private final InMemoryCurrentUserRepository userRepository = new InMemoryCurrentUserRepository();
 
   @Test
   public void whenSettingCurrentUser_thenUserCanBeRetrieved() {
-    userRepository.setCurrentUser(USER);
+    userRepository.setCurrentUser(SOME_USER);
 
     User retrivedUser = userRepository.getCurrentUser();
-    assertThat(retrivedUser).isEqualTo(USER);
+    assertThat(retrivedUser).isEqualTo(SOME_USER);
   }
 }

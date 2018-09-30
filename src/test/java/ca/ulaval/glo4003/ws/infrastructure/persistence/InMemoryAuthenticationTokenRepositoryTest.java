@@ -10,9 +10,9 @@ import org.junit.Test;
 
 public class InMemoryAuthenticationTokenRepositoryTest {
 
-  private static final String USERNAME = "username";
+  private static final String SOME_USERNAME = "username";
   private final AuthenticationToken token
-      = new AuthenticationToken("token", USERNAME);
+      = new AuthenticationToken("token", SOME_USERNAME);
 
   private InMemoryAuthenticationTokenRepository inMemoryAuthenticationTokenRepository;
 
@@ -26,13 +26,13 @@ public class InMemoryAuthenticationTokenRepositoryTest {
     inMemoryAuthenticationTokenRepository.addToken(token);
 
     AuthenticationToken retrievedToken =
-        inMemoryAuthenticationTokenRepository.getTokenForUser(USERNAME);
+        inMemoryAuthenticationTokenRepository.getTokenForUser(SOME_USERNAME);
     assertThat(retrievedToken).isEqualTo(token);
   }
 
   @Test
   public void givenNoTokenForAUser_whenGettingTokenOfUser_thenTokenNotFoundExceptionIsThrown() {
-    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(USERNAME))
+    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(SOME_USERNAME))
         .isInstanceOf(NoTokenFoundException.class);
   }
 }

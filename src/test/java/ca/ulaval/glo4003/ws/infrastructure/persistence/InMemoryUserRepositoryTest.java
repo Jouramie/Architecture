@@ -11,27 +11,27 @@ import org.junit.Test;
 
 public class InMemoryUserRepositoryTest {
 
-  private static final User USER = new UserBuilder().buildDefault();
+  private static final User SOME_USER = new UserBuilder().buildDefault();
   private final InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
 
   @Test
   public void whenSavingUser_thenUserIsStored() {
-    inMemoryUserRepository.save(USER);
+    inMemoryUserRepository.save(SOME_USER);
 
-    User retrievedUser = inMemoryUserRepository.find(USER.getUsername());
-    assertThat(retrievedUser).isEqualTo(USER);
+    User retrievedUser = inMemoryUserRepository.find(SOME_USER.getUsername());
+    assertThat(retrievedUser).isEqualTo(SOME_USER);
   }
 
   @Test(expected = UserAlreadyExistsException.class)
   public void givenUserAlreadyExists_whenSavingUser_thenExceptionIsThrown() {
-    inMemoryUserRepository.save(USER);
+    inMemoryUserRepository.save(SOME_USER);
 
-    inMemoryUserRepository.save(USER);
+    inMemoryUserRepository.save(SOME_USER);
   }
 
   @Test
   public void givenUserDoesNotExist_whenGettingUser_thenUserNotFoundExceptionIsThrown() {
-    assertThatThrownBy(() -> inMemoryUserRepository.find(USER.getUsername()))
+    assertThatThrownBy(() -> inMemoryUserRepository.find(SOME_USER.getUsername()))
         .isInstanceOf(UserNotFoundException.class);
   }
 }
