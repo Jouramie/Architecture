@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OpenedMarketStateTest {
+public class OpenMarketStateTest {
   private static final LocalTime SOME_OPENING_TIME = LocalTime.of(14, 30, 0);
   private static final LocalTime SOME_CLOSING_TIME = LocalTime.of(21, 0, 0);
   private static final LocalDateTime SOME_OPEN_TIME = LocalDateTime.of(2018, 9, 22, 15, 0, 0);
@@ -24,11 +24,11 @@ public class OpenedMarketStateTest {
   @Mock
   Market market;
 
-  private OpenedMarketState state;
+  private OpenMarketState state;
 
   @Before
   public void setupOpenMarketState() {
-    state = new OpenedMarketState();
+    state = new OpenMarketState();
 
     given(market.getOpeningTime()).willReturn(SOME_OPENING_TIME);
     given(market.getClosingTime()).willReturn(SOME_CLOSING_TIME);
@@ -48,6 +48,6 @@ public class OpenedMarketStateTest {
 
     verify(market).updateAllStockValues();
     verify(market).closeAllStocks();
-    verify(market).setState(any(ClosedMarketState.class));
+    verify(market).setState(any(CloseMarketState.class));
   }
 }
