@@ -3,6 +3,12 @@ package ca.ulaval.glo4003.ws.infrastructure.config;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
+import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
+import ca.ulaval.glo4003.infrastructure.market.MarketRepositoryInMemory;
+import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
+import ca.ulaval.glo4003.infrastructure.stock.StockRepositoryInMemory;
 import ca.ulaval.glo4003.ws.domain.user.CurrentUserRepository;
 import ca.ulaval.glo4003.ws.domain.user.UserRepository;
 import ca.ulaval.glo4003.ws.domain.user.authentication.AuthenticationTokenRepository;
@@ -30,10 +36,13 @@ public class ServiceLocatorInitializer {
 
   public void initializeServiceLocator(ServiceLocator serviceLocator) {
     serviceLocator.discoverPackage(packagePrefix, Resource.class, ErrorMapper.class, Component.class, FilterRegistration.class);
-    serviceLocator.registerInstance(UserRepository.class, new InMemoryUserRepository());
-    serviceLocator.registerInstance(AuthenticationTokenRepository.class, new InMemoryAuthenticationTokenRepository());
-    serviceLocator.registerInstance(CurrentUserRepository.class, new InMemoryCurrentUserRepository());
     serviceLocator.registerInstance(OpenApiResource.class, new OpenApiResource());
+    serviceLocator.registerSingleton(UserRepository.class, InMemoryUserRepository.class);
+    serviceLocator.registerSingleton(AuthenticationTokenRepository.class, InMemoryAuthenticationTokenRepository.class);
+    serviceLocator.registerSingleton(CurrentUserRepository.class, InMemoryCurrentUserRepository.class);
+    serviceLocator.registerSingleton(StockRepository.class, StockRepositoryInMemory.class);
+    serviceLocator.registerSingleton(MarketRepository.class, MarketRepositoryInMemory.class);
+    serviceLocator.registerSingleton(StockValueRetriever.class, SimulatedStockValueRetriever.class);
   }
 
   public Set<Object> createInstances(ServiceLocator serviceLocator) {

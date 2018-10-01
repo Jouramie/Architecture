@@ -39,9 +39,9 @@ public class StockResourceIT {
         .body(NAME, equalTo(SOME_NAME))
         .body(MARKET, equalTo(SOME_MARKET))
         .body(CATEGORY, equalTo(SOME_CATEGORY))
-        .body(OPEN, any(Double.class))
-        .body(CURRENT, any(Double.class))
-        .body(CLOSE, any(Double.class));
+        .body(OPEN, any(Float.class))
+        .body(CURRENT, any(Float.class))
+        .body(CLOSE, any(Float.class));
     //@formatter:on
   }
 
@@ -58,9 +58,9 @@ public class StockResourceIT {
         .body(NAME, equalTo(SOME_NAME))
         .body(MARKET, equalTo(SOME_MARKET))
         .body(CATEGORY, equalTo(SOME_CATEGORY))
-        .body(OPEN, any(Double.class))
-        .body(CURRENT, any(Double.class))
-        .body(CLOSE, any(Double.class));
+        .body(OPEN, any(Float.class))
+        .body(CURRENT, any(Float.class))
+        .body(CLOSE, any(Float.class));
     //@formatter:on
   }
 

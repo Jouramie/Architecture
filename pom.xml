@@ -11,6 +11,8 @@
     <name>invest-ul</name>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <!-- Code dependencies-->
         <glassfish.web.version>2.2.6</glassfish.web.version>
         <hibernate.validator.version>6.0.3.Final</hibernate.validator.version>
@@ -20,7 +22,9 @@
         <javax.ws.rs.version>2.0</javax.ws.rs.version>
         <jetty.version>9.2.3.v20140905</jetty.version>
         <jersey.version>2.7</jersey.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <commons-csv.version>1.5</commons-csv.version>
+        <javatuples.version>1.2</javatuples.version>
+        <live-stock-simulator.version>1.0.0</live-stock-simulator.version>
         <slf4j.version>1.7.5</slf4j.version>
         <swagger.version>2.0.0</swagger.version>
 
@@ -41,6 +45,14 @@
         <maven.exec.version>1.2.1</maven.exec.version>
         <maven.failsafe.version>2.22.0</maven.failsafe.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>live-stock-simulator</id>
+            <name>Live Stock Simulator</name>
+            <url>file://${project.basedir}/libs</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -87,6 +99,21 @@
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
             <version>${javax.ws.rs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>${commons-csv.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javatuples</groupId>
+            <artifactId>javatuples</artifactId>
+            <version>${javatuples.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>archi</groupId>
+            <artifactId>live-stock-simulator</artifactId>
+            <version>${live-stock-simulator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
