@@ -9,6 +9,7 @@ import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import ca.ulaval.glo4003.ws.domain.user.UserRole;
 import io.restassured.http.Header;
+import io.restassured.response.Response;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
 import org.junit.Test;
@@ -84,7 +85,7 @@ public class TokenRevocationResourceIT {
   }
 
   private String givenUserAlreadyAuthenticated() {
-    io.restassured.response.Response response = given().body(AN_AUTHENTICATION_REQUEST).contentType(MediaType.APPLICATION_JSON)
+    Response response = given().body(AN_AUTHENTICATION_REQUEST).contentType(MediaType.APPLICATION_JSON)
         .when().post(AUTHENTICATION_ROUTE);
 
     return response.jsonPath().getString("token");
