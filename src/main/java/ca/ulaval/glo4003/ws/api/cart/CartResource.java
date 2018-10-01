@@ -45,7 +45,7 @@ public interface CartResource {
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockResponse> addStockToCart();
+  List<CartStockResponse> addStockToCart(CartStockRequest cartStockRequest);
 
   @PATCH
   @Operation(
@@ -63,7 +63,7 @@ public interface CartResource {
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockResponse> updateStockInCart();
+  List<CartStockResponse> updateStockInCart(CartStockRequest cartStockRequest);
 
   @DELETE
   @Operation(
@@ -80,7 +80,7 @@ public interface CartResource {
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockResponse> deleteStockInCart();
+  List<CartStockResponse> deleteStockInCart(CartStockRequest cartStockRequest);
 
   @DELETE
   @Operation(
@@ -91,7 +91,7 @@ public interface CartResource {
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockResponse> emptyCard();
+  void emptyCard();
 
   @POST
   @Path("/checkout")
