@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003;
 
+import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -27,13 +28,13 @@ public class ResetServerBetweenTest implements TestRule {
 
   private void startServer() throws Exception {
     thread = new Thread(this::executeMain);
-    thread.setDaemon(true);
     thread.start();
     waitForServerToBeUp();
   }
 
   private void executeMain() {
     try {
+      ServiceLocator.INSTANCE.reset();
       InvestULMain.main(new String[] {});
     } catch (Exception e) {
       e.printStackTrace();

@@ -2,8 +2,17 @@ package ca.ulaval.glo4003;
 
 import static java.util.stream.Collectors.toList;
 
+import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
+import ca.ulaval.glo4003.infrastructure.clock.ClockDriver;
+import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
+import ca.ulaval.glo4003.infrastructure.market.MarketsUpdater;
+import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.infrastructure.config.ServiceLocatorInitializer;
+import ca.ulaval.glo4003.ws.infrastructure.config.SimulationSettings;
 import ca.ulaval.glo4003.ws.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
@@ -11,7 +20,9 @@ import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.ws.rs.core.Application;
@@ -26,19 +37,21 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public class InvestULMain {
 
-  private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003.ws";
+  private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
   private static Server server;
+  private static ClockDriver clockDriver;
 
   public static void main(String[] args) throws Exception {
-    int port = 8080;
-    ServiceLocatorInitializer serviceLocatorInitializer
-        = new ServiceLocatorInitializer(WEB_SERVICE_PACKAGE_PREFIX);
+    ServiceLocatorInitializer serviceLocatorInitializer = new ServiceLocatorInitializer(WEB_SERVICE_PACKAGE_PREFIX);
     serviceLocatorInitializer.initializeServiceLocator(ServiceLocator.INSTANCE);
+
+    loadData();
+    startClockAndMarketsUpdater();
 
     ContextHandlerCollection contexts = new ContextHandlerCollection();
     contexts.setHandlers(new Handler[] {createApiHandler(serviceLocatorInitializer), createUiHandler()});
 
-
+    int port = 8080;
     server = new Server(port);
     server.setHandler(contexts);
 
@@ -50,16 +63,17 @@ public class InvestULMain {
       server.start();
       server.join();
     } finally {
+      clockDriver.stop();
       server.stop();
       server.destroy();
     }
   }
 
-  public static void stop() throws Exception {
+  public static void stop() {
     try {
       server.stop();
-    } finally {
-      server.destroy();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
     }
   }
 
@@ -121,5 +135,27 @@ public class InvestULMain {
     webapp.setResourceBase("src/main/webapp");
     webapp.setContextPath("/");
     return webapp;
+  }
+
+  private static void loadData() {
+    try {
+      MarketCsvLoader marketLoader = new MarketCsvLoader(ServiceLocator.INSTANCE.get(MarketRepository.class),
+          ServiceLocator.INSTANCE.get(StockRepository.class),
+          ServiceLocator.INSTANCE.get(StockValueRetriever.class));
+      marketLoader.load();
+
+      StockCsvLoader stockLoader = new StockCsvLoader(ServiceLocator.INSTANCE.get(StockRepository.class),
+          ServiceLocator.INSTANCE.get(MarketRepository.class));
+      stockLoader.load();
+    } catch (IOException e) {
+      System.out.println("Unable to parse the CSV: " + e.getMessage());
+    }
+  }
+
+  private static void startClockAndMarketsUpdater() {
+    ServiceLocator.INSTANCE.registerInstance(Clock.class, new Clock(LocalDateTime.of(2018, 9, 15, 0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION));
+    clockDriver = new ClockDriver(ServiceLocator.INSTANCE.get(Clock.class), SimulationSettings.SIMULATION_UPDATE_FREQUENCY);
+    new MarketsUpdater(ServiceLocator.INSTANCE.get(Clock.class), ServiceLocator.INSTANCE.get(MarketRepository.class));
+    clockDriver.start();
   }
 }

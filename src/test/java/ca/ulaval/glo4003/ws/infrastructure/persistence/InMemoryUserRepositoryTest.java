@@ -22,11 +22,12 @@ public class InMemoryUserRepositoryTest {
     assertThat(retrievedUser).isEqualTo(SOME_USER);
   }
 
-  @Test(expected = UserAlreadyExistsException.class)
+  @Test
   public void givenUserAlreadyExists_whenSavingUser_thenExceptionIsThrown() {
     inMemoryUserRepository.save(SOME_USER);
 
-    inMemoryUserRepository.save(SOME_USER);
+    assertThatThrownBy(() -> inMemoryUserRepository.save(SOME_USER))
+        .isInstanceOf(UserAlreadyExistsException.class);
   }
 
   @Test

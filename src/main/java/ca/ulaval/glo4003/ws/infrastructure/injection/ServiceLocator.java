@@ -19,7 +19,14 @@ public class ServiceLocator {
 
   public static final ServiceLocator INSTANCE = new ServiceLocator();
   private final Map<Class<?>, Class<?>> classes = new ConcurrentHashMap<>();
+  private final Map<Class<?>, Class<?>> singletons = new ConcurrentHashMap<>();
   private final Map<Class<?>, Object> instances = new ConcurrentHashMap<>();
+
+  public void reset() {
+    classes.clear();
+    singletons.clear();
+    instances.clear();
+  }
 
   public void register(Class<?> registered) {
     register(registered, registered);
@@ -27,6 +34,10 @@ public class ServiceLocator {
 
   public void register(Class<?> interfaceClass, Class<?> implementedClass) {
     classes.put(interfaceClass, implementedClass);
+  }
+
+  public void registerSingleton(Class<?> interfaceClass, Class<?> implementedClass) {
+    singletons.put(interfaceClass, implementedClass);
   }
 
   public void registerInstance(Class<?> interfaceClass, Object instance) {
@@ -43,6 +54,12 @@ public class ServiceLocator {
   public <T> T get(Class<T> type) {
     if (instances.containsKey(type)) {
       return (T) instances.get(type);
+    }
+    if (singletons.containsKey(type)) {
+      T instance = (T) injectConstructor(singletons.get(type));
+      instances.put(type, instance);
+      singletons.remove(type);
+      return instance;
     }
     if (classes.containsKey(type)) {
       return (T) injectConstructor(classes.get(type));
