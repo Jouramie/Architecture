@@ -1,24 +1,19 @@
 package ca.ulaval.glo4003;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.infrastructure.config.ServiceLocatorInitializer;
-import ca.ulaval.glo4003.ws.infrastructure.injection.ErrorMapper;
+import ca.ulaval.glo4003.ws.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
-import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Stream;
-import javax.annotation.Resource;
 import javax.ws.rs.core.Application;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -31,16 +26,19 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public class InvestULMain {
 
+  private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003.ws";
   private static Server server;
 
   public static void main(String[] args) throws Exception {
     int port = 8080;
-
-    ServiceLocator serviceLocator = new ServiceLocator();
-    new ServiceLocatorInitializer().initializeServiceLocator(serviceLocator);
+    ServiceLocatorInitializer serviceLocatorInitializer
+        = new ServiceLocatorInitializer(WEB_SERVICE_PACKAGE_PREFIX);
+    serviceLocatorInitializer.initializeServiceLocator(ServiceLocator.INSTANCE);
 
     ContextHandlerCollection contexts = new ContextHandlerCollection();
-    contexts.setHandlers(new Handler[] {createApiHandler(serviceLocator), createUiHandler()});
+    contexts.setHandlers(new Handler[] {createApiHandler(serviceLocatorInitializer), createUiHandler()});
+
+
     server = new Server(port);
     server.setHandler(contexts);
 
@@ -69,12 +67,12 @@ public class InvestULMain {
     return server != null && server.isStarted();
   }
 
-  private static Handler createApiHandler(ServiceLocator serviceLocator) {
+  private static Handler createApiHandler(ServiceLocatorInitializer serviceLocatorInitializer) {
 
     Application application = new Application() {
       @Override
       public Set<Object> getSingletons() {
-        return createInstances(serviceLocator);
+        return serviceLocatorInitializer.createInstances(ServiceLocator.INSTANCE);
       }
     };
 
@@ -82,6 +80,8 @@ public class InvestULMain {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     resourceConfig.register(CORSResponseFilter.class);
+    ServiceLocator.INSTANCE.getClassesForAnnotation(WEB_SERVICE_PACKAGE_PREFIX, FilterRegistration.class)
+        .forEach(resourceConfig::register);
 
     ServletContainer servletContainer = new ServletContainer(resourceConfig);
     ServletHolder servletHolder = new ServletHolder(servletContainer);
@@ -121,13 +121,5 @@ public class InvestULMain {
     webapp.setResourceBase("src/main/webapp");
     webapp.setContextPath("/");
     return webapp;
-  }
-
-  private static Set<Object> createInstances(ServiceLocator serviceLocator) {
-    Set<?> resourceInstances = serviceLocator.getAllClassesForAnnotation(Resource.class);
-    Set<?> errorMapperClasses = serviceLocator.getAllClassesForAnnotation(ErrorMapper.class);
-    return Stream.of(resourceInstances, errorMapperClasses, Collections.singletonList(new OpenApiResource()))
-        .flatMap(Collection::stream)
-        .collect(toSet());
   }
 }

@@ -9,7 +9,7 @@ import javax.ws.rs.core.MultivaluedMap;
 /**
  * This class adds headers to the response context to enable the app to send http request to a
  * different domain than the one hosting the site itself.
- *
+ * <p>
  * <p>Cross-origin HTTP requests: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS</a>
  */
 public class CORSResponseFilter implements ContainerResponseFilter {

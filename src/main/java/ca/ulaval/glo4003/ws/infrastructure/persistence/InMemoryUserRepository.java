@@ -1,7 +1,10 @@
-package ca.ulaval.glo4003.ws.domain.user;
+package ca.ulaval.glo4003.ws.infrastructure.persistence;
 
+import ca.ulaval.glo4003.ws.domain.user.User;
+import ca.ulaval.glo4003.ws.domain.user.UserAlreadyExistsException;
+import ca.ulaval.glo4003.ws.domain.user.UserNotFoundException;
+import ca.ulaval.glo4003.ws.domain.user.UserRepository;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,6 +22,6 @@ public class InMemoryUserRepository implements UserRepository {
 
   @Override
   public User find(String username) {
-    return Optional.ofNullable(content.get(username)).orElseThrow(NoSuchElementException::new);
+    return Optional.ofNullable(content.get(username)).orElseThrow(UserNotFoundException::new);
   }
 }

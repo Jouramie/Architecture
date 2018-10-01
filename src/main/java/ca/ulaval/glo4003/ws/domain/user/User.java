@@ -22,4 +22,8 @@ public class User {
   public UserRole getRole() {
     return role;
   }
+
+  public boolean isThisYourPassword(String password) {
+    return this.password.equals(password);
+  }
 }

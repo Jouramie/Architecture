@@ -1,33 +1,25 @@
 package ca.ulaval.glo4003.ws.infrastructure.injection;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
-import javax.annotation.Resource;
 import javax.inject.Inject;
 import org.reflections.Reflections;
 
 public class ServiceLocator {
 
-  private final List<String> packagesDiscovered;
-
+  public static final ServiceLocator INSTANCE = new ServiceLocator();
   private final Map<Class<?>, Class<?>> classes = new ConcurrentHashMap<>();
   private final Map<Class<?>, Object> instances = new ConcurrentHashMap<>();
-
-  public ServiceLocator() {
-    packagesDiscovered = new ArrayList<>();
-  }
 
   public void register(Class<?> registered) {
     register(registered, registered);
@@ -37,16 +29,15 @@ public class ServiceLocator {
     classes.put(interfaceClass, implementedClass);
   }
 
-  void registerInstance(Class<?> interfaceClass, Object instance) {
+  public void registerInstance(Class<?> interfaceClass, Object instance) {
     instances.put(interfaceClass, instance);
   }
 
-  public void discoverPackage(String packagePrefix) {
+  public void discoverPackage(String packagePrefix, Class<?>... annotationClasses) {
     Reflections reflections = new Reflections(packagePrefix);
-    reflections.getTypesAnnotatedWith(Component.class).forEach(this::register);
-    reflections.getTypesAnnotatedWith(ErrorMapper.class).forEach(this::register);
-    reflections.getTypesAnnotatedWith(Resource.class).forEach(this::register);
-    packagesDiscovered.add(packagePrefix);
+    for (Class annotation : annotationClasses) {
+      reflections.getTypesAnnotatedWith(annotation).forEach((foundClass) -> register((Class) foundClass));
+    }
   }
 
   public <T> T get(Class<T> type) {
@@ -65,12 +56,9 @@ public class ServiceLocator {
         .map(this::get).collect(toList());
   }
 
-  public Set<?> getAllClassesForAnnotation(Class<? extends Annotation> annotation) {
-    return packagesDiscovered.stream().map(Reflections::new)
-        .map(reflection -> reflection.getTypesAnnotatedWith(annotation))
-        .flatMap(Collection::stream)
-        .map(this::get)
-        .collect(toSet());
+  public Set<Class<?>> getClassesForAnnotation(String packagePrefix, Class<? extends Annotation> annotation) {
+    return new HashSet<>(new Reflections(packagePrefix)
+        .getTypesAnnotatedWith(annotation));
   }
 
   private <T> T injectConstructor(Class<T> type) {
