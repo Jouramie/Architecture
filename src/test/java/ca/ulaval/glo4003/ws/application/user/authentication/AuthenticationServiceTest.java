@@ -125,4 +125,22 @@ public class AuthenticationServiceTest {
 
     verify(currentUserRepository).setCurrentUser(SOME_USER);
   }
+
+  @Test
+  public void whenRevokingToken_thenTokenOfCurrentUserIsRevoked() {
+    given(currentUserRepository.getCurrentUser()).willReturn(SOME_USER);
+
+    authenticationService.revokeToken();
+
+    verify(currentUserRepository).getCurrentUser();
+  }
+
+  @Test
+  public void whenRevokingToken_thenTokenIsRemovedFromTokenRepository() {
+    given(currentUserRepository.getCurrentUser()).willReturn(SOME_USER);
+
+    authenticationService.revokeToken();
+
+    verify(tokenRepository).removeTokenOfUser(SOME_USER.getUsername());
+  }
 }

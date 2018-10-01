@@ -59,4 +59,9 @@ public class AuthenticationService {
     }
     throw new InvalidTokenException();
   }
+
+  public void revokeToken() {
+    User user = currentUserRepository.getCurrentUser();
+    authenticationTokenRepository.removeTokenOfUser(user.getUsername());
+  }
 }
