@@ -18,69 +18,69 @@ public interface CartResource {
   @GET
   @Operation(
       summary = "Get the content of the cart.",
-      description = "Return the every stocks in the cart, with their title, market, name, category and quantity.",
+      description = "Return the every stocks in the cart, with their details and quantity.",
       responses = {
           @ApiResponse(
               responseCode = "200", description = "cart content",
-              content = @Content(array = @ArraySchema(schema = @Schema(implementation = CartStockDto.class)))
+              content = @Content(array = @ArraySchema(schema = @Schema(implementation = CartStockResponse.class)))
           ),
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockDto> getCartContent();
+  List<CartStockResponse> getCartContent();
 
   @POST
   @Operation(
       summary = "Add a stock to the cart.",
-      description = "Add a stock to the cart. Return the every stocks in the cart, with their title, market, name, category and quantity.",
+      description = "Add a stock to the cart. Return the every stocks in the cart, with their details and quantity.",
       requestBody = @RequestBody(
-          content = @Content(schema = @Schema(implementation = CartStockDto.class))
+          content = @Content(schema = @Schema(implementation = CartStockRequest.class))
       ),
       responses = {
           @ApiResponse(
               responseCode = "200", description = "cart content",
-              content = @Content(array = @ArraySchema(schema = @Schema(implementation = CartStockDto.class)))
+              content = @Content(array = @ArraySchema(schema = @Schema(implementation = CartStockResponse.class)))
           ),
           @ApiResponse(responseCode = "400", description = "stock does not exist or quantity is invalid"),
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockDto> addStockToCart();
+  List<CartStockResponse> addStockToCart();
 
   @PATCH
   @Operation(
       summary = "Update a stock in the cart.",
-      description = "Update the quantity of a stock. Return the every stocks in the cart, with their title, market, name, category and quantity.",
+      description = "Update the quantity of a stock. Return the every stocks in the cart, with their details and quantity.",
       requestBody = @RequestBody(
-          content = @Content(schema = @Schema(implementation = CartStockDto.class))
+          content = @Content(schema = @Schema(implementation = CartStockRequest.class))
       ),
       responses = {
           @ApiResponse(
               responseCode = "200", description = "cart content",
-              content = @Content(array = @ArraySchema(schema = @Schema(implementation = CartStockDto.class)))
+              content = @Content(array = @ArraySchema(schema = @Schema(implementation = CartStockResponse.class)))
           ),
           @ApiResponse(responseCode = "400", description = "stock does not exist or quantity is invalid"),
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockDto> updateStockInCart();
+  List<CartStockResponse> updateStockInCart();
 
   @DELETE
   @Operation(
       summary = "Delete a stock in the cart.",
-      description = "Remove a stock from the cart. Return the every stocks in the cart, with their title, market, name, category and quantity.",
+      description = "Remove a stock from the cart. Return the every stocks in the cart, with their details and quantity.",
       requestBody = @RequestBody(
-          content = @Content(schema = @Schema(implementation = CartStockDto.class))
+          content = @Content(schema = @Schema(implementation = CartStockRequest.class))
       ),
       responses = {
           @ApiResponse(
               responseCode = "200", description = "cart content",
-              content = @Content(array = @ArraySchema(schema = @Schema(implementation = CartStockDto.class)))
+              content = @Content(array = @ArraySchema(schema = @Schema(implementation = CartStockResponse.class)))
           ),
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockDto> deleteStockInCart();
+  List<CartStockResponse> deleteStockInCart();
 
   @DELETE
   @Operation(
@@ -91,24 +91,20 @@ public interface CartResource {
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockDto> emptyCard();
+  List<CartStockResponse> emptyCard();
 
   @POST
   @Path("/checkout")
   @Operation(
       summary = "Check out the cart.",
-      description = "Check out the current content of the cart. Return the checked out stocks, with their title, market, name, category and quantity.",
-      requestBody = @RequestBody(
-          content = @Content(schema = @Schema(implementation = CartStockDto.class))
-      ),
+      description = "Check out the current content of the cart. Return the checked out stocks, with their details and quantity.",
       responses = {
           @ApiResponse(
               responseCode = "200", description = "cart content",
-              content = @Content(array = @ArraySchema(schema = @Schema(implementation = CartStockDto.class)))
+              content = @Content(array = @ArraySchema(schema = @Schema(implementation = CartStockResponse.class)))
           ),
-          @ApiResponse(responseCode = "400", description = "stock does not exist or quantity is invalid"),
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockDto> checkoutCart();
+  List<CartStockResponse> checkoutCart();
 }
