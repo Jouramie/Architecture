@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
@@ -23,8 +25,14 @@ public class StockDto {
   @Schema(description = "Category")
   public final String category;
 
-  public StockDto(String title, String market, String name, String category,
-                  double openValue, double currentValue, double closeValue) {
+  @JsonCreator
+  public StockDto(@JsonProperty("title") String title,
+                  @JsonProperty("market") String market,
+                  @JsonProperty("name") String name,
+                  @JsonProperty("category") String category,
+                  @JsonProperty("open") double openValue,
+                  @JsonProperty("current") double currentValue,
+                  @JsonProperty("close") double closeValue) {
     this.title = title;
     this.market = market;
     this.name = name;

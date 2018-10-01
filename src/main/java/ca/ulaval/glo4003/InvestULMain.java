@@ -1,19 +1,12 @@
 package ca.ulaval.glo4003;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResource;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResourceImpl;
-import ca.ulaval.glo4003.ws.api.authentication.UserResource;
-import ca.ulaval.glo4003.ws.api.authentication.UserResourceImpl;
-import ca.ulaval.glo4003.ws.api.ping.PingResource;
-import ca.ulaval.glo4003.ws.api.ping.PingResourceImpl;
-import ca.ulaval.glo4003.ws.api.stock.StockResource;
-import ca.ulaval.glo4003.ws.api.stock.StockResourceImpl;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
+import ca.ulaval.glo4003.ws.infrastructure.config.ServiceLocatorInitializer;
+import ca.ulaval.glo4003.ws.infrastructure.injection.FilterRegistration;
+import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
-import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -33,12 +26,19 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public class InvestULMain {
 
+  private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003.ws";
   private static Server server;
 
   public static void main(String[] args) throws Exception {
     int port = 8080;
+    ServiceLocatorInitializer serviceLocatorInitializer
+        = new ServiceLocatorInitializer(WEB_SERVICE_PACKAGE_PREFIX);
+    serviceLocatorInitializer.initializeServiceLocator(ServiceLocator.INSTANCE);
+
     ContextHandlerCollection contexts = new ContextHandlerCollection();
-    contexts.setHandlers(new Handler[] {createApiHandler(), createUiHandler()});
+    contexts.setHandlers(new Handler[] {createApiHandler(serviceLocatorInitializer), createUiHandler()});
+
+
     server = new Server(port);
     server.setHandler(contexts);
 
@@ -64,28 +64,15 @@ public class InvestULMain {
   }
 
   static boolean isStarted() {
-    if (server == null) {
-      return false;
-    }
-    return server.isStarted();
+    return server != null && server.isStarted();
   }
 
-  private static Handler createApiHandler() {
-    PingResource pingResource = new PingResourceImpl();
-    StockResource stockResource = new StockResourceImpl();
-    AuthenticationResource authenticationResource = new AuthenticationResourceImpl();
-    UserResource userResource = new UserResourceImpl();
+  private static Handler createApiHandler(ServiceLocatorInitializer serviceLocatorInitializer) {
 
     Application application = new Application() {
       @Override
       public Set<Object> getSingletons() {
-        return Stream.of(
-            pingResource,
-            stockResource,
-            authenticationResource,
-            userResource,
-            new OpenApiResource() // Routes for Swagger integration
-        ).collect(toSet());
+        return serviceLocatorInitializer.createInstances(ServiceLocator.INSTANCE);
       }
     };
 
@@ -93,6 +80,8 @@ public class InvestULMain {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     resourceConfig.register(CORSResponseFilter.class);
+    ServiceLocator.INSTANCE.getClassesForAnnotation(WEB_SERVICE_PACKAGE_PREFIX, FilterRegistration.class)
+        .forEach(resourceConfig::register);
 
     ServletContainer servletContainer = new ServletContainer(resourceConfig);
     ServletHolder servletHolder = new ServletHolder(servletContainer);

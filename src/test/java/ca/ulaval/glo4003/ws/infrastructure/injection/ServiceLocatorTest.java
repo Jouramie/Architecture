@@ -1,12 +1,14 @@
 package ca.ulaval.glo4003.ws.infrastructure.injection;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
+
 
 public class ServiceLocatorTest {
 
@@ -18,13 +20,14 @@ public class ServiceLocatorTest {
   public void initialize() {
     serviceLocator = new ServiceLocator();
     serviceLocator.registerInstance(SomeComponent.class, SOME_COMPONENT_INSTANCE);
+    serviceLocator.discoverPackage(getClass().getPackage().getName(), AnAnnotation.class);
   }
 
   @Test
   public void givenRegisteredInstance_whenGetting_thenAlwaysReturnsTheSameInstance() {
     SomeComponent gottenComponent = serviceLocator.get(SomeComponent.class);
 
-    assertSame(SOME_COMPONENT_INSTANCE, gottenComponent);
+    assertTrue(SOME_COMPONENT_INSTANCE == gottenComponent);
   }
 
   @Test
@@ -50,11 +53,18 @@ public class ServiceLocatorTest {
 
   @Test
   public void givenAnnotatedComponent_whenDiscoveringPackage_thenComponentIsRegisteredNormally() {
-    serviceLocator.discoverPackage(getClass().getPackage().getName());
-
     ADiscoveredComponent gottenComponent = serviceLocator.get(ADiscoveredComponent.class);
 
     assertThat(gottenComponent).isNotNull();
+  }
+
+  @Test
+  public void givenDiscoveredPackage_whenGettingClassesForAnnotation_thenAllClassesAreReturned() {
+    int expectedNumberOfClasses = 1;
+
+    Set<?> gottenClasses = serviceLocator.getClassesForAnnotation(getClass().getPackage().getName(), AnAnnotation.class);
+
+    assertThat(gottenClasses).hasSize(expectedNumberOfClasses);
   }
 
   @Test
@@ -67,10 +77,22 @@ public class ServiceLocatorTest {
     assertThat(gottenComponents).hasSize(expectedNumberOfComponents);
   }
 
-  private static class SomeComponent {
+  @Test
+  public void givenImplicitlyDeclaredEmptyConstructor_whenInstantiating_thenInjectConstructorAnyway() {
+    serviceLocator.register(SomeComponent.class);
+
+    SomeComponent gottenComponent = serviceLocator.get(SomeComponent.class);
+
+    assertThat(gottenComponent).isNotNull();
   }
 
-  private static class SomeInjectableComponent {
+  @interface AnAnnotation {
+  }
+
+  static class SomeComponent {
+  }
+
+  public static class SomeInjectableComponent {
     @Inject
     public SomeInjectableComponent(SomeComponent dependency) {
     }
@@ -81,15 +103,14 @@ public class ServiceLocatorTest {
     }
   }
 
-  @Component
-  private static class ADiscoveredComponent {
-    @Inject
-    public ADiscoveredComponent(SomeComponent dependency) {
-    }
-  }
 
-  private class SomeChildClass extends SomeComponent {
+  private static class SomeChildClass extends SomeComponent {
   }
 }
 
-
+@ServiceLocatorTest.AnAnnotation
+class ADiscoveredComponent {
+  @Inject
+  public ADiscoveredComponent(ServiceLocatorTest.SomeComponent dependency) {
+  }
+}

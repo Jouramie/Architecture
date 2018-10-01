@@ -1,18 +1,23 @@
 package ca.ulaval.glo4003.ws.infrastructure.injection;
 
+import static java.util.stream.Collectors.toList;
+
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import org.reflections.Reflections;
 
 public class ServiceLocator {
 
+  public static final ServiceLocator INSTANCE = new ServiceLocator();
   private final Map<Class<?>, Class<?>> classes = new ConcurrentHashMap<>();
   private final Map<Class<?>, Object> instances = new ConcurrentHashMap<>();
 
@@ -24,12 +29,15 @@ public class ServiceLocator {
     classes.put(interfaceClass, implementedClass);
   }
 
-  void registerInstance(Class<?> interfaceClass, Object instance) {
+  public void registerInstance(Class<?> interfaceClass, Object instance) {
     instances.put(interfaceClass, instance);
   }
 
-  void discoverPackage(String packagePrefix) {
-    new Reflections(packagePrefix).getTypesAnnotatedWith(Component.class).forEach(this::register);
+  public void discoverPackage(String packagePrefix, Class<?>... annotationClasses) {
+    Reflections reflections = new Reflections(packagePrefix);
+    for (Class annotation : annotationClasses) {
+      reflections.getTypesAnnotatedWith(annotation).forEach((foundClass) -> register((Class) foundClass));
+    }
   }
 
   public <T> T get(Class<T> type) {
@@ -45,7 +53,12 @@ public class ServiceLocator {
   <T> List<T> getAll(Class<T> type) {
     return (List<T>) Stream.concat(classes.keySet().stream(), instances.keySet().stream())
         .filter(type::isAssignableFrom)
-        .map(this::get).collect(Collectors.toList());
+        .map(this::get).collect(toList());
+  }
+
+  public Set<Class<?>> getClassesForAnnotation(String packagePrefix, Class<? extends Annotation> annotation) {
+    return new HashSet<>(new Reflections(packagePrefix)
+        .getTypesAnnotatedWith(annotation));
   }
 
   private <T> T injectConstructor(Class<T> type) {
@@ -56,7 +69,7 @@ public class ServiceLocator {
 
   private <T> Constructor<?> findInjectableConstructorForType(Class<T> type) {
     return Arrays.stream(type.getDeclaredConstructors())
-        .filter(constructor -> constructor.isAnnotationPresent(Inject.class))
+        .filter(constructor -> constructor.isAnnotationPresent(Inject.class) || constructor.getParameterTypes().length == 0)
         .findFirst()
         .orElseThrow(() -> new NonInjectableConstructorException(type));
   }
