@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
@@ -14,10 +13,9 @@ import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.infrastructure.config.ServiceLocatorInitializer;
 import ca.ulaval.glo4003.ws.infrastructure.config.SimulationSettings;
-import ca.ulaval.glo4003.ws.infrastructure.injection.ErrorMapper;
+import ca.ulaval.glo4003.ws.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.ws.infrastructure.injection.ServiceLocator;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
-import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -25,11 +23,8 @@ import io.swagger.v3.oas.models.info.Info;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Stream;
-import javax.annotation.Resource;
 import javax.ws.rs.core.Application;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -42,19 +37,21 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public class InvestULMain {
 
+  private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
   private static Server server;
   private static ClockDriver clockDriver;
 
   public static void main(String[] args) throws Exception {
-    ServiceLocator serviceLocator = new ServiceLocator();
-    new ServiceLocatorInitializer().initializeServiceLocator(serviceLocator);
+    ServiceLocatorInitializer serviceLocatorInitializer = new ServiceLocatorInitializer(WEB_SERVICE_PACKAGE_PREFIX);
+    serviceLocatorInitializer.initializeServiceLocator(ServiceLocator.INSTANCE);
 
-    loadData(serviceLocator);
-    startClockAndMarketsUpdater(serviceLocator);
+    loadData();
+    startClockAndMarketsUpdater();
+
+    ContextHandlerCollection contexts = new ContextHandlerCollection();
+    contexts.setHandlers(new Handler[] {createApiHandler(serviceLocatorInitializer), createUiHandler()});
 
     int port = 8080;
-    ContextHandlerCollection contexts = new ContextHandlerCollection();
-    contexts.setHandlers(new Handler[] {createApiHandler(serviceLocator), createUiHandler()});
     server = new Server(port);
     server.setHandler(contexts);
 
@@ -72,20 +69,24 @@ public class InvestULMain {
     }
   }
 
-  public static void stop() throws Exception {
-    server.stop();
+  public static void stop() {
+    try {
+      server.stop();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   static boolean isStarted() {
     return server != null && server.isStarted();
   }
 
-  private static Handler createApiHandler(ServiceLocator serviceLocator) {
+  private static Handler createApiHandler(ServiceLocatorInitializer serviceLocatorInitializer) {
 
     Application application = new Application() {
       @Override
       public Set<Object> getSingletons() {
-        return createInstances(serviceLocator);
+        return serviceLocatorInitializer.createInstances(ServiceLocator.INSTANCE);
       }
     };
 
@@ -93,6 +94,8 @@ public class InvestULMain {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     resourceConfig.register(CORSResponseFilter.class);
+    ServiceLocator.INSTANCE.getClassesForAnnotation(WEB_SERVICE_PACKAGE_PREFIX, FilterRegistration.class)
+        .forEach(resourceConfig::register);
 
     ServletContainer servletContainer = new ServletContainer(resourceConfig);
     ServletHolder servletHolder = new ServletHolder(servletContainer);
@@ -134,33 +137,25 @@ public class InvestULMain {
     return webapp;
   }
 
-  private static Set<Object> createInstances(ServiceLocator serviceLocator) {
-    Set<?> resourceInstances = serviceLocator.getAllClassesForAnnotation(Resource.class);
-    Set<?> errorMapperClasses = serviceLocator.getAllClassesForAnnotation(ErrorMapper.class);
-    return Stream.of(resourceInstances, errorMapperClasses, Collections.singletonList(new OpenApiResource()))
-        .flatMap(Collection::stream)
-        .collect(toSet());
-  }
-
-  private static void loadData(ServiceLocator serviceLocator) {
+  private static void loadData() {
     try {
-      MarketCsvLoader marketLoader = new MarketCsvLoader(serviceLocator.get(MarketRepository.class),
-          serviceLocator.get(StockRepository.class),
-          serviceLocator.get(StockValueRetriever.class));
+      MarketCsvLoader marketLoader = new MarketCsvLoader(ServiceLocator.INSTANCE.get(MarketRepository.class),
+          ServiceLocator.INSTANCE.get(StockRepository.class),
+          ServiceLocator.INSTANCE.get(StockValueRetriever.class));
       marketLoader.load();
 
-      StockCsvLoader stockLoader = new StockCsvLoader(serviceLocator.get(StockRepository.class),
-          serviceLocator.get(MarketRepository.class));
+      StockCsvLoader stockLoader = new StockCsvLoader(ServiceLocator.INSTANCE.get(StockRepository.class),
+          ServiceLocator.INSTANCE.get(MarketRepository.class));
       stockLoader.load();
     } catch (IOException e) {
       System.out.println("Unable to parse the CSV: " + e.getMessage());
     }
   }
 
-  private static void startClockAndMarketsUpdater(ServiceLocator serviceLocator) {
-    serviceLocator.registerInstance(Clock.class, new Clock(LocalDateTime.of(2018, 9, 15, 0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION));
-    clockDriver = new ClockDriver(serviceLocator.get(Clock.class), SimulationSettings.SIMULATION_UPDATE_FREQUENCY);
-    new MarketsUpdater(serviceLocator.get(Clock.class), serviceLocator.get(MarketRepository.class));
+  private static void startClockAndMarketsUpdater() {
+    ServiceLocator.INSTANCE.registerInstance(Clock.class, new Clock(LocalDateTime.of(2018, 9, 15, 0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION));
+    clockDriver = new ClockDriver(ServiceLocator.INSTANCE.get(Clock.class), SimulationSettings.SIMULATION_UPDATE_FREQUENCY);
+    new MarketsUpdater(ServiceLocator.INSTANCE.get(Clock.class), ServiceLocator.INSTANCE.get(MarketRepository.class));
     clockDriver.start();
   }
 }

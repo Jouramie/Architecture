@@ -10,7 +10,7 @@ public class UserFactoryTest {
   private static final String PASSWORD = "password";
   private static final String USERNAME = "username";
 
-  private UserFactory factory = new UserFactory();
+  private final UserFactory factory = new UserFactory();
 
   @Test
   public void whenCreatingUser_thenReturnCreatedUser() {

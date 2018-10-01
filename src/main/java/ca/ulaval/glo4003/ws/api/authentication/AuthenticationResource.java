@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/authenticate")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -21,12 +22,15 @@ public interface AuthenticationResource {
       description = "Request a personal identification token.",
       responses = {
           @ApiResponse(
-              responseCode = "200", content = @Content(schema = @Schema(implementation = AuthenticationResponseDto.class))
+              responseCode = "200",
+              content = @Content(schema = @Schema(implementation = AuthenticationResponseDto.class))
           ),
           @ApiResponse(
               responseCode = "400", description = "Invalid username or password"
           )
       }
   )
-  AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest);
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  Response authenticate(AuthenticationRequestDto authenticationRequest);
 }
