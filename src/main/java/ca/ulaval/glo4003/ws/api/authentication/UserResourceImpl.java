@@ -2,8 +2,8 @@ package ca.ulaval.glo4003.ws.api.authentication;
 
 import static javax.ws.rs.core.Response.Status.CREATED;
 
+import ca.ulaval.glo4003.service.authentication.UserCreationService;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
-import ca.ulaval.glo4003.ws.application.user.UserCreationService;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;

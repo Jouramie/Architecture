@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.service.stock;
 
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.ws.infrastructure.injection.Component;
+import ca.ulaval.glo4003.infrastructure.injection.Component;
 import javax.inject.Inject;
 
 @Component

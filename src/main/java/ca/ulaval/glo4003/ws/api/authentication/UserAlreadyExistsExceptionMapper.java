@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
-import ca.ulaval.glo4003.ws.domain.user.UserAlreadyExistsException;
-import ca.ulaval.glo4003.ws.infrastructure.injection.ErrorMapper;
+import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
+import ca.ulaval.glo4003.infrastructure.injection.ErrorMapper;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 

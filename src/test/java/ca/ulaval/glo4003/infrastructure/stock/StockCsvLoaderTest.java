@@ -9,6 +9,7 @@ import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
 import java.io.IOException;
 import java.math.BigDecimal;
 import org.junit.Before;
@@ -32,7 +33,7 @@ public class StockCsvLoaderTest {
   public void setupStockCSVLoader() {
     given(someMarket.getCurrency()).willReturn(SOME_CURRENCY);
     given(marketRepository.getById(any())).willReturn(someMarket);
-    stockRepository = new StockRepositoryInMemory();
+    stockRepository = new InMemoryStockRepository();
     loader = new StockCsvLoader(stockRepository, marketRepository);
   }
 
