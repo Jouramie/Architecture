@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Schema(
     name = "StockResponse",
     description = "Stock response containing title, market, stock name, category, "
-        + "stock value at market opening, current stock value and stock value at market closeValue."
+        + "stock value at market opening, current stock value and stock value at market close."
 )
 public class StockDto {
   @Schema(description = "Title")
