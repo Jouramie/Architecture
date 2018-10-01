@@ -13,11 +13,19 @@ public class InMemoryAuthenticationTokenRepository implements AuthenticationToke
 
   @Override
   public AuthenticationToken getTokenForUser(String username) {
+    if (username == null) {
+      throw new NoTokenFoundException();
+    }
     return Optional.ofNullable(tokens.get(username)).orElseThrow(NoTokenFoundException::new);
   }
 
   @Override
   public void addToken(AuthenticationToken token) {
     tokens.put(token.username, token);
+  }
+
+  @Override
+  public void removeTokenOfUser(String username) {
+    tokens.remove(username);
   }
 }

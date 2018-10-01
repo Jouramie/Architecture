@@ -5,4 +5,6 @@ public interface AuthenticationTokenRepository {
   AuthenticationToken getTokenForUser(String username);
 
   void addToken(AuthenticationToken token);
+
+  void removeTokenOfUser(String username);
 }
