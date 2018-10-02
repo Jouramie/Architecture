@@ -32,7 +32,7 @@ public interface CartResource {
   @POST
   @Operation(
       summary = "Add a stock to the cart.",
-      description = "Add a stock to the cart. Return the every stocks in the cart, with their details and quantity.",
+      description = "Add a stock to the cart. Return every stocks in the cart, with their details and quantity.",
       requestBody = @RequestBody(
           content = @Content(schema = @Schema(implementation = CartStockRequest.class))
       ),
@@ -50,7 +50,7 @@ public interface CartResource {
   @PATCH
   @Operation(
       summary = "Update a stock in the cart.",
-      description = "Update the quantity of a stock. Return the every stocks in the cart, with their details and quantity.",
+      description = "Update the quantity of a stock. Return every stocks in the cart, with their details and quantity.",
       requestBody = @RequestBody(
           content = @Content(schema = @Schema(implementation = CartStockRequest.class))
       ),
@@ -68,7 +68,7 @@ public interface CartResource {
   @DELETE
   @Operation(
       summary = "Delete a stock in the cart.",
-      description = "Remove a stock from the cart. Return the every stocks in the cart, with their details and quantity.",
+      description = "Remove a stock from the cart. Return every stocks in the cart, with their details and quantity.",
       requestBody = @RequestBody(
           content = @Content(schema = @Schema(implementation = CartStockRequest.class))
       ),
@@ -85,7 +85,7 @@ public interface CartResource {
   @DELETE
   @Operation(
       summary = "Empty the cart.",
-      description = "Remove all stock from the cart.",
+      description = "Remove all stocks from the cart.",
       responses = {
           @ApiResponse(responseCode = "204", description = "cart emptied"),
           @ApiResponse(responseCode = "401", description = "not logged in")
