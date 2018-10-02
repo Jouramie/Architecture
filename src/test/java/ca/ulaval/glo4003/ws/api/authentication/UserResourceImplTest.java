@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.service.authentication.UserCreationService;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
-import ca.ulaval.glo4003.ws.application.user.UserCreationService;
-import ca.ulaval.glo4003.ws.domain.user.UserRole;
 import java.util.regex.Pattern;
 import org.junit.Before;
 import org.junit.Test;

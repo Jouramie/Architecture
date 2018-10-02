@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
+import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
 import java.io.IOException;
 import java.time.LocalTime;
 import org.junit.Before;
@@ -27,7 +28,7 @@ public class MarketCsvLoaderTest {
 
   @Before
   public void setupMarketCSVLoader() {
-    marketRepository = new MarketRepositoryInMemory();
+    marketRepository = new InMemoryMarketRepository();
     loader = new MarketCsvLoader(marketRepository, stockRepository, stockValueRetriever);
   }
 
