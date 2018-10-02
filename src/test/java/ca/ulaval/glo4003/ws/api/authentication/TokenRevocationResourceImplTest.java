@@ -4,7 +4,7 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.ws.application.user.authentication.AuthenticationService;
+import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import javax.ws.rs.core.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
