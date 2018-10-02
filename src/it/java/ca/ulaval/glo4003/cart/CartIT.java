@@ -23,7 +23,7 @@ import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class CartResourceIT {
+public class CartIT {
   private static final String API_CART_ROUTE = "/api/cart";
   private static final String API_CART_CHECKOUT_ROUTE = "/api/cart/checkout";
   private static final String USERS_ROUTE = "/api/users";
@@ -106,13 +106,13 @@ public class CartResourceIT {
         .post(API_CART_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
-        .body(is(iterableWithSize(1)))
-        .body(everyItem(contains(hasProperty(TITLE))))
-        .body(everyItem(contains(hasProperty(NAME))))
-        .body(everyItem(contains(hasProperty(MARKET))))
-        .body(everyItem(contains(hasProperty(CATEGORY))))
-        .body(everyItem(contains(hasProperty(CURRENT))))
-        .body(everyItem(contains(hasProperty(QUANTITY))));
+        .body("$", is(iterableWithSize(1)))
+        .body("$", everyItem(hasProperty(TITLE)))
+        .body("$", everyItem(hasProperty(NAME)))
+        .body("$", everyItem(hasProperty(MARKET)))
+        .body("$", everyItem(hasProperty(CATEGORY)))
+        .body("$", everyItem(hasProperty(CURRENT)))
+        .body("$", everyItem(hasProperty(QUANTITY)));
     //@formatter:on
   }
 

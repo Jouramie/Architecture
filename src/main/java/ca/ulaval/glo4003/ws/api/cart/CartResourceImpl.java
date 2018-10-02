@@ -1,35 +1,47 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
+import ca.ulaval.glo4003.service.cart.CartService;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.inject.Inject;
 
+@Resource
 public class CartResourceImpl implements CartResource {
+  private final CartService cartService;
+
+  @Inject
+  public CartResourceImpl(CartService cartService) {
+    this.cartService = cartService;
+  }
+
   @Override
-  public List<CartStockResponse> getCartContent() {
+  public List<CartItemResponseDto> getCartContent() {
+    return cartService.getCartContent();
+  }
+
+  @Override
+  public List<CartItemResponseDto> addStockToCart(CartStockRequest cartStockRequest) {
+    cartService.addStockToCart(cartStockRequest.title, cartStockRequest.quantity);
+    return cartService.getCartContent();
+  }
+
+  @Override
+  public List<CartItemResponseDto> updateStockInCart(CartStockRequest cartStockRequest) {
     return null;
   }
 
-  @Override
-  public List<CartStockResponse> addStockToCart(CartStockRequest cartStockRequest) {
+  /*@Override
+  public List<CartItemResponseDto> deleteStockInCart(CartStockRequest cartStockRequest) {
     return null;
+  }*/
+
+  @Override
+  public void emptyCart() {
+
   }
 
   @Override
-  public List<CartStockResponse> updateStockInCart(CartStockRequest cartStockRequest) {
-    return null;
-  }
-
-  @Override
-  public List<CartStockResponse> deleteStockInCart(CartStockRequest cartStockRequest) {
-    return null;
-  }
-
-  @Override
-  public void emptyCard() {
-    
-  }
-
-  @Override
-  public List<CartStockResponse> checkoutCart() {
+  public List<CartItemResponseDto> checkoutCart() {
     return null;
   }
 }

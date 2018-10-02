@@ -24,7 +24,7 @@ public class StockDto {
   @Schema(description = "Stock value at market close")
   public final BigDecimal closeValue;
   @Schema(description = "Category")
-  private final String category;
+  public final String category;
 
   @JsonCreator
   public StockDto(@JsonProperty("title") String title,
