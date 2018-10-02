@@ -9,7 +9,7 @@ import ca.ulaval.glo4003.ResetServerBetweenTest;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class StockResourceIT {
+public class StockIT {
   private static final String API_STOCK_ROUTE = "/api/stocks";
 
   private static final String TITLE = "title";

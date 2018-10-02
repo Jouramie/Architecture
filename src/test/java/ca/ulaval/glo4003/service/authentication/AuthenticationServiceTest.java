@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.user.authentication;
+package ca.ulaval.glo4003.service.authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -13,10 +13,6 @@ import ca.ulaval.glo4003.domain.user.authentication.AuthenticationErrorException
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenFactory;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
-import ca.ulaval.glo4003.service.authentication.AuthenticationResponseAssembler;
-import ca.ulaval.glo4003.service.authentication.AuthenticationService;
-import ca.ulaval.glo4003.service.authentication.AuthenticationTokenAssembler;
-import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
 import ca.ulaval.glo4003.util.UserBuilder;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;

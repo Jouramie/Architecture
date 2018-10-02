@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class TokenRevocationResourceIT {
+public class TokenRevocationIT {
 
   private static final String REVOCATION_ROUTE = "/api/revoke-token";
 

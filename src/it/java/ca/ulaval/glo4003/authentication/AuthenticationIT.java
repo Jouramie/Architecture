@@ -6,15 +6,15 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.Matchers.any;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
+import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
-import ca.ulaval.glo4003.domain.user.UserRole;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class AuthenticationResourceIT {
+public class AuthenticationIT {
 
 
   private static final String SOME_USERNAME = "username";

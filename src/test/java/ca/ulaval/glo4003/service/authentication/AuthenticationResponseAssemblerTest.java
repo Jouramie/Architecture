@@ -1,9 +1,8 @@
-package ca.ulaval.glo4003.service.user.authentication;
+package ca.ulaval.glo4003.service.authentication;
 
 import static junit.framework.TestCase.assertEquals;
 
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
-import ca.ulaval.glo4003.service.authentication.AuthenticationResponseAssembler;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
 import org.junit.Test;
 

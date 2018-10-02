@@ -1,9 +1,8 @@
-package ca.ulaval.glo4003.service.user.authentication;
+package ca.ulaval.glo4003.service.authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
-import ca.ulaval.glo4003.service.authentication.AuthenticationTokenAssembler;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
 import org.junit.Test;
 

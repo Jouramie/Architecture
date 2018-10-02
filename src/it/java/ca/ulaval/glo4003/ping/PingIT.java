@@ -9,7 +9,7 @@ import ca.ulaval.glo4003.ResetServerBetweenTest;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class PingResourceIT {
+public class PingIT {
   private static final String API_PING_ROUTE = "/api/ping";
 
   private static final String SOME_ECHO = "Hello world!";

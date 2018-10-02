@@ -7,14 +7,14 @@ import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class UserResourceIT {
+public class UserIT {
 
   private static final String SOME_USERNAME = "name";
 
