@@ -1,7 +1,9 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
 import java.util.List;
+import javax.annotation.Resource;
 
+@Resource
 public class CartResourceImpl implements CartResource {
   @Override
   public List<CartStockResponse> getCartContent() {
