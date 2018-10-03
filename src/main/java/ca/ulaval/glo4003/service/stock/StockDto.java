@@ -31,9 +31,9 @@ public class StockDto {
                   @JsonProperty("name") String name,
                   @JsonProperty("category") String category,
                   @JsonProperty("market") String market,
-                  @JsonProperty("open") BigDecimal openValue,
-                  @JsonProperty("current") BigDecimal currentValue,
-                  @JsonProperty("close") BigDecimal closeValue) {
+                  @JsonProperty("openValue") BigDecimal openValue,
+                  @JsonProperty("currentValue") BigDecimal currentValue,
+                  @JsonProperty("closeValue") BigDecimal closeValue) {
     this.title = title;
     this.market = market;
     this.name = name;
