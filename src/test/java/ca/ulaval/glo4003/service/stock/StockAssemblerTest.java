@@ -33,7 +33,7 @@ public class StockAssemblerTest {
 
     StockDto resultStockDto = stockAssembler.toDto(someStock);
 
-    assertThat(resultStockDto).extracting("title", "name", "category", "market", "open", "current", "close")
+    assertThat(resultStockDto).extracting("title", "name", "category", "market", "openValue", "currentValue", "closeValue")
         .containsExactly(
             SOME_TITLE,
             SOME_NAME,

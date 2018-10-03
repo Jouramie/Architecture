@@ -22,6 +22,8 @@
         <javax.ws.rs.version>2.0</javax.ws.rs.version>
         <jetty.version>9.2.3.v20140905</jetty.version>
         <jersey.version>2.7</jersey.version>
+        <javax.ws.rs.version>2.1</javax.ws.rs.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commons-csv.version>1.5</commons-csv.version>
         <javatuples.version>1.2</javatuples.version>
         <live-stock-simulator.version>1.0.0</live-stock-simulator.version>
