@@ -33,7 +33,7 @@ public class StockIT {
     //@formatter:off
     when()
         .get(API_STOCK_ROUTE + "/" + SOME_TITLE)
-    .then()
+        .then()
         .statusCode(200)
         .body(TITLE, equalTo(SOME_TITLE))
         .body(NAME, equalTo(SOME_NAME))
@@ -50,9 +50,9 @@ public class StockIT {
     //@formatter:off
     given()
         .param(NAME, SOME_NAME)
-    .when()
+        .when()
         .get(API_STOCK_ROUTE)
-    .then()
+        .then()
         .statusCode(200)
         .body(TITLE, equalTo(SOME_TITLE))
         .body(NAME, equalTo(SOME_NAME))
@@ -69,7 +69,7 @@ public class StockIT {
     //@formatter:off
     when()
         .get(API_STOCK_ROUTE + "/wrong")
-    .then()
+        .then()
         .statusCode(404);
     //@formatter:on
   }
@@ -79,9 +79,9 @@ public class StockIT {
     //@formatter:off
     given()
         .param(NAME, "wrong")
-    .when()
+        .when()
         .get(API_STOCK_ROUTE)
-    .then()
+        .then()
         .statusCode(404);
     //@formatter:on
   }
@@ -91,7 +91,7 @@ public class StockIT {
     //@formatter:off
     when()
         .get(API_STOCK_ROUTE)
-    .then()
+        .then()
         .statusCode(400);
     //@formatter:on
   }

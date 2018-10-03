@@ -10,15 +10,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/cart")
@@ -64,8 +56,8 @@ public interface CartResource {
       }
   )
   List<CartItemResponseDto> addStockToCart(@Parameter(description = "Title", required = true)
-                                         @NotNull @PathParam("title") String title,
-                                         CartStockRequest cartStockRequest);
+                                           @NotNull @PathParam("title") String title,
+                                           CartStockRequest cartStockRequest);
 
   @PATCH
   @Path("/{title}")
@@ -89,8 +81,8 @@ public interface CartResource {
       }
   )
   List<CartItemResponseDto> updateStockInCart(@Parameter(description = "Title", required = true)
-                                            @NotNull @PathParam("title") String title,
-                                            CartStockRequest cartStockRequest);
+                                              @NotNull @PathParam("title") String title,
+                                              CartStockRequest cartStockRequest);
 
   @DELETE
   @Path("/{title}")
@@ -109,8 +101,8 @@ public interface CartResource {
       }
   )
   List<CartItemResponseDto> deleteStockInCart(@Parameter(description = "Title", required = true)
-                                            @NotNull @PathParam("title") String title,
-                                            CartStockRequest cartStockRequest);
+                                              @NotNull @PathParam("title") String title,
+                                              CartStockRequest cartStockRequest);
 
   @DELETE
   @Operation(
