@@ -10,13 +10,13 @@ import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 
 public class EmailTestMain {
-    public static void main(String[] args) {
-        AmazonSimpleEmailService client =
-                AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
-        NotificationSender emailSender = new EmailNotificationSender(client);
+  public static void main(String[] args) {
+    AmazonSimpleEmailService client =
+        AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+    NotificationSender emailSender = new EmailNotificationSender(client);
 
-        Notification notification = new Notification("Test", "sum", "body");
-        User user = new User("Archi.test.42@gmail.com", "password", UserRole.INVESTOR);
-        emailSender.sendNotification(notification, user);
-    }
+    Notification notification = new Notification("Test", "sum", "body");
+    User user = new User("Archi.test.42@gmail.com", "password", UserRole.INVESTOR);
+    emailSender.sendNotification(notification, user);
+  }
 }
