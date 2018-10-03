@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
+import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -8,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
@@ -15,8 +18,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 @Path("/cart")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@AuthenticationRequiredBinding
 public interface CartResource {
   @GET
   @Operation(
@@ -56,7 +64,7 @@ public interface CartResource {
       }
   )
   List<CartStockResponse> addStockToCart(@Parameter(description = "Title", required = true)
-                                         @PathParam("title") String title,
+                                         @NotNull @PathParam("title") String title,
                                          CartStockRequest cartStockRequest);
 
   @PATCH
@@ -81,7 +89,7 @@ public interface CartResource {
       }
   )
   List<CartStockResponse> updateStockInCart(@Parameter(description = "Title", required = true)
-                                            @PathParam("title") String title,
+                                            @NotNull @PathParam("title") String title,
                                             CartStockRequest cartStockRequest);
 
   @DELETE
@@ -101,7 +109,7 @@ public interface CartResource {
       }
   )
   List<CartStockResponse> deleteStockInCart(@Parameter(description = "Title", required = true)
-                                            @PathParam("title") String title,
+                                            @NotNull @PathParam("title") String title,
                                             CartStockRequest cartStockRequest);
 
   @DELETE
@@ -113,7 +121,7 @@ public interface CartResource {
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  void emptyCard();
+  void emptyCart();
 
   @POST
   @Path("/checkout")

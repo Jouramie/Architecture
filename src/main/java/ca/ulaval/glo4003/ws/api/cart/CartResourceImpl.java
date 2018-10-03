@@ -27,7 +27,7 @@ public class CartResourceImpl implements CartResource {
   }
 
   @Override
-  public void emptyCard() {
+  public void emptyCart() {
   }
 
   @Override
