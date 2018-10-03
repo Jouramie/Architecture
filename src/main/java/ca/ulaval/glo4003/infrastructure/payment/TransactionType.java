@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.infrastructure.payment;
 
-enum TransactionType {
+public enum TransactionType {
   SALE, PURCHASE
 }
 

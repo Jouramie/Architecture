@@ -4,9 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
-import ca.ulaval.glo4003.domain.money.Currency;
-import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import java.math.BigDecimal;
+import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -18,9 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransactionTest {
-  private static final double SOME_LAST_OPEN_VALUE = 40.00;
-  private static final Currency SOME_CURRENCY = new Currency("CAD", new BigDecimal(0.77));
-  private static final List<TransactionItem> SOME_TRANSACTION_ITEMS = Arrays.asList(new TransactionItem("MSFT", 1, new MoneyAmount(SOME_LAST_OPEN_VALUE, SOME_CURRENCY)));
+  private static final List<TransactionItem> SOME_TRANSACTION_ITEMS = Arrays.asList(new TransactionItemBuilder().buildDefault());
   private static final TransactionType SOME_TYPE = TransactionType.PURCHASE;
   private static final LocalDateTime SOME_TIME = LocalDateTime.now();
   private static Transaction transaction;

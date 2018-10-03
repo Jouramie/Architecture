@@ -4,9 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
-import ca.ulaval.glo4003.domain.money.Currency;
-import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import java.math.BigDecimal;
+import ca.ulaval.glo4003.util.TransactionBuilder;
+import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -18,10 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransactionFactoryTest {
-  private static final double SOME_LAST_OPEN_VALUE = 40.00;
-  private static final Currency SOME_CURRENCY = new Currency("CAD", new BigDecimal(0.77));
-  private static final List<TransactionItem> items = Arrays.asList(new TransactionItem("MSFT", 1, new MoneyAmount(SOME_LAST_OPEN_VALUE, SOME_CURRENCY)));
-  private static final TransactionType type = TransactionType.PURCHASE;
+  private static final List<TransactionItem> items = Arrays.asList(new TransactionItemBuilder().buildDefault());
+  private static final TransactionType SOME_TYPE = TransactionType.PURCHASE;
   private static final LocalDateTime SOME_TIME = LocalDateTime.now();
   private final TransactionFactory factory = new TransactionFactory();
 
@@ -35,8 +32,8 @@ public class TransactionFactoryTest {
 
   @Test
   public void whenCreateTransaction_thenReturnCreatedTransaction() {
-    Transaction expectedTransaction = new Transaction(someClock, items, type);
-    Transaction createdTransaction = factory.create(someClock, items, type);
+    Transaction expectedTransaction = new TransactionBuilder().withType(SOME_TYPE).withItems(items).build(someClock);
+    Transaction createdTransaction = factory.create(someClock, items, SOME_TYPE);
     assertThat(createdTransaction).isEqualToComparingFieldByField(expectedTransaction);
   }
 }
