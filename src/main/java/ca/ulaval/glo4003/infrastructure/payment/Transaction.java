@@ -2,7 +2,6 @@ package ca.ulaval.glo4003.infrastructure.payment;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Transaction {
@@ -12,8 +11,8 @@ public class Transaction {
 
   public Transaction(Clock clock, List<TransactionItem> items, TransactionType type) {
     this.type = type;
-    this.items = new ArrayList<>(items);
-    timestamp = clock.getCurrentTime();
+    this.items = items;
+    timestamp = clock.getCurrentTime();//TODO: change param
   }
 
   public LocalDateTime getTime() {
