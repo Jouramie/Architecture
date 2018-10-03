@@ -17,14 +17,14 @@ public class StockDto {
   public final String market;
   @Schema(description = "Name of the company")
   public final String name;
+  @Schema(description = "Category")
+  public final String category;
   @Schema(description = "Stock value at market opening")
   public final BigDecimal openValue;
   @Schema(description = "Current stock value")
   public final BigDecimal currentValue;
   @Schema(description = "Stock value at market close")
   public final BigDecimal closeValue;
-  @Schema(description = "Category")
-  public final String category;
 
   @JsonCreator
   public StockDto(@JsonProperty("title") String title,

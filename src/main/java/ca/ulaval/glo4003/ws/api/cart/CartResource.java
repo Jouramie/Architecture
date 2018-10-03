@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -63,7 +64,7 @@ public interface CartResource {
       }
   )
   List<CartItemResponseDto> addStockToCart(@Parameter(description = "Title", required = true)
-                                         @PathParam("title") String title,
+                                         @NotNull @PathParam("title") String title,
                                          CartStockRequest cartStockRequest);
 
   @PATCH
@@ -88,7 +89,7 @@ public interface CartResource {
       }
   )
   List<CartItemResponseDto> updateStockInCart(@Parameter(description = "Title", required = true)
-                                            @PathParam("title") String title,
+                                            @NotNull @PathParam("title") String title,
                                             CartStockRequest cartStockRequest);
 
   @DELETE
@@ -108,7 +109,7 @@ public interface CartResource {
       }
   )
   List<CartItemResponseDto> deleteStockInCart(@Parameter(description = "Title", required = true)
-                                            @PathParam("title") String title,
+                                            @NotNull @PathParam("title") String title,
                                             CartStockRequest cartStockRequest);
 
   @DELETE
