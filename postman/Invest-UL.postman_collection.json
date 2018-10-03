@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "515a3737-ac3d-4c4c-90ee-803467213818",
+		"_postman_id": "48093bcc-012d-4181-85b1-685a9a5ca459",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -136,7 +136,10 @@
 								"value": "bfbe3814-a1a7-4c8e-8356-d7dd2630e375"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:8080/api/revoke-token",
 							"host": [
@@ -161,7 +164,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:8080/api/cart",
 							"host": [
@@ -179,7 +185,7 @@
 				{
 					"name": "AddStockInCart",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -188,17 +194,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"RBS.l\",\n\t\"quantity\": 1\n}"
+							"raw": "{\n\t\"quantity\": 1\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/api/cart",
+							"raw": "localhost:8080/api/cart/RBS.l",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"cart"
+								"cart",
+								"RBS.l"
 							]
 						}
 					},
@@ -216,17 +223,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"RBS.l\",\n\t\"quantity\": 42\n}"
+							"raw": "{\n\t\"quantity\": 42\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/api/cart",
+							"raw": "localhost:8080/api/cart/RBS.l",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"cart"
+								"cart",
+								"RBS.l"
 							]
 						}
 					},
@@ -244,17 +252,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"RBS.l\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8080/api/cart",
+							"raw": "localhost:8080/api/cart/RBS.l",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"cart"
+								"cart",
+								"RBS.l"
 							]
 						}
 					},

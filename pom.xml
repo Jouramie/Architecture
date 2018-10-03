@@ -40,7 +40,7 @@
         <checkstyle.version>8.12</checkstyle.version>
         <codehaus.mojo.version>3.0.0</codehaus.mojo.version>
         <jacoco.version>0.7.9</jacoco.version>
-        <jacoco.coverage.threshole><!-- TODO -->0.00</jacoco.coverage.threshole>
+        <jacoco.coverage.threshole>0.75</jacoco.coverage.threshole>
         <maven.checkstyle.version>3.0.0</maven.checkstyle.version>
         <maven.checkstyle.config.location>google_checks.xml</maven.checkstyle.config.location>
         <maven.compiler.version>3.5</maven.compiler.version>

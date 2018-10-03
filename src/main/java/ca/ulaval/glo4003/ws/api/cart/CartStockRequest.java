@@ -6,18 +6,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
     name = "CartStockRequest",
-    description = "Cart stock request containing the title and the quantity of that stock."
+    description = "Cart stock request containing the quantity of a stock."
 )
 public class CartStockRequest {
-  @Schema(description = "Title")
-  public final String title;
   @Schema(description = "Quantity")
   public final Integer quantity;
 
   @JsonCreator
-  public CartStockRequest(@JsonProperty("title") String title,
-                          @JsonProperty("quantity") Integer quantity) {
-    this.title = title;
+  public CartStockRequest(@JsonProperty("quantity") Integer quantity) {
     this.quantity = quantity;
   }
 }

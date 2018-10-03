@@ -24,10 +24,13 @@ import org.junit.Rule;
 import org.junit.Test;
 
 public class CartIT {
-  private static final String API_CART_ROUTE = "/api/cart";
+  private static final String SOME_TITLE = "RBS.l";
+
+  private static final String API_CART_ROUTE = "/api/cart/";
+  private static final String API_CART_ROUTE_WITH_TITLE = API_CART_ROUTE + SOME_TITLE;
   private static final String API_CART_CHECKOUT_ROUTE = "/api/cart/checkout";
-  private static final String USERS_ROUTE = "/api/users";
-  private static final String AUTHENTICATION_ROUTE = "/api/authenticate";
+  private static final String API_USERS_ROUTE = "/api/users";
+  private static final String API_AUTHENTICATION_ROUTE = "/api/authenticate";
 
   private static final String TITLE = "title";
   private static final String NAME = "name";
@@ -85,7 +88,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .post(API_CART_ROUTE)
+        .post(API_CART_ROUTE_WITH_TITLE)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
@@ -103,7 +106,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .post(API_CART_ROUTE)
+        .post(API_CART_ROUTE_WITH_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", is(iterableWithSize(1)))
@@ -123,7 +126,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .patch(API_CART_ROUTE)
+        .patch(API_CART_ROUTE_WITH_TITLE)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
@@ -142,7 +145,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build(2))
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .patch(API_CART_ROUTE)
+        .patch(API_CART_ROUTE_WITH_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
         .body(is(iterableWithSize(1)))
@@ -162,7 +165,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .delete(API_CART_ROUTE)
+        .delete(API_CART_ROUTE_WITH_TITLE)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
@@ -181,7 +184,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .delete(API_CART_ROUTE)
+        .delete(API_CART_ROUTE_WITH_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
         .body(is(empty()));
@@ -216,7 +219,7 @@ public class CartIT {
   }
 
   @Test
-  public void givenUserNotLoggedIn_whenCheckOut_thenReturnUnauthorized() {
+  public void givenUserNotLoggedIn_whenCheckout_thenReturnUnauthorized() {
     //@formatter:off
     when()
         .post(API_CART_CHECKOUT_ROUTE)
@@ -251,15 +254,15 @@ public class CartIT {
 
 
   private void givenUserAlreadyRegistered() {
-    given().body(A_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON).post(USERS_ROUTE);
+    given().body(A_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON).post(API_USERS_ROUTE);
   }
 
   private String givenUserAlreadyAuthenticated() {
     Response response = given()
         .body(AN_AUTHENTICATION_REQUEST)
         .contentType(MediaType.APPLICATION_JSON)
-        .when()
-        .post(AUTHENTICATION_ROUTE);
+    .when()
+        .post(API_AUTHENTICATION_ROUTE);
 
     return response.jsonPath().getString("token");
   }
