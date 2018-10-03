@@ -95,4 +95,4 @@ Has of now the SES service is in SANDBOX, so it can only send email to verified 
 * email:invest.ul.2018@gmail.com
 * password: Archi.42.
 
-A request is in progress to be able to send email to emails no verified my(Olivier Beaulieu) account.
+A request is in progress to be able to send email to emails not verified in my(Olivier Beaulieu) AWS account.
