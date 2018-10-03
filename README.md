@@ -82,3 +82,17 @@ public class SomeRestAssuredIT {
 ```
 
 Also, make sure to always use the statically imported `given()`, `when()` and `then()` methods to keep the test ordered.
+
+### Email configuration
+On linux you need to source the `aws-creds` at the route of the project (you can use the instruction `set VARIABLE=value` on Windows), so the app has access to the SES service of AWS.
+Here's a link with more info: https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html
+The creds are assign to an AWS Role and only have access to the SES service.
+
+Has of now the SES service is in SANDBOX, so it can only send email to verified address. Here are 2 gmail accounts you can use to send and receive email:
+email:Archi.test.42@gmail.com
+password: Archi.42.
+
+email:invest.ul.2018@gmail.com
+password: Archi.42.
+
+A request is in progress to be able to send email to emails no verified my(Olivier Beaulieu) account.
