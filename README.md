@@ -1,5 +1,4 @@
-# Les Anarchitectes
-
+![#Les Anarchitectes](https://i.imgur.com/ErPdxWq.png)
 
 ## How to maven
 ##### Clean the target folder
