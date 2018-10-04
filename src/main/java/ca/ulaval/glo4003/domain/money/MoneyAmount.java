@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class MoneyAmount {
+
+  public static final MoneyAmount ZERO_MONEY
+      = new MoneyAmount(0, new Currency("USD", new BigDecimal(1)));
+
   private final BigDecimal amount;
   private final Currency currency;
 
@@ -18,25 +22,29 @@ public class MoneyAmount {
   }
 
   public BigDecimal getAmount() {
-    return this.amount;
+    return amount;
   }
 
   public Currency getCurrency() {
-    return this.currency;
+    return currency;
   }
 
   public MoneyAmount add(MoneyAmount otherAmount) {
-    MoneyAmount convertedAmount = this.currency.convert(otherAmount);
-    return new MoneyAmount(this.amount.add(convertedAmount.getAmount()), this.getCurrency());
+    MoneyAmount convertedAmount = currency.convert(otherAmount);
+    return new MoneyAmount(amount.add(convertedAmount.getAmount()), getCurrency());
   }
 
   public MoneyAmount subtract(MoneyAmount otherAmount) {
-    MoneyAmount convertedAmount = this.currency.convert(otherAmount);
-    return new MoneyAmount(this.amount.subtract(convertedAmount.getAmount()), this.getCurrency());
+    MoneyAmount convertedAmount = currency.convert(otherAmount);
+    return new MoneyAmount(amount.subtract(convertedAmount.getAmount()), getCurrency());
+  }
+
+  public MoneyAmount multiply(int multiplier) {
+    return new MoneyAmount(amount.multiply(new BigDecimal(multiplier)), getCurrency());
   }
 
   public BigDecimal toUsd() {
-    return this.currency.toUsd(this.amount);
+    return currency.toUsd(amount);
   }
 
   @Override
@@ -48,13 +56,13 @@ public class MoneyAmount {
       return false;
     }
 
-    final MoneyAmount otherAmount = (MoneyAmount) other;
-    return this.getAmount().equals(otherAmount.getAmount())
-        && this.getCurrency().equals(otherAmount.getCurrency());
+    MoneyAmount otherAmount = (MoneyAmount) other;
+    return getAmount().equals(otherAmount.getAmount())
+        && getCurrency().equals(otherAmount.getCurrency());
   }
 
   @Override
   public int hashCode() {
-    return this.getAmount().hashCode() ^ this.getCurrency().hashCode();
+    return getAmount().hashCode() ^ getCurrency().hashCode();
   }
 }
