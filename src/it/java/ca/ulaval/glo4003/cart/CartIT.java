@@ -6,7 +6,7 @@ import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
@@ -76,8 +76,8 @@ public class CartIT {
     .when()
         .get(API_CART_ROUTE)
     .then()
-        .statusCode(200)
-        .body(is(empty()));
+        .statusCode(OK.getStatusCode())
+        .body("$", is(emptyIterable()));
     //@formatter:on
   }
 
@@ -88,7 +88,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .post(API_CART_ROUTE_WITH_TITLE)
+        .put(API_CART_ROUTE_WITH_TITLE)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
@@ -106,7 +106,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .post(API_CART_ROUTE_WITH_TITLE)
+        .put(API_CART_ROUTE_WITH_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", is(iterableWithSize(1)))
@@ -148,13 +148,13 @@ public class CartIT {
         .patch(API_CART_ROUTE_WITH_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
-        .body(is(iterableWithSize(1)))
-        .body(everyItem(contains(hasProperty(TITLE))))
-        .body(everyItem(contains(hasProperty(NAME))))
-        .body(everyItem(contains(hasProperty(MARKET))))
-        .body(everyItem(contains(hasProperty(CATEGORY))))
-        .body(everyItem(contains(hasProperty(CURRENT))))
-        .body(everyItem(contains(hasProperty(QUANTITY))));
+        .body("$", is(iterableWithSize(1)))
+        .body("$", everyItem(hasProperty(TITLE)))
+        .body("$", everyItem(hasProperty(NAME)))
+        .body("$", everyItem(hasProperty(MARKET)))
+        .body("$", everyItem(hasProperty(CATEGORY)))
+        .body("$", everyItem(hasProperty(CURRENT)))
+        .body("$", everyItem(hasProperty(QUANTITY)));
     //@formatter:on
   }
 
@@ -187,7 +187,7 @@ public class CartIT {
         .delete(API_CART_ROUTE_WITH_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
-        .body(is(empty()));
+        .body("$", is(emptyIterable()));
     //@formatter:on
   }
 
@@ -242,13 +242,13 @@ public class CartIT {
         .post(API_CART_CHECKOUT_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
-        .body(is(iterableWithSize(1)))
-        .body(everyItem(contains(hasProperty(TITLE))))
-        .body(everyItem(contains(hasProperty(NAME))))
-        .body(everyItem(contains(hasProperty(MARKET))))
-        .body(everyItem(contains(hasProperty(CATEGORY))))
-        .body(everyItem(contains(hasProperty(CURRENT))))
-        .body(everyItem(contains(hasProperty(QUANTITY))));
+        .body("$", is(iterableWithSize(1)))
+        .body("$", everyItem(contains(hasProperty(TITLE))))
+        .body("$", everyItem(contains(hasProperty(NAME))))
+        .body("$", everyItem(contains(hasProperty(MARKET))))
+        .body("$", everyItem(contains(hasProperty(CATEGORY))))
+        .body("$", everyItem(contains(hasProperty(CURRENT))))
+        .body("$", everyItem(contains(hasProperty(QUANTITY))));
     //@formatter:on
   }
 
@@ -258,11 +258,13 @@ public class CartIT {
   }
 
   private String givenUserAlreadyAuthenticated() {
+    //@formatter:off
     Response response = given()
         .body(AN_AUTHENTICATION_REQUEST)
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .post(API_AUTHENTICATION_ROUTE);
+    //@formatter:on
 
     return response.jsonPath().getString("token");
   }
@@ -275,7 +277,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .post(API_CART_ROUTE);
+        .put(API_CART_ROUTE_WITH_TITLE);
     //@formatter:on
   }
 }

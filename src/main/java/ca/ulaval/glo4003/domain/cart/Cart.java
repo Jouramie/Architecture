@@ -13,10 +13,17 @@ public class Cart {
     items = new HashMap<>();
   }
 
-  public void add(String title, int numStocks) {
-    int newQty = getQty(title) + numStocks;
-    if (newQty > 0) {
-      items.put(title, new CartItem(title, newQty));
+  public void add(String title, int addedQuantity) {
+    int newQuantity = getQuantity(title) + addedQuantity;
+    if (newQuantity > 0) {
+      items.put(title, new CartItem(title, newQuantity));
+    }
+  }
+
+  public void update(String title, int newQuantity) {
+    checkIfStockInCart(title);
+    if (newQuantity > 0) {
+      items.put(title, new CartItem(title, newQuantity));
     }
   }
 
@@ -32,12 +39,18 @@ public class Cart {
     return items.isEmpty();
   }
 
-  public int getQty(String title) {
+  public int getQuantity(String title) {
     if (items.containsKey(title)) {
       return items.get(title).quantity;
     }
 
     return 0;
+  }
+
+  private void checkIfStockInCart(String title) {
+    if (!items.containsKey(title)) {
+      throw new StockNotInCartException(title);
+    }
   }
 
   public Collection<CartItem> getItems() {
