@@ -28,11 +28,11 @@ public class TransactionTest {
   public void setup() {
 
     given(someClock.getCurrentTime()).willReturn(SOME_TIME);
-    transaction = new Transaction(someClock, SOME_TRANSACTION_ITEMS, SOME_TYPE);
+    transaction = new Transaction(someClock.getCurrentTime(), SOME_TRANSACTION_ITEMS, SOME_TYPE);
   }
 
   @Test
-  public void whengetInfoTransactions_thenReturnTransactionsInfo() {
+  public void whenGetTime_thenReturnTransactionsTime() {
     assertThat(transaction.getTime()).isEqualTo(someClock.getCurrentTime());
   }
 
@@ -43,7 +43,6 @@ public class TransactionTest {
 
   @Test
   public void whenGetAllTransaction_thenReturnTransactions() {
-
     assertThat(transaction.getListItems()).isEqualTo(SOME_TRANSACTION_ITEMS);
   }
 }
