@@ -23,6 +23,8 @@
         <javax.ws.rs.version>2.0</javax.ws.rs.version>
         <jetty.version>9.2.3.v20140905</jetty.version>
         <jersey.version>2.7</jersey.version>
+        <javax.ws.rs.version>2.1</javax.ws.rs.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commons-csv.version>1.5</commons-csv.version>
         <javatuples.version>1.2</javatuples.version>
         <live-stock-simulator.version>1.0.0</live-stock-simulator.version>
@@ -39,7 +41,7 @@
         <checkstyle.version>8.12</checkstyle.version>
         <codehaus.mojo.version>3.0.0</codehaus.mojo.version>
         <jacoco.version>0.7.9</jacoco.version>
-        <jacoco.coverage.threshole><!-- TODO -->0.00</jacoco.coverage.threshole>
+        <jacoco.coverage.threshole>0.75</jacoco.coverage.threshole>
         <maven.checkstyle.version>3.0.0</maven.checkstyle.version>
         <maven.checkstyle.config.location>google_checks.xml</maven.checkstyle.config.location>
         <maven.compiler.version>3.5</maven.compiler.version>

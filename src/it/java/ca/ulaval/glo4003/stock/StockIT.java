@@ -16,9 +16,9 @@ public class StockIT {
   private static final String NAME = "name";
   private static final String MARKET = "market";
   private static final String CATEGORY = "category";
-  private static final String OPEN = "open";
-  private static final String CURRENT = "current";
-  private static final String CLOSE = "close";
+  private static final String OPEN = "openValue";
+  private static final String CURRENT = "currentValue";
+  private static final String CLOSE = "closeValue";
 
   private static final String SOME_TITLE = "RBS.l";
   private static final String SOME_NAME = "Royal Bank of Scotland";

@@ -17,29 +17,29 @@ public class StockDto {
   public final String market;
   @Schema(description = "Name of the company")
   public final String name;
-  @Schema(description = "Stock value at market opening")
-  public final BigDecimal open;
-  @Schema(description = "Current stock value")
-  public final BigDecimal current;
   @Schema(description = "Category")
   public final String category;
+  @Schema(description = "Stock value at market opening")
+  public final BigDecimal openValue;
+  @Schema(description = "Current stock value")
+  public final BigDecimal currentValue;
   @Schema(description = "Stock value at market close")
-  public final BigDecimal close;
+  public final BigDecimal closeValue;
 
   @JsonCreator
   public StockDto(@JsonProperty("title") String title,
                   @JsonProperty("name") String name,
                   @JsonProperty("category") String category,
                   @JsonProperty("market") String market,
-                  @JsonProperty("open") BigDecimal open,
-                  @JsonProperty("current") BigDecimal current,
-                  @JsonProperty("close") BigDecimal close) {
+                  @JsonProperty("openValue") BigDecimal openValue,
+                  @JsonProperty("currentValue") BigDecimal currentValue,
+                  @JsonProperty("closeValue") BigDecimal closeValue) {
     this.title = title;
     this.market = market;
     this.name = name;
     this.category = category;
-    this.open = open;
-    this.current = current;
-    this.close = close;
+    this.openValue = openValue;
+    this.currentValue = currentValue;
+    this.closeValue = closeValue;
   }
 }
