@@ -76,6 +76,6 @@ public class TransactionFactoryTest {
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime());
 
     assertThat(transaction.getListItems().get(0)).isEqualToComparingOnlyGivenFields(expected.getListItems().get(0), "stockId", "quantity");
-    assertThat(transaction.getListItems().get(0).amount.getAmount()).isEqualToComparingFieldByField(expected.getListItems().get(0).amount.getAmount());
+    assertThat(transaction.getListItems().get(0).amount.getAmount()).isEqualTo(expected.getListItems().get(0).amount.getAmount());
   }
 }
