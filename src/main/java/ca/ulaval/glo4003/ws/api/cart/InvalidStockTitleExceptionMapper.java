@@ -6,7 +6,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 @ErrorMapper
-public class InvalidStockTitleExceptionMapper implements ExceptionMapper<InvalidStockTitleException> {
+public class InvalidStockTitleExceptionMapper
+    implements ExceptionMapper<InvalidStockTitleException> {
 
   @Override
   public Response toResponse(InvalidStockTitleException e) {

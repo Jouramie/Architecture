@@ -2,6 +2,9 @@ package ca.ulaval.glo4003.stock;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -34,7 +37,7 @@ public class StockIT {
     when()
         .get(API_STOCK_ROUTE + "/" + SOME_TITLE)
     .then()
-        .statusCode(200)
+        .statusCode(OK.getStatusCode())
         .body(TITLE, equalTo(SOME_TITLE))
         .body(NAME, equalTo(SOME_NAME))
         .body(MARKET, equalTo(SOME_MARKET))
@@ -53,7 +56,7 @@ public class StockIT {
     .when()
         .get(API_STOCK_ROUTE)
     .then()
-        .statusCode(200)
+        .statusCode(OK.getStatusCode())
         .body(TITLE, equalTo(SOME_TITLE))
         .body(NAME, equalTo(SOME_NAME))
         .body(MARKET, equalTo(SOME_MARKET))
@@ -70,7 +73,7 @@ public class StockIT {
     when()
         .get(API_STOCK_ROUTE + "/wrong")
     .then()
-        .statusCode(404);
+        .statusCode(NOT_FOUND.getStatusCode());
     //@formatter:on
   }
 
@@ -82,7 +85,7 @@ public class StockIT {
     .when()
         .get(API_STOCK_ROUTE)
     .then()
-        .statusCode(404);
+        .statusCode(NOT_FOUND.getStatusCode());
     //@formatter:on
   }
 
@@ -92,7 +95,7 @@ public class StockIT {
     when()
         .get(API_STOCK_ROUTE)
     .then()
-        .statusCode(400);
+        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 }

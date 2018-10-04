@@ -16,7 +16,9 @@ public class CartService {
   private final CartStockItemAssembler assembler;
 
   @Inject
-  public CartService(CurrentUserRepository currentUserRepository, StockRepository stockRepository, CartStockItemAssembler assembler) {
+  public CartService(StockRepository stockRepository,
+                     CurrentUserRepository currentUserRepository,
+                     CartStockItemAssembler assembler) {
     this.currentUserRepository = currentUserRepository;
     this.stockRepository = stockRepository;
     this.assembler = assembler;
@@ -35,6 +37,26 @@ public class CartService {
     cart.add(title, quantity);
   }
 
+  public void updateStockInCart(String title, int quantity) {
+    checkIfStockExists(title);
+    checkValidQuantity(quantity);
+
+    Cart cart = getCart();
+    cart.update(title, quantity);
+  }
+
+  public void removeStockFromCart(String title) {
+    checkIfStockExists(title);
+
+    Cart cart = getCart();
+    cart.remove(title);
+  }
+
+  public void emptyCart() {
+    Cart cart = getCart();
+    cart.empty();
+  }
+
   private Cart getCart() {
     return currentUserRepository.getCurrentUser().getCart();
   }
@@ -48,7 +70,7 @@ public class CartService {
   }
 
   private void checkValidQuantity(int quantity) {
-    if (quantity < 0) {
+    if (quantity <= 0) {
       throw new InvalidStockQuantityException();
     }
   }

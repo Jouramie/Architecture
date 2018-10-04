@@ -20,24 +20,28 @@ public class CartResourceImpl implements CartResource {
   }
 
   @Override
-  public List<CartItemResponseDto> addStockToCart(CartStockRequest cartStockRequest) {
-    cartService.addStockToCart(cartStockRequest.title, cartStockRequest.quantity);
+  public List<CartItemResponseDto> addStockToCart(String title,
+                                                  CartStockRequest cartStockRequest) {
+    cartService.addStockToCart(title, cartStockRequest.quantity);
     return cartService.getCartContent();
   }
 
   @Override
-  public List<CartItemResponseDto> updateStockInCart(CartStockRequest cartStockRequest) {
-    return null;
+  public List<CartItemResponseDto> updateStockInCart(String title,
+                                                     CartStockRequest cartStockRequest) {
+    cartService.updateStockInCart(title, cartStockRequest.quantity);
+    return cartService.getCartContent();
   }
 
-  /*@Override
-  public List<CartItemResponseDto> deleteStockInCart(CartStockRequest cartStockRequest) {
-    return null;
-  }*/
+  @Override
+  public List<CartItemResponseDto> deleteStockInCart(String title) {
+    cartService.removeStockFromCart(title);
+    return cartService.getCartContent();
+  }
 
   @Override
   public void emptyCart() {
-
+    cartService.emptyCart();
   }
 
   @Override
