@@ -83,7 +83,7 @@ public class SomeRestAssuredIT {
 Also, make sure to always use the statically imported `given()`, `when()` and `then()` methods to keep the test ordered.
 
 ### Email configuration
-On linux you need to source the `aws-creds` at the route of the project (you can use the instruction `set VARIABLE=value` on Windows), so the app has access to the SES service of AWS.
+On linux you need to source the `aws-creds` at the root of the project (you can use the instruction `set VARIABLE=value` on Windows), so the app has access to the SES service of AWS.
 Here's a link with more info: https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html
 The creds are assign to an AWS Role and only have access to the SES service.
 
