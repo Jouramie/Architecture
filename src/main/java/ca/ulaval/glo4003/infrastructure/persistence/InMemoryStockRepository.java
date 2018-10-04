@@ -23,7 +23,6 @@ public class InMemoryStockRepository implements StockRepository {
     if (result == null) {
       throw new StockNotFoundException("Cannot find stock with title " + title);
     }
-
     return result;
   }
 

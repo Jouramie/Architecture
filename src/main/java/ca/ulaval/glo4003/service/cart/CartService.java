@@ -31,7 +31,7 @@ public class CartService {
 
   public void addStockToCart(String title, int quantity) {
     checkIfStockExists(title);
-    checkValidQuantity(quantity);
+    checkIfValidQuantity(quantity);
 
     Cart cart = getCart();
     cart.add(title, quantity);
@@ -39,7 +39,7 @@ public class CartService {
 
   public void updateStockInCart(String title, int quantity) {
     checkIfStockExists(title);
-    checkValidQuantity(quantity);
+    checkIfValidQuantity(quantity);
 
     Cart cart = getCart();
     cart.update(title, quantity);
@@ -65,11 +65,11 @@ public class CartService {
     try {
       stockRepository.getByTitle(title);
     } catch (StockNotFoundException e) {
-      throw new InvalidStockTitleException(title);
+      throw new InvalidStockTitleException(title, e);
     }
   }
 
-  private void checkValidQuantity(int quantity) {
+  private void checkIfValidQuantity(int quantity) {
     if (quantity <= 0) {
       throw new InvalidStockQuantityException();
     }
