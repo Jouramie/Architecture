@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.util;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import ca.ulaval.glo4003.infrastructure.payment.TransactionItem;
+import ca.ulaval.glo4003.domain.transaction.TransactionItem;
 import java.math.BigDecimal;
 
 public class TransactionItemBuilder {

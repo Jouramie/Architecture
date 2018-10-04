@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.infrastructure.payment;
+package ca.ulaval.glo4003.domain.transaction;
 
 import java.time.LocalDateTime;
 import java.util.List;

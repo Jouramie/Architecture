@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.infrastructure.payment;
+package ca.ulaval.glo4003.domain.transaction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

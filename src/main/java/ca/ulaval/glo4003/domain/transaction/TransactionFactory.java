@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.infrastructure.payment;
+package ca.ulaval.glo4003.domain.transaction;
 
 import static java.util.stream.Collectors.toList;
 
@@ -13,7 +13,6 @@ import java.util.List;
 public class TransactionFactory {
   private final Clock clock;
   private final StockRepository stockRepository;
-  private MoneyAmount amount;
 
   public TransactionFactory(Clock clock, StockRepository stockRepository) {
     this.clock = clock;
@@ -21,20 +20,20 @@ public class TransactionFactory {
   }
 
   public Transaction create(Cart cart) {
-    List transactionItems = createTransactionItems(cart.getItems());
+    List<TransactionItem> transactionItems = createTransactionItems(cart.getItems());
     return new Transaction(clock.getCurrentTime(), transactionItems, TransactionType.PURCHASE);
   }
 
-  public List<TransactionItem> createTransactionItems(Collection<CartItem> cartItems) {
+  private List<TransactionItem> createTransactionItems(Collection<CartItem> cartItems) {
     return getTransactionItemsList(cartItems);
   }
 
-  public TransactionItem getTransactionItem(CartItem item) {
-    amount = stockRepository.getByTitle(item.title).getValue().getCurrentValue();
-    return new TransactionItem(item.title, item.quantity, amount);
+  private List<TransactionItem> getTransactionItemsList(Collection<CartItem> items) {
+    return items.stream().map(this::getTransactionItem).collect(toList());
   }
 
-  public List<TransactionItem> getTransactionItemsList(Collection<CartItem> items) {
-    return items.stream().map(this::getTransactionItem).collect(toList());
+  private TransactionItem getTransactionItem(CartItem item) {
+    MoneyAmount amount = stockRepository.getByTitle(item.title).getValue().getCurrentValue();
+    return new TransactionItem(item.title, item.quantity, amount);
   }
 }
