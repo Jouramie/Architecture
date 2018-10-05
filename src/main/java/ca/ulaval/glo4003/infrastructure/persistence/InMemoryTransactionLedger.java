@@ -1,14 +1,14 @@
-package ca.ulaval.glo4003.infrastructure.transaction;
+package ca.ulaval.glo4003.infrastructure.persistence;
 
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionLedgerInMemory implements TransactionLedger {
+public class InMemoryTransactionLedger implements TransactionLedger {
   private final List<Transaction> transactions;
 
-  public TransactionLedgerInMemory() {
+  public InMemoryTransactionLedger() {
     transactions = new ArrayList<>();
   }
 
