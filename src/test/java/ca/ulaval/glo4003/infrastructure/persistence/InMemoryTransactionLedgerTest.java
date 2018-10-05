@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class InMemoryTransactionLedgerTest {
-  private final Transaction A_TRANSACTION = new TransactionBuilder().withTime(LocalDateTime.now());
+  private final Transaction A_TRANSACTION = new TransactionBuilder().withTime(LocalDateTime.now()).build();
   private InMemoryTransactionLedger inMemoryTransactionLedger;
 
   @Before
