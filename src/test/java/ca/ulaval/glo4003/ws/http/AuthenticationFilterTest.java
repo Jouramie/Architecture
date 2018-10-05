@@ -62,7 +62,7 @@ public class AuthenticationFilterTest {
   public void whenFiltering_thenTokenIsValidated() throws Exception {
     authenticationFilter.filter(requestContext);
 
-    AuthenticationTokenDto expectedTokenDto = new AuthenticationTokenDto(SOME_EMAIL, SOME_TOKEN);
+    AuthenticationTokenDto expectedTokenDto = new AuthenticationTokenDto(SOME_TOKEN);
     verify(authenticationService).validateAuthentication(tokenDtoCaptor.capture());
     assertThat(tokenDtoCaptor.getValue()).isEqualToComparingFieldByField(expectedTokenDto);
   }
