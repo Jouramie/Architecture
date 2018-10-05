@@ -115,7 +115,7 @@ public class CheckoutServiceTest {
   public void givenEmptyCart_whenCheckoutCart_thenThrowCheckoutEmptyCartException() {
     given(cart.isEmpty()).willReturn(true);
     
-    assertThatThrownBy(() -> checkoutService.checkoutCart()).isInstanceOf(CheckoutEmptyCartException.class);
+    assertThatThrownBy(() -> checkoutService.checkoutCart()).isInstanceOf(EmptyCartException.class);
 
     verify(paymentProcessor, never()).payment(any());
     verify(transactionLedger, never()).save(any());

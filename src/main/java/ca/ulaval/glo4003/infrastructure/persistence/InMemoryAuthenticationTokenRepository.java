@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.infrastructure.persistence;
 
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
-import ca.ulaval.glo4003.domain.user.authentication.NoTokenFoundException;
+import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,7 +14,7 @@ public class InMemoryAuthenticationTokenRepository implements AuthenticationToke
 
   @Override
   public AuthenticationToken getByUUID(UUID uuid) {
-    return Optional.ofNullable(tokens.get(uuid.toString())).orElseThrow(NoTokenFoundException::new);
+    return Optional.ofNullable(tokens.get(uuid.toString())).orElseThrow(TokenNotFoundException::new);
   }
 
   @Override

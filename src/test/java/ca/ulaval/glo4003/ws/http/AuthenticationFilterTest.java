@@ -7,7 +7,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.domain.user.authentication.NoTokenFoundException;
+import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
@@ -59,7 +59,7 @@ public class AuthenticationFilterTest {
   }
 
   @Test
-  public void whenFiltering_thenTokenIsValidated() throws Exception {
+  public void whenFiltering_thenTokenIsValidated() {
     authenticationFilter.filter(requestContext);
 
     AuthenticationTokenDto expectedTokenDto = new AuthenticationTokenDto(SOME_TOKEN);
@@ -68,8 +68,8 @@ public class AuthenticationFilterTest {
   }
 
   @Test
-  public void givenNonExistingToken_whenFiltering_thenRequestIsAborted() throws Exception {
-    doThrow(NoTokenFoundException.class).when(authenticationService).validateAuthentication(any());
+  public void givenNonExistingToken_whenFiltering_thenRequestIsAborted() {
+    doThrow(TokenNotFoundException.class).when(authenticationService).validateAuthentication(any());
 
     authenticationFilter.filter(requestContext);
 
@@ -78,7 +78,7 @@ public class AuthenticationFilterTest {
   }
 
   @Test
-  public void givenInvalidToken_whenFiltering_thenRequestIsAborted() throws Exception {
+  public void givenInvalidToken_whenFiltering_thenRequestIsAborted() {
     doThrow(InvalidTokenException.class).when(authenticationService).validateAuthentication(any());
 
     authenticationFilter.filter(requestContext);

@@ -60,7 +60,7 @@ public class CheckoutService {
 
   private void checkIfCartIsEmpty(Cart cart) {
     if (cart.isEmpty()) {
-      throw new CheckoutEmptyCartException();
+      throw new EmptyCartException();
     }
   }
 

@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.ws.http;
 
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
-import ca.ulaval.glo4003.domain.user.authentication.NoTokenFoundException;
+import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
@@ -33,7 +33,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
       AuthenticationTokenDto authenticationTokenDto
           = extractAuthenticationInfo(containerRequestContext.getHeaders());
       authenticationService.validateAuthentication(authenticationTokenDto);
-    } catch (InvalidTokenException | NoTokenFoundException | NumberFormatException e) {
+    } catch (InvalidTokenException | TokenNotFoundException | NumberFormatException e) {
       containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
     }
   }
