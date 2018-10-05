@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bfe13575-c7ef-493f-b4e7-c2f83b2e019a",
+		"_postman_id": "193bcf71-0cce-45ee-b7d4-c07649bade8e",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -78,7 +78,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\": \"Atreides\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/users",
@@ -106,7 +106,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\": \"Atreides\",\n\t\"password\": \"foobar\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/authenticate",
@@ -128,12 +128,8 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "username",
-								"value": "Atreides"
-							},
-							{
 								"key": "token",
-								"value": "bfbe3814-a1a7-4c8e-8356-d7dd2630e375"
+								"value": ""
 							}
 						],
 						"body": {
@@ -165,14 +161,8 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "username",
-								"value": "Archi.test.42@gmail.com",
-								"type": "text"
-							},
-							{
 								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000",
-								"type": "text"
+								"value": "00000000-0000-0000-0000-000000000000"
 							}
 						],
 						"body": {
@@ -203,14 +193,8 @@
 								"value": "application/json"
 							},
 							{
-								"key": "username",
-								"value": "Archi.test.42@gmail.com",
-								"type": "text"
-							},
-							{
 								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000",
-								"type": "text"
+								"value": "00000000-0000-0000-0000-000000000000"
 							}
 						],
 						"body": {
@@ -242,14 +226,8 @@
 								"value": "application/json"
 							},
 							{
-								"key": "username",
-								"value": "Archi.test.42@gmail.com",
-								"type": "text"
-							},
-							{
 								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000",
-								"type": "text"
+								"value": "00000000-0000-0000-0000-000000000000"
 							}
 						],
 						"body": {
@@ -281,14 +259,8 @@
 								"value": "application/json"
 							},
 							{
-								"key": "username",
-								"value": "Archi.test.42@gmail.com",
-								"type": "text"
-							},
-							{
 								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000",
-								"type": "text"
+								"value": "00000000-0000-0000-0000-000000000000"
 							}
 						],
 						"body": {
@@ -316,14 +288,8 @@
 						"method": "DELETE",
 						"header": [
 							{
-								"key": "username",
-								"value": "Archi.test.42@gmail.com",
-								"type": "text"
-							},
-							{
 								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000",
-								"type": "text"
+								"value": "00000000-0000-0000-0000-000000000000"
 							}
 						],
 						"body": {
@@ -350,14 +316,8 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "username",
-								"value": "Archi.test.42@gmail.com",
-								"type": "text"
-							},
-							{
 								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000",
-								"type": "text"
+								"value": "00000000-0000-0000-0000-000000000000"
 							}
 						],
 						"body": {
