@@ -13,6 +13,7 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,9 +32,11 @@ public class CartServiceTest {
   @Mock
   private CurrentUserRepository currentUserRepository;
   @Mock
+  private UserRepository userRepository;
+  @Mock
   private StockRepository stockRepository;
   @Mock
-  private CartStockItemAssembler cartItemAssembler;
+  private CartItemAssembler cartItemAssembler;
   @Mock
   private User currentUser;
   @Mock
@@ -53,15 +56,14 @@ public class CartServiceTest {
     given(cart.getItems()).willReturn(new ArrayList<>());
     given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
 
-    cartService = new CartService(stockRepository, currentUserRepository, cartItemAssembler);
+    cartService = new CartService(stockRepository, currentUserRepository, userRepository, cartItemAssembler);
   }
 
   @Test
   public void whenGetCartContent_thenCartOfTheCurrentUserIsGot() {
-    cartService.getCartContent();
+    List<CartItemResponseDto> content = cartService.getCartContent();
 
-    verify(currentUserRepository).getCurrentUser();
-    verify(currentUser).getCart();
+    assertThat(content).hasSize(0);
   }
 
   @Test
@@ -77,18 +79,11 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenAddStockToCart_thenStockIsAddedToTheCartOfTheCurrentUser() {
-    cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY);
-
-    verify(currentUserRepository).getCurrentUser();
-    verify(currentUser).getCart();
-  }
-
-  @Test
   public void whenAddStockToCart_thenStockIsAddedToCart() {
     cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).add(SOME_TITLE, SOME_QUANTITY);
+    verify(userRepository).update(currentUser);
   }
 
   @Test
@@ -113,18 +108,11 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenUpdateStockQuantityInCart_thenStockIsUpdatedForTheCartOfTheCurrentUser() {
-    cartService.updateStockInCart(SOME_TITLE, SOME_QUANTITY);
-
-    verify(currentUserRepository).getCurrentUser();
-    verify(currentUser).getCart();
-  }
-
-  @Test
   public void whenUpdateStockQuantityInCart_thenStockIsUpdated() {
     cartService.updateStockInCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).update(SOME_TITLE, SOME_QUANTITY);
+    verify(userRepository).update(currentUser);
   }
 
   @Test
@@ -162,18 +150,11 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenRemoveStockFromCart_thenStockIsRemovedFromTheCartOfTheCurrentUser() {
-    cartService.removeStockFromCart(SOME_TITLE);
-
-    verify(currentUserRepository).getCurrentUser();
-    verify(currentUser).getCart();
-  }
-
-  @Test
   public void whenRemoveStockFromCart_thenStockIsRemoved() {
     cartService.removeStockFromCart(SOME_TITLE);
 
     verify(cart).remove(SOME_TITLE);
+    verify(userRepository).update(currentUser);
   }
 
   @Test
@@ -188,17 +169,10 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenEmptyCart_thenCartOfTheCurrentUserIsEmpty() {
-    cartService.emptyCart();
-
-    verify(currentUserRepository).getCurrentUser();
-    verify(currentUser).getCart();
-  }
-
-  @Test
   public void whenEmptyCart_thenCartIsEmpty() {
     cartService.emptyCart();
 
     verify(cart).empty();
+    verify(userRepository).update(currentUser);
   }
 }

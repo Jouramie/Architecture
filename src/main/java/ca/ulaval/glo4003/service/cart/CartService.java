@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.service.cart;
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
+import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.List;
@@ -11,14 +12,17 @@ import javax.inject.Inject;
 @Component
 public class CartService {
   private final CurrentUserRepository currentUserRepository;
+  private final UserRepository userRepository;
   private final StockRepository stockRepository;
-  private final CartStockItemAssembler assembler;
+  private final CartItemAssembler assembler;
 
   @Inject
   public CartService(StockRepository stockRepository,
                      CurrentUserRepository currentUserRepository,
-                     CartStockItemAssembler assembler) {
+                     UserRepository userRepository,
+                     CartItemAssembler assembler) {
     this.currentUserRepository = currentUserRepository;
+    this.userRepository = userRepository;
     this.stockRepository = stockRepository;
     this.assembler = assembler;
   }
@@ -34,6 +38,8 @@ public class CartService {
 
     Cart cart = getCart();
     cart.add(title, quantity);
+
+    updateUser();
   }
 
   public void updateStockInCart(String title, int quantity) {
@@ -42,6 +48,8 @@ public class CartService {
 
     Cart cart = getCart();
     cart.update(title, quantity);
+
+    updateUser();
   }
 
   public void removeStockFromCart(String title) {
@@ -49,11 +57,15 @@ public class CartService {
 
     Cart cart = getCart();
     cart.remove(title);
+
+    updateUser();
   }
 
   public void emptyCart() {
     Cart cart = getCart();
     cart.empty();
+
+    updateUser();
   }
 
   private Cart getCart() {
@@ -70,5 +82,9 @@ public class CartService {
     if (quantity <= 0) {
       throw new InvalidStockQuantityException();
     }
+  }
+
+  private void updateUser() {
+    userRepository.update(currentUserRepository.getCurrentUser());
   }
 }

@@ -12,11 +12,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 @Component
-public class CartStockItemAssembler {
+public class CartItemAssembler {
   private final StockRepository stockRepository;
 
   @Inject
-  public CartStockItemAssembler(StockRepository stockRepository) {
+  public CartItemAssembler(StockRepository stockRepository) {
     this.stockRepository = stockRepository;
   }
 

@@ -2,8 +2,8 @@ package ca.ulaval.glo4003.domain.cart;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Cart {
@@ -53,7 +53,7 @@ public class Cart {
     }
   }
 
-  public Collection<CartItem> getItems() {
+  public List<CartItem> getItems() {
     return items.values().stream().map(CartItem::new).collect(toList());
   }
 }

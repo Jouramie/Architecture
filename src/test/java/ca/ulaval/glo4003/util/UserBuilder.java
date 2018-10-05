@@ -12,13 +12,13 @@ public class UserBuilder {
   private String username = DEFAULT_USERNAME;
   private String password = DEFAULT_PASSWORD;
 
-  public UserBuilder withPassword(String password) {
-    this.password = password;
+  public UserBuilder withUsername(String username) {
+    this.username = username;
     return this;
   }
 
-  public UserBuilder withUsername(String username) {
-    this.username = username;
+  public UserBuilder withPassword(String password) {
+    this.password = password;
     return this;
   }
 

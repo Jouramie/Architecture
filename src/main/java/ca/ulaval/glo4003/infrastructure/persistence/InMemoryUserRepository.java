@@ -13,9 +13,17 @@ public class InMemoryUserRepository implements UserRepository {
   private final Map<String, User> content = new ConcurrentHashMap<>();
 
   @Override
-  public void save(User user) {
+  public void add(User user) {
     if (content.containsKey(user.getUsername())) {
       throw new UserAlreadyExistsException();
+    }
+    content.put(user.getUsername(), user);
+  }
+
+  @Override
+  public void update(User user) {
+    if (!content.containsKey(user.getUsername())) {
+      throw new UserNotFoundException();
     }
     content.put(user.getUsername(), user);
   }
