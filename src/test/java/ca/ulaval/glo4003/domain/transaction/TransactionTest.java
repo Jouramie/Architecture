@@ -17,8 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransactionTest {
-  private static final TransactionItem AN_ITEM = new TransactionItemBuilder().buildDefault();
-  private static final TransactionItem ANOTHER_ITEM = new TransactionItemBuilder().buildDefault();
+  private static final TransactionItem AN_ITEM = new TransactionItemBuilder().build();
+  private static final TransactionItem ANOTHER_ITEM = new TransactionItemBuilder().build();
   private static final List<TransactionItem> SOME_TRANSACTION_ITEMS
       = Arrays.asList(AN_ITEM, ANOTHER_ITEM);
   private static final TransactionType SOME_TYPE = TransactionType.PURCHASE;
@@ -30,30 +30,13 @@ public class TransactionTest {
 
   @Before
   public void setup() {
-
     given(someClock.getCurrentTime()).willReturn(SOME_TIME);
     transaction = new Transaction(someClock.getCurrentTime(), SOME_TRANSACTION_ITEMS, SOME_TYPE);
   }
 
   @Test
-  public void whenGetTime_thenReturnTransactionsTime() {
-    assertThat(transaction.getTime()).isEqualTo(someClock.getCurrentTime());
-  }
-
-  @Test
-  public void whenGetType_thenReturnTransactionType() {
-    assertThat(transaction.getType()).isEqualTo(SOME_TYPE);
-  }
-
-  @Test
-  public void whenGetAllTransaction_thenReturnTransactions() {
-    assertThat(transaction.getListItems()).isEqualTo(SOME_TRANSACTION_ITEMS);
-  }
-
-  @Test
   public void whenGettingTotal_thenTotalIsCorrectlyCalculated() {
-
-    MoneyAmount totalAmount = transaction.getTotal();
+    MoneyAmount totalAmount = transaction.calculateTotal();
 
     MoneyAmount expectedTotal = AN_ITEM.amount.add(ANOTHER_ITEM.amount);
     assertThat(totalAmount.toUsd()).isEqualTo(expectedTotal.toUsd());

@@ -54,7 +54,7 @@ public class CartResourceTest {
   }
 
   @Test
-  public void whenAddStockToCart_thenReturningCartContent() {
+  public void whenAddStockToCart_thenReturnCartContent() {
     List<CartItemResponseDto> resultingDto = cartResource.addStockToCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
@@ -68,7 +68,7 @@ public class CartResourceTest {
   }
 
   @Test
-  public void whenUpdateStockInCart_thenReturningCartContent() {
+  public void whenUpdateStockInCart_thenReturnCartContent() {
     List<CartItemResponseDto> resultingDto = cartResource.updateStockInCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
@@ -82,7 +82,7 @@ public class CartResourceTest {
   }
 
   @Test
-  public void whenRemoveStockFromCart_thenReturningCartContent() {
+  public void whenRemoveStockFromCart_thenReturnCartContent() {
     List<CartItemResponseDto> resultingDto = cartResource.deleteStockInCart(SOME_TITLE);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
@@ -96,7 +96,7 @@ public class CartResourceTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenReturningPreviousCartContent() {
+  public void whenCheckoutCart_thenReturnPreviousCartContent() {
     given(checkoutService.checkoutCart()).willReturn(Collections.singletonList(expectedDto));
 
     List<CartItemResponseDto> resultingDto = cartResource.checkoutCart();

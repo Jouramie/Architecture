@@ -2,12 +2,14 @@ package ca.ulaval.glo4003.cart;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
@@ -36,8 +38,8 @@ public class CartIT {
   private static final String NAME = "name";
   private static final String MARKET = "market";
   private static final String CATEGORY = "category";
-  private static final String CURRENT = "current";
-  private static final String QUANTITY = "current";
+  private static final String CURRENT_VALUE = "currentValue";
+  private static final String QUANTITY = "quantity";
 
   private static final String SOME_USERNAME = "carticart";
   private static final String SOME_PASSWORD = "stockistock";
@@ -110,12 +112,57 @@ public class CartIT {
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", is(iterableWithSize(1)))
-        .body("$", everyItem(hasProperty(TITLE)))
-        .body("$", everyItem(hasProperty(NAME)))
-        .body("$", everyItem(hasProperty(MARKET)))
-        .body("$", everyItem(hasProperty(CATEGORY)))
-        .body("$", everyItem(hasProperty(CURRENT)))
-        .body("$", everyItem(hasProperty(QUANTITY)));
+        .body("[0].title", is(SOME_TITLE))
+        .body("[0].quantity", is(CartStockRequestBuilder.DEFAULT_QUANTITY))
+        .body("[0]", hasKey(MARKET))
+        .body("[0]", hasKey(CATEGORY))
+        .body("[0]", hasKey(CURRENT_VALUE))
+        .body("[0]", hasKey(QUANTITY));
+    //@formatter:on
+  }
+
+  @Test
+  public void givenEmptyCart_whenAddStockToCart_thenReturnStockInList() {
+    givenUserAlreadyRegistered();
+    String token = givenUserAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(userHeader)
+        .header(tokenHeader)
+        .body(cartStockRequestBuilder.build())
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
+        .put(API_CART_ROUTE_WITH_TITLE)
+    .then()
+        .statusCode(OK.getStatusCode())
+        .body("$", is(iterableWithSize(1)))
+        .body("[0].title", is(SOME_TITLE))
+        .body("[0].quantity", is(CartStockRequestBuilder.DEFAULT_QUANTITY))
+        .body("[0]", hasKey(MARKET))
+        .body("[0]", hasKey(CATEGORY))
+        .body("[0]", hasKey(CURRENT_VALUE))
+        .body("[0]", hasKey(QUANTITY));
+    //@formatter:on
+  }
+
+  @Test
+  public void givenCartContainsDefaultStock_whenAddSameStockToCart_thenAddAmountOfStocks() {
+    givenUserAlreadyRegistered();
+    String token = givenUserAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    givenCartContainsDefaultStock(tokenHeader);
+    //@formatter:off
+    given()
+        .header(userHeader)
+        .header(tokenHeader)
+        .body(cartStockRequestBuilder.build())
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
+        .put(API_CART_ROUTE_WITH_TITLE)
+    .then()
+        .statusCode(OK.getStatusCode())
+        .body("[0].quantity", is(CartStockRequestBuilder.DEFAULT_QUANTITY * 2));
     //@formatter:on
   }
 
@@ -133,11 +180,10 @@ public class CartIT {
   }
 
   @Test
-  public void givenCartContainsDefaultStock_whenUpdateStockToCart_thenReturnStockInList() {
+  public void givenEmptyCart_whenUpdateStockToCart_thenReturn400() {
     givenUserAlreadyRegistered();
     String token = givenUserAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
-    givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
     given()
         .header(userHeader)
@@ -147,14 +193,7 @@ public class CartIT {
     .when()
         .patch(API_CART_ROUTE_WITH_TITLE)
     .then()
-        .statusCode(OK.getStatusCode())
-        .body("$", is(iterableWithSize(1)))
-        .body("$", everyItem(hasProperty(TITLE)))
-        .body("$", everyItem(hasProperty(NAME)))
-        .body("$", everyItem(hasProperty(MARKET)))
-        .body("$", everyItem(hasProperty(CATEGORY)))
-        .body("$", everyItem(hasProperty(CURRENT)))
-        .body("$", everyItem(hasProperty(QUANTITY)));
+        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 
@@ -202,7 +241,7 @@ public class CartIT {
   }
 
   @Test
-  public void givenCartContainsDefaultStock_whenEmptyCart_thenReturnStockInList() {
+  public void givenCartContainsDefaultStock_whenEmptyCart_thenEmptyTheCart() {
     givenUserAlreadyRegistered();
     String token = givenUserAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
@@ -215,6 +254,15 @@ public class CartIT {
         .delete(API_CART_ROUTE)
     .then()
         .statusCode(NO_CONTENT.getStatusCode());
+
+    given()
+        .header(userHeader)
+        .header(tokenHeader)
+    .when()
+        .get(API_CART_ROUTE)
+    .then()
+        .statusCode(OK.getStatusCode())
+        .body("$", is(emptyIterable()));
     //@formatter:on
   }
 
@@ -247,7 +295,7 @@ public class CartIT {
         .body("$", everyItem(contains(hasProperty(NAME))))
         .body("$", everyItem(contains(hasProperty(MARKET))))
         .body("$", everyItem(contains(hasProperty(CATEGORY))))
-        .body("$", everyItem(contains(hasProperty(CURRENT))))
+        .body("$", everyItem(contains(hasProperty(CURRENT_VALUE))))
         .body("$", everyItem(contains(hasProperty(QUANTITY))));
     //@formatter:on
   }

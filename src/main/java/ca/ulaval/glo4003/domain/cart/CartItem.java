@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.domain.cart;
 
+import java.util.Objects;
+
 public class CartItem {
   public String title;
   public int quantity;
@@ -19,11 +21,18 @@ public class CartItem {
     if (this == other) {
       return true;
     }
+
     if (!(other instanceof CartItem)) {
       return false;
     }
 
-    CartItem otherItem = (CartItem) other;
-    return otherItem.title.equals(title) && otherItem.quantity == quantity;
+    CartItem cartItem = (CartItem) other;
+    return quantity == cartItem.quantity && Objects.equals(title, cartItem.title);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(title, quantity);
   }
 }
+

@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Transaction {
-  private final TransactionType type;
-  private final List<TransactionItem> items;
-  private final LocalDateTime timestamp;
+  public final TransactionType type;
+  public final List<TransactionItem> items;
+  public final LocalDateTime timestamp;
 
   public Transaction(LocalDateTime timestamp, List<TransactionItem> items, TransactionType type) {
     this.type = type;
@@ -15,21 +15,9 @@ public class Transaction {
     this.timestamp = timestamp;
   }
 
-  public LocalDateTime getTime() {
-    return timestamp;
-  }
-
-  public TransactionType getType() {
-    return type;
-  }
-
-  public List<TransactionItem> getListItems() {
-    return items;
-  }
-
-  public MoneyAmount getTotal() {
+  public MoneyAmount calculateTotal() {
     return items.stream()
-        .map(item -> item.amount.multiply(item.quantity))
-        .reduce(MoneyAmount.ZERO_MONEY, MoneyAmount::add);
+        .map(TransactionItem::calculateTotal)
+        .reduce(MoneyAmount.zero(items.get(0).amount.getCurrency()), MoneyAmount::add);
   }
 }

@@ -5,9 +5,6 @@ import java.math.RoundingMode;
 
 public class MoneyAmount {
 
-  public static final MoneyAmount ZERO_MONEY
-      = new MoneyAmount(0, new Currency("USD", new BigDecimal(1)));
-
   private final BigDecimal amount;
   private final Currency currency;
 
@@ -19,6 +16,10 @@ public class MoneyAmount {
   public MoneyAmount(BigDecimal amount, Currency currency) {
     this.amount = amount.setScale(2, RoundingMode.HALF_EVEN);
     this.currency = currency;
+  }
+
+  public static MoneyAmount zero(Currency currency) {
+    return new MoneyAmount(0, currency);
   }
 
   public BigDecimal getAmount() {

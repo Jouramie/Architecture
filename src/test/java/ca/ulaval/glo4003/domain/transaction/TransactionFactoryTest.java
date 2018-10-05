@@ -42,7 +42,6 @@ public class TransactionFactoryTest {
 
   @Before
   public void setup() {
-
     given(clock.getCurrentTime()).willReturn(SOME_TIME);
     cart = new Cart();
     cart.add(SOME_TITLE, SOME_QUANTITY);
@@ -56,26 +55,26 @@ public class TransactionFactoryTest {
 
   @Test
   public void whenCreate_thenTypeIsSetToTransaction() {
-    Transaction transaction = factory.create(cart);
-    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime());
+    Transaction transaction = factory.createPurchase(cart);
+    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
-    assertThat(transaction).isEqualToComparingOnlyGivenFields(expected, "type");
+    assertThat(transaction.type).isEqualTo(expected.type);
   }
 
   @Test
   public void whenCreate_thenLocalTimeSetToTransaction() {
-    Transaction transaction = factory.create(cart);
-    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime());
+    Transaction transaction = factory.createPurchase(cart);
+    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
-    assertThat(transaction.getTime()).isEqualTo(expected.getTime());
+    assertThat(transaction.timestamp).isEqualTo(expected.timestamp);
   }
 
   @Test
-  public void whenCreate_thenTransactionItemsIsSetToTrsanction() {
-    Transaction transaction = factory.create(cart);
-    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime());
+  public void whenCreate_thenTransactionItemsIsSetToTransaction() {
+    Transaction transaction = factory.createPurchase(cart);
+    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
-    assertThat(transaction.getListItems().get(0)).isEqualToComparingOnlyGivenFields(expected.getListItems().get(0), "stockId", "quantity");
-    assertThat(transaction.getListItems().get(0).amount.getAmount()).isEqualTo(expected.getListItems().get(0).amount.getAmount());
+    assertThat(transaction.items).first().isEqualToComparingOnlyGivenFields(expected.items.get(0), "title", "quantity");
+    assertThat(transaction.items.get(0).amount.getAmount()).isEqualTo(expected.items.get(0).amount.getAmount());
   }
 }

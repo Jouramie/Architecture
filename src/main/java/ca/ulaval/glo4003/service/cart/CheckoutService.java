@@ -12,6 +12,7 @@ import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 public class CheckoutService {
   private final PaymentProcessor paymentProcessor;
@@ -20,15 +21,16 @@ public class CheckoutService {
   private final TransactionLedger transactionLedger;
   private final NotificationSender notificationSender;
   private final NotificationFactory notificationFactory;
-  private final CartStockItemAssembler cartStockItemAssembler;
+  private final CartItemAssembler cartItemAssembler;
 
+  @Inject
   public CheckoutService(PaymentProcessor paymentProcessor,
                          CurrentUserRepository currentUserRepository,
                          TransactionFactory transactionFactory,
                          TransactionLedger transactionLedger,
                          NotificationSender notificationSender,
                          NotificationFactory notificationFactory,
-                         CartStockItemAssembler cartStockItemAssembler) {
+                         CartItemAssembler cartItemAssembler) {
 
     this.paymentProcessor = paymentProcessor;
     this.currentUserRepository = currentUserRepository;
@@ -36,7 +38,7 @@ public class CheckoutService {
     this.transactionLedger = transactionLedger;
     this.notificationSender = notificationSender;
     this.notificationFactory = notificationFactory;
-    this.cartStockItemAssembler = cartStockItemAssembler;
+    this.cartItemAssembler = cartItemAssembler;
   }
 
   public List<CartItemResponseDto> checkoutCart() {
@@ -45,11 +47,11 @@ public class CheckoutService {
       return new ArrayList<>();
     }
 
-    Transaction transaction = transactionFactory.create(cart);
+    Transaction transaction = transactionFactory.createPurchase(cart);
     processTransaction(transaction);
     sendTransactionNotification(transaction);
 
-    List<CartItemResponseDto> cartItemResponseDtos = cartStockItemAssembler
+    List<CartItemResponseDto> cartItemResponseDtos = cartItemAssembler
         .toDtoList(cart.getItems());
     cart.empty();
     return cartItemResponseDtos;
