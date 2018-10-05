@@ -17,11 +17,11 @@ public class NotificationFactory {
   }
 
   private String buildNotificationTitle(Transaction transaction) {
-    return transaction.getType().toString() + " summary - InvestUL";
+    return transaction.type.toString() + " summary - InvestUL";
   }
 
   private String buildTransactionSummary(Transaction transaction) {
-    List<String> entries = transaction.getListItems().stream()
+    List<String> entries = transaction.items.stream()
         .map(this::buildTransactionEntry)
         .collect(toList());
     entries.add(buildTotalEntry(transaction));
@@ -36,7 +36,7 @@ public class NotificationFactory {
   }
 
   private String buildTotalEntry(Transaction transaction) {
-    return "Total: " + transaction.getTotal().getAmount().toString()
-        + transaction.getTotal().getCurrency().getName();
+    return "Total: " + transaction.calculateTotal().getAmount().toString()
+        + transaction.calculateTotal().getCurrency().getName();
   }
 }

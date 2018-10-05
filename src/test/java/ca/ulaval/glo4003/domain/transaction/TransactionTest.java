@@ -37,23 +37,23 @@ public class TransactionTest {
 
   @Test
   public void whenGetTime_thenReturnTransactionsTime() {
-    assertThat(transaction.getTime()).isEqualTo(someClock.getCurrentTime());
+    assertThat(transaction.timestamp).isEqualTo(someClock.getCurrentTime());
   }
 
   @Test
   public void whenGetType_thenReturnTransactionType() {
-    assertThat(transaction.getType()).isEqualTo(SOME_TYPE);
+    assertThat(transaction.type).isEqualTo(SOME_TYPE);
   }
 
   @Test
   public void whenGetAllTransaction_thenReturnTransactions() {
-    assertThat(transaction.getListItems()).isEqualTo(SOME_TRANSACTION_ITEMS);
+    assertThat(transaction.items).isEqualTo(SOME_TRANSACTION_ITEMS);
   }
 
   @Test
   public void whenGettingTotal_thenTotalIsCorrectlyCalculated() {
 
-    MoneyAmount totalAmount = transaction.getTotal();
+    MoneyAmount totalAmount = transaction.calculateTotal();
 
     MoneyAmount expectedTotal = AN_ITEM.amount.add(ANOTHER_ITEM.amount);
     assertThat(totalAmount.toUsd()).isEqualTo(expectedTotal.toUsd());

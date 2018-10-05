@@ -26,14 +26,14 @@ public class NotificationFactoryTest {
   public void whenCreatingTransactionNotification_thenTileContainsTransactionType() {
     Notification notification = notificationFactory.create(transaction);
 
-    assertThat(notification.title).contains(transaction.getType().toString());
+    assertThat(notification.title).contains(transaction.type.toString());
   }
 
   @Test
   public void whenCreatingTransactionNotification_thenMessageContainsStockId() {
     Notification notification = notificationFactory.create(transaction);
 
-    TransactionItem item = transaction.getListItems().get(0);
+    TransactionItem item = transaction.items.get(0);
     assertThat(notification.message).contains(item.stockId);
   }
 
@@ -41,7 +41,7 @@ public class NotificationFactoryTest {
   public void whenCreatingTransactionNotification_thenMessageContainsStockQuantity() {
     Notification notification = notificationFactory.create(transaction);
 
-    TransactionItem item = transaction.getListItems().get(0);
+    TransactionItem item = transaction.items.get(0);
     assertThat(notification.message).contains(Integer.toString(item.quantity));
   }
 
@@ -49,7 +49,7 @@ public class NotificationFactoryTest {
   public void whenCreatingTransactionNotification_thenMessageContainsStockCost() {
     Notification notification = notificationFactory.create(transaction);
 
-    TransactionItem item = transaction.getListItems().get(0);
+    TransactionItem item = transaction.items.get(0);
     assertThat(notification.message).contains(item.amount.getAmount().toString());
   }
 
@@ -57,7 +57,7 @@ public class NotificationFactoryTest {
   public void whenCreatingTransactionNotification_thenMessageContainsStockCostCurrency() {
     Notification notification = notificationFactory.create(transaction);
 
-    TransactionItem item = transaction.getListItems().get(0);
+    TransactionItem item = transaction.items.get(0);
     assertThat(notification.message).contains(item.amount.getCurrency().getName());
   }
 
@@ -65,7 +65,7 @@ public class NotificationFactoryTest {
   public void whenCreatingTransactionNotification_thenMessageContainsTotal() {
     Notification notification = notificationFactory.create(transaction);
 
-    MoneyAmount total = transaction.getTotal();
+    MoneyAmount total = transaction.calculateTotal();
     assertThat(notification.message).contains(total.getAmount().toString());
   }
 }
