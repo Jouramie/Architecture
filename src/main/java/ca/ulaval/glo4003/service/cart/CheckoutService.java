@@ -21,7 +21,7 @@ public class CheckoutService {
   private final TransactionLedger transactionLedger;
   private final NotificationSender notificationSender;
   private final NotificationFactory notificationFactory;
-  private final CartItemAssembler cartStockItemAssembler;
+  private final CartItemAssembler cartItemAssembler;
 
   @Inject
   public CheckoutService(PaymentProcessor paymentProcessor,
@@ -30,7 +30,7 @@ public class CheckoutService {
                          TransactionLedger transactionLedger,
                          NotificationSender notificationSender,
                          NotificationFactory notificationFactory,
-                         CartItemAssembler cartStockItemAssembler) {
+                         CartItemAssembler cartItemAssembler) {
 
     this.paymentProcessor = paymentProcessor;
     this.currentUserRepository = currentUserRepository;
@@ -38,7 +38,7 @@ public class CheckoutService {
     this.transactionLedger = transactionLedger;
     this.notificationSender = notificationSender;
     this.notificationFactory = notificationFactory;
-    this.cartStockItemAssembler = cartStockItemAssembler;
+    this.cartItemAssembler = cartItemAssembler;
   }
 
   public List<CartItemResponseDto> checkoutCart() {
@@ -51,7 +51,7 @@ public class CheckoutService {
     processTransaction(transaction);
     sendTransactionNotification(transaction);
 
-    List<CartItemResponseDto> cartItemResponseDtos = cartStockItemAssembler
+    List<CartItemResponseDto> cartItemResponseDtos = cartItemAssembler
         .toDtoList(cart.getItems());
     cart.empty();
     return cartItemResponseDtos;

@@ -30,29 +30,12 @@ public class TransactionTest {
 
   @Before
   public void setup() {
-
     given(someClock.getCurrentTime()).willReturn(SOME_TIME);
     transaction = new Transaction(someClock.getCurrentTime(), SOME_TRANSACTION_ITEMS, SOME_TYPE);
   }
 
   @Test
-  public void whenGetTime_thenReturnTransactionsTime() {
-    assertThat(transaction.timestamp).isEqualTo(someClock.getCurrentTime());
-  }
-
-  @Test
-  public void whenGetType_thenReturnTransactionType() {
-    assertThat(transaction.type).isEqualTo(SOME_TYPE);
-  }
-
-  @Test
-  public void whenGetAllTransaction_thenReturnTransactions() {
-    assertThat(transaction.items).isEqualTo(SOME_TRANSACTION_ITEMS);
-  }
-
-  @Test
   public void whenGettingTotal_thenTotalIsCorrectlyCalculated() {
-
     MoneyAmount totalAmount = transaction.calculateTotal();
 
     MoneyAmount expectedTotal = AN_ITEM.amount.add(ANOTHER_ITEM.amount);

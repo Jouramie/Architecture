@@ -70,7 +70,7 @@ public class TransactionFactoryTest {
   }
 
   @Test
-  public void whenCreate_thenTransactionItemsIsSetToTrsanction() {
+  public void whenCreate_thenTransactionItemsIsSetToTransaction() {
     Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
