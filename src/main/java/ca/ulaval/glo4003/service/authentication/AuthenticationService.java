@@ -11,6 +11,7 @@ import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
+import java.util.UUID;
 import javax.inject.Inject;
 
 @Component
@@ -50,7 +51,7 @@ public class AuthenticationService {
 
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {
     AuthenticationToken savedToken =
-        authenticationTokenRepository.getByEmail(authenticationTokenDto.email);
+        authenticationTokenRepository.getByUUID(UUID.fromString(authenticationTokenDto.token));
     AuthenticationToken requestToken = authenticationTokenAssembler.toModel(authenticationTokenDto);
     if (savedToken.equals(requestToken)) {
       User currentUser = userRepository.find(savedToken.email);
