@@ -12,7 +12,7 @@ import org.junit.Test;
 public class InMemoryAuthenticationTokenRepositoryTest {
 
   private static final String SOME_EMAIL = "email";
-  public static final String SOME_TOKEN = "token";
+  public static final String SOME_TOKEN = "00000000-0000-0000-0000-000000000000";
 
   private final AuthenticationToken token
       = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
@@ -35,7 +35,7 @@ public class InMemoryAuthenticationTokenRepositoryTest {
 
   @Test
   public void givenTokenDoesNotExist_whenGettingTokenByUUID_thenTokenNotFoundExceptionIsThrown() {
-    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(UUID.fromString(SOME_TOKEN)))
+    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(UUID.randomUUID()))
         .isInstanceOf(NoTokenFoundException.class);
   }
 
@@ -45,7 +45,7 @@ public class InMemoryAuthenticationTokenRepositoryTest {
 
     inMemoryAuthenticationTokenRepository.remove(token.token);
 
-    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(token.token))
+    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(UUID.fromString(token.token)))
         .isInstanceOf(NoTokenFoundException.class);
   }
 }

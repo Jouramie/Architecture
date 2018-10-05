@@ -17,6 +17,7 @@ import ca.ulaval.glo4003.util.UserBuilder;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
+import java.util.UUID;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,7 +71,7 @@ public class AuthenticationServiceTest {
   @Before
   public void initializeMocks() {
     given(userRepository.find(any())).willReturn(SOME_USER);
-    given(tokenRepository.getTokenForUser(any())).willReturn(AUTHENTICATION_TOKEN);
+    given(tokenRepository.getByUUID(any())).willReturn(AUTHENTICATION_TOKEN);
     given(tokenFactory.createToken(any())).willReturn(AUTHENTICATION_TOKEN);
   }
 
@@ -85,7 +86,7 @@ public class AuthenticationServiceTest {
   public void whenAuthenticatingUser_thenTokenIsSaved() {
     authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
-    verify(tokenRepository).addToken(AUTHENTICATION_TOKEN);
+    verify(tokenRepository).add(AUTHENTICATION_TOKEN);
   }
 
   @Test
@@ -108,7 +109,7 @@ public class AuthenticationServiceTest {
   public void whenValidatingAuthentication_thenTokenOfUserIsRetrievedFromRepository() {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    verify(tokenRepository).getTokenForUser(AUTHENTICATION_TOKEN_DTO.email);
+    verify(tokenRepository).getByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token));
   }
 
   @Test
@@ -141,6 +142,6 @@ public class AuthenticationServiceTest {
 
     authenticationService.revokeToken();
 
-    verify(tokenRepository).removeTokenOfUser(SOME_USER.getEmail());
+    verify(tokenRepository).remove(AUTHENTICATION_TOKEN.token);
   }
 }
