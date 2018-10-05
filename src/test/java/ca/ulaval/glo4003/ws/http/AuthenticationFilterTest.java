@@ -86,4 +86,14 @@ public class AuthenticationFilterTest {
     verify(requestContext).abortWith(responseCaptor.capture());
     assertThat(responseCaptor.getValue().getStatus()).isEqualTo(UNAUTHORIZED.getStatusCode());
   }
+
+  @Test
+  public void givenInvalidUUID_whenFiltering_thenRequestIsAborted() throws Exception {
+    doThrow(IllegalArgumentException.class).when(authenticationService).validateAuthentication(any());
+
+    authenticationFilter.filter(requestContext);
+
+    verify(requestContext).abortWith(responseCaptor.capture());
+    assertThat(responseCaptor.getValue().getStatus()).isEqualTo(UNAUTHORIZED.getStatusCode());
+  }
 }

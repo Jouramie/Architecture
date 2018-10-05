@@ -54,7 +54,6 @@ public class TokenRevocationIT {
 
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
     .when()
         .post(REVOCATION_ROUTE)
@@ -71,7 +70,6 @@ public class TokenRevocationIT {
 
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
     .when()
         .post(REVOCATION_ROUTE)

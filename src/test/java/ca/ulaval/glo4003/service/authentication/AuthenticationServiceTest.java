@@ -120,6 +120,26 @@ public class AuthenticationServiceTest {
   }
 
   @Test
+  public void givenInvalidNumberFormatUUID_whenValidatingToken_thenNumberFormatExceptionIsThrown() {
+    AuthenticationTokenDto invalidUUIDToken
+        = new AuthenticationTokenDto("10110100-0000-0000-0000-000000000000worng");
+    ThrowableAssert.ThrowingCallable validateToken
+        = () -> authenticationService.validateAuthentication(invalidUUIDToken);
+
+    assertThatThrownBy(validateToken).isInstanceOf(NumberFormatException.class);
+  }
+
+  @Test
+  public void givenInvalidUUID_whenValidatingToken_thenIllegalArgumentException() {
+    AuthenticationTokenDto invalidUUIDToken
+        = new AuthenticationTokenDto("wrong");
+    ThrowableAssert.ThrowingCallable validateToken
+        = () -> authenticationService.validateAuthentication(invalidUUIDToken);
+
+    assertThatThrownBy(validateToken).isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   public void whenValidatingToken_thenCurrentUserSet() {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
