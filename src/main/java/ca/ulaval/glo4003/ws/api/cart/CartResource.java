@@ -22,9 +22,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/cart")
+@AuthenticationRequiredBinding
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@AuthenticationRequiredBinding
 public interface CartResource {
   @GET
   @Operation(
@@ -34,13 +34,13 @@ public interface CartResource {
           @ApiResponse(
               responseCode = "200", description = "cart content",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartStockResponse.class))
+                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
               )
           ),
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockResponse> getCartContent();
+  List<CartItemResponseDto> getCartContent();
 
   @PUT
   @Path("/{title}")
@@ -55,7 +55,7 @@ public interface CartResource {
           @ApiResponse(
               responseCode = "200", description = "cart content",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartStockResponse.class))
+                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
               )
           ),
           @ApiResponse(responseCode = "400",
@@ -63,9 +63,9 @@ public interface CartResource {
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockResponse> addStockToCart(@Parameter(description = "Title", required = true)
-                                         @NotNull @PathParam("title") String title,
-                                         CartStockRequest cartStockRequest);
+  List<CartItemResponseDto> addStockToCart(@Parameter(description = "Title", required = true)
+                                           @NotNull @PathParam("title") String title,
+                                           CartStockRequest cartStockRequest);
 
   @PATCH
   @Path("/{title}")
@@ -80,7 +80,7 @@ public interface CartResource {
           @ApiResponse(
               responseCode = "200", description = "cart content",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartStockResponse.class))
+                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
               )
           ),
           @ApiResponse(responseCode = "400",
@@ -88,9 +88,9 @@ public interface CartResource {
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockResponse> updateStockInCart(@Parameter(description = "Title", required = true)
-                                            @NotNull @PathParam("title") String title,
-                                            CartStockRequest cartStockRequest);
+  List<CartItemResponseDto> updateStockInCart(@Parameter(description = "Title", required = true)
+                                              @NotNull @PathParam("title") String title,
+                                              CartStockRequest cartStockRequest);
 
   @DELETE
   @Path("/{title}")
@@ -102,15 +102,14 @@ public interface CartResource {
           @ApiResponse(
               responseCode = "200", description = "cart content",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartStockResponse.class))
+                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
               )
           ),
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockResponse> deleteStockInCart(@Parameter(description = "Title", required = true)
-                                            @NotNull @PathParam("title") String title,
-                                            CartStockRequest cartStockRequest);
+  List<CartItemResponseDto> deleteStockInCart(@Parameter(description = "Title", required = true)
+                                              @NotNull @PathParam("title") String title);
 
   @DELETE
   @Operation(
@@ -125,6 +124,7 @@ public interface CartResource {
 
   @POST
   @Path("/checkout")
+  @Consumes(MediaType.WILDCARD)
   @Operation(
       summary = "Check out the cart.",
       description = "Check out the current content of the cart. "
@@ -133,11 +133,11 @@ public interface CartResource {
           @ApiResponse(
               responseCode = "200", description = "cart content",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartStockResponse.class))
+                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
               )
           ),
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartStockResponse> checkoutCart();
+  List<CartItemResponseDto> checkoutCart();
 }

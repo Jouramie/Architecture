@@ -29,4 +29,9 @@ public class UserTest {
   public void givenWrongPassword_whenCheckingIfPasswordBelongsToUser_thenItDoesNot() {
     assertThat(user.isThisYourPassword(WRONG_PASSWORD)).isFalse();
   }
+
+  @Test
+  public void whenCreatingUser_thenCartIsEmpty() {
+    assertThat(user.getCart().isEmpty()).isTrue();
+  }
 }
