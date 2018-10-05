@@ -51,6 +51,7 @@ public class CartServiceTest {
     given(currentUserRepository.getCurrentUser()).willReturn(currentUser);
     given(currentUser.getCart()).willReturn(cart);
     given(cart.getItems()).willReturn(new ArrayList<>());
+    given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
 
     cartService = new CartService(stockRepository, currentUserRepository, cartItemAssembler);
   }
@@ -152,6 +153,7 @@ public class CartServiceTest {
     String notInCartTitle = "stock not in cart";
     doThrow(new StockNotInCartException(notInCartTitle))
         .when(cart).update(notInCartTitle, SOME_QUANTITY);
+    given(stockRepository.doesStockExist(notInCartTitle)).willReturn(true);
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.updateStockInCart(notInCartTitle, SOME_QUANTITY);
