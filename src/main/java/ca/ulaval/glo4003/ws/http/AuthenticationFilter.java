@@ -8,7 +8,6 @@ import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
-import java.io.IOException;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -28,7 +27,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
   }
 
   @Override
-  public void filter(ContainerRequestContext containerRequestContext) throws IOException {
+  public void filter(ContainerRequestContext containerRequestContext) {
 
     AuthenticationTokenDto authenticationTokenDto
         = extractAuthenticationInfo(containerRequestContext.getHeaders());
@@ -41,7 +40,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
   private AuthenticationTokenDto extractAuthenticationInfo(MultivaluedMap<String, String> headers) {
     String token = headers.getFirst("token");
-    String username = headers.getFirst("username");
-    return new AuthenticationTokenDto(username, token);
+    String email = headers.getFirst("email");
+    return new AuthenticationTokenDto(email, token);
   }
 }

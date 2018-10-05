@@ -22,16 +22,16 @@ public class TokenRevocationIT {
 
   private static final String AUTHENTICATION_ROUTE = "/api/authenticate";
 
-  private static final String SOME_USERNAME = "a username";
+  private static final String SOME_EMAIL = "a email";
 
   private static final String SOME_PASSWORD = "a password";
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_USERNAME, SOME_PASSWORD, UserRole.ADMINISTRATOR);
+      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD, UserRole.ADMINISTRATOR);
 
   private static final AuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
-  private final Header userHeader = new Header("username", SOME_USERNAME);
+      new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
+  private final Header userHeader = new Header("email", SOME_EMAIL);
   @Rule
   public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 

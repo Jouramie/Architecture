@@ -5,5 +5,5 @@ public interface UserRepository {
 
   void update(User user);
 
-  User find(String username);
+  User find(String email);
 }

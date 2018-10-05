@@ -11,7 +11,7 @@ import ca.ulaval.glo4003.domain.cart.CartItem;
 import ca.ulaval.glo4003.domain.cart.StockNotInCartException;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
+import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
@@ -30,7 +30,7 @@ public class CartServiceTest {
   private static final String SOME_TITLE = "title";
   private static final int SOME_QUANTITY = 1;
   @Mock
-  private CurrentUserRepository currentUserRepository;
+  private CurrentUserSession currentUserSession;
   @Mock
   private UserRepository userRepository;
   @Mock
@@ -51,12 +51,12 @@ public class CartServiceTest {
 
   @Before
   public void setup() {
-    given(currentUserRepository.getCurrentUser()).willReturn(currentUser);
+    given(currentUserSession.getCurrentUser()).willReturn(currentUser);
     given(currentUser.getCart()).willReturn(cart);
     given(cart.getItems()).willReturn(new ArrayList<>());
     given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
 
-    cartService = new CartService(stockRepository, currentUserRepository, userRepository, cartItemAssembler);
+    cartService = new CartService(stockRepository, currentUserSession, userRepository, cartItemAssembler);
   }
 
   @Test

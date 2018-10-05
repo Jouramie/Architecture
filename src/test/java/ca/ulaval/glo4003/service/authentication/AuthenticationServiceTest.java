@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
+import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationErrorException;
@@ -29,17 +29,17 @@ public class AuthenticationServiceTest {
 
   private static final String SOME_TOKEN = "token";
   private static final String SOME_PASSWORD = UserBuilder.DEFAULT_PASSWORD;
-  private static final String SOME_USERNAME = UserBuilder.DEFAULT_USERNAME;
+  private static final String SOME_EMAIL = UserBuilder.DEFAULT_EMAIL;
   private static final AuthenticationRequestDto AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
+      = new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
   private static final AuthenticationRequestDto INVALID_AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD + "wrong");
+      = new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD + "wrong");
   private static final AuthenticationTokenDto AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN);
+      = new AuthenticationTokenDto(SOME_EMAIL, SOME_TOKEN);
   private static final AuthenticationTokenDto INVALID_AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN + "invalid");
+      = new AuthenticationTokenDto(SOME_EMAIL, SOME_TOKEN + "invalid");
   private static final AuthenticationToken AUTHENTICATION_TOKEN
-      = new AuthenticationToken(SOME_TOKEN, SOME_USERNAME);
+      = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
 
   private static final User SOME_USER = new UserBuilder().buildDefault();
 
@@ -54,7 +54,7 @@ public class AuthenticationServiceTest {
   private AuthenticationTokenRepository tokenRepository;
 
   @Mock
-  private CurrentUserRepository currentUserRepository;
+  private CurrentUserSession currentUserSession;
 
   @Mock
   private AuthenticationTokenFactory tokenFactory;
@@ -64,7 +64,7 @@ public class AuthenticationServiceTest {
   @Before
   public void setup() {
     authenticationService = new AuthenticationService(userRepository,
-        tokenAssembler, tokenFactory, tokenRepository, responseAssembler, currentUserRepository);
+        tokenAssembler, tokenFactory, tokenRepository, responseAssembler, currentUserSession);
   }
 
   @Before
@@ -78,7 +78,7 @@ public class AuthenticationServiceTest {
   public void whenAuthenticatingUser_thenUserIsRetrievedFromRepository() {
     authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
-    verify(userRepository).find(AUTHENTICATION_REQUEST.username);
+    verify(userRepository).find(AUTHENTICATION_REQUEST.email);
   }
 
   @Test
@@ -108,7 +108,7 @@ public class AuthenticationServiceTest {
   public void whenValidatingAuthentication_thenTokenOfUserIsRetrievedFromRepository() {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    verify(tokenRepository).getTokenForUser(AUTHENTICATION_TOKEN_DTO.username);
+    verify(tokenRepository).getTokenForUser(AUTHENTICATION_TOKEN_DTO.email);
   }
 
   @Test
@@ -123,24 +123,24 @@ public class AuthenticationServiceTest {
   public void whenValidatingToken_thenCurrentUserSet() {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    verify(currentUserRepository).setCurrentUser(SOME_USER);
+    verify(currentUserSession).setCurrentUser(SOME_USER);
   }
 
   @Test
   public void whenRevokingToken_thenTokenOfCurrentUserIsRevoked() {
-    given(currentUserRepository.getCurrentUser()).willReturn(SOME_USER);
+    given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
 
     authenticationService.revokeToken();
 
-    verify(currentUserRepository).getCurrentUser();
+    verify(currentUserSession).getCurrentUser();
   }
 
   @Test
   public void whenRevokingToken_thenTokenIsRemovedFromTokenRepository() {
-    given(currentUserRepository.getCurrentUser()).willReturn(SOME_USER);
+    given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
 
     authenticationService.revokeToken();
 
-    verify(tokenRepository).removeTokenOfUser(SOME_USER.getUsername());
+    verify(tokenRepository).removeTokenOfUser(SOME_USER.getEmail());
   }
 }

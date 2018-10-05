@@ -14,9 +14,9 @@ import javax.validation.constraints.Size;
 )
 public class UserCreationDto {
 
-  @Schema(description = "Requested username")
+  @Schema(description = "Requested email")
   @NotBlank
-  public final String username;
+  public final String email;
 
   @Schema(description = "Password")
   @Size(min = 1)
@@ -27,10 +27,10 @@ public class UserCreationDto {
   public final UserRole role;
 
   @JsonCreator
-  public UserCreationDto(@JsonProperty("username") String username,
+  public UserCreationDto(@JsonProperty("email") String email,
                          @JsonProperty("password") String password,
                          @JsonProperty("role") UserRole role) {
-    this.username = username;
+    this.email = email;
     this.password = password;
     this.role = role;
   }

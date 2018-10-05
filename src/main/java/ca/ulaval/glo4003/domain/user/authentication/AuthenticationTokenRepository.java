@@ -1,10 +1,12 @@
 package ca.ulaval.glo4003.domain.user.authentication;
 
+import java.util.UUID;
+
 public interface AuthenticationTokenRepository {
 
-  AuthenticationToken getTokenForUser(String username);
+  AuthenticationToken getByUUID(UUID uuid);
 
-  void addToken(AuthenticationToken token);
+  void add(AuthenticationToken token);
 
-  void removeTokenOfUser(String username);
+  void remove(String email);
 }

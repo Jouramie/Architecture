@@ -43,7 +43,7 @@
         <jacoco.version>0.7.9</jacoco.version>
         <jacoco.coverage.threshole>0.75</jacoco.coverage.threshole>
         <maven.checkstyle.version>3.0.0</maven.checkstyle.version>
-        <maven.checkstyle.config.location>google_checks.xml</maven.checkstyle.config.location>
+        <maven.checkstyle.config.location>checkstyle.xml</maven.checkstyle.config.location>
         <maven.compiler.version>3.5</maven.compiler.version>
         <maven.exec.version>1.2.1</maven.exec.version>
         <maven.failsafe.version>2.22.0</maven.failsafe.version>

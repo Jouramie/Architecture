@@ -8,6 +8,6 @@ import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
 public class AuthenticationTokenAssembler {
 
   public AuthenticationToken toModel(AuthenticationTokenDto authenticationTokenDto) {
-    return new AuthenticationToken(authenticationTokenDto.token, authenticationTokenDto.username);
+    return new AuthenticationToken(authenticationTokenDto.token, authenticationTokenDto.email);
   }
 }

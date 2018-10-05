@@ -17,18 +17,18 @@ import org.junit.Test;
 public class AuthenticationIT {
 
 
-  private static final String SOME_USERNAME = "username";
+  private static final String SOME_EMAIL = "email";
 
   private static final String SOME_PASSWORD = "password";
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_USERNAME, SOME_PASSWORD, UserRole.ADMINISTRATOR);
+      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD, UserRole.ADMINISTRATOR);
 
   private static final AuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
+      new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
 
   private static final AuthenticationRequestDto WRONG_PASSWORD_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD + "wrong");
+      new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD + "wrong");
 
   private static final AuthenticationRequestDto WRONG_USER_AUTHENTICATION_REQUEST =
       new AuthenticationRequestDto("zero janvier", SOME_PASSWORD);

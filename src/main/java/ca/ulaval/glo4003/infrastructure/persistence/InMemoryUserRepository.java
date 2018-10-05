@@ -14,22 +14,22 @@ public class InMemoryUserRepository implements UserRepository {
 
   @Override
   public void add(User user) {
-    if (content.containsKey(user.getUsername())) {
+    if (content.containsKey(user.getEmail())) {
       throw new UserAlreadyExistsException();
     }
-    content.put(user.getUsername(), user);
+    content.put(user.getEmail(), user);
   }
 
   @Override
   public void update(User user) {
-    if (!content.containsKey(user.getUsername())) {
+    if (!content.containsKey(user.getEmail())) {
       throw new UserNotFoundException();
     }
-    content.put(user.getUsername(), user);
+    content.put(user.getEmail(), user);
   }
 
   @Override
-  public User find(String username) {
-    return Optional.ofNullable(content.get(username)).orElseThrow(UserNotFoundException::new);
+  public User find(String email) {
+    return Optional.ofNullable(content.get(email)).orElseThrow(UserNotFoundException::new);
   }
 }

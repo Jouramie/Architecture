@@ -24,7 +24,7 @@ public class UserCreationService {
   }
 
   public UserDto createUser(UserCreationDto creationRequest) {
-    User user = userFactory.create(creationRequest.username, creationRequest.password,
+    User user = userFactory.create(creationRequest.email, creationRequest.password,
         creationRequest.role);
     userRepository.add(user);
     return userAssembler.toDto(user);

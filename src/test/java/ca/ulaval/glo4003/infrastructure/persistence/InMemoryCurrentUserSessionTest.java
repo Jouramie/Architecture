@@ -6,10 +6,10 @@ import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.util.UserBuilder;
 import org.junit.Test;
 
-public class InMemoryCurrentUserRepositoryTest {
+public class InMemoryCurrentUserSessionTest {
 
   private static final User SOME_USER = new UserBuilder().buildDefault();
-  private final InMemoryCurrentUserRepository userRepository = new InMemoryCurrentUserRepository();
+  private final InMemoryCurrentUserSession userRepository = new InMemoryCurrentUserSession();
 
   @Test
   public void whenSettingCurrentUser_thenUserCanBeRetrieved() {

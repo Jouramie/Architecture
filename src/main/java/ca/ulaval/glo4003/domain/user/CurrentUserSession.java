@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.domain.user;
 
-public interface CurrentUserRepository {
+public interface CurrentUserSession {
 
   User getCurrentUser();
 
