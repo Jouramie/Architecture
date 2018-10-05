@@ -30,6 +30,6 @@ public class Transaction {
   public MoneyAmount getTotal() {
     return items.stream()
         .map(item -> item.amount.multiply(item.quantity))
-        .reduce(MoneyAmount.ZERO_MONEY, MoneyAmount::add);
+        .reduce(MoneyAmount.zero(items.get(0).amount.getCurrency()), MoneyAmount::add);
   }
 }

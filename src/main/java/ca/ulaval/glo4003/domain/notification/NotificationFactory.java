@@ -1,10 +1,11 @@
 package ca.ulaval.glo4003.domain.notification;
 
+import static java.util.stream.Collectors.toList;
+
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionItem;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class NotificationFactory {
   public Notification create(Transaction transaction) {
@@ -17,12 +18,14 @@ public class NotificationFactory {
   }
 
   private String buildTransactionSummary(Transaction transaction) {
-    List<String> entries = transaction.getListItems().stream().map(this::buildNotificationEntry).collect(Collectors.toList());
+    List<String> entries = transaction.getListItems().stream()
+        .map(this::buildMessageEntry)
+        .collect(toList());
     entries.add(buildTotalEntry(transaction));
     return String.join("\n", entries);
   }
 
-  private String buildNotificationEntry(TransactionItem item) {
+  private String buildMessageEntry(TransactionItem item) {
     MoneyAmount total = item.amount.multiply(item.quantity);
     return item.stockId + " " + item.quantity + "x " + item.amount.getAmount()
         + item.amount.getCurrency().getName() + " " + ": "
