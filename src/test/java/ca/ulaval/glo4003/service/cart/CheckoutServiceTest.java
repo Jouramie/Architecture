@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.service.cart;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
@@ -111,10 +112,10 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void givenEmptyCart_whenCheckoutCart_thenDoNothing() {
+  public void givenEmptyCart_whenCheckoutCart_thenThrowCheckoutEmptyCartException() {
     given(cart.isEmpty()).willReturn(true);
-
-    checkoutService.checkoutCart();
+    
+    assertThatThrownBy(() -> checkoutService.checkoutCart()).isInstanceOf(CheckoutEmptyCartException.class);
 
     verify(paymentProcessor, never()).payment(any());
     verify(transactionLedger, never()).save(any());

@@ -1,9 +1,11 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
+import ca.ulaval.glo4003.infrastructure.injection.ErrorMapper;
 import ca.ulaval.glo4003.service.cart.CheckoutEmptyCartException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
+@ErrorMapper
 public class CheckoutEmptyCartExceptionMapper implements ExceptionMapper<CheckoutEmptyCartException> {
 
   @Override
