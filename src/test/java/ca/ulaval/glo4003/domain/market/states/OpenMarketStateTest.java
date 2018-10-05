@@ -48,6 +48,6 @@ public class OpenMarketStateTest {
 
     verify(market).updateAllStockValues();
     verify(market).closeAllStocks();
-    verify(market).setState(any(CloseMarketState.class));
+    verify(market).setState(any(ClosedMarketState.class));
   }
 }
