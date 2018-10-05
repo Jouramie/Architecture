@@ -34,18 +34,18 @@ public class InMemoryAuthenticationTokenRepositoryTest {
   }
 
   @Test
-  public void givenNoTokenForAUser_whenGettingTokenOfUser_thenTokenNotFoundExceptionIsThrown() {
+  public void givenTokenDoesNotExist_whenGettingTokenByUUID_thenTokenNotFoundExceptionIsThrown() {
     assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(UUID.fromString(SOME_TOKEN)))
         .isInstanceOf(NoTokenFoundException.class);
   }
 
   @Test
-  public void whenRemovingTokenOfUser_thenTokenIsRemoved() {
-    inMemoryAuthenticationTokenRepository.addToken(token);
+  public void whenRemovingToken_thenTokenIsRemoved() {
+    inMemoryAuthenticationTokenRepository.add(token);
 
-    inMemoryAuthenticationTokenRepository.removeTokenOfUser(SOME_EMAIL);
+    inMemoryAuthenticationTokenRepository.remove(token.token);
 
-    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(SOME_EMAIL))
+    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(token.token))
         .isInstanceOf(NoTokenFoundException.class);
   }
 }
