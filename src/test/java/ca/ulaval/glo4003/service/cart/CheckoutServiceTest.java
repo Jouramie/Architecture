@@ -90,7 +90,7 @@ public class CheckoutServiceTest {
 
     checkoutService.checkoutCart();
 
-    verify(notificationSender).sendNotification(notification);
+    verify(notificationSender).sendNotification(notification, currentUser);
   }
 
   @Test
@@ -118,6 +118,6 @@ public class CheckoutServiceTest {
 
     verify(paymentProcessor, never()).payment(any());
     verify(transactionLedger, never()).save(any());
-    verify(notificationSender, never()).sendNotification(any());
+    verify(notificationSender, never()).sendNotification(any(), any());
   }
 }
