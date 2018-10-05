@@ -47,11 +47,11 @@ public class UserCreationServiceTest {
   }
 
   @Test
-  public void whenCreatingUser_thenUserIsSaved() {
+  public void whenCreatingUser_thenUserIsAdded() {
     given(userFactory.create(SOME_USERNAME, SOME_PASSWORD, SOME_ROLE)).willReturn(USER);
 
     service.createUser(SOME_CREATION_REQUEST);
-    verify(userRepository).save(USER);
+    verify(userRepository).add(USER);
   }
 
   @Test

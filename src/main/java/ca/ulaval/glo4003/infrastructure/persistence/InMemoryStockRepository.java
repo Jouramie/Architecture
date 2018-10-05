@@ -23,7 +23,6 @@ public class InMemoryStockRepository implements StockRepository {
     if (result == null) {
       throw new StockNotFoundException("Cannot find stock with title " + title);
     }
-
     return result;
   }
 
@@ -42,5 +41,10 @@ public class InMemoryStockRepository implements StockRepository {
   @Override
   public void add(Stock stock) {
     stocks.put(stock.getTitle(), stock);
+  }
+
+  @Override
+  public boolean doesStockExist(String title) {
+    return stocks.containsKey(title);
   }
 }

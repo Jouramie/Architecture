@@ -4,91 +4,93 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collection;
-import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 
 public class CartTest {
-  private final String SOME_TITLE = "MSFT";
-  private final int SOME_QUANTITY = 3;
-  private final String SOME_OTHER_TITLE = "AAPL";
-  private final int SOME_OTHER_QUANTITY = 2;
+  private static final String SOME_TITLE = "MSFT";
+  private static final int SOME_QUANTITY = 3;
+  private static final String SOME_OTHER_TITLE = "AAPL";
+  private static final int SOME_OTHER_QUANTITY = 2;
 
-  private Cart emptyCart;
-  private Cart cartWithTwoItems;
+  private Cart cart;
 
   @Before
   public void setupCarts() {
-    emptyCart = new Cart();
-
-    cartWithTwoItems = new Cart();
-    cartWithTwoItems.add(SOME_TITLE, SOME_QUANTITY);
-    cartWithTwoItems.add(SOME_OTHER_TITLE, SOME_OTHER_QUANTITY);
+    cart = new Cart();
   }
 
   @Test
-  public void givenEmptyCart_whenAdd_thenItemsAreAddedToTheCart() {
-    emptyCart.add(SOME_TITLE, SOME_QUANTITY);
+  public void whenAdd_thenItemsAreAddedToTheCart() {
+    cart.add(SOME_TITLE, SOME_QUANTITY);
 
-    assertThat(emptyCart.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY);
+    assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY);
   }
 
   @Test
   public void givenCartWithStocks_whenAddStocksAlreadyThere_thenPerformAddition() {
-    cartWithTwoItems.add(SOME_TITLE, SOME_QUANTITY);
+    givenTwoItemInCart();
 
-    assertThat(cartWithTwoItems.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY * 2);
+    cart.add(SOME_TITLE, SOME_QUANTITY);
+
+    assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY * 2);
   }
 
   @Test
-  public void givenEmptyCart_whenAddStockWithNoQuantity_thenItemIsNotAdded() {
-    emptyCart.add(SOME_TITLE, 0);
+  public void whenAddStockWithNoQuantity_thenItemIsNotAdded() {
+    cart.add(SOME_TITLE, 0);
 
-    assertThat(emptyCart.getQuantity(SOME_TITLE)).isEqualTo(0);
-    assertThat(emptyCart.getItems()).isEmpty();
+    assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
+    assertThat(cart.getItems()).isEmpty();
   }
 
   @Test
   public void givenCartWithStocks_whenRemove_thenSetStockQtyToZero() {
-    cartWithTwoItems.remove(SOME_TITLE);
+    givenTwoItemInCart();
 
-    assertThat(cartWithTwoItems.getQuantity(SOME_TITLE)).isEqualTo(0);
+    cart.remove(SOME_TITLE);
+
+    assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
   }
 
   @Test
-  public void givenEmptyCart_whenRemove_thenDoNothing() {
-    emptyCart.remove(SOME_TITLE);
+  public void whenRemove_thenDoNothing() {
+    cart.remove(SOME_TITLE);
 
-    assertThat(emptyCart.getQuantity(SOME_TITLE)).isEqualTo(0);
+    assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
   }
 
   @Test
   public void givenCartWithStocks_whenEmpty_thenRemoveAllStocks() {
-    cartWithTwoItems.empty();
+    givenTwoItemInCart();
 
-    assertThat(cartWithTwoItems.getItems()).isEmpty();
-  }
+    cart.empty();
 
-  @Test
-  public void givenEmptyCart_whenEmpty_thenDoNothing() {
-    emptyCart.empty();
-
-    assertThat(emptyCart.getItems()).isEmpty();
+    assertThat(cart.getItems()).isEmpty();
   }
 
   @Test
   public void givenCartWithStocks_whenIsEmpty_thenReturnFalse() {
-    assertThat(cartWithTwoItems.isEmpty()).isFalse();
+    givenTwoItemInCart();
+
+    boolean cartIsEmpty = cart.isEmpty();
+
+    assertThat(cartIsEmpty).isFalse();
   }
 
   @Test
-  public void givenEmptyCart_whenIsEmpty_thenReturnTrue() {
-    assertThat(emptyCart.isEmpty()).isTrue();
+  public void whenIsEmpty_thenReturnTrue() {
+    boolean cartIsEmpty = cart.isEmpty();
+
+    assertThat(cartIsEmpty).isTrue();
   }
 
   @Test
   public void givenCartWithStocks_whenGetItems_thenReturnCollectionOfItems() {
-    Collection<CartItem> items = cartWithTwoItems.getItems();
+    givenTwoItemInCart();
+
+    Collection<CartItem> items = cart.getItems();
 
     assertThat(items).contains(
         new CartItem(SOME_TITLE, SOME_QUANTITY),
@@ -96,17 +98,23 @@ public class CartTest {
   }
 
   @Test
-  public void givenEmptyCart_whenUpdate_thenStockNotInCartExceptionIsThrown() {
-    ThrowableAssert.ThrowingCallable update
-        = () -> emptyCart.update(SOME_TITLE, SOME_QUANTITY);
+  public void whenUpdate_thenStockNotInCartExceptionIsThrown() {
+    ThrowingCallable update = () -> cart.update(SOME_TITLE, SOME_QUANTITY);
 
     assertThatThrownBy(update).isInstanceOf(StockNotInCartException.class);
   }
 
   @Test
-  public void givenCartWithStocks_whenUpdateStocksAlreadyThere_thenPerformAddition() {
-    cartWithTwoItems.update(SOME_TITLE, SOME_OTHER_QUANTITY);
+  public void givenCartWithStocks_whenUpdateStocksAlreadyThere_thenUpdateQuantity() {
+    givenTwoItemInCart();
 
-    assertThat(cartWithTwoItems.getQuantity(SOME_TITLE)).isEqualTo(SOME_OTHER_QUANTITY);
+    cart.update(SOME_TITLE, SOME_OTHER_QUANTITY);
+
+    assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(SOME_OTHER_QUANTITY);
+  }
+
+  private void givenTwoItemInCart() {
+    cart.add(SOME_TITLE, SOME_QUANTITY);
+    cart.add(SOME_OTHER_TITLE, SOME_OTHER_QUANTITY);
   }
 }
