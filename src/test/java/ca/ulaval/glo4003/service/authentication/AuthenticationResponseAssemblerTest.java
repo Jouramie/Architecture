@@ -9,7 +9,7 @@ import org.junit.Test;
 public class AuthenticationResponseAssemblerTest {
 
   private static final String SECRET_TOKEN = "token";
-  private static final AuthenticationToken SOME_AUTHENTICATION_TOKEN = new AuthenticationToken(SECRET_TOKEN, "username");
+  private static final AuthenticationToken SOME_AUTHENTICATION_TOKEN = new AuthenticationToken(SECRET_TOKEN, "email");
   private final AuthenticationResponseAssembler responseAssembler = new AuthenticationResponseAssembler();
 
   @Test

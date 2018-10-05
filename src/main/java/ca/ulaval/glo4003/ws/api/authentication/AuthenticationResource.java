@@ -26,7 +26,7 @@ public interface AuthenticationResource {
               content = @Content(schema = @Schema(implementation = AuthenticationResponseDto.class))
           ),
           @ApiResponse(
-              responseCode = "400", description = "Invalid username or password"
+              responseCode = "400", description = "Invalid email or password"
           )
       }
   )

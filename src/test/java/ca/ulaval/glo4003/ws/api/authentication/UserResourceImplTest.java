@@ -19,15 +19,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class UserResourceImplTest {
 
   private static final UserCreationDto SOME_CREATION_REQUEST =
-      new UserCreationDto("username", "password", UserRole.ADMINISTRATOR);
-  private static final UserCreationDto CREATION_REQUEST_WITH_INVALID_USERNAME =
+      new UserCreationDto("email", "password", UserRole.ADMINISTRATOR);
+  private static final UserCreationDto CREATION_REQUEST_WITH_INVALID_EMAIL =
       new UserCreationDto("", "password", UserRole.ADMINISTRATOR);
 
   private static final UserCreationDto CREATION_REQUEST_WITH_INVALID_PASSWORD =
-      new UserCreationDto("username", "", UserRole.ADMINISTRATOR);
+      new UserCreationDto("email", "", UserRole.ADMINISTRATOR);
 
   private static final UserCreationDto CREATION_REQUEST_WITHOUT_ROLE =
-      new UserCreationDto("username", "passord", null);
+      new UserCreationDto("email", "passord", null);
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
 
@@ -52,13 +52,13 @@ public class UserResourceImplTest {
   }
 
   @Test
-  public void givenInvalidUserName_whenCreatingUser_thenInvalidInputExceptionShouldBeThrown() {
+  public void givenInvalidEmail_whenCreatingUser_thenInvalidInputExceptionShouldBeThrown() {
     Throwable thrown =
-        catchThrowable(() -> userResource.createUser(CREATION_REQUEST_WITH_INVALID_USERNAME));
+        catchThrowable(() -> userResource.createUser(CREATION_REQUEST_WITH_INVALID_EMAIL));
 
     assertThat(thrown).isInstanceOf(InvalidInputException.class);
     InvalidInputException exception = (InvalidInputException) thrown;
-    assertThatExceptionContainsErrorFor(exception, "username");
+    assertThatExceptionContainsErrorFor(exception, "email");
   }
 
   @Test

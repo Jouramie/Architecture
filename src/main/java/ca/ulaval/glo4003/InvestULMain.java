@@ -163,11 +163,11 @@ public class InvestULMain {
   }
 
   private static void hardcodeTestUser() {
-    String testUsername = "Archi.test.42@gmail.com";
+    String testEmail = "Archi.test.42@gmail.com";
     ServiceLocator.INSTANCE.get(UserRepository.class)
-        .add(new User(testUsername, "asdf", UserRole.ADMINISTRATOR));
+        .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
     ServiceLocator.INSTANCE.get(AuthenticationTokenRepository.class)
-        .addToken(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testUsername));
+        .addToken(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testEmail));
   }
 
   private static void loadData() {

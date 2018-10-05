@@ -29,17 +29,17 @@ public class AuthenticationServiceTest {
 
   private static final String SOME_TOKEN = "token";
   private static final String SOME_PASSWORD = UserBuilder.DEFAULT_PASSWORD;
-  private static final String SOME_USERNAME = UserBuilder.DEFAULT_USERNAME;
+  private static final String SOME_EMAIL = UserBuilder.DEFAULT_EMAIL;
   private static final AuthenticationRequestDto AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
+      = new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
   private static final AuthenticationRequestDto INVALID_AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD + "wrong");
+      = new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD + "wrong");
   private static final AuthenticationTokenDto AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN);
+      = new AuthenticationTokenDto(SOME_EMAIL, SOME_TOKEN);
   private static final AuthenticationTokenDto INVALID_AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN + "invalid");
+      = new AuthenticationTokenDto(SOME_EMAIL, SOME_TOKEN + "invalid");
   private static final AuthenticationToken AUTHENTICATION_TOKEN
-      = new AuthenticationToken(SOME_TOKEN, SOME_USERNAME);
+      = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
 
   private static final User SOME_USER = new UserBuilder().buildDefault();
 
@@ -78,7 +78,7 @@ public class AuthenticationServiceTest {
   public void whenAuthenticatingUser_thenUserIsRetrievedFromRepository() {
     authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
-    verify(userRepository).find(AUTHENTICATION_REQUEST.username);
+    verify(userRepository).find(AUTHENTICATION_REQUEST.email);
   }
 
   @Test
@@ -108,7 +108,7 @@ public class AuthenticationServiceTest {
   public void whenValidatingAuthentication_thenTokenOfUserIsRetrievedFromRepository() {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    verify(tokenRepository).getTokenForUser(AUTHENTICATION_TOKEN_DTO.username);
+    verify(tokenRepository).getTokenForUser(AUTHENTICATION_TOKEN_DTO.email);
   }
 
   @Test
@@ -141,6 +141,6 @@ public class AuthenticationServiceTest {
 
     authenticationService.revokeToken();
 
-    verify(tokenRepository).removeTokenOfUser(SOME_USER.getUsername());
+    verify(tokenRepository).removeTokenOfUser(SOME_USER.getEmail());
   }
 }

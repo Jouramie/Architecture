@@ -11,16 +11,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public class UserDto {
 
-  @Schema(description = "Username")
-  public final String username;
+  @Schema(description = "Email")
+  public final String email;
 
   @Schema(description = "User role")
   public final UserRole role;
 
   @JsonCreator
-  public UserDto(@JsonProperty("username") String username,
+  public UserDto(@JsonProperty("email") String email,
                  @JsonProperty("role") UserRole role) {
-    this.username = username;
+    this.email = email;
     this.role = role;
   }
 }

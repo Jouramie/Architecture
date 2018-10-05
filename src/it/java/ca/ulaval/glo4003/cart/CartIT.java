@@ -38,16 +38,16 @@ public class CartIT {
   private static final String CURRENT_VALUE = "currentValue";
   private static final String QUANTITY = "quantity";
 
-  private static final String SOME_USERNAME = "carticart";
+  private static final String SOME_EMAIL = "carticart";
   private static final String SOME_PASSWORD = "stockistock";
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_USERNAME, SOME_PASSWORD, UserRole.INVESTOR);
+      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD, UserRole.INVESTOR);
 
   private static final AuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
+      new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
 
-  private final Header userHeader = new Header("username", SOME_USERNAME);
+  private final Header userHeader = new Header("email", SOME_EMAIL);
   private final CartStockRequestBuilder cartStockRequestBuilder = new CartStockRequestBuilder();
 
   @Rule

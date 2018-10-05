@@ -2,12 +2,12 @@ package ca.ulaval.glo4003.ws.api.authentication;
 
 public class AuthenticationTokenDto {
 
-  public final String username;
+  public final String email;
 
   public final String token;
 
-  public AuthenticationTokenDto(String username, String token) {
-    this.username = username;
+  public AuthenticationTokenDto(String email, String token) {
+    this.email = email;
     this.token = token;
   }
 }

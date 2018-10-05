@@ -40,7 +40,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
   private AuthenticationTokenDto extractAuthenticationInfo(MultivaluedMap<String, String> headers) {
     String token = headers.getFirst("token");
-    String username = headers.getFirst("username");
-    return new AuthenticationTokenDto(username, token);
+    String email = headers.getFirst("email");
+    return new AuthenticationTokenDto(email, token);
   }
 }
