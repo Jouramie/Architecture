@@ -136,6 +136,7 @@ public interface CartResource {
                   array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
               )
           ),
+          @ApiResponse(responseCode = "400", description = "cannot checkout empty cart"),
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
