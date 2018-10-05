@@ -6,7 +6,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 @ErrorMapper
-public class CheckoutEmptyCartExceptionMapper implements ExceptionMapper<CheckoutEmptyCartException> {
+public class CheckoutEmptyCartExceptionMapper
+    implements ExceptionMapper<CheckoutEmptyCartException> {
 
   @Override
   public Response toResponse(CheckoutEmptyCartException e) {

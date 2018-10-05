@@ -4,6 +4,8 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,7 @@ public class InMemoryStockRepository implements StockRepository {
 
   @Override
   public List<Stock> getAll() {
-    return stocks.values().stream().collect(Collectors.toList());
+    return new ArrayList<>(stocks.values());
   }
 
   @Override
@@ -34,8 +36,9 @@ public class InMemoryStockRepository implements StockRepository {
   }
 
   @Override
-  public List<Stock> getStocksOfMarket(MarketId marketId) {
-    return stocks.values().stream().filter((stock) -> stock.getMarketId().equals(marketId)).collect(Collectors.toList());
+  public List<Stock> getByMarket(MarketId marketId) {
+    return stocks.values().stream().filter((stock) -> stock.getMarketId().equals(marketId))
+        .collect(Collectors.toList());
   }
 
   @Override

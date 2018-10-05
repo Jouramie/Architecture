@@ -10,7 +10,7 @@ public interface StockRepository {
 
   Stock getByName(String name);
 
-  List<Stock> getStocksOfMarket(MarketId marketId);
+  List<Stock> getByMarket(MarketId marketId);
 
   void add(Stock stock);
 

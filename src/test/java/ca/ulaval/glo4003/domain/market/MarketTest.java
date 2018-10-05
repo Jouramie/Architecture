@@ -54,7 +54,7 @@ public class MarketTest {
     haltedMarket = new Market(SOME_MARKET_ID, SOME_OPENING_TIME, SOME_CLOSING_TIME, someCurrency, stockRepository, stockValueRetriever);
     haltedMarket.halt();
 
-    given(stockRepository.getStocksOfMarket(SOME_MARKET_ID)).willReturn(Arrays.asList(someStock, someOtherStock));
+    given(stockRepository.getByMarket(SOME_MARKET_ID)).willReturn(Arrays.asList(someStock, someOtherStock));
   }
 
   @Test
