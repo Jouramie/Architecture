@@ -13,8 +13,8 @@ import java.util.List;
 import org.junit.Test;
 
 public class NotificationFactoryTest {
-  private static final TransactionItem AN_ITEM = new TransactionItemBuilder().buildDefault();
-  private static final TransactionItem ANOTHER_ITEM = new TransactionItemBuilder().buildDefault();
+  private static final TransactionItem AN_ITEM = new TransactionItemBuilder().build();
+  private static final TransactionItem ANOTHER_ITEM = new TransactionItemBuilder().build();
   private static final List<TransactionItem> SOME_TRANSACTION_ITEMS
       = Arrays.asList(AN_ITEM, ANOTHER_ITEM);
   private final Transaction transaction
@@ -23,7 +23,7 @@ public class NotificationFactoryTest {
   private final NotificationFactory notificationFactory = new NotificationFactory();
 
   @Test
-  public void whenCreatingTransactionNotification_thenTileContainsTransactionType() {
+  public void whenCreatingTransactionNotification_thenTitleContainsTransactionType() {
     Notification notification = notificationFactory.create(transaction);
 
     assertThat(notification.title).contains(transaction.type.toString());
@@ -34,7 +34,7 @@ public class NotificationFactoryTest {
     Notification notification = notificationFactory.create(transaction);
 
     TransactionItem item = transaction.items.get(0);
-    assertThat(notification.message).contains(item.stockId);
+    assertThat(notification.message).contains(item.title);
   }
 
   @Test

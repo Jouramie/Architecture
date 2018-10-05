@@ -13,7 +13,7 @@ public class TransactionItemBuilder {
   private static final int DEFAULT_QUANTITY = 1;
   private static final MoneyAmount DEFAULT_AMOUNT = new MoneyAmount(DEFAULT_LAST_OPEN_VALUE, DEFAULT_CURRENCY);
 
-  public TransactionItem buildDefault() {
+  public TransactionItem build() {
     return new TransactionItem(DEFAULT_STOCK_ID, DEFAULT_QUANTITY, DEFAULT_AMOUNT);
   }
 }

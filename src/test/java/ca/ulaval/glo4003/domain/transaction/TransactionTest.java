@@ -17,8 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransactionTest {
-  private static final TransactionItem AN_ITEM = new TransactionItemBuilder().buildDefault();
-  private static final TransactionItem ANOTHER_ITEM = new TransactionItemBuilder().buildDefault();
+  private static final TransactionItem AN_ITEM = new TransactionItemBuilder().build();
+  private static final TransactionItem ANOTHER_ITEM = new TransactionItemBuilder().build();
   private static final List<TransactionItem> SOME_TRANSACTION_ITEMS
       = Arrays.asList(AN_ITEM, ANOTHER_ITEM);
   private static final TransactionType SOME_TYPE = TransactionType.PURCHASE;

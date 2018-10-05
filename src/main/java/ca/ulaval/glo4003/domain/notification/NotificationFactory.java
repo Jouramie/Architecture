@@ -30,7 +30,7 @@ public class NotificationFactory {
 
   private String buildTransactionEntry(TransactionItem item) {
     MoneyAmount total = item.amount.multiply(item.quantity);
-    return String.format(TRANSACTION_ENTRY_FORMAT, item.stockId, item.quantity,
+    return String.format(TRANSACTION_ENTRY_FORMAT, item.title, item.quantity,
         item.amount.getAmount(), item.amount.getCurrency().getName(), total.getAmount(),
         total.getCurrency().getName());
   }
