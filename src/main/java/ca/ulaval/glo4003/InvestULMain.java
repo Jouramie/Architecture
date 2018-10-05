@@ -167,7 +167,7 @@ public class InvestULMain {
     ServiceLocator.INSTANCE.get(UserRepository.class)
         .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
     ServiceLocator.INSTANCE.get(AuthenticationTokenRepository.class)
-        .addToken(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testEmail));
+        .add(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testEmail));
   }
 
   private static void loadData() {
