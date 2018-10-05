@@ -5,8 +5,10 @@ import static java.util.stream.Collectors.toList;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionItem;
+import ca.ulaval.glo4003.infrastructure.injection.Component;
 import java.util.List;
 
+@Component
 public class NotificationFactory {
 
   private static final String TRANSACTION_ENTRY_FORMAT = "%s %sx %s %s : %s%s";
