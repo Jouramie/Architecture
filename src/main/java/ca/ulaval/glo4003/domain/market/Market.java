@@ -19,7 +19,8 @@ public class Market {
   private final StockValueRetriever stockValueRetriever;
   private MarketState currentState;
 
-  public Market(MarketId id, LocalTime openingTime, LocalTime closingTime, Currency currency, StockRepository stockRepository, StockValueRetriever stockValueRetriever) {
+  public Market(MarketId id, LocalTime openingTime, LocalTime closingTime, Currency currency,
+                StockRepository stockRepository, StockValueRetriever stockValueRetriever) {
     this.id = id;
     this.openingTime = openingTime;
     this.closingTime = closingTime;

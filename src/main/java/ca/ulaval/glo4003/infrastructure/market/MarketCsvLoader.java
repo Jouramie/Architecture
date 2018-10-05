@@ -26,7 +26,8 @@ public class MarketCsvLoader {
   private final StockRepository stockRepository;
   private final StockValueRetriever stockValueRetriever;
 
-  public MarketCsvLoader(MarketRepository marketRepository, StockRepository stockRepository, StockValueRetriever stockValueRetriever) {
+  public MarketCsvLoader(MarketRepository marketRepository, StockRepository stockRepository,
+                         StockValueRetriever stockValueRetriever) {
     this.marketRepository = marketRepository;
     this.stockRepository = stockRepository;
     this.stockValueRetriever = stockValueRetriever;
@@ -43,7 +44,8 @@ public class MarketCsvLoader {
       LocalTime close = parseTime(record.get("close"));
       boolean halt = Boolean.parseBoolean(record.get("tradinghalt"));
 
-      Market market = new Market(marketId, open, close, currency.get(marketId), stockRepository, stockValueRetriever);
+      Market market = new Market(marketId, open, close, currency.get(marketId), stockRepository,
+          stockValueRetriever);
       if (halt) {
         market.halt();
       }

@@ -39,11 +39,14 @@ public class ServiceLocatorInitializer {
   }
 
   public void initialize(ServiceLocator serviceLocator) {
-    serviceLocator.discoverPackage(packagePrefix, Resource.class, ErrorMapper.class, Component.class, FilterRegistration.class);
+    serviceLocator.discoverPackage(packagePrefix, Resource.class, ErrorMapper.class,
+        Component.class, FilterRegistration.class);
     serviceLocator.registerInstance(OpenApiResource.class, new OpenApiResource());
     serviceLocator.registerSingleton(UserRepository.class, InMemoryUserRepository.class);
-    serviceLocator.registerSingleton(AuthenticationTokenRepository.class, InMemoryAuthenticationTokenRepository.class);
-    serviceLocator.registerSingleton(CurrentUserRepository.class, InMemoryCurrentUserRepository.class);
+    serviceLocator.registerSingleton(AuthenticationTokenRepository.class,
+        InMemoryAuthenticationTokenRepository.class);
+    serviceLocator.registerSingleton(CurrentUserRepository.class,
+        InMemoryCurrentUserRepository.class);
     serviceLocator.registerSingleton(StockRepository.class, InMemoryStockRepository.class);
     serviceLocator.registerSingleton(MarketRepository.class, InMemoryMarketRepository.class);
     serviceLocator.registerSingleton(StockValueRetriever.class, SimulatedStockValueRetriever.class);

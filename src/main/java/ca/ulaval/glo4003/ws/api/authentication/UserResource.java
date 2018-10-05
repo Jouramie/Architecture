@@ -24,7 +24,8 @@ public interface UserResource {
       description = "Register a new user",
       responses = {
           @ApiResponse(
-              responseCode = "201", content = @Content(schema = @Schema(implementation = UserCreationDto.class))
+              responseCode = "201",
+              content = @Content(schema = @Schema(implementation = UserCreationDto.class))
           ),
           @ApiResponse(
               responseCode = "400", description = "Username already exists, username, password "

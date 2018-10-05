@@ -10,7 +10,8 @@ public class Stock {
   private final MarketId marketId;
   private final StockValue value;
 
-  public Stock(String title, String name, String category, MarketId marketId, MoneyAmount lastOpenValue, MoneyAmount lastCloseValue) {
+  public Stock(String title, String name, String category, MarketId marketId,
+               MoneyAmount lastOpenValue, MoneyAmount lastCloseValue) {
     this.title = title;
     this.name = name;
     this.category = category;
