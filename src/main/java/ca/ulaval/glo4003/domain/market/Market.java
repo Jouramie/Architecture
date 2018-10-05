@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.domain.market;
 
-import ca.ulaval.glo4003.domain.market.states.CloseMarketState;
+import ca.ulaval.glo4003.domain.market.states.ClosedMarketState;
 import ca.ulaval.glo4003.domain.market.states.HaltedMarketState;
 import ca.ulaval.glo4003.domain.market.states.OpenMarketState;
 import ca.ulaval.glo4003.domain.money.Currency;
@@ -27,7 +27,7 @@ public class Market {
     this.currency = currency;
     this.stockRepository = stockRepository;
     this.stockValueRetriever = stockValueRetriever;
-    currentState = new CloseMarketState();
+    currentState = new ClosedMarketState();
   }
 
   public MarketId getId() {
