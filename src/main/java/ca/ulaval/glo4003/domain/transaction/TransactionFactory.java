@@ -7,13 +7,17 @@ import ca.ulaval.glo4003.domain.cart.CartItem;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.infrastructure.injection.Component;
 import java.util.Collection;
 import java.util.List;
+import javax.inject.Inject;
 
+@Component
 public class TransactionFactory {
   private final Clock clock;
   private final StockRepository stockRepository;
 
+  @Inject
   public TransactionFactory(Clock clock, StockRepository stockRepository) {
     this.clock = clock;
     this.stockRepository = stockRepository;

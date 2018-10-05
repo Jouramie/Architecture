@@ -6,6 +6,9 @@ import static java.util.stream.Collectors.toSet;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
+import ca.ulaval.glo4003.domain.transaction.NullPaymentProcessor;
+import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
+import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
@@ -17,6 +20,7 @@ import ca.ulaval.glo4003.infrastructure.persistence.InMemoryAuthenticationTokenR
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryCurrentUserRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
+import ca.ulaval.glo4003.infrastructure.persistence.InMemoryTransactionLedger;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryUserRepository;
 import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
@@ -34,7 +38,7 @@ public class ServiceLocatorInitializer {
     this.packagePrefix = packagePrefix;
   }
 
-  public void initializeServiceLocator(ServiceLocator serviceLocator) {
+  public void initialize(ServiceLocator serviceLocator) {
     serviceLocator.discoverPackage(packagePrefix, Resource.class, ErrorMapper.class, Component.class, FilterRegistration.class);
     serviceLocator.registerInstance(OpenApiResource.class, new OpenApiResource());
     serviceLocator.registerSingleton(UserRepository.class, InMemoryUserRepository.class);
@@ -43,6 +47,8 @@ public class ServiceLocatorInitializer {
     serviceLocator.registerSingleton(StockRepository.class, InMemoryStockRepository.class);
     serviceLocator.registerSingleton(MarketRepository.class, InMemoryMarketRepository.class);
     serviceLocator.registerSingleton(StockValueRetriever.class, SimulatedStockValueRetriever.class);
+    serviceLocator.registerSingleton(TransactionLedger.class, InMemoryTransactionLedger.class);
+    serviceLocator.registerSingleton(PaymentProcessor.class, NullPaymentProcessor.class);
   }
 
   public Set<Object> createInstances(ServiceLocator serviceLocator) {

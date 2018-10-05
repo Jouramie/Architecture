@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "48093bcc-012d-4181-85b1-685a9a5ca459",
+		"_postman_id": "bfe13575-c7ef-493f-b4e7-c2f83b2e019a",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -163,7 +163,18 @@
 					"name": "GetCart",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "username",
+								"value": "Archi.test.42@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -190,11 +201,21 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "username",
+								"value": "Archi.test.42@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"quantity\": 1\n}"
+							"raw": "{\n\t\"quantity\": 76\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/cart/RBS.l",
@@ -219,6 +240,16 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "username",
+								"value": "Archi.test.42@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -248,6 +279,16 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "username",
+								"value": "Archi.test.42@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -273,7 +314,18 @@
 					"name": "EmptyCart",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "username",
+								"value": "Archi.test.42@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -296,7 +348,18 @@
 					"name": "CheckoutCart",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "username",
+								"value": "Archi.test.42@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""

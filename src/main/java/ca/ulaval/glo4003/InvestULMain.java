@@ -4,8 +4,14 @@ import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
+import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserRepository;
+import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
+import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.infrastructure.clock.ClockDriver;
 import ca.ulaval.glo4003.infrastructure.config.ServiceLocatorInitializer;
 import ca.ulaval.glo4003.infrastructure.config.SimulationSettings;
@@ -13,8 +19,12 @@ import ca.ulaval.glo4003.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
 import ca.ulaval.glo4003.infrastructure.market.MarketsUpdater;
+import ca.ulaval.glo4003.infrastructure.notification.EmailNotificationSender;
 import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
@@ -43,7 +53,9 @@ public class InvestULMain {
 
   public static void main(String[] args) throws Exception {
     ServiceLocatorInitializer serviceLocatorInitializer = new ServiceLocatorInitializer(WEB_SERVICE_PACKAGE_PREFIX);
-    serviceLocatorInitializer.initializeServiceLocator(ServiceLocator.INSTANCE);
+    serviceLocatorInitializer.initialize(ServiceLocator.INSTANCE);
+    createAwsSesSender();
+    hardcodeTestUser();
 
     loadData();
     startClockAndMarketsUpdater();
@@ -135,6 +147,20 @@ public class InvestULMain {
     webapp.setResourceBase("src/main/webapp");
     webapp.setContextPath("/");
     return webapp;
+  }
+
+  private static void createAwsSesSender() {
+    AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+    NotificationSender emailSender = new EmailNotificationSender(client);
+    ServiceLocator.INSTANCE.registerInstance(NotificationSender.class, emailSender);
+  }
+
+  private static void hardcodeTestUser() {
+    String testUsername = "Archi.test.42@gmail.com";
+    ServiceLocator.INSTANCE.get(UserRepository.class)
+        .add(new User(testUsername, "asdf", UserRole.ADMINISTRATOR));
+    ServiceLocator.INSTANCE.get(AuthenticationTokenRepository.class)
+        .addToken(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testUsername));
   }
 
   private static void loadData() {

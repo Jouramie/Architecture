@@ -9,11 +9,13 @@ import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
+import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
+@Component
 public class CheckoutService {
   private final PaymentProcessor paymentProcessor;
   private final CurrentUserRepository currentUserRepository;
@@ -42,14 +44,13 @@ public class CheckoutService {
   }
 
   public List<CartItemResponseDto> checkoutCart() {
-    Cart cart = currentUserRepository.getCurrentUser().getCart();
-    if (cart.isEmpty()) {
-      return new ArrayList<>();
-    }
+    User currentUser = currentUserRepository.getCurrentUser();
+    Cart cart = currentUser.getCart();
+    checkIfCartIsEmpty(cart);
 
     Transaction transaction = transactionFactory.createPurchase(cart);
     processTransaction(transaction);
-    sendTransactionNotification(transaction);
+    sendTransactionNotification(transaction, currentUser);
 
     List<CartItemResponseDto> cartItemResponseDtos = cartItemAssembler
         .toDtoList(cart.getItems());
@@ -57,9 +58,15 @@ public class CheckoutService {
     return cartItemResponseDtos;
   }
 
-  private void sendTransactionNotification(Transaction transaction) {
+  private void checkIfCartIsEmpty(Cart cart) {
+    if (cart.isEmpty()) {
+      throw new CheckoutEmptyCartException();
+    }
+  }
+
+  private void sendTransactionNotification(Transaction transaction, User currentUser) {
     Notification notification = notificationFactory.create(transaction);
-    notificationSender.sendNotification(notification);
+    notificationSender.sendNotification(notification, currentUser);
   }
 
   private void processTransaction(Transaction transaction) {

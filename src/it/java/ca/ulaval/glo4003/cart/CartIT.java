@@ -6,11 +6,8 @@ import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
-import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 
@@ -116,8 +113,7 @@ public class CartIT {
         .body("[0].quantity", is(CartStockRequestBuilder.DEFAULT_QUANTITY))
         .body("[0]", hasKey(MARKET))
         .body("[0]", hasKey(CATEGORY))
-        .body("[0]", hasKey(CURRENT_VALUE))
-        .body("[0]", hasKey(QUANTITY));
+        .body("[0]", hasKey(CURRENT_VALUE));
     //@formatter:on
   }
 
@@ -141,8 +137,7 @@ public class CartIT {
         .body("[0].quantity", is(CartStockRequestBuilder.DEFAULT_QUANTITY))
         .body("[0]", hasKey(MARKET))
         .body("[0]", hasKey(CATEGORY))
-        .body("[0]", hasKey(CURRENT_VALUE))
-        .body("[0]", hasKey(QUANTITY));
+        .body("[0]", hasKey(CURRENT_VALUE));
     //@formatter:on
   }
 
@@ -291,12 +286,27 @@ public class CartIT {
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", is(iterableWithSize(1)))
-        .body("$", everyItem(contains(hasProperty(TITLE))))
-        .body("$", everyItem(contains(hasProperty(NAME))))
-        .body("$", everyItem(contains(hasProperty(MARKET))))
-        .body("$", everyItem(contains(hasProperty(CATEGORY))))
-        .body("$", everyItem(contains(hasProperty(CURRENT_VALUE))))
-        .body("$", everyItem(contains(hasProperty(QUANTITY))));
+        .body("[0].title", is(SOME_TITLE))
+        .body("[0].quantity", is(CartStockRequestBuilder.DEFAULT_QUANTITY))
+        .body("[0]", hasKey(MARKET))
+        .body("[0]", hasKey(CATEGORY))
+        .body("[0]", hasKey(CURRENT_VALUE));
+    //@formatter:on
+  }
+
+  @Test
+  public void givenEmptyCart_whenCheckout_thenReturnBadRequest() {
+    givenUserAlreadyRegistered();
+    String token = givenUserAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(userHeader)
+        .header(tokenHeader)
+    .when()
+        .post(API_CART_CHECKOUT_ROUTE)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 
