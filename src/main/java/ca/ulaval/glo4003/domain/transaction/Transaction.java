@@ -29,7 +29,7 @@ public class Transaction {
 
   public MoneyAmount getTotal() {
     return items.stream()
-        .map(item -> item.amount.multiply(item.quantity))
+        .map(TransactionItem::getTotal)
         .reduce(MoneyAmount.zero(items.get(0).amount.getCurrency()), MoneyAmount::add);
   }
 }

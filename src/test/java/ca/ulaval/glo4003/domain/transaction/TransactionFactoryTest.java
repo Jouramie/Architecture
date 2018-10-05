@@ -56,7 +56,7 @@ public class TransactionFactoryTest {
 
   @Test
   public void whenCreate_thenTypeIsSetToTransaction() {
-    Transaction transaction = factory.create(cart);
+    Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime());
 
     assertThat(transaction).isEqualToComparingOnlyGivenFields(expected, "type");
@@ -64,7 +64,7 @@ public class TransactionFactoryTest {
 
   @Test
   public void whenCreate_thenLocalTimeSetToTransaction() {
-    Transaction transaction = factory.create(cart);
+    Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime());
 
     assertThat(transaction.getTime()).isEqualTo(expected.getTime());
@@ -72,7 +72,7 @@ public class TransactionFactoryTest {
 
   @Test
   public void whenCreate_thenTransactionItemsIsSetToTrsanction() {
-    Transaction transaction = factory.create(cart);
+    Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime());
 
     assertThat(transaction.getListItems().get(0)).isEqualToComparingOnlyGivenFields(expected.getListItems().get(0), "stockId", "quantity");

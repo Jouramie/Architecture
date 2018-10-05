@@ -45,7 +45,7 @@ public class CheckoutService {
       return new ArrayList<>();
     }
 
-    Transaction transaction = transactionFactory.create(cart);
+    Transaction transaction = transactionFactory.createPurchase(cart);
     processTransaction(transaction);
     sendTransactionNotification(transaction);
 

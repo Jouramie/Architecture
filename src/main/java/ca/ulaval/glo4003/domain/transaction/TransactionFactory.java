@@ -19,20 +19,16 @@ public class TransactionFactory {
     this.stockRepository = stockRepository;
   }
 
-  public Transaction create(Cart cart) {
-    List<TransactionItem> transactionItems = createTransactionItems(cart.getItems());
+  public Transaction createPurchase(Cart cart) {
+    List<TransactionItem> transactionItems = buildTransactionItems(cart.getItems());
     return new Transaction(clock.getCurrentTime(), transactionItems, TransactionType.PURCHASE);
   }
 
-  private List<TransactionItem> createTransactionItems(Collection<CartItem> cartItems) {
-    return getTransactionItemsList(cartItems);
+  private List<TransactionItem> buildTransactionItems(Collection<CartItem> cartItems) {
+    return cartItems.stream().map(this::buildTransactionItem).collect(toList());
   }
 
-  private List<TransactionItem> getTransactionItemsList(Collection<CartItem> items) {
-    return items.stream().map(this::getTransactionItem).collect(toList());
-  }
-
-  private TransactionItem getTransactionItem(CartItem item) {
+  private TransactionItem buildTransactionItem(CartItem item) {
     MoneyAmount amount = stockRepository.getByTitle(item.title).getValue().getCurrentValue();
     return new TransactionItem(item.title, item.quantity, amount);
   }

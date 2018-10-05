@@ -59,7 +59,7 @@ public class CheckoutServiceTest {
   public void setup() {
     given(currentUserRepository.getCurrentUser()).willReturn(currentUser);
     given(currentUser.getCart()).willReturn(cart);
-    given(transactionFactory.create(cart)).willReturn(transaction);
+    given(transactionFactory.createPurchase(cart)).willReturn(transaction);
     given(cart.isEmpty()).willReturn(false);
 
     checkoutService = new CheckoutService(paymentProcessor,

@@ -12,4 +12,8 @@ public class TransactionItem {
     this.quantity = quantity;
     this.amount = amount;
   }
+
+  MoneyAmount getTotal() {
+    return amount.multiply(quantity);
+  }
 }
