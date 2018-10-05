@@ -28,7 +28,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationServiceTest {
 
-  private static final String SOME_TOKEN = "token";
+  private static final String SOME_TOKEN = "00000000-0000-0000-0000-000000000000";
+  private static final String INVALID_TOKEN = "10110100-0000-0000-0000-000000000000";
   private static final String SOME_PASSWORD = UserBuilder.DEFAULT_PASSWORD;
   private static final String SOME_EMAIL = UserBuilder.DEFAULT_EMAIL;
   private static final AuthenticationRequestDto AUTHENTICATION_REQUEST
@@ -38,7 +39,7 @@ public class AuthenticationServiceTest {
   private static final AuthenticationTokenDto AUTHENTICATION_TOKEN_DTO
       = new AuthenticationTokenDto(SOME_EMAIL, SOME_TOKEN);
   private static final AuthenticationTokenDto INVALID_AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(SOME_EMAIL, SOME_TOKEN + "invalid");
+      = new AuthenticationTokenDto(SOME_EMAIL, INVALID_TOKEN);
   private static final AuthenticationToken AUTHENTICATION_TOKEN
       = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
 
@@ -142,6 +143,6 @@ public class AuthenticationServiceTest {
 
     authenticationService.revokeToken();
 
-    verify(tokenRepository).remove(AUTHENTICATION_TOKEN.token);
+    verify(tokenRepository).remove(SOME_USER.getEmail());
   }
 }
