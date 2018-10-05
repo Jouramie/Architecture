@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.service.authentication;
 
-import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
+import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationErrorException;
@@ -21,7 +21,7 @@ public class AuthenticationService {
   private final AuthenticationTokenFactory tokenFactory;
   private final AuthenticationTokenRepository authenticationTokenRepository;
   private final AuthenticationResponseAssembler responseAssembler;
-  private final CurrentUserRepository currentUserRepository;
+  private final CurrentUserSession currentUserSession;
 
   @Inject
   public AuthenticationService(UserRepository userRepository,
@@ -29,20 +29,20 @@ public class AuthenticationService {
                                AuthenticationTokenFactory tokenFactory,
                                AuthenticationTokenRepository authenticationTokenRepository,
                                AuthenticationResponseAssembler responseAssembler,
-                               CurrentUserRepository currentUserRepository) {
+                               CurrentUserSession currentUserSession) {
     this.userRepository = userRepository;
     this.authenticationTokenAssembler = authenticationTokenAssembler;
     this.tokenFactory = tokenFactory;
     this.authenticationTokenRepository = authenticationTokenRepository;
     this.responseAssembler = responseAssembler;
-    this.currentUserRepository = currentUserRepository;
+    this.currentUserSession = currentUserSession;
   }
 
   public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest) {
     User user = userRepository.find(authenticationRequest.username);
     if (user.isThisYourPassword(authenticationRequest.password)) {
       AuthenticationToken token = tokenFactory.createToken(authenticationRequest.username);
-      authenticationTokenRepository.addToken(token);
+      authenticationTokenRepository.add(token);
       return responseAssembler.toDto(token);
     }
     throw new AuthenticationErrorException();
@@ -50,18 +50,18 @@ public class AuthenticationService {
 
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {
     AuthenticationToken savedToken =
-        authenticationTokenRepository.getTokenForUser(authenticationTokenDto.username);
+        authenticationTokenRepository.getByEmail(authenticationTokenDto.username);
     AuthenticationToken requestToken = authenticationTokenAssembler.toModel(authenticationTokenDto);
     if (savedToken.equals(requestToken)) {
       User currentUser = userRepository.find(savedToken.username);
-      currentUserRepository.setCurrentUser(currentUser);
+      currentUserSession.setCurrentUser(currentUser);
       return;
     }
     throw new InvalidTokenException();
   }
 
   public void revokeToken() {
-    User user = currentUserRepository.getCurrentUser();
-    authenticationTokenRepository.removeTokenOfUser(user.getUsername());
+    User user = currentUserSession.getCurrentUser();
+    authenticationTokenRepository.remove(user.getUsername());
   }
 }

@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.service.cart;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
+import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
@@ -11,17 +11,17 @@ import javax.inject.Inject;
 
 @Component
 public class CartService {
-  private final CurrentUserRepository currentUserRepository;
+  private final CurrentUserSession currentUserSession;
   private final UserRepository userRepository;
   private final StockRepository stockRepository;
   private final CartItemAssembler assembler;
 
   @Inject
   public CartService(StockRepository stockRepository,
-                     CurrentUserRepository currentUserRepository,
+                     CurrentUserSession currentUserSession,
                      UserRepository userRepository,
                      CartItemAssembler assembler) {
-    this.currentUserRepository = currentUserRepository;
+    this.currentUserSession = currentUserSession;
     this.userRepository = userRepository;
     this.stockRepository = stockRepository;
     this.assembler = assembler;
@@ -69,7 +69,7 @@ public class CartService {
   }
 
   private Cart getCart() {
-    return currentUserRepository.getCurrentUser().getCart();
+    return currentUserSession.getCurrentUser().getCart();
   }
 
   private void checkIfStockExists(String title) {
@@ -85,6 +85,6 @@ public class CartService {
   }
 
   private void updateUser() {
-    userRepository.update(currentUserRepository.getCurrentUser());
+    userRepository.update(currentUserSession.getCurrentUser());
   }
 }

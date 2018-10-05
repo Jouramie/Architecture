@@ -1,9 +1,9 @@
 package ca.ulaval.glo4003.infrastructure.persistence;
 
-import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
+import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 
-public class InMemoryCurrentUserRepository implements CurrentUserRepository {
+public class InMemoryCurrentUserSession implements CurrentUserSession {
 
   private final ThreadLocal<User> currentUser = new ThreadLocal<>();
 

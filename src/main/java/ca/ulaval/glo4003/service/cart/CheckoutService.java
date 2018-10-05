@@ -8,7 +8,7 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
-import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
+import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 @Component
 public class CheckoutService {
   private final PaymentProcessor paymentProcessor;
-  private final CurrentUserRepository currentUserRepository;
+  private final CurrentUserSession currentUserSession;
   private final TransactionFactory transactionFactory;
   private final TransactionLedger transactionLedger;
   private final NotificationSender notificationSender;
@@ -27,7 +27,7 @@ public class CheckoutService {
 
   @Inject
   public CheckoutService(PaymentProcessor paymentProcessor,
-                         CurrentUserRepository currentUserRepository,
+                         CurrentUserSession currentUserSession,
                          TransactionFactory transactionFactory,
                          TransactionLedger transactionLedger,
                          NotificationSender notificationSender,
@@ -35,7 +35,7 @@ public class CheckoutService {
                          CartItemAssembler cartItemAssembler) {
 
     this.paymentProcessor = paymentProcessor;
-    this.currentUserRepository = currentUserRepository;
+    this.currentUserSession = currentUserSession;
     this.transactionFactory = transactionFactory;
     this.transactionLedger = transactionLedger;
     this.notificationSender = notificationSender;
@@ -44,7 +44,7 @@ public class CheckoutService {
   }
 
   public List<CartItemResponseDto> checkoutCart() {
-    User currentUser = currentUserRepository.getCurrentUser();
+    User currentUser = currentUserSession.getCurrentUser();
     Cart cart = currentUser.getCart();
     checkIfCartIsEmpty(cart);
 

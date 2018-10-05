@@ -15,7 +15,7 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
-import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
+import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.Collections;
@@ -31,7 +31,7 @@ public class CheckoutServiceTest {
   @Mock
   private PaymentProcessor paymentProcessor;
   @Mock
-  private CurrentUserRepository currentUserRepository;
+  private CurrentUserSession currentUserSession;
   @Mock
   private User currentUser;
   @Mock
@@ -57,13 +57,13 @@ public class CheckoutServiceTest {
 
   @Before
   public void setup() {
-    given(currentUserRepository.getCurrentUser()).willReturn(currentUser);
+    given(currentUserSession.getCurrentUser()).willReturn(currentUser);
     given(currentUser.getCart()).willReturn(cart);
     given(transactionFactory.createPurchase(cart)).willReturn(transaction);
     given(cart.isEmpty()).willReturn(false);
 
     checkoutService = new CheckoutService(paymentProcessor,
-        currentUserRepository,
+        currentUserSession,
         transactionFactory,
         transactionLedger,
         notificationSender,

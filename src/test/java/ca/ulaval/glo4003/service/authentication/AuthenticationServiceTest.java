@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
+import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationErrorException;
@@ -54,7 +54,7 @@ public class AuthenticationServiceTest {
   private AuthenticationTokenRepository tokenRepository;
 
   @Mock
-  private CurrentUserRepository currentUserRepository;
+  private CurrentUserSession currentUserSession;
 
   @Mock
   private AuthenticationTokenFactory tokenFactory;
@@ -64,7 +64,7 @@ public class AuthenticationServiceTest {
   @Before
   public void setup() {
     authenticationService = new AuthenticationService(userRepository,
-        tokenAssembler, tokenFactory, tokenRepository, responseAssembler, currentUserRepository);
+        tokenAssembler, tokenFactory, tokenRepository, responseAssembler, currentUserSession);
   }
 
   @Before
@@ -123,21 +123,21 @@ public class AuthenticationServiceTest {
   public void whenValidatingToken_thenCurrentUserSet() {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    verify(currentUserRepository).setCurrentUser(SOME_USER);
+    verify(currentUserSession).setCurrentUser(SOME_USER);
   }
 
   @Test
   public void whenRevokingToken_thenTokenOfCurrentUserIsRevoked() {
-    given(currentUserRepository.getCurrentUser()).willReturn(SOME_USER);
+    given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
 
     authenticationService.revokeToken();
 
-    verify(currentUserRepository).getCurrentUser();
+    verify(currentUserSession).getCurrentUser();
   }
 
   @Test
   public void whenRevokingToken_thenTokenIsRemovedFromTokenRepository() {
-    given(currentUserRepository.getCurrentUser()).willReturn(SOME_USER);
+    given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
 
     authenticationService.revokeToken();
 
