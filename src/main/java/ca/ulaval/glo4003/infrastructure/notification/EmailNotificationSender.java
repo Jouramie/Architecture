@@ -27,7 +27,7 @@ public class EmailNotificationSender implements NotificationSender {
   public void sendNotification(Notification notification, User user) {
     try {
       Message message = constructEmailMessage(notification);
-      Destination destination = new Destination().withToAddresses(user.getUsername());
+      Destination destination = new Destination().withToAddresses(user.getEmail());
       SendEmailRequest request = new SendEmailRequest()
           .withDestination(destination)
           .withMessage(message)

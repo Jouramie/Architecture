@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class AuthenticationTokenAssemblerTest {
 
-  private static final String SOME_USERNAME = "username";
+  private static final String SOME_EMAIL = "email";
 
   private static final String SOME_TOKEN = "token";
 
@@ -17,11 +17,11 @@ public class AuthenticationTokenAssemblerTest {
 
   @Test
   public void whenAssemblingToModel_thenAssembleFieldByField() {
-    AuthenticationTokenDto tokenDto = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN);
+    AuthenticationTokenDto tokenDto = new AuthenticationTokenDto(SOME_EMAIL, SOME_TOKEN);
 
     AuthenticationToken token = authenticationTokenAssembler.toModel(tokenDto);
 
-    AuthenticationToken expectedToken = new AuthenticationToken(SOME_TOKEN, SOME_USERNAME);
+    AuthenticationToken expectedToken = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
     assertThat(token).isEqualToComparingFieldByField(expectedToken);
   }
 }

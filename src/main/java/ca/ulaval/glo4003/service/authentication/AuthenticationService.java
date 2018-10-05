@@ -11,6 +11,7 @@ import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
+import java.util.UUID;
 import javax.inject.Inject;
 
 @Component
@@ -39,9 +40,9 @@ public class AuthenticationService {
   }
 
   public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest) {
-    User user = userRepository.find(authenticationRequest.username);
+    User user = userRepository.find(authenticationRequest.email);
     if (user.isThisYourPassword(authenticationRequest.password)) {
-      AuthenticationToken token = tokenFactory.createToken(authenticationRequest.username);
+      AuthenticationToken token = tokenFactory.createToken(authenticationRequest.email);
       authenticationTokenRepository.add(token);
       return responseAssembler.toDto(token);
     }
@@ -50,10 +51,10 @@ public class AuthenticationService {
 
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {
     AuthenticationToken savedToken =
-        authenticationTokenRepository.getByEmail(authenticationTokenDto.username);
+        authenticationTokenRepository.getByUUID(UUID.fromString(authenticationTokenDto.token));
     AuthenticationToken requestToken = authenticationTokenAssembler.toModel(authenticationTokenDto);
     if (savedToken.equals(requestToken)) {
-      User currentUser = userRepository.find(savedToken.username);
+      User currentUser = userRepository.find(savedToken.email);
       currentUserSession.setCurrentUser(currentUser);
       return;
     }
@@ -62,6 +63,6 @@ public class AuthenticationService {
 
   public void revokeToken() {
     User user = currentUserSession.getCurrentUser();
-    authenticationTokenRepository.remove(user.getUsername());
+    authenticationTokenRepository.remove(user.getEmail());
   }
 }

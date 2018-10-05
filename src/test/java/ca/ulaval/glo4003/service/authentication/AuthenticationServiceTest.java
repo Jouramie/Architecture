@@ -17,6 +17,7 @@ import ca.ulaval.glo4003.util.UserBuilder;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
+import java.util.UUID;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,19 +28,20 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationServiceTest {
 
-  private static final String SOME_TOKEN = "token";
+  private static final String SOME_TOKEN = "00000000-0000-0000-0000-000000000000";
+  private static final String INVALID_TOKEN = "10110100-0000-0000-0000-000000000000";
   private static final String SOME_PASSWORD = UserBuilder.DEFAULT_PASSWORD;
-  private static final String SOME_USERNAME = UserBuilder.DEFAULT_USERNAME;
+  private static final String SOME_EMAIL = UserBuilder.DEFAULT_EMAIL;
   private static final AuthenticationRequestDto AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
+      = new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
   private static final AuthenticationRequestDto INVALID_AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD + "wrong");
+      = new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD + "wrong");
   private static final AuthenticationTokenDto AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN);
+      = new AuthenticationTokenDto(SOME_EMAIL, SOME_TOKEN);
   private static final AuthenticationTokenDto INVALID_AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(SOME_USERNAME, SOME_TOKEN + "invalid");
+      = new AuthenticationTokenDto(SOME_EMAIL, INVALID_TOKEN);
   private static final AuthenticationToken AUTHENTICATION_TOKEN
-      = new AuthenticationToken(SOME_TOKEN, SOME_USERNAME);
+      = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
 
   private static final User SOME_USER = new UserBuilder().buildDefault();
 
@@ -70,7 +72,7 @@ public class AuthenticationServiceTest {
   @Before
   public void initializeMocks() {
     given(userRepository.find(any())).willReturn(SOME_USER);
-    given(tokenRepository.getTokenForUser(any())).willReturn(AUTHENTICATION_TOKEN);
+    given(tokenRepository.getByUUID(any())).willReturn(AUTHENTICATION_TOKEN);
     given(tokenFactory.createToken(any())).willReturn(AUTHENTICATION_TOKEN);
   }
 
@@ -78,14 +80,14 @@ public class AuthenticationServiceTest {
   public void whenAuthenticatingUser_thenUserIsRetrievedFromRepository() {
     authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
-    verify(userRepository).find(AUTHENTICATION_REQUEST.username);
+    verify(userRepository).find(AUTHENTICATION_REQUEST.email);
   }
 
   @Test
   public void whenAuthenticatingUser_thenTokenIsSaved() {
     authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
-    verify(tokenRepository).addToken(AUTHENTICATION_TOKEN);
+    verify(tokenRepository).add(AUTHENTICATION_TOKEN);
   }
 
   @Test
@@ -108,7 +110,7 @@ public class AuthenticationServiceTest {
   public void whenValidatingAuthentication_thenTokenOfUserIsRetrievedFromRepository() {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    verify(tokenRepository).getTokenForUser(AUTHENTICATION_TOKEN_DTO.username);
+    verify(tokenRepository).getByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token));
   }
 
   @Test
@@ -141,6 +143,6 @@ public class AuthenticationServiceTest {
 
     authenticationService.revokeToken();
 
-    verify(tokenRepository).removeTokenOfUser(SOME_USER.getUsername());
+    verify(tokenRepository).remove(SOME_USER.getEmail());
   }
 }

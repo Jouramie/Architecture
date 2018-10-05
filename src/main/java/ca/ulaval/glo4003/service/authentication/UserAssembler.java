@@ -8,6 +8,6 @@ import ca.ulaval.glo4003.ws.api.authentication.UserDto;
 public class UserAssembler {
 
   public UserDto toDto(User user) {
-    return new UserDto(user.getUsername(), user.getRole());
+    return new UserDto(user.getEmail(), user.getRole());
   }
 }

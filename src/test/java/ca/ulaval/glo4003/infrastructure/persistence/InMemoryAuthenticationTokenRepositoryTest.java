@@ -11,11 +11,11 @@ import org.junit.Test;
 
 public class InMemoryAuthenticationTokenRepositoryTest {
 
-  private static final String SOME_USERNAME = "username";
-  public static final String SOME_TOKEN = "token";
+  private static final String SOME_EMAIL = "email";
+  public static final String SOME_TOKEN = "00000000-0000-0000-0000-000000000000";
 
   private final AuthenticationToken token
-      = new AuthenticationToken(SOME_TOKEN, SOME_USERNAME);
+      = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
 
   private InMemoryAuthenticationTokenRepository inMemoryAuthenticationTokenRepository;
 
@@ -34,18 +34,18 @@ public class InMemoryAuthenticationTokenRepositoryTest {
   }
 
   @Test
-  public void givenNoTokenForAUser_whenGettingTokenOfUser_thenTokenNotFoundExceptionIsThrown() {
-    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(UUID.fromString(SOME_TOKEN)))
+  public void givenTokenDoesNotExist_whenGettingTokenByUUID_thenTokenNotFoundExceptionIsThrown() {
+    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(UUID.randomUUID()))
         .isInstanceOf(NoTokenFoundException.class);
   }
 
   @Test
-  public void whenRemovingTokenOfUser_thenTokenIsRemoved() {
-    inMemoryAuthenticationTokenRepository.addToken(token);
+  public void whenRemovingToken_thenTokenIsRemoved() {
+    inMemoryAuthenticationTokenRepository.add(token);
 
-    inMemoryAuthenticationTokenRepository.removeTokenOfUser(SOME_USERNAME);
+    inMemoryAuthenticationTokenRepository.remove(token.token);
 
-    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(SOME_USERNAME))
+    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(UUID.fromString(token.token)))
         .isInstanceOf(NoTokenFoundException.class);
   }
 }

@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class UserTest {
 
-  private static final String SOME_4USERNAME = "a username";
+  private static final String SOME_4EMAIL = "a email";
   private static final String SOME_PASSWORD = "a password";
   private static final String WRONG_PASSWORD = SOME_PASSWORD + "wrong";
   private final AuthenticationTokenFactory tokenFactory = new AuthenticationTokenFactory();
@@ -17,7 +17,7 @@ public class UserTest {
 
   @Before
   public void initialize() {
-    user = new UserBuilder().withUsername(SOME_4USERNAME).withPassword(SOME_PASSWORD).build();
+    user = new UserBuilder().withEmail(SOME_4EMAIL).withPassword(SOME_PASSWORD).build();
   }
 
   @Test
