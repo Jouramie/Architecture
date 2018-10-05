@@ -16,7 +16,7 @@ public class EmailNotificationSender implements NotificationSender {
   private static final String EMAIL_FROM = "invest.ul.2018@gmail.com";
   private static final String UTF_8 = "UTF-8";
 
-  AmazonSimpleEmailService emailService;
+  private final AmazonSimpleEmailService emailService;
 
   @Inject
   public EmailNotificationSender(AmazonSimpleEmailService emailService) {
