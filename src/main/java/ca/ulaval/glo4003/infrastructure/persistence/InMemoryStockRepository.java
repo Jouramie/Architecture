@@ -37,7 +37,8 @@ public class InMemoryStockRepository implements StockRepository {
 
   @Override
   public List<Stock> getByMarket(MarketId marketId) {
-    return stocks.values().stream().filter((stock) -> stock.getMarketId().equals(marketId)).collect(Collectors.toList());
+    return stocks.values().stream().filter((stock) -> stock.getMarketId().equals(marketId))
+        .collect(Collectors.toList());
   }
 
   @Override

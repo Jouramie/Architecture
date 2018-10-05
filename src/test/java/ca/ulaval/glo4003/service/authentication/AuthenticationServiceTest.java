@@ -37,17 +37,15 @@ public class AuthenticationServiceTest {
   private static final AuthenticationRequestDto INVALID_AUTHENTICATION_REQUEST
       = new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD + "wrong");
   private static final AuthenticationTokenDto AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(SOME_EMAIL, SOME_TOKEN);
+      = new AuthenticationTokenDto(SOME_TOKEN);
   private static final AuthenticationTokenDto INVALID_AUTHENTICATION_TOKEN_DTO
-      = new AuthenticationTokenDto(SOME_EMAIL, INVALID_TOKEN);
+      = new AuthenticationTokenDto(INVALID_TOKEN);
   private static final AuthenticationToken AUTHENTICATION_TOKEN
       = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
 
   private static final User SOME_USER = new UserBuilder().buildDefault();
 
   private final AuthenticationResponseAssembler responseAssembler = new AuthenticationResponseAssembler();
-
-  private final AuthenticationTokenAssembler tokenAssembler = new AuthenticationTokenAssembler();
 
   @Mock
   private UserRepository userRepository;
@@ -66,7 +64,7 @@ public class AuthenticationServiceTest {
   @Before
   public void setup() {
     authenticationService = new AuthenticationService(userRepository,
-        tokenAssembler, tokenFactory, tokenRepository, responseAssembler, currentUserSession);
+        tokenFactory, tokenRepository, responseAssembler, currentUserSession);
   }
 
   @Before

@@ -18,7 +18,6 @@ import javax.inject.Inject;
 public class AuthenticationService {
 
   private final UserRepository userRepository;
-  private final AuthenticationTokenAssembler authenticationTokenAssembler;
   private final AuthenticationTokenFactory tokenFactory;
   private final AuthenticationTokenRepository authenticationTokenRepository;
   private final AuthenticationResponseAssembler responseAssembler;
@@ -26,13 +25,11 @@ public class AuthenticationService {
 
   @Inject
   public AuthenticationService(UserRepository userRepository,
-                               AuthenticationTokenAssembler authenticationTokenAssembler,
                                AuthenticationTokenFactory tokenFactory,
                                AuthenticationTokenRepository authenticationTokenRepository,
                                AuthenticationResponseAssembler responseAssembler,
                                CurrentUserSession currentUserSession) {
     this.userRepository = userRepository;
-    this.authenticationTokenAssembler = authenticationTokenAssembler;
     this.tokenFactory = tokenFactory;
     this.authenticationTokenRepository = authenticationTokenRepository;
     this.responseAssembler = responseAssembler;
@@ -52,8 +49,7 @@ public class AuthenticationService {
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {
     AuthenticationToken savedToken =
         authenticationTokenRepository.getByUUID(UUID.fromString(authenticationTokenDto.token));
-    AuthenticationToken requestToken = authenticationTokenAssembler.toModel(authenticationTokenDto);
-    if (savedToken.equals(requestToken)) {
+    if (savedToken.token.equals(authenticationTokenDto.token)) {
       User currentUser = userRepository.find(savedToken.email);
       currentUserSession.setCurrentUser(currentUser);
       return;

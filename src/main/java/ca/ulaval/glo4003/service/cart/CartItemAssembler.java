@@ -24,7 +24,8 @@ public class CartItemAssembler {
     Stock stock = stockRepository.getByTitle(item.title);
 
     return new CartItemResponseDto(stock.getTitle(), stock.getMarketId().getValue(),
-        stock.getName(), stock.getCategory(), stock.getValue().getCurrentValue().toUsd(), item.quantity);
+        stock.getName(), stock.getCategory(), stock.getValue().getCurrentValue().toUsd(),
+        item.quantity);
   }
 
   public List<CartItemResponseDto> toDtoList(Collection<CartItem> items) {

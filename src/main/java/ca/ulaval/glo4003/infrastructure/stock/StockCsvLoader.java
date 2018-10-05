@@ -40,19 +40,22 @@ public class StockCsvLoader {
 
       Pair<MoneyAmount, MoneyAmount> lastValues = getLastValues(title, marketId);
 
-      Stock stock = new Stock(title, name, category, marketId, lastValues.getValue0(), lastValues.getValue1());
+      Stock stock = new Stock(title, name, category, marketId, lastValues.getValue0(),
+          lastValues.getValue1());
       stockRepository.add(stock);
     }
 
     file.close();
   }
 
-  private Pair<MoneyAmount, MoneyAmount> getLastValues(String title, MarketId marketId) throws IOException {
+  private Pair<MoneyAmount, MoneyAmount> getLastValues(String title, MarketId marketId)
+      throws IOException {
     ZipFile zipFile = new ZipFile(STOCKS_DATA_ZIP_PATH);
     ZipEntry zipEntry = zipFile.getEntry(title + ".csv");
     InputStream fileStream = zipFile.getInputStream(zipEntry);
 
-    Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(new InputStreamReader(fileStream));
+    Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader()
+        .parse(new InputStreamReader(fileStream));
     CSVRecord firstRecord = records.iterator().next();
     double openValue = Double.parseDouble(firstRecord.get("open"));
     double closeValue = Double.parseDouble(firstRecord.get("close"));

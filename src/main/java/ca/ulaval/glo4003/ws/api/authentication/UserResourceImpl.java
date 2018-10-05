@@ -16,7 +16,8 @@ public class UserResourceImpl implements UserResource {
   private final RequestValidator requestValidator;
 
   @Inject
-  public UserResourceImpl(UserCreationService userCreationService, RequestValidator requestValidator) {
+  public UserResourceImpl(UserCreationService userCreationService,
+                          RequestValidator requestValidator) {
     this.userCreationService = userCreationService;
     this.requestValidator = requestValidator;
   }

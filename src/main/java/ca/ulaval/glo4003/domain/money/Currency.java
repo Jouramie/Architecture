@@ -19,7 +19,8 @@ public class Currency {
 
   public MoneyAmount convert(MoneyAmount amount) {
     BigDecimal factor = amount.getCurrency().rateToUsd.divide(rateToUsd, MathContext.DECIMAL64);
-    return new MoneyAmount(amount.getAmount().multiply(factor).setScale(2, RoundingMode.HALF_EVEN), this);
+    return new MoneyAmount(amount.getAmount().multiply(factor)
+        .setScale(2, RoundingMode.HALF_EVEN), this);
   }
 
   BigDecimal toUsd(BigDecimal amount) {
