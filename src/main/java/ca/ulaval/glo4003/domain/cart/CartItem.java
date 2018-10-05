@@ -21,12 +21,13 @@ public class CartItem {
     if (this == other) {
       return true;
     }
+
     if (!(other instanceof CartItem)) {
       return false;
     }
 
-    CartItem otherItem = (CartItem) other;
-    return otherItem.title.equals(title) && otherItem.quantity == quantity;
+    CartItem cartItem = (CartItem) other;
+    return quantity == cartItem.quantity && Objects.equals(title, cartItem.title);
   }
 
   @Override

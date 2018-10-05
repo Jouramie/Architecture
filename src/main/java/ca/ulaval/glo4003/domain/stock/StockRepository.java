@@ -13,4 +13,6 @@ public interface StockRepository {
   List<Stock> getStocksOfMarket(MarketId marketId);
 
   void add(Stock stock);
+
+  boolean doesStockExist(String title);
 }

@@ -7,7 +7,6 @@ import javax.validation.ConstraintViolation;
 
 public class InvalidInputException extends RuntimeException {
 
-  private static final long serialVersionUID = -5723443749381881618L;
   private final InputErrorResponseModel inputErrors;
 
   <T> InvalidInputException(Set<ConstraintViolation<T>> violations) {

@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.service.cart;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
@@ -62,10 +61,8 @@ public class CartService {
   }
 
   private void checkIfStockExists(String title) {
-    try {
-      stockRepository.getByTitle(title);
-    } catch (StockNotFoundException e) {
-      throw new InvalidStockTitleException(title, e);
+    if (!stockRepository.doesStockExist(title)) {
+      throw new InvalidStockTitleException(title);
     }
   }
 

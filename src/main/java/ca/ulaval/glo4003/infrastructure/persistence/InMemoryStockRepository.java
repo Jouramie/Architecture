@@ -42,4 +42,9 @@ public class InMemoryStockRepository implements StockRepository {
   public void add(Stock stock) {
     stocks.put(stock.getTitle(), stock);
   }
+
+  @Override
+  public boolean doesStockExist(String title) {
+    return stocks.containsKey(title);
+  }
 }
