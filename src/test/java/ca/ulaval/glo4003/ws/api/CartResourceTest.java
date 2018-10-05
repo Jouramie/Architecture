@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.service.cart.CartService;
+import ca.ulaval.glo4003.service.cart.CheckoutService;
 import ca.ulaval.glo4003.util.CartStockRequestBuilder;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.CartResource;
@@ -26,6 +27,8 @@ public class CartResourceTest {
   private CartItemResponseDto expectedDto;
   @Mock
   private CartService cartService;
+  @Mock
+  private CheckoutService checkoutService;
   private CartResource cartResource;
 
 
@@ -33,7 +36,7 @@ public class CartResourceTest {
   public void setup() {
     given(cartService.getCartContent()).willReturn(Collections.singletonList(expectedDto));
 
-    cartResource = new CartResourceImpl(cartService);
+    cartResource = new CartResourceImpl(cartService, checkoutService);
   }
 
   @Test
@@ -51,7 +54,7 @@ public class CartResourceTest {
   }
 
   @Test
-  public void whenAddStockToCart_thenReturningCartContent() {
+  public void whenAddStockToCart_thenReturnCartContent() {
     List<CartItemResponseDto> resultingDto = cartResource.addStockToCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
@@ -65,7 +68,7 @@ public class CartResourceTest {
   }
 
   @Test
-  public void whenUpdateStockInCart_thenReturningCartContent() {
+  public void whenUpdateStockInCart_thenReturnCartContent() {
     List<CartItemResponseDto> resultingDto = cartResource.updateStockInCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
@@ -79,7 +82,7 @@ public class CartResourceTest {
   }
 
   @Test
-  public void whenRemoveStockFromCart_thenReturningCartContent() {
+  public void whenRemoveStockFromCart_thenReturnCartContent() {
     List<CartItemResponseDto> resultingDto = cartResource.deleteStockInCart(SOME_TITLE);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
@@ -90,5 +93,21 @@ public class CartResourceTest {
     cartResource.emptyCart();
 
     verify(cartService).emptyCart();
+  }
+
+  @Test
+  public void whenCheckoutCart_thenReturnPreviousCartContent() {
+    given(checkoutService.checkoutCart()).willReturn(Collections.singletonList(expectedDto));
+
+    List<CartItemResponseDto> resultingDto = cartResource.checkoutCart();
+
+    assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
+  }
+
+  @Test
+  public void whenCheckoutCart_thenCheckoutProceed() {
+    cartResource.checkoutCart();
+
+    verify(checkoutService).checkoutCart();
   }
 }

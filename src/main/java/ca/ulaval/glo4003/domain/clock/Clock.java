@@ -16,7 +16,7 @@ public class Clock {
     observers = new ArrayList<>();
   }
 
-  LocalDateTime getCurrentTime() {
+  public LocalDateTime getCurrentTime() {
     return currentTime;
   }
 
