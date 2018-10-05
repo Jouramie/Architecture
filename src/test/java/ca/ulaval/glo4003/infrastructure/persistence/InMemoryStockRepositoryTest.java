@@ -39,9 +39,7 @@ public class InMemoryStockRepositoryTest {
 
   @Test
   public void whenGetByTitleANonExistingStock_thenStockNotFoundExceptionIsThrown() {
-    assertThatExceptionOfType(StockNotFoundException.class).isThrownBy(() -> {
-      repository.getByTitle("ASDF");
-    });
+    assertThatExceptionOfType(StockNotFoundException.class).isThrownBy(() -> repository.getByTitle("ASDF"));
   }
 
   @Test
@@ -53,9 +51,7 @@ public class InMemoryStockRepositoryTest {
 
   @Test
   public void whenGetByNameANonExistingStock_thenStockNotFoundExceptionIsThrown() {
-    assertThatExceptionOfType(StockNotFoundException.class).isThrownBy(() -> {
-      repository.getByName("ASDF");
-    });
+    assertThatExceptionOfType(StockNotFoundException.class).isThrownBy(() -> repository.getByName("ASDF"));
   }
 
   @Test
@@ -67,7 +63,7 @@ public class InMemoryStockRepositoryTest {
 
   @Test
   public void whenGetAllByMarket_thenReturnAllStocksOfMarket() {
-    List<Stock> result = repository.getStocksOfMarket(SOME_MARKET_ID);
+    List<Stock> result = repository.getByMarket(SOME_MARKET_ID);
 
     assertThat(result).containsExactlyInAnyOrder(SOME_STOCK, SOME_OTHER_STOCK);
   }
