@@ -33,7 +33,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
       AuthenticationTokenDto authenticationTokenDto
           = extractAuthenticationInfo(containerRequestContext.getHeaders());
       authenticationService.validateAuthentication(authenticationTokenDto);
-    } catch (InvalidTokenException | TokenNotFoundException | NumberFormatException e) {
+    } catch (InvalidTokenException | TokenNotFoundException | IllegalArgumentException e) {
       containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
     }
   }
