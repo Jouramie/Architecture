@@ -18,6 +18,6 @@ public class UserFactoryTest {
 
     User createdUser = factory.create(USERNAME, PASSWORD, ROLE);
 
-    assertThat(createdUser).isEqualToComparingFieldByField(expectedUser);
+    assertThat(createdUser).isEqualToComparingOnlyGivenFields(expectedUser, "username", "password", "role");
   }
 }

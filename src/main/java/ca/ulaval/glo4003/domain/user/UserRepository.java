@@ -1,7 +1,9 @@
 package ca.ulaval.glo4003.domain.user;
 
 public interface UserRepository {
-  void save(User user);
+  void add(User user);
+
+  void update(User user);
 
   User find(String username);
 }

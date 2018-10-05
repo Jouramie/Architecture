@@ -1,39 +1,51 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
+import ca.ulaval.glo4003.service.cart.CartService;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.inject.Inject;
 
 @Resource
 public class CartResourceImpl implements CartResource {
-  @Override
-  public List<CartStockResponse> getCartContent() {
-    return null;
+  private final CartService cartService;
+
+  @Inject
+  public CartResourceImpl(CartService cartService) {
+    this.cartService = cartService;
   }
 
   @Override
-  public List<CartStockResponse> addStockToCart(String title,
-                                                CartStockRequest cartStockRequest) {
-    return null;
+  public List<CartItemResponseDto> getCartContent() {
+    return cartService.getCartContent();
   }
 
   @Override
-  public List<CartStockResponse> updateStockInCart(String title,
-                                                   CartStockRequest cartStockRequest) {
-    return null;
+  public List<CartItemResponseDto> addStockToCart(String title,
+                                                  CartStockRequest cartStockRequest) {
+    cartService.addStockToCart(title, cartStockRequest.quantity);
+    return cartService.getCartContent();
   }
 
   @Override
-  public List<CartStockResponse> deleteStockInCart(String title,
-                                                   CartStockRequest cartStockRequest) {
-    return null;
+  public List<CartItemResponseDto> updateStockInCart(String title,
+                                                     CartStockRequest cartStockRequest) {
+    cartService.updateStockInCart(title, cartStockRequest.quantity);
+    return cartService.getCartContent();
+  }
+
+  @Override
+  public List<CartItemResponseDto> deleteStockInCart(String title) {
+    cartService.removeStockFromCart(title);
+    return cartService.getCartContent();
   }
 
   @Override
   public void emptyCart() {
+    cartService.emptyCart();
   }
 
   @Override
-  public List<CartStockResponse> checkoutCart() {
+  public List<CartItemResponseDto> checkoutCart() {
     return null;
   }
 }

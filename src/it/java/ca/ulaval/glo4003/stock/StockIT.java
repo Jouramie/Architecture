@@ -2,6 +2,9 @@ package ca.ulaval.glo4003.stock;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -16,9 +19,9 @@ public class StockIT {
   private static final String NAME = "name";
   private static final String MARKET = "market";
   private static final String CATEGORY = "category";
-  private static final String OPEN = "openValue";
-  private static final String CURRENT = "currentValue";
-  private static final String CLOSE = "closeValue";
+  private static final String OPEN_VALUE = "openValue";
+  private static final String CURRENT_VALUE = "currentValue";
+  private static final String CLOSE_VALUE = "closeValue";
 
   private static final String SOME_TITLE = "RBS.l";
   private static final String SOME_NAME = "Royal Bank of Scotland";
@@ -34,14 +37,14 @@ public class StockIT {
     when()
         .get(API_STOCK_ROUTE + "/" + SOME_TITLE)
     .then()
-        .statusCode(200)
+        .statusCode(OK.getStatusCode())
         .body(TITLE, equalTo(SOME_TITLE))
         .body(NAME, equalTo(SOME_NAME))
         .body(MARKET, equalTo(SOME_MARKET))
         .body(CATEGORY, equalTo(SOME_CATEGORY))
-        .body(OPEN, any(Float.class))
-        .body(CURRENT, any(Float.class))
-        .body(CLOSE, any(Float.class));
+        .body(OPEN_VALUE, any(Float.class))
+        .body(CURRENT_VALUE, any(Float.class))
+        .body(CLOSE_VALUE, any(Float.class));
     //@formatter:on
   }
 
@@ -53,14 +56,14 @@ public class StockIT {
     .when()
         .get(API_STOCK_ROUTE)
     .then()
-        .statusCode(200)
+        .statusCode(OK.getStatusCode())
         .body(TITLE, equalTo(SOME_TITLE))
         .body(NAME, equalTo(SOME_NAME))
         .body(MARKET, equalTo(SOME_MARKET))
         .body(CATEGORY, equalTo(SOME_CATEGORY))
-        .body(OPEN, any(Float.class))
-        .body(CURRENT, any(Float.class))
-        .body(CLOSE, any(Float.class));
+        .body(OPEN_VALUE, any(Float.class))
+        .body(CURRENT_VALUE, any(Float.class))
+        .body(CLOSE_VALUE, any(Float.class));
     //@formatter:on
   }
 
@@ -70,7 +73,7 @@ public class StockIT {
     when()
         .get(API_STOCK_ROUTE + "/wrong")
     .then()
-        .statusCode(404);
+        .statusCode(NOT_FOUND.getStatusCode());
     //@formatter:on
   }
 
@@ -82,7 +85,7 @@ public class StockIT {
     .when()
         .get(API_STOCK_ROUTE)
     .then()
-        .statusCode(404);
+        .statusCode(NOT_FOUND.getStatusCode());
     //@formatter:on
   }
 
@@ -92,7 +95,7 @@ public class StockIT {
     when()
         .get(API_STOCK_ROUTE)
     .then()
-        .statusCode(400);
+        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 }
