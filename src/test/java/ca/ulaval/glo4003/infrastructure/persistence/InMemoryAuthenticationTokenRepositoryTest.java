@@ -43,7 +43,7 @@ public class InMemoryAuthenticationTokenRepositoryTest {
   public void whenRemovingToken_thenTokenIsRemoved() {
     inMemoryAuthenticationTokenRepository.add(token);
 
-    inMemoryAuthenticationTokenRepository.remove(token.token);
+    inMemoryAuthenticationTokenRepository.remove(token.email);
 
     assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(UUID.fromString(token.token)))
         .isInstanceOf(TokenNotFoundException.class);

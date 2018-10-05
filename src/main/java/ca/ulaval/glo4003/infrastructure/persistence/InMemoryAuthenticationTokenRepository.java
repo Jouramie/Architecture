@@ -24,6 +24,10 @@ public class InMemoryAuthenticationTokenRepository implements AuthenticationToke
 
   @Override
   public void remove(String email) {
-    tokens.remove(email);
+    AuthenticationToken foundToken = tokens.values().stream()
+        .filter(token -> token.email.equals(email))
+        .findFirst()
+        .orElseThrow(TokenNotFoundException::new);
+    tokens.remove(foundToken.token);
   }
 }
