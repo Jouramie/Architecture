@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MarketsUpdaterTest {
+public class MarketUpdaterTest {
   private static final LocalDateTime SOME_TIME = LocalDateTime.now();
   @Mock
   private Clock someClock;
@@ -26,25 +26,25 @@ public class MarketsUpdaterTest {
   @Mock
   private Market someOtherMarket;
 
-  private MarketsUpdater marketsUpdater;
+  private MarketUpdater marketUpdater;
 
   @Before
   public void setupMarketsUpdater() {
     given(someMarketRepository.getAll()).willReturn(Arrays.asList(someMarket, someOtherMarket));
 
-    marketsUpdater = new MarketsUpdater(someClock, someMarketRepository);
+    marketUpdater = new MarketUpdater(someClock, someMarketRepository);
   }
 
   @Test
   public void whenConstructorIsCalled_thenMarketsUpdaterRegisterItselfToTheClock() {
-    MarketsUpdater newMarketsUpdater = new MarketsUpdater(someClock, someMarketRepository);
+    MarketUpdater newMarketUpdater = new MarketUpdater(someClock, someMarketRepository);
 
-    verify(someClock).register(newMarketsUpdater);
+    verify(someClock).register(newMarketUpdater);
   }
 
   @Test
   public void whenTick_thenCallUpdateOnAllMarkets() {
-    marketsUpdater.onTick(SOME_TIME);
+    marketUpdater.onTick(SOME_TIME);
 
     verify(someMarket).update(SOME_TIME);
     verify(someOtherMarket).update(SOME_TIME);

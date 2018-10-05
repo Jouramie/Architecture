@@ -2,13 +2,13 @@ package ca.ulaval.glo4003.ws.http;
 
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
-import ca.ulaval.glo4003.domain.user.authentication.NoTokenFoundException;
+import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
-import java.io.IOException;
+import java.util.Optional;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -28,20 +28,19 @@ public class AuthenticationFilter implements ContainerRequestFilter {
   }
 
   @Override
-  public void filter(ContainerRequestContext containerRequestContext) throws IOException {
-
-    AuthenticationTokenDto authenticationTokenDto
-        = extractAuthenticationInfo(containerRequestContext.getHeaders());
+  public void filter(ContainerRequestContext containerRequestContext) {
     try {
+      AuthenticationTokenDto authenticationTokenDto
+          = extractAuthenticationInfo(containerRequestContext.getHeaders());
       authenticationService.validateAuthentication(authenticationTokenDto);
-    } catch (InvalidTokenException | NoTokenFoundException e) {
+    } catch (InvalidTokenException | TokenNotFoundException | IllegalArgumentException e) {
       containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
     }
   }
 
   private AuthenticationTokenDto extractAuthenticationInfo(MultivaluedMap<String, String> headers) {
-    String token = headers.getFirst("token");
-    String username = headers.getFirst("username");
-    return new AuthenticationTokenDto(username, token);
+    String token = Optional.ofNullable(headers.getFirst("token"))
+        .orElseThrow(InvalidTokenException::new);
+    return new AuthenticationTokenDto(token);
   }
 }

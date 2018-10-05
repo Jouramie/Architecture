@@ -38,16 +38,15 @@ public class CartIT {
   private static final String CURRENT_VALUE = "currentValue";
   private static final String QUANTITY = "quantity";
 
-  private static final String SOME_USERNAME = "carticart";
+  private static final String SOME_EMAIL = "carticart";
   private static final String SOME_PASSWORD = "stockistock";
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_USERNAME, SOME_PASSWORD, UserRole.INVESTOR);
+      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD, UserRole.INVESTOR);
 
   private static final AuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(SOME_USERNAME, SOME_PASSWORD);
+      new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
 
-  private final Header userHeader = new Header("username", SOME_USERNAME);
   private final CartStockRequestBuilder cartStockRequestBuilder = new CartStockRequestBuilder();
 
   @Rule
@@ -70,7 +69,6 @@ public class CartIT {
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
     .when()
         .get(API_CART_ROUTE)
@@ -100,7 +98,6 @@ public class CartIT {
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
@@ -124,7 +121,6 @@ public class CartIT {
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
@@ -149,7 +145,6 @@ public class CartIT {
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
@@ -181,7 +176,6 @@ public class CartIT {
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
         .body(cartStockRequestBuilder.build(2))
         .contentType(MediaType.APPLICATION_JSON)
@@ -213,7 +207,6 @@ public class CartIT {
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
@@ -243,7 +236,6 @@ public class CartIT {
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
     .when()
         .delete(API_CART_ROUTE)
@@ -251,7 +243,6 @@ public class CartIT {
         .statusCode(NO_CONTENT.getStatusCode());
 
     given()
-        .header(userHeader)
         .header(tokenHeader)
     .when()
         .get(API_CART_ROUTE)
@@ -279,7 +270,6 @@ public class CartIT {
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
     .when()
         .post(API_CART_CHECKOUT_ROUTE)
@@ -301,7 +291,6 @@ public class CartIT {
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
     .when()
         .post(API_CART_CHECKOUT_ROUTE)
@@ -330,7 +319,6 @@ public class CartIT {
   private void givenCartContainsDefaultStock(Header tokenHeader) {
     //@formatter:off
     given()
-        .header(userHeader)
         .header(tokenHeader)
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)

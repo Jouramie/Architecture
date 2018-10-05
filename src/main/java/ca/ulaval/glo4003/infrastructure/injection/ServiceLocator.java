@@ -47,7 +47,8 @@ public class ServiceLocator {
   public void discoverPackage(String packagePrefix, Class<?>... annotationClasses) {
     Reflections reflections = new Reflections(packagePrefix);
     for (Class annotation : annotationClasses) {
-      reflections.getTypesAnnotatedWith(annotation).forEach((foundClass) -> register((Class) foundClass));
+      reflections.getTypesAnnotatedWith(annotation).forEach((foundClass) ->
+          register((Class) foundClass));
     }
   }
 
@@ -73,20 +74,23 @@ public class ServiceLocator {
         .map(this::get).collect(toList());
   }
 
-  public Set<Class<?>> getClassesForAnnotation(String packagePrefix, Class<? extends Annotation> annotation) {
+  public Set<Class<?>> getClassesForAnnotation(String packagePrefix,
+                                               Class<? extends Annotation> annotation) {
     return new HashSet<>(new Reflections(packagePrefix)
         .getTypesAnnotatedWith(annotation));
   }
 
   private <T> T injectConstructor(Class<T> type) {
     Constructor<?> injectableConstructor = findInjectableConstructorForType(type);
-    Object[] parameters = Arrays.stream(injectableConstructor.getParameterTypes()).map(this::get).toArray();
+    Object[] parameters = Arrays.stream(injectableConstructor.getParameterTypes()).map(this::get)
+        .toArray();
     return instantiateClass(injectableConstructor, parameters);
   }
 
   private <T> Constructor<?> findInjectableConstructorForType(Class<T> type) {
     return Arrays.stream(type.getDeclaredConstructors())
-        .filter(constructor -> constructor.isAnnotationPresent(Inject.class) || constructor.getParameterTypes().length == 0)
+        .filter(constructor -> constructor.isAnnotationPresent(Inject.class)
+            || constructor.getParameterTypes().length == 0)
         .findFirst()
         .orElseThrow(() -> new NonInjectableConstructorException(type));
   }
@@ -94,7 +98,8 @@ public class ServiceLocator {
   private <T> T instantiateClass(Constructor<?> injectableConstructor, Object[] parameters) {
     try {
       return (T) injectableConstructor.newInstance(parameters);
-    } catch (java.lang.InstantiationException | InvocationTargetException | IllegalAccessException e) {
+    } catch (java.lang.InstantiationException | InvocationTargetException
+        | IllegalAccessException e) {
       throw new InstantiationException(injectableConstructor.getDeclaringClass());
     }
   }

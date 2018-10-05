@@ -22,16 +22,16 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class AuthenticationResourceImplTest {
 
   private static final AuthenticationRequestDto SOME_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto("username", "password");
+      new AuthenticationRequestDto("email", "password");
 
   private static final AuthenticationResponseDto SOME_AUTHENTICATION_RESPONSE
       = new AuthenticationResponseDto("TOKEN");
 
-  private static final AuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_USERNAME =
+  private static final AuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_EMAIL =
       new AuthenticationRequestDto(null, "password");
 
   private static final AuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_PASSWORD =
-      new AuthenticationRequestDto("username", null);
+      new AuthenticationRequestDto("email", null);
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
 
@@ -74,13 +74,13 @@ public class AuthenticationResourceImplTest {
   }
 
   @Test
-  public void givenNullUsername_whenAuthenticatingUser_thenInvalidInputExceptionShouldBeThrown() {
+  public void givenNullEmail_whenAuthenticatingUser_thenInvalidInputExceptionShouldBeThrown() {
     Throwable thrown = catchThrowable(
-        () -> authenticationResource.authenticate(AUTHENTICATION_REQUEST_WITHOUT_USERNAME));
+        () -> authenticationResource.authenticate(AUTHENTICATION_REQUEST_WITHOUT_EMAIL));
 
     assertThat(thrown).isInstanceOf(InvalidInputException.class);
     InvalidInputException exception = (InvalidInputException) thrown;
-    assertThatExceptionContainsErrorFor(exception, "username");
+    assertThatExceptionContainsErrorFor(exception, "email");
   }
 
   @Test

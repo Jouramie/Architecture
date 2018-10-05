@@ -18,7 +18,7 @@ import ca.ulaval.glo4003.infrastructure.config.SimulationSettings;
 import ca.ulaval.glo4003.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
-import ca.ulaval.glo4003.infrastructure.market.MarketsUpdater;
+import ca.ulaval.glo4003.infrastructure.market.MarketUpdater;
 import ca.ulaval.glo4003.infrastructure.notification.EmailNotificationSender;
 import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
@@ -52,7 +52,8 @@ public class InvestULMain {
   private static ClockDriver clockDriver;
 
   public static void main(String[] args) throws Exception {
-    ServiceLocatorInitializer serviceLocatorInitializer = new ServiceLocatorInitializer(WEB_SERVICE_PACKAGE_PREFIX);
+    ServiceLocatorInitializer serviceLocatorInitializer
+        = new ServiceLocatorInitializer(WEB_SERVICE_PACKAGE_PREFIX);
     serviceLocatorInitializer.initialize(ServiceLocator.INSTANCE);
     createAwsSesSender();
     hardcodeTestUser();
@@ -61,7 +62,10 @@ public class InvestULMain {
     startClockAndMarketsUpdater();
 
     ContextHandlerCollection contexts = new ContextHandlerCollection();
-    contexts.setHandlers(new Handler[] {createApiHandler(serviceLocatorInitializer), createUiHandler()});
+    contexts.setHandlers(new Handler[] {
+        createApiHandler(serviceLocatorInitializer),
+        createUiHandler()
+    });
 
     int port = 8080;
     server = new Server(port);
@@ -106,7 +110,9 @@ public class InvestULMain {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     resourceConfig.register(CORSResponseFilter.class);
-    ServiceLocator.INSTANCE.getClassesForAnnotation(WEB_SERVICE_PACKAGE_PREFIX, FilterRegistration.class)
+    ServiceLocator.INSTANCE.getClassesForAnnotation(
+        WEB_SERVICE_PACKAGE_PREFIX,
+        FilterRegistration.class)
         .forEach(resourceConfig::register);
 
     ServletContainer servletContainer = new ServletContainer(resourceConfig);
@@ -150,27 +156,30 @@ public class InvestULMain {
   }
 
   private static void createAwsSesSender() {
-    AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+    AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
+        .withRegion(Regions.US_EAST_1).build();
     NotificationSender emailSender = new EmailNotificationSender(client);
     ServiceLocator.INSTANCE.registerInstance(NotificationSender.class, emailSender);
   }
 
   private static void hardcodeTestUser() {
-    String testUsername = "Archi.test.42@gmail.com";
+    String testEmail = "Archi.test.42@gmail.com";
     ServiceLocator.INSTANCE.get(UserRepository.class)
-        .add(new User(testUsername, "asdf", UserRole.ADMINISTRATOR));
+        .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
     ServiceLocator.INSTANCE.get(AuthenticationTokenRepository.class)
-        .addToken(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testUsername));
+        .add(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testEmail));
   }
 
   private static void loadData() {
     try {
-      MarketCsvLoader marketLoader = new MarketCsvLoader(ServiceLocator.INSTANCE.get(MarketRepository.class),
+      MarketCsvLoader marketLoader = new MarketCsvLoader(
+          ServiceLocator.INSTANCE.get(MarketRepository.class),
           ServiceLocator.INSTANCE.get(StockRepository.class),
           ServiceLocator.INSTANCE.get(StockValueRetriever.class));
       marketLoader.load();
 
-      StockCsvLoader stockLoader = new StockCsvLoader(ServiceLocator.INSTANCE.get(StockRepository.class),
+      StockCsvLoader stockLoader = new StockCsvLoader(
+          ServiceLocator.INSTANCE.get(StockRepository.class),
           ServiceLocator.INSTANCE.get(MarketRepository.class));
       stockLoader.load();
     } catch (IOException e) {
@@ -179,9 +188,16 @@ public class InvestULMain {
   }
 
   private static void startClockAndMarketsUpdater() {
-    ServiceLocator.INSTANCE.registerInstance(Clock.class, new Clock(LocalDateTime.of(2018, 9, 15, 0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION));
-    clockDriver = new ClockDriver(ServiceLocator.INSTANCE.get(Clock.class), SimulationSettings.SIMULATION_UPDATE_FREQUENCY);
-    new MarketsUpdater(ServiceLocator.INSTANCE.get(Clock.class), ServiceLocator.INSTANCE.get(MarketRepository.class));
+    ServiceLocator.INSTANCE.registerInstance(
+        Clock.class,
+        new Clock(LocalDateTime.of(2018, 9, 15, 0, 0, 0),
+            SimulationSettings.CLOCK_TICK_DURATION));
+    clockDriver = new ClockDriver(
+        ServiceLocator.INSTANCE.get(Clock.class),
+        SimulationSettings.SIMULATION_UPDATE_FREQUENCY);
+    new MarketUpdater(
+        ServiceLocator.INSTANCE.get(Clock.class),
+        ServiceLocator.INSTANCE.get(MarketRepository.class));
     clockDriver.start();
   }
 }

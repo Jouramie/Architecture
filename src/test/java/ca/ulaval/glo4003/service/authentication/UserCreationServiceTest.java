@@ -21,12 +21,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UserCreationServiceTest {
 
-  private static final String SOME_USERNAME = "username";
+  private static final String SOME_EMAIL = "email";
   private static final String SOME_PASSWORD = "password";
   private static final UserRole SOME_ROLE = UserRole.ADMINISTRATOR;
-  private static final UserDto USER_DTO = new UserDto(SOME_USERNAME, SOME_ROLE);
+  private static final UserDto USER_DTO = new UserDto(SOME_EMAIL, SOME_ROLE);
   private static final UserCreationDto SOME_CREATION_REQUEST
-      = new UserCreationDto(SOME_USERNAME, SOME_PASSWORD, SOME_ROLE);
+      = new UserCreationDto(SOME_EMAIL, SOME_PASSWORD, SOME_ROLE);
   private static final User USER = new UserBuilder().buildDefault();
 
   @Mock
@@ -43,12 +43,12 @@ public class UserCreationServiceTest {
   public void whenCreatingUser_thenUserIsCreated() {
     service.createUser(SOME_CREATION_REQUEST);
 
-    verify(userFactory).create(SOME_USERNAME, SOME_PASSWORD, SOME_ROLE);
+    verify(userFactory).create(SOME_EMAIL, SOME_PASSWORD, SOME_ROLE);
   }
 
   @Test
   public void whenCreatingUser_thenUserIsAdded() {
-    given(userFactory.create(SOME_USERNAME, SOME_PASSWORD, SOME_ROLE)).willReturn(USER);
+    given(userFactory.create(SOME_EMAIL, SOME_PASSWORD, SOME_ROLE)).willReturn(USER);
 
     service.createUser(SOME_CREATION_REQUEST);
     verify(userRepository).add(USER);

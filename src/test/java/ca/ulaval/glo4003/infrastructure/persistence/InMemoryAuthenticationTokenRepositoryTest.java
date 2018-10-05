@@ -4,16 +4,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
-import ca.ulaval.glo4003.domain.user.authentication.NoTokenFoundException;
+import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
 public class InMemoryAuthenticationTokenRepositoryTest {
 
-  private static final String SOME_USERNAME = "username";
+  private static final String SOME_EMAIL = "email";
+  private static final String SOME_TOKEN = "00000000-0000-0000-0000-000000000000";
 
   private final AuthenticationToken token
-      = new AuthenticationToken("token", SOME_USERNAME);
+      = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
 
   private InMemoryAuthenticationTokenRepository inMemoryAuthenticationTokenRepository;
 
@@ -24,32 +26,26 @@ public class InMemoryAuthenticationTokenRepositoryTest {
 
   @Test
   public void whenAddingToken_thenTokenIsSaved() {
-    inMemoryAuthenticationTokenRepository.addToken(token);
+    inMemoryAuthenticationTokenRepository.add(token);
 
     AuthenticationToken retrievedToken =
-        inMemoryAuthenticationTokenRepository.getTokenForUser(SOME_USERNAME);
+        inMemoryAuthenticationTokenRepository.getByUUID(UUID.fromString(SOME_TOKEN));
     assertThat(retrievedToken).isEqualTo(token);
   }
 
   @Test
-  public void givenNoTokenForAUser_whenGettingTokenOfUser_thenTokenNotFoundExceptionIsThrown() {
-    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(SOME_USERNAME))
-        .isInstanceOf(NoTokenFoundException.class);
+  public void givenTokenDoesNotExist_whenGettingTokenByUUID_thenTokenNotFoundExceptionIsThrown() {
+    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(UUID.randomUUID()))
+        .isInstanceOf(TokenNotFoundException.class);
   }
 
   @Test
-  public void givenNullUsername_whenGettingTokenOfUser_thenTokenNotFoundExceptionIsThrown() {
-    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(null))
-        .isInstanceOf(NoTokenFoundException.class);
-  }
+  public void whenRemovingToken_thenTokenIsRemoved() {
+    inMemoryAuthenticationTokenRepository.add(token);
 
-  @Test
-  public void whenRemovingTokenOfUser_thenTokenIsRemoved() {
-    inMemoryAuthenticationTokenRepository.addToken(token);
+    inMemoryAuthenticationTokenRepository.remove(token.token);
 
-    inMemoryAuthenticationTokenRepository.removeTokenOfUser(SOME_USERNAME);
-
-    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getTokenForUser(SOME_USERNAME))
-        .isInstanceOf(NoTokenFoundException.class);
+    assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.getByUUID(UUID.fromString(token.token)))
+        .isInstanceOf(TokenNotFoundException.class);
   }
 }

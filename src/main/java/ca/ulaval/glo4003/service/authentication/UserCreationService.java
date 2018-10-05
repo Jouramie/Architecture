@@ -16,14 +16,16 @@ public class UserCreationService {
   private final UserAssembler userAssembler;
 
   @Inject
-  public UserCreationService(UserFactory userFactory, UserRepository userRepository, UserAssembler userAssembler) {
+  public UserCreationService(UserFactory userFactory, UserRepository userRepository,
+                             UserAssembler userAssembler) {
     this.userFactory = userFactory;
     this.userRepository = userRepository;
     this.userAssembler = userAssembler;
   }
 
   public UserDto createUser(UserCreationDto creationRequest) {
-    User user = userFactory.create(creationRequest.username, creationRequest.password, creationRequest.role);
+    User user = userFactory.create(creationRequest.email, creationRequest.password,
+        creationRequest.role);
     userRepository.add(user);
     return userAssembler.toDto(user);
   }

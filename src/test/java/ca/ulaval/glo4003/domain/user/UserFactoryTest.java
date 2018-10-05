@@ -8,16 +8,16 @@ public class UserFactoryTest {
 
   private static final UserRole ROLE = UserRole.ADMINISTRATOR;
   private static final String PASSWORD = "password";
-  private static final String USERNAME = "username";
+  private static final String EMAIL = "email";
 
   private final UserFactory factory = new UserFactory();
 
   @Test
   public void whenCreatingUser_thenReturnCreatedUser() {
-    User expectedUser = new User(USERNAME, PASSWORD, ROLE);
+    User expectedUser = new User(EMAIL, PASSWORD, ROLE);
 
-    User createdUser = factory.create(USERNAME, PASSWORD, ROLE);
+    User createdUser = factory.create(EMAIL, PASSWORD, ROLE);
 
-    assertThat(createdUser).isEqualToComparingOnlyGivenFields(expectedUser, "username", "password", "role");
+    assertThat(createdUser).isEqualToComparingOnlyGivenFields(expectedUser, "email", "password", "role");
   }
 }

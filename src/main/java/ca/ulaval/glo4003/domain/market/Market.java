@@ -19,7 +19,8 @@ public class Market {
   private final StockValueRetriever stockValueRetriever;
   private MarketState currentState;
 
-  public Market(MarketId id, LocalTime openingTime, LocalTime closingTime, Currency currency, StockRepository stockRepository, StockValueRetriever stockValueRetriever) {
+  public Market(MarketId id, LocalTime openingTime, LocalTime closingTime, Currency currency,
+                StockRepository stockRepository, StockValueRetriever stockValueRetriever) {
     this.id = id;
     this.openingTime = openingTime;
     this.closingTime = closingTime;
@@ -66,14 +67,14 @@ public class Market {
   }
 
   public void updateAllStockValues() {
-    stockRepository.getStocksOfMarket(getId()).forEach(stockValueRetriever::updateStockValue);
+    stockRepository.getByMarket(getId()).forEach(stockValueRetriever::updateStockValue);
   }
 
   public void openAllStocks() {
-    stockRepository.getStocksOfMarket(getId()).forEach(Stock::open);
+    stockRepository.getByMarket(getId()).forEach(Stock::open);
   }
 
   public void closeAllStocks() {
-    stockRepository.getStocksOfMarket(getId()).forEach(Stock::close);
+    stockRepository.getByMarket(getId()).forEach(Stock::close);
   }
 }

@@ -19,7 +19,7 @@ public class InMemoryUserRepositoryTest {
   public void whenAddingUser_thenUserIsStored() {
     inMemoryUserRepository.add(SOME_USER);
 
-    User retrievedUser = inMemoryUserRepository.find(SOME_USER.getUsername());
+    User retrievedUser = inMemoryUserRepository.find(SOME_USER.getEmail());
     assertThat(retrievedUser).isEqualTo(SOME_USER);
   }
 
@@ -37,7 +37,7 @@ public class InMemoryUserRepositoryTest {
 
     inMemoryUserRepository.update(SOME_OTHER_USER);
 
-    User retrievedUser = inMemoryUserRepository.find(SOME_OTHER_USER.getUsername());
+    User retrievedUser = inMemoryUserRepository.find(SOME_OTHER_USER.getEmail());
     assertThat(retrievedUser).isEqualTo(SOME_OTHER_USER);
   }
 
@@ -49,7 +49,7 @@ public class InMemoryUserRepositoryTest {
 
   @Test
   public void givenUserDoesNotExist_whenGettingUser_thenUserNotFoundExceptionIsThrown() {
-    assertThatThrownBy(() -> inMemoryUserRepository.find(SOME_USER.getUsername()))
+    assertThatThrownBy(() -> inMemoryUserRepository.find(SOME_USER.getEmail()))
         .isInstanceOf(UserNotFoundException.class);
   }
 }

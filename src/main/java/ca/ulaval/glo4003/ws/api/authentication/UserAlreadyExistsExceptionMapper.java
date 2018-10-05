@@ -6,7 +6,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 @ErrorMapper
-public class UserAlreadyExistsExceptionMapper implements ExceptionMapper<UserAlreadyExistsException> {
+public class UserAlreadyExistsExceptionMapper
+    implements ExceptionMapper<UserAlreadyExistsException> {
 
   @Override
   public Response toResponse(UserAlreadyExistsException e) {

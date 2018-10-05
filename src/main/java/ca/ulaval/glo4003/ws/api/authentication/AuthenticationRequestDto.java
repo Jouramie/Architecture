@@ -11,18 +11,18 @@ import javax.validation.constraints.NotNull;
 )
 public class AuthenticationRequestDto {
 
-  @Schema(description = "Username")
+  @Schema(description = "Email")
   @NotNull
-  public final String username;
+  public final String email;
 
   @Schema(description = "Password")
   @NotNull
   public final String password;
 
   @JsonCreator
-  public AuthenticationRequestDto(@JsonProperty("username") String username,
+  public AuthenticationRequestDto(@JsonProperty("email") String email,
                                   @JsonProperty("password") String password) {
-    this.username = username;
+    this.email = email;
     this.password = password;
   }
 }

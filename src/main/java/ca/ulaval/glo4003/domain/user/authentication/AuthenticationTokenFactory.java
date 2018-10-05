@@ -6,7 +6,7 @@ import java.util.UUID;
 @Component
 public class AuthenticationTokenFactory {
 
-  public AuthenticationToken createToken(String username) {
-    return new AuthenticationToken(UUID.randomUUID().toString(), username);
+  public AuthenticationToken createToken(String email) {
+    return new AuthenticationToken(UUID.randomUUID().toString(), email);
   }
 }
