@@ -12,7 +12,6 @@ import ca.ulaval.glo4003.domain.user.CurrentUserRepository;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -47,9 +46,7 @@ public class CheckoutService {
   public List<CartItemResponseDto> checkoutCart() {
     User currentUser = currentUserRepository.getCurrentUser();
     Cart cart = currentUser.getCart();
-    if (cart.isEmpty()) {
-      return new ArrayList<>();
-    }
+    checkIfCartIsEmpty(cart);
 
     Transaction transaction = transactionFactory.createPurchase(cart);
     processTransaction(transaction);
@@ -59,6 +56,12 @@ public class CheckoutService {
         .toDtoList(cart.getItems());
     cart.empty();
     return cartItemResponseDtos;
+  }
+
+  private void checkIfCartIsEmpty(Cart cart) {
+    if (cart.isEmpty()) {
+      throw new CheckoutEmptyCartException();
+    }
   }
 
   private void sendTransactionNotification(Transaction transaction, User currentUser) {

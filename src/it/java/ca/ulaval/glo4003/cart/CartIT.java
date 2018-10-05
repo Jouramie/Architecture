@@ -294,6 +294,22 @@ public class CartIT {
     //@formatter:on
   }
 
+  @Test
+  public void givenEmptyCart_whenCheckout_thenReturnBadRequest() {
+    givenUserAlreadyRegistered();
+    String token = givenUserAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(userHeader)
+        .header(tokenHeader)
+    .when()
+        .post(API_CART_CHECKOUT_ROUTE)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
+
 
   private void givenUserAlreadyRegistered() {
     given().body(A_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON).post(API_USERS_ROUTE);
