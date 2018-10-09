@@ -10,6 +10,10 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.util.StockBuilder;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +50,20 @@ public class CartItemAssemblerTest {
   public void whenToDto_thenFillDtoWithCurrentValue() throws StockNotFoundException {
     CartItemResponseDto dto = assembler.toDto(new CartItem(SOME_TITLE, SOME_QUANTITY));
 
+    assertThatDtoIsCorrectlyMapped(dto);
+  }
+
+  @Test
+  public void whenToDtoList_thenAllItemArePresent() throws StockNotFoundException {
+    List<CartItemResponseDto> dtos
+        = assembler.toDtoList(Arrays.asList(new CartItem(SOME_TITLE, SOME_QUANTITY),
+        new CartItem(SOME_TITLE, SOME_QUANTITY)));
+
+    assertThatDtoIsCorrectlyMapped(dtos.get(0));
+    assertThatDtoIsCorrectlyMapped(dtos.get(1));
+  }
+
+  private void assertThatDtoIsCorrectlyMapped(CartItemResponseDto dto) {
     assertThat(dto.title).isEqualTo(SOME_TITLE);
     assertThat(dto.quantity).isEqualTo(SOME_QUANTITY);
     assertThat(dto.name).isEqualTo(SOME_NAME);

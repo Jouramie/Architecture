@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
@@ -12,7 +13,9 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
+import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.StockNotInCartExceptionMapper;
 import java.util.ArrayList;
@@ -76,6 +79,14 @@ public class CartServiceTest {
     List<CartItemResponseDto> resultingDtos = cartService.getCartContent();
 
     assertThat(resultingDtos.get(0)).isEqualTo(cartItemDto);
+  }
+
+  @Test
+  public void givenOneStockOfCartDoesNotExist_whenGetCartContent_thenInvalidStockExceptionIsThrown()
+      throws StockNotFoundException {
+    doThrow(StockNotFoundException.class).when(cartItemAssembler).toDtoList(any());
+
+    assertThatThrownBy(() -> cartService.getCartContent());
   }
 
   @Test
@@ -178,5 +189,14 @@ public class CartServiceTest {
 
     verify(cart).empty();
     verify(userRepository).update(currentUser);
+  }
+
+  @Test
+  public void givenCurrentUserDoesNotExist_whenAddingStockToCart_thenUserDoesNotExistExceptionIsThrown()
+      throws UserNotFoundException{
+    doThrow(UserNotFoundException.class).when(userRepository).update(any());
+
+    assertThatThrownBy(() -> cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY))
+        .isInstanceOf(UserDoesNotExistException.class);
   }
 }

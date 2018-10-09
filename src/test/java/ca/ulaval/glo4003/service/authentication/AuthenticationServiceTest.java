@@ -74,6 +74,7 @@ public class AuthenticationServiceTest {
 
   @Before
   public void initializeMocks() throws Throwable {
+    given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
     given(userRepository.find(any())).willReturn(SOME_USER);
     given(tokenRepository.getByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token)))
         .willReturn(AUTHENTICATION_TOKEN);
@@ -182,8 +183,6 @@ public class AuthenticationServiceTest {
 
   @Test
   public void whenRevokingToken_thenTokenOfCurrentUserIsRevoked() {
-    given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
-
     authenticationService.revokeToken();
 
     verify(currentUserSession).getCurrentUser();
@@ -192,10 +191,17 @@ public class AuthenticationServiceTest {
   @Test
   public void whenRevokingToken_thenTokenIsRemovedFromTokenRepository()
       throws TokenNotFoundException{
-    given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
-
     authenticationService.revokeToken();
 
     verify(tokenRepository).remove(SOME_USER.getEmail());
+  }
+
+  @Test
+  public void givenInavlidToken_whenRevokingToken_thenInvalidTokenExceptionIsThrown()
+      throws TokenNotFoundException{
+    doThrow(TokenNotFoundException.class).when(tokenRepository).remove(any());
+
+    assertThatThrownBy(() -> authenticationService.revokeToken())
+        .isInstanceOf(InvalidTokenException.class);
   }
 }

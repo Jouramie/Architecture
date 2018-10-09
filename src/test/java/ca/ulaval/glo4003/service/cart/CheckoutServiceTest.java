@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -18,6 +19,7 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.Collections;
 import java.util.List;
@@ -121,5 +123,14 @@ public class CheckoutServiceTest {
     verify(paymentProcessor, never()).payment(any());
     verify(transactionLedger, never()).save(any());
     verify(notificationSender, never()).sendNotification(any(), any());
+  }
+
+  @Test
+  public void givenOneStockOfCartDoesNotExist_whenCheckoutCart_thenInvalidStockTitleExceptionIsThrown()
+      throws StockNotFoundException {
+    doThrow(StockNotFoundException.class).when(transactionFactory).createPurchase(any());
+
+    assertThatThrownBy(() -> checkoutService.checkoutCart())
+        .isInstanceOf(InvalidStockTitleException.class);
   }
 }
