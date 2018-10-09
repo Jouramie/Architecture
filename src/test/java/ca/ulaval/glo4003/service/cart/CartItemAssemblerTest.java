@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import ca.ulaval.glo4003.domain.cart.CartItem;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.util.StockBuilder;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
@@ -35,14 +36,14 @@ public class CartItemAssemblerTest {
   private CartItemAssembler assembler;
 
   @Before
-  public void setupCartItemAssembler() {
+  public void setupCartItemAssembler() throws StockNotFoundException {
     assembler = new CartItemAssembler(stockRepository);
 
     given(stockRepository.getByTitle(SOME_TITLE)).willReturn(SOME_STOCK);
   }
 
   @Test
-  public void whenToDto_thenFillDtoWithCurrentValue() {
+  public void whenToDto_thenFillDtoWithCurrentValue() throws StockNotFoundException {
     CartItemResponseDto dto = assembler.toDto(new CartItem(SOME_TITLE, SOME_QUANTITY));
 
     assertThat(dto.title).isEqualTo(SOME_TITLE);

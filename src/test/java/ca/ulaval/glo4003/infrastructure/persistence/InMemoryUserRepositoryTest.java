@@ -16,7 +16,7 @@ public class InMemoryUserRepositoryTest {
   private final InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
 
   @Test
-  public void whenAddingUser_thenUserIsStored() {
+  public void whenAddingUser_thenUserIsStored() throws Throwable{
     inMemoryUserRepository.add(SOME_USER);
 
     User retrievedUser = inMemoryUserRepository.find(SOME_USER.getEmail());
@@ -24,7 +24,7 @@ public class InMemoryUserRepositoryTest {
   }
 
   @Test
-  public void givenUserAlreadyExists_whenAddingUser_thenExceptionIsThrown() {
+  public void givenUserAlreadyExists_whenAddingUser_thenExceptionIsThrown() throws UserAlreadyExistsException {
     inMemoryUserRepository.add(SOME_USER);
 
     assertThatThrownBy(() -> inMemoryUserRepository.add(SOME_USER))
@@ -32,7 +32,7 @@ public class InMemoryUserRepositoryTest {
   }
 
   @Test
-  public void givenUserAlreadyInRepo_whenUpdateUser_thenUserIsStored() {
+  public void givenUserAlreadyInRepo_whenUpdateUser_thenUserIsStored() throws Throwable {
     inMemoryUserRepository.add(SOME_USER);
 
     inMemoryUserRepository.update(SOME_OTHER_USER);

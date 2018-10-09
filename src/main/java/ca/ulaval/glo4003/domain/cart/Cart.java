@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.domain.cart;
 
 import static java.util.stream.Collectors.toList;
 
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class Cart {
     }
   }
 
-  public void update(String title, int newQuantity) {
+  public void update(String title, int newQuantity) throws StockNotFoundException {
     checkIfStockInCart(title);
     if (newQuantity > 0) {
       items.put(title, new CartItem(title, newQuantity));
@@ -47,9 +48,9 @@ public class Cart {
     return 0;
   }
 
-  private void checkIfStockInCart(String title) {
+  private void checkIfStockInCart(String title) throws StockNotFoundException {
     if (!items.containsKey(title)) {
-      throw new StockNotInCartException(title);
+      throw new StockNotFoundException(title);
     }
   }
 

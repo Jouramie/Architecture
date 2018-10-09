@@ -1,8 +1,10 @@
 package ca.ulaval.glo4003.domain.stock;
 
-public class StockNotFoundException extends RuntimeException {
+public class StockNotFoundException extends Throwable {
 
-  public StockNotFoundException(String message) {
-    super(message);
+  public final String title;
+
+  public StockNotFoundException(String title) {
+    this.title = title;
   }
 }

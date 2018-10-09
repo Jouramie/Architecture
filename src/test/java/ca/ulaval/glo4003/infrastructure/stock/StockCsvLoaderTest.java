@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
 import ca.ulaval.glo4003.domain.market.Market;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.stock.Stock;
@@ -30,7 +31,7 @@ public class StockCsvLoaderTest {
   private StockCsvLoader loader;
 
   @Before
-  public void setupStockCSVLoader() {
+  public void setupStockCSVLoader() throws MarketNotFoundException {
     given(someMarket.getCurrency()).willReturn(SOME_CURRENCY);
     given(marketRepository.getById(any())).willReturn(someMarket);
     stockRepository = new InMemoryStockRepository();
@@ -38,7 +39,7 @@ public class StockCsvLoaderTest {
   }
 
   @Test
-  public void whenLoad_thenLoadTheValuesFromTheCsvFile() throws IOException {
+  public void whenLoad_thenLoadTheValuesFromTheCsvFile() throws Throwable {
     loader.load();
 
     assertThat(stockRepository.getAll()).hasSize(35);
@@ -50,7 +51,7 @@ public class StockCsvLoaderTest {
   }
 
   @Test
-  public void whenLoad_thenStockStartValueHasCurrencyOfTheMarket() throws IOException {
+  public void whenLoad_thenStockStartValueHasCurrencyOfTheMarket() throws Throwable {
     loader.load();
 
     Stock randomStock = stockRepository.getByTitle("MMM");
@@ -58,7 +59,7 @@ public class StockCsvLoaderTest {
   }
 
   @Test
-  public void whenLoad_thenStockHasLastOpenAndCloseValues() throws IOException {
+  public void whenLoad_thenStockHasLastOpenAndCloseValues() throws Throwable {
     loader.load();
 
     Stock randomStock = stockRepository.getByTitle("MSFT");

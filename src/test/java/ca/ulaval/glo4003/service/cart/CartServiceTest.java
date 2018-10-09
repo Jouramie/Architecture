@@ -8,13 +8,13 @@ import static org.mockito.Mockito.doThrow;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.cart.CartItem;
-import ca.ulaval.glo4003.domain.cart.StockNotInCartException;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
+import ca.ulaval.glo4003.ws.api.cart.StockNotInCartExceptionMapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -67,7 +67,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenGetCartContent_thenWeHaveCorrespondingDtos() {
+  public void whenGetCartContent_thenWeHaveCorrespondingDtos() throws StockNotFoundException {
     List<CartItem> cartItems = Collections.singletonList(cartItem);
     List<CartItemResponseDto> cartItemDtos = Collections.singletonList(cartItemDto);
     given(cart.getItems()).willReturn(cartItems);
@@ -79,7 +79,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenAddStockToCart_thenStockIsAddedToCart() {
+  public void whenAddStockToCart_thenStockIsAddedToCart() throws Throwable {
     cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).add(SOME_TITLE, SOME_QUANTITY);
@@ -87,7 +87,8 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenInvalidStockTitle_whenAddStockToCart_thenInvalidStockTitleException() {
+  public void givenInvalidStockTitle_whenAddStockToCart_thenInvalidStockTitleException()
+      throws StockNotFoundException {
     String invalidTitle = "invalid title";
     given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
@@ -108,7 +109,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenUpdateStockQuantityInCart_thenStockIsUpdated() {
+  public void whenUpdateStockQuantityInCart_thenStockIsUpdated() throws Throwable {
     cartService.updateStockInCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).update(SOME_TITLE, SOME_QUANTITY);
@@ -116,7 +117,8 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenInvalidStockTitle_whenUpdateStockQuantityInCart_thenInvalidStockTitleException() {
+  public void givenInvalidStockTitle_whenUpdateStockQuantityInCart_thenInvalidStockTitleException()
+      throws StockNotFoundException{
     String invalidTitle = "invalid title";
     given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
@@ -137,9 +139,10 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenStockTitleNotInCart_whenUpdateStockQuantityInCart_thenStockNotInCartException() {
+  public void givenStockTitleNotInCart_whenUpdateStockQuantityInCart_thenStockNotInCartException()
+      throws Throwable {
     String notInCartTitle = "stock not in cart";
-    doThrow(new StockNotInCartException(notInCartTitle))
+    doThrow(new StockNotFoundException(notInCartTitle))
         .when(cart).update(notInCartTitle, SOME_QUANTITY);
     given(stockRepository.doesStockExist(notInCartTitle)).willReturn(true);
 
@@ -150,7 +153,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenRemoveStockFromCart_thenStockIsRemoved() {
+  public void whenRemoveStockFromCart_thenStockIsRemoved() throws Throwable {
     cartService.removeStockFromCart(SOME_TITLE);
 
     verify(cart).remove(SOME_TITLE);
@@ -158,7 +161,8 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenInvalidStockTitle_whenRemoveStockFromCart_thenInvalidStockTitleException() {
+  public void givenInvalidStockTitle_whenRemoveStockFromCart_thenInvalidStockTitleException()
+      throws StockNotFoundException{
     String invalidTitle = "invalid title";
     given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
@@ -169,7 +173,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenEmptyCart_thenCartIsEmpty() {
+  public void whenEmptyCart_thenCartIsEmpty() throws Throwable {
     cartService.emptyCart();
 
     verify(cart).empty();

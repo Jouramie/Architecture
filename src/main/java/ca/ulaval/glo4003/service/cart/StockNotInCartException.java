@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.domain.cart;
+package ca.ulaval.glo4003.service.cart;
 
 public class StockNotInCartException extends RuntimeException {
 

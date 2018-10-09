@@ -3,6 +3,8 @@ package ca.ulaval.glo4003.domain.cart;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.service.cart.StockNotInCartException;
 import java.util.Collection;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
@@ -98,14 +100,15 @@ public class CartTest {
   }
 
   @Test
-  public void whenUpdate_thenStockNotInCartExceptionIsThrown() {
+  public void givenEmptyCart_whenUpdate_thenStockNotFoundExceptionIsThrown() {
     ThrowingCallable update = () -> cart.update(SOME_TITLE, SOME_QUANTITY);
 
-    assertThatThrownBy(update).isInstanceOf(StockNotInCartException.class);
+    assertThatThrownBy(update).isInstanceOf(StockNotFoundException.class);
   }
 
   @Test
-  public void givenCartWithStocks_whenUpdateStocksAlreadyThere_thenUpdateQuantity() {
+  public void givenCartWithStocks_whenUpdateStocksAlreadyThere_thenUpdateQuantity()
+      throws Throwable {
     givenTwoItemInCart();
 
     cart.update(SOME_TITLE, SOME_OTHER_QUANTITY);

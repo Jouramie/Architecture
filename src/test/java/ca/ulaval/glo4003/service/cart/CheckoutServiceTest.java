@@ -11,6 +11,7 @@ import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
@@ -56,7 +57,7 @@ public class CheckoutServiceTest {
   private CheckoutService checkoutService;
 
   @Before
-  public void setup() {
+  public void setup() throws StockNotFoundException {
     given(currentUserSession.getCurrentUser()).willReturn(currentUser);
     given(currentUser.getCart()).willReturn(cart);
     given(transactionFactory.createPurchase(cart)).willReturn(transaction);
@@ -95,7 +96,7 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenPreviousCartContentIsReturned() {
+  public void whenCheckoutCart_thenPreviousCartContentIsReturned() throws StockNotFoundException {
     given(cartItemAssembler.toDtoList(cart.getItems()))
         .willReturn(Collections.singletonList(expectedDto));
 

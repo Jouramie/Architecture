@@ -1,11 +1,14 @@
 package ca.ulaval.glo4003.service.authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
@@ -47,7 +50,7 @@ public class UserCreationServiceTest {
   }
 
   @Test
-  public void whenCreatingUser_thenUserIsAdded() {
+  public void whenCreatingUser_thenUserIsAdded() throws UserAlreadyExistsException {
     given(userFactory.create(SOME_EMAIL, SOME_PASSWORD, SOME_ROLE)).willReturn(USER);
 
     service.createUser(SOME_CREATION_REQUEST);
@@ -61,5 +64,14 @@ public class UserCreationServiceTest {
     UserDto createdUser = service.createUser(SOME_CREATION_REQUEST);
 
     assertThat(createdUser).isEqualTo(USER_DTO);
+  }
+
+  @Test
+  public void givenUserAlreadyExist_whenCreatinUser_thenInvalidUserEmailExceptionIsThrown()
+      throws UserAlreadyExistsException{
+    doThrow(UserAlreadyExistsException.class).when(userRepository).add(any());
+
+    assertThatThrownBy(() -> service.createUser(SOME_CREATION_REQUEST))
+        .isInstanceOf(InvalidUserEmailException.class);
   }
 }

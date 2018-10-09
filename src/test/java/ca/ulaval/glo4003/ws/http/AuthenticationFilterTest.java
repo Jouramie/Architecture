@@ -68,16 +68,6 @@ public class AuthenticationFilterTest {
   }
 
   @Test
-  public void givenNonExistingToken_whenFiltering_thenRequestIsAborted() {
-    doThrow(TokenNotFoundException.class).when(authenticationService).validateAuthentication(any());
-
-    authenticationFilter.filter(requestContext);
-
-    verify(requestContext).abortWith(responseCaptor.capture());
-    assertThat(responseCaptor.getValue().getStatus()).isEqualTo(UNAUTHORIZED.getStatusCode());
-  }
-
-  @Test
   public void givenInvalidToken_whenFiltering_thenRequestIsAborted() {
     doThrow(InvalidTokenException.class).when(authenticationService).validateAuthentication(any());
 

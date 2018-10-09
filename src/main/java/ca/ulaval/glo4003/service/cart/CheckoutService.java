@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
@@ -12,6 +13,7 @@ import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -48,12 +50,11 @@ public class CheckoutService {
     Cart cart = currentUser.getCart();
     checkIfCartIsEmpty(cart);
 
-    Transaction transaction = transactionFactory.createPurchase(cart);
+    Transaction transaction = createTransaction(cart);
     processTransaction(transaction);
     sendTransactionNotification(transaction, currentUser);
 
-    List<CartItemResponseDto> cartItemResponseDtos = cartItemAssembler
-        .toDtoList(cart.getItems());
+    List<CartItemResponseDto> cartItemResponseDtos = assembleResponse(cart);
     cart.empty();
     return cartItemResponseDtos;
   }
@@ -61,6 +62,22 @@ public class CheckoutService {
   private void checkIfCartIsEmpty(Cart cart) {
     if (cart.isEmpty()) {
       throw new EmptyCartException();
+    }
+  }
+
+  private Transaction createTransaction(Cart cart) {
+    try {
+      return transactionFactory.createPurchase(cart);
+    } catch (StockNotFoundException exception) {
+      throw new InvalidStockTitleException(exception.title);
+    }
+  }
+
+  private List<CartItemResponseDto> assembleResponse(Cart cart) {
+    try {
+      return cartItemAssembler.toDtoList(cart.getItems());
+    } catch (StockNotFoundException exception) {
+      throw new InvalidStockTitleException(exception.title);
     }
   }
 

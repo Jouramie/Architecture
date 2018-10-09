@@ -33,7 +33,7 @@ public class MarketCsvLoaderTest {
   }
 
   @Test
-  public void whenLoad_thenLoadTheValuesFromTheCsvFile() throws IOException {
+  public void whenLoad_thenLoadTheValuesFromTheCsvFile() throws Throwable {
     loader.load();
 
     assertThat(marketRepository.getAll()).hasSize(7);

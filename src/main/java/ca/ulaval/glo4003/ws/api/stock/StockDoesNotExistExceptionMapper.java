@@ -2,14 +2,15 @@ package ca.ulaval.glo4003.ws.api.stock;
 
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.infrastructure.injection.ErrorMapper;
+import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 @ErrorMapper
-public class StockNotFoundErrorMapper implements ExceptionMapper<StockNotFoundException> {
+public class StockDoesNotExistExceptionMapper implements ExceptionMapper<StockDoesNotExistException> {
 
   @Override
-  public Response toResponse(StockNotFoundException e) {
+  public Response toResponse(StockDoesNotExistException e) {
     return Response.status(Response.Status.NOT_FOUND).build();
   }
 }
