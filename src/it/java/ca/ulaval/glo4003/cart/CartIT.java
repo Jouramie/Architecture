@@ -31,13 +31,14 @@ public class CartIT {
   private static final String API_CART_CHECKOUT_ROUTE = "/api/cart/checkout";
 
   private static final String TITLE = "title";
-  private static final String NAME = "name";
   private static final String MARKET = "market";
   private static final String CATEGORY = "category";
   private static final String CURRENT_VALUE = "currentValue";
+
   private static final String MONEY_AMOUNT = "moneyAmount";
   private static final String CURRENCY = "currency";
   private static final String QUANTITY = "quantity";
+
 
   private final CartStockRequestBuilder cartStockRequestBuilder = new CartStockRequestBuilder();
 
