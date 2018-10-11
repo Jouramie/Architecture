@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "193bcf71-0cce-45ee-b7d4-c07649bade8e",
+		"_postman_id": "8e07f576-c142-45e6-8629-20967fbba8e3",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -8,6 +8,229 @@
 		{
 			"name": "Stocks",
 			"item": [
+				{
+					"name": "max",
+					"item": [
+						{
+							"name": "GetMaxValueLast5Days",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_DAYS",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "LAST_FIVE_DAYS"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueCurrentMonth",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=CURRENT_MONTH",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "CURRENT_MONTH"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLastMonth",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_MONTH",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "LAST_MONTH"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLastYear",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_YEAR",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "LAST_YEAR"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLast5Years",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_YEARS",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "LAST_FIVE_YEARS"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLast10Years",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_10_YEARS",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "LAST_10_YEARS"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLastAllTime",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=ALL_TIME",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "ALL_TIME"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
 				{
 					"name": "GetStockByTitle",
 					"request": {
