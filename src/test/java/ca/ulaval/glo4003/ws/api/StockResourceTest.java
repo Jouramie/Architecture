@@ -3,8 +3,8 @@ package ca.ulaval.glo4003.ws.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-import ca.ulaval.glo4003.service.stock.StockDto;
 import ca.ulaval.glo4003.service.stock.StockService;
+import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import ca.ulaval.glo4003.ws.api.stock.StockResource;
 import ca.ulaval.glo4003.ws.api.stock.StockResourceImpl;
 import org.junit.Before;
