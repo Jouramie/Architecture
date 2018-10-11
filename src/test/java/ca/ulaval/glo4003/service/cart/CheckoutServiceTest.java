@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -11,15 +12,14 @@ import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import java.util.Collections;
-import java.util.List;
+import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,14 +49,14 @@ public class CheckoutServiceTest {
   @Mock
   private Notification notification;
   @Mock
-  private CartItemAssembler cartItemAssembler;
+  private TransactionAssembler transactionAssembler;
   @Mock
-  private CartItemResponseDto expectedDto;
+  private TransactionDto expectedDto;
 
   private CheckoutService checkoutService;
 
   @Before
-  public void setup() {
+  public void setup() throws StockNotFoundException {
     given(currentUserSession.getCurrentUser()).willReturn(currentUser);
     given(currentUser.getCart()).willReturn(cart);
     given(transactionFactory.createPurchase(cart)).willReturn(transaction);
@@ -68,7 +68,7 @@ public class CheckoutServiceTest {
         transactionLedger,
         notificationSender,
         notificationFactory,
-        cartItemAssembler);
+        transactionAssembler);
   }
 
   @Test
@@ -95,13 +95,13 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenPreviousCartContentIsReturned() {
-    given(cartItemAssembler.toDtoList(cart.getItems()))
-        .willReturn(Collections.singletonList(expectedDto));
+  public void whenCheckoutCart_thenPreviousCartContentIsReturned() throws StockNotFoundException {
+    given(transactionAssembler.toDto(transaction))
+        .willReturn(expectedDto);
 
-    List<CartItemResponseDto> cartItemResponseDtos = checkoutService.checkoutCart();
+    TransactionDto transactionDto = checkoutService.checkoutCart();
 
-    assertThat(cartItemResponseDtos.get(0)).isEqualTo(expectedDto);
+    assertThat(transactionDto).isEqualTo(expectedDto);
   }
 
   @Test
@@ -120,5 +120,14 @@ public class CheckoutServiceTest {
     verify(paymentProcessor, never()).payment(any());
     verify(transactionLedger, never()).save(any());
     verify(notificationSender, never()).sendNotification(any(), any());
+  }
+
+  @Test
+  public void givenOneStockOfCartDoesNotExist_whenCheckoutCart_thenInvalidStockTitleExceptionIsThrown()
+      throws StockNotFoundException {
+    doThrow(StockNotFoundException.class).when(transactionFactory).createPurchase(any());
+
+    assertThatThrownBy(() -> checkoutService.checkoutCart())
+        .isInstanceOf(InvalidStockTitleException.class);
   }
 }

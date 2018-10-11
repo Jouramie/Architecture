@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
@@ -11,8 +12,7 @@ import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
-import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import java.util.List;
+import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
 import javax.inject.Inject;
 
 @Component
@@ -23,7 +23,7 @@ public class CheckoutService {
   private final TransactionLedger transactionLedger;
   private final NotificationSender notificationSender;
   private final NotificationFactory notificationFactory;
-  private final CartItemAssembler cartItemAssembler;
+  private final TransactionAssembler transactionAssembler;
 
   @Inject
   public CheckoutService(PaymentProcessor paymentProcessor,
@@ -32,7 +32,7 @@ public class CheckoutService {
                          TransactionLedger transactionLedger,
                          NotificationSender notificationSender,
                          NotificationFactory notificationFactory,
-                         CartItemAssembler cartItemAssembler) {
+                         TransactionAssembler transactionAssembler) {
 
     this.paymentProcessor = paymentProcessor;
     this.currentUserSession = currentUserSession;
@@ -40,27 +40,32 @@ public class CheckoutService {
     this.transactionLedger = transactionLedger;
     this.notificationSender = notificationSender;
     this.notificationFactory = notificationFactory;
-    this.cartItemAssembler = cartItemAssembler;
+    this.transactionAssembler = transactionAssembler;
   }
 
-  public List<CartItemResponseDto> checkoutCart() {
+  public TransactionDto checkoutCart() {
     User currentUser = currentUserSession.getCurrentUser();
     Cart cart = currentUser.getCart();
     checkIfCartIsEmpty(cart);
 
-    Transaction transaction = transactionFactory.createPurchase(cart);
+    Transaction transaction = createTransaction(cart);
     processTransaction(transaction);
     sendTransactionNotification(transaction, currentUser);
-
-    List<CartItemResponseDto> cartItemResponseDtos = cartItemAssembler
-        .toDtoList(cart.getItems());
     cart.empty();
-    return cartItemResponseDtos;
+    return transactionAssembler.toDto(transaction);
   }
 
   private void checkIfCartIsEmpty(Cart cart) {
     if (cart.isEmpty()) {
       throw new EmptyCartException();
+    }
+  }
+
+  private Transaction createTransaction(Cart cart) {
+    try {
+      return transactionFactory.createPurchase(cart);
+    } catch (StockNotFoundException exception) {
+      throw new InvalidStockTitleException(exception);
     }
   }
 

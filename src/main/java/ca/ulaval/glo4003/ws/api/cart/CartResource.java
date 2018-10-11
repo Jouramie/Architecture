@@ -133,12 +133,12 @@ public interface CartResource {
           @ApiResponse(
               responseCode = "200", description = "cart content",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
+                  array = @ArraySchema(schema = @Schema(implementation = TransactionDto.class))
               )
           ),
           @ApiResponse(responseCode = "400", description = "cannot checkout empty cart"),
           @ApiResponse(responseCode = "401", description = "not logged in")
       }
   )
-  List<CartItemResponseDto> checkoutCart();
+  TransactionDto checkoutCart();
 }

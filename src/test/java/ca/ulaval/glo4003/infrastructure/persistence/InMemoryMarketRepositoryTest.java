@@ -33,7 +33,7 @@ public class InMemoryMarketRepositoryTest {
   }
 
   @Test
-  public void whenGetByIdAnExistingStock_thenMarketIsReturned() {
+  public void whenGetByIdAnExistingStock_thenMarketIsReturned() throws MarketNotFoundException {
     Market result = repository.getById(SOME_MARKET_ID);
 
     assertThat(result).isEqualTo(SOME_MARKET);

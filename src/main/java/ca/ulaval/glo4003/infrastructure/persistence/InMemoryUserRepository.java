@@ -13,7 +13,7 @@ public class InMemoryUserRepository implements UserRepository {
   private final Map<String, User> content = new ConcurrentHashMap<>();
 
   @Override
-  public void add(User user) {
+  public void add(User user) throws UserAlreadyExistsException {
     if (content.containsKey(user.getEmail())) {
       throw new UserAlreadyExistsException();
     }
@@ -21,7 +21,7 @@ public class InMemoryUserRepository implements UserRepository {
   }
 
   @Override
-  public void update(User user) {
+  public void update(User user) throws UserNotFoundException {
     if (!content.containsKey(user.getEmail())) {
       throw new UserNotFoundException();
     }
@@ -29,7 +29,7 @@ public class InMemoryUserRepository implements UserRepository {
   }
 
   @Override
-  public User find(String email) {
+  public User find(String email) throws UserNotFoundException {
     return Optional.ofNullable(content.get(email)).orElseThrow(UserNotFoundException::new);
   }
 }

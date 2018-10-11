@@ -8,6 +8,7 @@ import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.util.TransactionBuilder;
@@ -41,7 +42,7 @@ public class TransactionFactoryTest {
   private Cart cart;
 
   @Before
-  public void setup() {
+  public void setup() throws StockNotFoundException {
     given(clock.getCurrentTime()).willReturn(SOME_TIME);
     cart = new Cart();
     cart.add(SOME_TITLE, SOME_QUANTITY);
@@ -54,7 +55,7 @@ public class TransactionFactoryTest {
   }
 
   @Test
-  public void whenCreate_thenTypeIsSetToTransaction() {
+  public void whenCreate_thenTypeIsSetToTransaction() throws StockNotFoundException {
     Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
@@ -62,7 +63,7 @@ public class TransactionFactoryTest {
   }
 
   @Test
-  public void whenCreate_thenLocalTimeSetToTransaction() {
+  public void whenCreate_thenLocalTimeSetToTransaction() throws StockNotFoundException {
     Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
@@ -70,7 +71,7 @@ public class TransactionFactoryTest {
   }
 
   @Test
-  public void whenCreate_thenTransactionItemsIsSetToTransaction() {
+  public void whenCreate_thenTransactionItemsIsSetToTransaction() throws StockNotFoundException {
     Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 

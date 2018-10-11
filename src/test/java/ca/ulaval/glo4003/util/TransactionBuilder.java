@@ -8,13 +8,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class TransactionBuilder {
-  private static final List<TransactionItem> DEFAULT_ITEMS = Collections
+  public static final List<TransactionItem> DEFAULT_ITEMS = Collections
       .singletonList(new TransactionItemBuilder().build());
 
-  private static final TransactionType DEFAULT_TYPE = TransactionType.PURCHASE;
+  public static final TransactionType DEFAULT_TYPE = TransactionType.PURCHASE;
+  public static final LocalDateTime DEFAULT_TIME
+      = LocalDateTime.of(1970, 1, 1, 1, 1, 1);
   private final TransactionType type = DEFAULT_TYPE;
   private final List<TransactionItem> items = DEFAULT_ITEMS;
-  private LocalDateTime time;
+  private LocalDateTime time = DEFAULT_TIME;
 
   public Transaction build() {
     return new Transaction(time, items, type);

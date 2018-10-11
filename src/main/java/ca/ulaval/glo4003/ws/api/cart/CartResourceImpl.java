@@ -48,7 +48,7 @@ public class CartResourceImpl implements CartResource {
   }
 
   @Override
-  public List<CartItemResponseDto> checkoutCart() {
+  public TransactionDto checkoutCart() {
     return checkoutService.checkoutCart();
   }
 }

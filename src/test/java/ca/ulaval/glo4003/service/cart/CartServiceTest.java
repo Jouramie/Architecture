@@ -4,17 +4,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.cart.CartItem;
-import ca.ulaval.glo4003.domain.cart.StockNotInCartException;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
+import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
+import ca.ulaval.glo4003.ws.api.cart.StockNotInCartExceptionMapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -67,7 +70,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenGetCartContent_thenWeHaveCorrespondingDtos() {
+  public void whenGetCartContent_thenWeHaveCorrespondingDtos() throws StockNotFoundException {
     List<CartItem> cartItems = Collections.singletonList(cartItem);
     List<CartItemResponseDto> cartItemDtos = Collections.singletonList(cartItemDto);
     given(cart.getItems()).willReturn(cartItems);
@@ -79,7 +82,15 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenAddStockToCart_thenStockIsAddedToCart() {
+  public void givenOneStockOfCartDoesNotExist_whenGetCartContent_thenInvalidStockExceptionIsThrown()
+      throws StockNotFoundException {
+    doThrow(StockNotFoundException.class).when(cartItemAssembler).toDtoList(any());
+
+    assertThatThrownBy(() -> cartService.getCartContent());
+  }
+
+  @Test
+  public void whenAddStockToCart_thenStockIsAddedToCart() throws UserNotFoundException {
     cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).add(SOME_TITLE, SOME_QUANTITY);
@@ -87,7 +98,8 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenInvalidStockTitle_whenAddStockToCart_thenInvalidStockTitleException() {
+  public void givenInvalidStockTitle_whenAddStockToCart_thenInvalidStockTitleException()
+      throws StockNotFoundException {
     String invalidTitle = "invalid title";
     given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
@@ -108,7 +120,8 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenUpdateStockQuantityInCart_thenStockIsUpdated() {
+  public void whenUpdateStockQuantityInCart_thenStockIsUpdated()
+      throws UserNotFoundException, StockNotFoundException {
     cartService.updateStockInCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).update(SOME_TITLE, SOME_QUANTITY);
@@ -116,7 +129,8 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenInvalidStockTitle_whenUpdateStockQuantityInCart_thenInvalidStockTitleException() {
+  public void givenInvalidStockTitle_whenUpdateStockQuantityInCart_thenInvalidStockTitleException()
+      throws StockNotFoundException{
     String invalidTitle = "invalid title";
     given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
@@ -137,9 +151,10 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenStockTitleNotInCart_whenUpdateStockQuantityInCart_thenStockNotInCartException() {
+  public void givenStockTitleNotInCart_whenUpdateStockQuantityInCart_thenStockNotInCartException()
+      throws StockNotFoundException {
     String notInCartTitle = "stock not in cart";
-    doThrow(new StockNotInCartException(notInCartTitle))
+    doThrow(new StockNotFoundException(notInCartTitle))
         .when(cart).update(notInCartTitle, SOME_QUANTITY);
     given(stockRepository.doesStockExist(notInCartTitle)).willReturn(true);
 
@@ -150,7 +165,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenRemoveStockFromCart_thenStockIsRemoved() {
+  public void whenRemoveStockFromCart_thenStockIsRemoved() throws UserNotFoundException {
     cartService.removeStockFromCart(SOME_TITLE);
 
     verify(cart).remove(SOME_TITLE);
@@ -158,7 +173,8 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenInvalidStockTitle_whenRemoveStockFromCart_thenInvalidStockTitleException() {
+  public void givenInvalidStockTitle_whenRemoveStockFromCart_thenInvalidStockTitleException()
+      throws StockNotFoundException{
     String invalidTitle = "invalid title";
     given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
@@ -169,10 +185,19 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenEmptyCart_thenCartIsEmpty() {
+  public void whenEmptyCart_thenCartIsEmpty() throws UserNotFoundException {
     cartService.emptyCart();
 
     verify(cart).empty();
     verify(userRepository).update(currentUser);
+  }
+
+  @Test
+  public void givenCurrentUserDoesNotExist_whenAddingStockToCart_thenUserDoesNotExistExceptionIsThrown()
+      throws UserNotFoundException{
+    doThrow(UserNotFoundException.class).when(userRepository).update(any());
+
+    assertThatThrownBy(() -> cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY))
+        .isInstanceOf(UserDoesNotExistException.class);
   }
 }
