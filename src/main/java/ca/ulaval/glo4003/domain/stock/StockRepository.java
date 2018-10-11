@@ -6,9 +6,9 @@ import java.util.List;
 public interface StockRepository {
   List<Stock> getAll();
 
-  Stock getByTitle(String title);
+  Stock getByTitle(String title) throws StockNotFoundException;
 
-  Stock getByName(String name);
+  Stock getByName(String name) throws StockNotFoundException;
 
   List<Stock> getByMarket(MarketId marketId);
 

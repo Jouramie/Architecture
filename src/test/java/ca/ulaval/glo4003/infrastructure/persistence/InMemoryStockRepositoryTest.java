@@ -31,7 +31,7 @@ public class InMemoryStockRepositoryTest {
   }
 
   @Test
-  public void whenGetByTitleAnExistingStock_thenStockIsReturned() {
+  public void whenGetByTitleAnExistingStock_thenStockIsReturned() throws StockNotFoundException {
     Stock result = repository.getByTitle(SOME_STOCK.getTitle());
 
     assertThat(result).isEqualTo(SOME_STOCK);
@@ -43,7 +43,7 @@ public class InMemoryStockRepositoryTest {
   }
 
   @Test
-  public void whenGetByNameAnExistingStock_thenStockIsReturned() {
+  public void whenGetByNameAnExistingStock_thenStockIsReturned() throws StockNotFoundException {
     Stock result = repository.getByName(SOME_STOCK.getName());
 
     assertThat(result).isEqualTo(SOME_STOCK);

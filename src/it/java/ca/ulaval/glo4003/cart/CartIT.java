@@ -6,7 +6,9 @@ import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.emptyIterable;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
@@ -24,6 +26,7 @@ import org.junit.Test;
 
 public class CartIT {
   private static final String SOME_TITLE = "RBS.l";
+  private static final String SOME_TRANSACTION_TYPE = "PURCHASE";
 
   private static final String API_CART_ROUTE = "/api/cart/";
   private static final String API_CART_ROUTE_WITH_TITLE = API_CART_ROUTE + SOME_TITLE;
@@ -36,6 +39,8 @@ public class CartIT {
   private static final String MARKET = "market";
   private static final String CATEGORY = "category";
   private static final String CURRENT_VALUE = "currentValue";
+  private static final String MONEY_AMOUNT = "moneyAmount";
+  private static final String CURRENCY = "currency";
   private static final String QUANTITY = "quantity";
 
   private static final String SOME_EMAIL = "carticart";
@@ -275,12 +280,13 @@ public class CartIT {
         .post(API_CART_CHECKOUT_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
-        .body("$", is(iterableWithSize(1)))
-        .body("[0].title", is(SOME_TITLE))
-        .body("[0].quantity", is(CartStockRequestBuilder.DEFAULT_QUANTITY))
-        .body("[0]", hasKey(MARKET))
-        .body("[0]", hasKey(CATEGORY))
-        .body("[0]", hasKey(CURRENT_VALUE));
+        .body("type", equalTo(SOME_TRANSACTION_TYPE))
+        .body("items", is(iterableWithSize(1)))
+        .body("items[0]", hasKey(TITLE))
+        .body("items[0]", hasKey(QUANTITY))
+        .body("items[0]", hasKey(MONEY_AMOUNT))
+        .body("items[0]", hasKey(CURRENCY))
+        .body("timestamp", any(Object.class));
     //@formatter:on
   }
 

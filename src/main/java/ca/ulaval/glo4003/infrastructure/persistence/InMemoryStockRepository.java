@@ -20,16 +20,16 @@ public class InMemoryStockRepository implements StockRepository {
   }
 
   @Override
-  public Stock getByTitle(String title) {
+  public Stock getByTitle(String title) throws StockNotFoundException {
     Stock result = stocks.get(title);
     if (result == null) {
-      throw new StockNotFoundException("Cannot find stock with title " + title);
+      throw new StockNotFoundException(title);
     }
     return result;
   }
 
   @Override
-  public Stock getByName(String name) {
+  public Stock getByName(String name) throws StockNotFoundException {
     return stocks.values().stream().filter((stock) -> stock.getName().equals(name))
         .findFirst()
         .orElseThrow(() -> new StockNotFoundException("Cannot find stock with name " + name));

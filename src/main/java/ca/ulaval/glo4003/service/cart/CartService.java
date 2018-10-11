@@ -1,10 +1,13 @@
 package ca.ulaval.glo4003.service.cart;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
+import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.List;
 import javax.inject.Inject;
@@ -47,7 +50,11 @@ public class CartService {
     checkIfValidQuantity(quantity);
 
     Cart cart = getCart();
-    cart.update(title, quantity);
+    try {
+      cart.update(title, quantity);
+    } catch (StockNotFoundException exception) {
+      throw new StockNotInCartException(exception);
+    }
 
     updateUser();
   }
@@ -85,6 +92,10 @@ public class CartService {
   }
 
   private void updateUser() {
-    userRepository.update(currentUserSession.getCurrentUser());
+    try {
+      userRepository.update(currentUserSession.getCurrentUser());
+    } catch (UserNotFoundException exception) {
+      throw new UserDoesNotExistException(exception);
+    }
   }
 }

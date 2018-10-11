@@ -3,11 +3,13 @@ package ca.ulaval.glo4003;
 import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
@@ -164,8 +166,13 @@ public class InvestULMain {
 
   private static void hardcodeTestUser() {
     String testEmail = "Archi.test.42@gmail.com";
-    ServiceLocator.INSTANCE.get(UserRepository.class)
-        .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
+    try {
+      ServiceLocator.INSTANCE.get(UserRepository.class)
+          .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
+    } catch (UserAlreadyExistsException exception) {
+      System.out.println("Test user couldn't be added");
+      exception.printStackTrace();
+    }
     ServiceLocator.INSTANCE.get(AuthenticationTokenRepository.class)
         .add(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testEmail));
   }
@@ -182,7 +189,7 @@ public class InvestULMain {
           ServiceLocator.INSTANCE.get(StockRepository.class),
           ServiceLocator.INSTANCE.get(MarketRepository.class));
       stockLoader.load();
-    } catch (IOException e) {
+    } catch (IOException | MarketNotFoundException e) {
       System.out.println("Unable to parse the CSV: " + e.getMessage());
     }
   }

@@ -5,7 +5,7 @@ import java.util.List;
 public interface MarketRepository {
   List<Market> getAll();
 
-  Market getById(MarketId id);
+  Market getById(MarketId id) throws MarketNotFoundException;
 
   void add(Market market);
 }

@@ -18,7 +18,7 @@ public class InMemoryMarketRepository implements MarketRepository {
   }
 
   @Override
-  public Market getById(MarketId id) {
+  public Market getById(MarketId id) throws MarketNotFoundException {
     Market result = markets.get(id);
     if (result == null) {
       throw new MarketNotFoundException("Cannot find market with id " + id.getValue());
