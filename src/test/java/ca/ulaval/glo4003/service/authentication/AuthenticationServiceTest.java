@@ -73,7 +73,7 @@ public class AuthenticationServiceTest {
   }
 
   @Before
-  public void initializeMocks() throws Throwable {
+  public void initializeMocks() throws UserNotFoundException, TokenNotFoundException {
     given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
     given(userRepository.find(any())).willReturn(SOME_USER);
     given(tokenRepository.getByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token)))
@@ -197,7 +197,7 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenInavlidToken_whenRevokingToken_thenInvalidTokenExceptionIsThrown()
+  public void givenInvalidToken_whenRevokingToken_thenInvalidTokenExceptionIsThrown()
       throws TokenNotFoundException{
     doThrow(TokenNotFoundException.class).when(tokenRepository).remove(any());
 

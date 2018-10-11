@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.service.stock;
 
 public class StockDoesNotExistException extends RuntimeException {
 
-  public StockDoesNotExistException(String title) {
-    super("Stock " + title + " does not exist.");
+  public StockDoesNotExistException(Exception cause) {
+    super(cause);
   }
 }

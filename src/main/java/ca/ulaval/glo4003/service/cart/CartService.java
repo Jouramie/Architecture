@@ -32,11 +32,7 @@ public class CartService {
 
   public List<CartItemResponseDto> getCartContent() {
     Cart cart = getCart();
-    try {
-      return assembler.toDtoList(cart.getItems());
-    } catch (StockNotFoundException exception) {
-      throw new InvalidStockTitleException(exception.title);
-    }
+    return assembler.toDtoList(cart.getItems());
   }
 
   public void addStockToCart(String title, int quantity) {
@@ -57,7 +53,7 @@ public class CartService {
     try {
       cart.update(title, quantity);
     } catch (StockNotFoundException exception) {
-      throw new StockNotInCartException(title);
+      throw new StockNotInCartException(exception);
     }
 
     updateUser();
@@ -99,7 +95,7 @@ public class CartService {
     try {
       userRepository.update(currentUserSession.getCurrentUser());
     } catch (UserNotFoundException exception) {
-      throw new UserDoesNotExistException();
+      throw new UserDoesNotExistException(exception);
     }
   }
 }

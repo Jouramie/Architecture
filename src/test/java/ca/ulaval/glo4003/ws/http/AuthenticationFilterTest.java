@@ -78,7 +78,7 @@ public class AuthenticationFilterTest {
   }
 
   @Test
-  public void givenInvalidUUID_whenFiltering_thenRequestIsAborted() throws Exception {
+  public void givenInvalidUUID_whenFiltering_thenRequestIsAborted() {
     doThrow(IllegalArgumentException.class).when(authenticationService).validateAuthentication(any());
 
     authenticationFilter.filter(requestContext);

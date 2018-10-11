@@ -1,13 +1,17 @@
 package ca.ulaval.glo4003.service.cart;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 
 import ca.ulaval.glo4003.domain.cart.CartItem;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import ca.ulaval.glo4003.util.StockBuilder;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.ArrayList;
@@ -47,14 +51,23 @@ public class CartItemAssemblerTest {
   }
 
   @Test
-  public void whenToDto_thenFillDtoWithCurrentValue() throws StockNotFoundException {
+  public void whenToDto_thenFillDtoWithCurrentValue() {
     CartItemResponseDto dto = assembler.toDto(new CartItem(SOME_TITLE, SOME_QUANTITY));
 
     assertThatDtoIsCorrectlyMapped(dto);
   }
 
   @Test
-  public void whenToDtoList_thenAllItemArePresent() throws StockNotFoundException {
+  public void givenInvalidStockTitle_whenToDto_thenInvalidStockTitleExceptionIsThrown()
+      throws StockNotFoundException {
+    doThrow(StockNotFoundException.class).when(stockRepository).getByTitle(any());
+
+    assertThatThrownBy(() -> assembler.toDto(new CartItem(SOME_TITLE, SOME_QUANTITY)))
+        .isInstanceOf(InvalidStockTitleException.class);
+  }
+
+  @Test
+  public void whenToDtoList_thenAllItemArePresent() {
     List<CartItemResponseDto> dtos
         = assembler.toDtoList(Arrays.asList(new CartItem(SOME_TITLE, SOME_QUANTITY),
         new CartItem(SOME_TITLE, SOME_QUANTITY)));

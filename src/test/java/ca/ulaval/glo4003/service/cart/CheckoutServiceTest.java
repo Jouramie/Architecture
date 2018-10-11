@@ -19,10 +19,7 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
-import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import java.util.Collections;
-import java.util.List;
+import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,9 +49,9 @@ public class CheckoutServiceTest {
   @Mock
   private Notification notification;
   @Mock
-  private CartItemAssembler cartItemAssembler;
+  private TransactionAssembler transactionAssembler;
   @Mock
-  private CartItemResponseDto expectedDto;
+  private TransactionDto expectedDto;
 
   private CheckoutService checkoutService;
 
@@ -71,7 +68,7 @@ public class CheckoutServiceTest {
         transactionLedger,
         notificationSender,
         notificationFactory,
-        cartItemAssembler);
+        transactionAssembler);
   }
 
   @Test
@@ -99,12 +96,12 @@ public class CheckoutServiceTest {
 
   @Test
   public void whenCheckoutCart_thenPreviousCartContentIsReturned() throws StockNotFoundException {
-    given(cartItemAssembler.toDtoList(cart.getItems()))
-        .willReturn(Collections.singletonList(expectedDto));
+    given(transactionAssembler.toDto(transaction))
+        .willReturn(expectedDto);
 
-    List<CartItemResponseDto> cartItemResponseDtos = checkoutService.checkoutCart();
+    TransactionDto transactionDto = checkoutService.checkoutCart();
 
-    assertThat(cartItemResponseDtos.get(0)).isEqualTo(expectedDto);
+    assertThat(transactionDto).isEqualTo(expectedDto);
   }
 
   @Test

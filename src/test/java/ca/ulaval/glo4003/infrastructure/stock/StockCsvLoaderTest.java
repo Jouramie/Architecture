@@ -9,6 +9,7 @@ import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
 import java.io.IOException;
@@ -39,7 +40,8 @@ public class StockCsvLoaderTest {
   }
 
   @Test
-  public void whenLoad_thenLoadTheValuesFromTheCsvFile() throws Throwable {
+  public void whenLoad_thenLoadTheValuesFromTheCsvFile()
+      throws StockNotFoundException, IOException, MarketNotFoundException {
     loader.load();
 
     assertThat(stockRepository.getAll()).hasSize(35);
@@ -51,7 +53,8 @@ public class StockCsvLoaderTest {
   }
 
   @Test
-  public void whenLoad_thenStockStartValueHasCurrencyOfTheMarket() throws Throwable {
+  public void whenLoad_thenStockStartValueHasCurrencyOfTheMarket()
+      throws StockNotFoundException, IOException, MarketNotFoundException {
     loader.load();
 
     Stock randomStock = stockRepository.getByTitle("MMM");
@@ -59,7 +62,8 @@ public class StockCsvLoaderTest {
   }
 
   @Test
-  public void whenLoad_thenStockHasLastOpenAndCloseValues() throws Throwable {
+  public void whenLoad_thenStockHasLastOpenAndCloseValues()
+      throws StockNotFoundException, IOException, MarketNotFoundException {
     loader.load();
 
     Stock randomStock = stockRepository.getByTitle("MSFT");

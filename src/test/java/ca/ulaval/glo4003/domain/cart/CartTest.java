@@ -100,7 +100,7 @@ public class CartTest {
   }
 
   @Test
-  public void givenEmptyCart_whenUpdate_thenStockNotFoundExceptionIsThrown() {
+  public void whenUpdate_thenStockNotFoundExceptionIsThrown() {
     ThrowingCallable update = () -> cart.update(SOME_TITLE, SOME_QUANTITY);
 
     assertThatThrownBy(update).isInstanceOf(StockNotFoundException.class);

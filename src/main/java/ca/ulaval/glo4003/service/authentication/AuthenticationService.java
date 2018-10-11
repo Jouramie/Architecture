@@ -55,7 +55,7 @@ public class AuthenticationService {
       User currentUser = getUserByEmail(savedToken.email);
       currentUserSession.setCurrentUser(currentUser);
     } catch (TokenNotFoundException exception) {
-      throw new InvalidTokenException();
+      throw new InvalidTokenException(exception);
     }
   }
 
@@ -63,7 +63,7 @@ public class AuthenticationService {
     try {
       return userRepository.find(email);
     } catch (UserNotFoundException exception) {
-      throw new UserDoesNotExistException();
+      throw new UserDoesNotExistException(exception);
     }
   }
 
@@ -72,7 +72,7 @@ public class AuthenticationService {
       User user = currentUserSession.getCurrentUser();
       authenticationTokenRepository.remove(user.getEmail());
     } catch (TokenNotFoundException exception) {
-      throw new InvalidTokenException();
+      throw new InvalidTokenException(exception);
     }
   }
 }

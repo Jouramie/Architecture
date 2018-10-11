@@ -32,7 +32,8 @@ public class InMemoryUserRepositoryTest {
   }
 
   @Test
-  public void givenUserAlreadyInRepo_whenUpdateUser_thenUserIsStored() throws Throwable {
+  public void givenUserAlreadyInRepo_whenUpdateUser_thenUserIsStored()
+      throws UserAlreadyExistsException, UserNotFoundException {
     inMemoryUserRepository.add(SOME_USER);
 
     inMemoryUserRepository.update(SOME_OTHER_USER);

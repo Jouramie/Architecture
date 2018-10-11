@@ -30,7 +30,7 @@ public class StockCsvLoader {
     this.marketRepository = marketRepository;
   }
 
-  public void load() throws IOException {
+  public void load() throws IOException, MarketNotFoundException {
     Reader file = new FileReader(STOCKS_FILE_PATH);
     Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(file);
     for (CSVRecord record : records) {
@@ -50,7 +50,7 @@ public class StockCsvLoader {
   }
 
   private Pair<MoneyAmount, MoneyAmount> getLastValues(String title, MarketId marketId)
-      throws IOException {
+      throws IOException, MarketNotFoundException {
     ZipFile zipFile = new ZipFile(STOCKS_DATA_ZIP_PATH);
     ZipEntry zipEntry = zipFile.getEntry(title + ".csv");
     InputStream fileStream = zipFile.getInputStream(zipEntry);
@@ -64,16 +64,8 @@ public class StockCsvLoader {
     fileStream.close();
     zipFile.close();
 
-    Currency currency  = getCurrencyOfMarket(marketId);
+    Currency currency  = marketRepository.getById(marketId).getCurrency();
 
     return new Pair<>(new MoneyAmount(openValue, currency), new MoneyAmount(closeValue, currency));
-  }
-
-  private Currency getCurrencyOfMarket(MarketId marketId) throws IOException {
-    try {
-      return marketRepository.getById(marketId).getCurrency();
-    } catch (MarketNotFoundException exception) {
-      throw new IOException();
-    }
   }
 }

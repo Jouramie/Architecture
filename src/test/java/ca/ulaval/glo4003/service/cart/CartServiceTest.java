@@ -90,7 +90,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenAddStockToCart_thenStockIsAddedToCart() throws Throwable {
+  public void whenAddStockToCart_thenStockIsAddedToCart() throws UserNotFoundException {
     cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).add(SOME_TITLE, SOME_QUANTITY);
@@ -120,7 +120,8 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenUpdateStockQuantityInCart_thenStockIsUpdated() throws Throwable {
+  public void whenUpdateStockQuantityInCart_thenStockIsUpdated()
+      throws UserNotFoundException, StockNotFoundException {
     cartService.updateStockInCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).update(SOME_TITLE, SOME_QUANTITY);
@@ -151,7 +152,7 @@ public class CartServiceTest {
 
   @Test
   public void givenStockTitleNotInCart_whenUpdateStockQuantityInCart_thenStockNotInCartException()
-      throws Throwable {
+      throws StockNotFoundException {
     String notInCartTitle = "stock not in cart";
     doThrow(new StockNotFoundException(notInCartTitle))
         .when(cart).update(notInCartTitle, SOME_QUANTITY);
@@ -164,7 +165,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenRemoveStockFromCart_thenStockIsRemoved() throws Throwable {
+  public void whenRemoveStockFromCart_thenStockIsRemoved() throws UserNotFoundException {
     cartService.removeStockFromCart(SOME_TITLE);
 
     verify(cart).remove(SOME_TITLE);
@@ -184,7 +185,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenEmptyCart_thenCartIsEmpty() throws Throwable {
+  public void whenEmptyCart_thenCartIsEmpty() throws UserNotFoundException {
     cartService.emptyCart();
 
     verify(cart).empty();

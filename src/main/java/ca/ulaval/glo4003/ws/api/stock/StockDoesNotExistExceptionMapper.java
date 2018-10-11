@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.infrastructure.injection.ErrorMapper;
 import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import javax.ws.rs.core.Response;

@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
+import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
 import ca.ulaval.glo4003.util.CartStockRequestBuilder;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.CartResource;
@@ -25,6 +26,8 @@ public class CartResourceTest {
   private static final CartStockRequest SOME_CART_STOCK_REQUEST = new CartStockRequestBuilder().build();
   @Mock
   private CartItemResponseDto expectedDto;
+  @Mock
+  private TransactionDto transactionDto;
   @Mock
   private CartService cartService;
   @Mock
@@ -97,11 +100,11 @@ public class CartResourceTest {
 
   @Test
   public void whenCheckoutCart_thenReturnPreviousCartContent() {
-    given(checkoutService.checkoutCart()).willReturn(Collections.singletonList(expectedDto));
+    given(checkoutService.checkoutCart()).willReturn(transactionDto);
 
-    List<CartItemResponseDto> resultingDto = cartResource.checkoutCart();
+    TransactionDto resultingDto = cartResource.checkoutCart();
 
-    assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
+    assertThat(resultingDto).isEqualTo(transactionDto);
   }
 
   @Test

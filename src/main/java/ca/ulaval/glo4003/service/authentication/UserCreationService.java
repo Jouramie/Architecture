@@ -30,7 +30,7 @@ public class UserCreationService {
     try {
       userRepository.add(user);
     } catch (UserAlreadyExistsException exception) {
-      throw new InvalidUserEmailException();
+      throw new InvalidUserEmailException(exception);
     }
     return userAssembler.toDto(user);
   }

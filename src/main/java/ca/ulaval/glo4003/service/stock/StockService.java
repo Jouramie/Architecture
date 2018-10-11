@@ -23,7 +23,7 @@ public class StockService {
       Stock stock = stockRepository.getByTitle(title);
       return stockAssembler.toDto(stock);
     } catch (StockNotFoundException exception) {
-      throw new StockDoesNotExistException(title);
+      throw new StockDoesNotExistException(exception);
     }
   }
 
@@ -32,7 +32,7 @@ public class StockService {
       Stock stock = stockRepository.getByName(name);
       return stockAssembler.toDto(stock);
     } catch (StockNotFoundException exception) {
-      throw new StockDoesNotExistException(name);
+      throw new StockDoesNotExistException(exception);
     }
   }
 }
