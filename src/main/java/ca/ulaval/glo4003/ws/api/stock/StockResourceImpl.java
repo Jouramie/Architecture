@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
-import ca.ulaval.glo4003.service.stock.StockDto;
+import ca.ulaval.glo4003.service.stock.StockMaxValueSinceParameter;
 import ca.ulaval.glo4003.service.stock.StockService;
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -27,5 +27,10 @@ public class StockResourceImpl implements StockResource {
       throw new BadRequestException("Missing name query parameter");
     }
     return stockService.getStockByName(name);
+  }
+
+  @Override
+  public StockDto getStockMaxValue(String title, StockMaxValueSinceParameter since) {
+    return null;
   }
 }
