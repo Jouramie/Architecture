@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "193bcf71-0cce-45ee-b7d4-c07649bade8e",
+		"_postman_id": "40036f24-ee23-4624-9595-2227e991ecec",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -334,6 +334,39 @@
 								"api",
 								"cart",
 								"checkout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Portfolio",
+			"item": [
+				{
+					"name": "GetPortfolio",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/portfolio",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"portfolio"
 							]
 						}
 					},
