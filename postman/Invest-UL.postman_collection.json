@@ -563,6 +563,35 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/api/ping?echo=test",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ping"
+					],
+					"query": [
+						{
+							"key": "echo",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
