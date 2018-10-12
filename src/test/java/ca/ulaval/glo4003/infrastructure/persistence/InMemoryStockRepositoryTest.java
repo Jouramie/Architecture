@@ -4,21 +4,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
-import ca.ulaval.glo4003.domain.money.Currency;
-import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
-import java.math.BigDecimal;
+import ca.ulaval.glo4003.util.StockBuilder;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
 public class InMemoryStockRepositoryTest {
   private final MarketId SOME_MARKET_ID = new MarketId("NASDAQ");
-  private final MoneyAmount SOME_START_AMOUNT = new MoneyAmount(12.34, new Currency("CAD", new BigDecimal(0.77)));
-  private final Stock SOME_STOCK = new Stock("STO1", "Stock 1", "Banking", SOME_MARKET_ID, SOME_START_AMOUNT, SOME_START_AMOUNT);
-  private final Stock SOME_OTHER_STOCK = new Stock("STO2", "Stock 2", "Banking", SOME_MARKET_ID, SOME_START_AMOUNT, SOME_START_AMOUNT);
-  private final Stock SOME_STOCK_IN_DIFFERENT_MARKET = new Stock("STO3", "Stock 3", "Banking", new MarketId("TMX"), SOME_START_AMOUNT, SOME_START_AMOUNT);
+  private final Stock SOME_STOCK = new StockBuilder().withTitle("STO1").withName("Stock 1").withMarketId(SOME_MARKET_ID).build();
+  private final Stock SOME_OTHER_STOCK = new StockBuilder().withTitle("STO2").withName("Stock 2").withMarketId(SOME_MARKET_ID).build();
+  private final Stock SOME_STOCK_IN_DIFFERENT_MARKET = new StockBuilder().withTitle("STO3").withName("Stock 3").withMarketId(new MarketId("TSX")).build();
 
   private InMemoryStockRepository repository;
 

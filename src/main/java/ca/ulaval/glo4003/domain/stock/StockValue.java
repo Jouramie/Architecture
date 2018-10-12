@@ -6,17 +6,20 @@ public class StockValue {
   private MoneyAmount currentValue;
   private MoneyAmount openValue;
   private MoneyAmount closeValue;
+  private MoneyAmount maximumValue;
 
-  StockValue(MoneyAmount startValue) {
+  public StockValue(MoneyAmount startValue) {
     currentValue = startValue;
     openValue = startValue;
-    closeValue = startValue;
+    maximumValue = startValue;
+    closeValue = null;
   }
 
-  StockValue(MoneyAmount openValue, MoneyAmount closeValue) {
+  public StockValue(MoneyAmount openValue, MoneyAmount closeValue, MoneyAmount maximumValue) {
     currentValue = closeValue;
     this.openValue = openValue;
     this.closeValue = closeValue;
+    this.maximumValue = maximumValue;
   }
 
   public MoneyAmount getCurrentValue() {
@@ -31,6 +34,10 @@ public class StockValue {
     return closeValue;
   }
 
+  public MoneyAmount getMaximumValue() {
+    return maximumValue;
+  }
+
   boolean isClosed() {
     return closeValue != null;
   }
@@ -39,6 +46,10 @@ public class StockValue {
     if (isClosed()) {
       openValue = currentValue;
       closeValue = null;
+    }
+
+    if (currentValue.toUsd().compareTo(maximumValue.toUsd()) > 0) {
+      maximumValue = currentValue;
     }
 
     this.currentValue = currentValue;

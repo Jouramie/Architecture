@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import ca.ulaval.glo4003.util.StockBuilder;
 import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,14 @@ public class StockTest {
 
   @Before
   public void setupStock() {
-    stock = new Stock(SOME_TITLE, SOME_NAME, SOME_CATEGORY, SOME_MARKET_ID, SOME_LAST_OPEN_AMOUNT, SOME_START_AMOUNT);
+    stock = new StockBuilder()
+        .withTitle(SOME_TITLE)
+        .withName(SOME_NAME)
+        .withCategory(SOME_CATEGORY)
+        .withMarketId(SOME_MARKET_ID)
+        .withOpenValue(SOME_LAST_OPEN_AMOUNT)
+        .withCloseValue(SOME_START_AMOUNT)
+        .build();
   }
 
   @Test
@@ -63,17 +71,18 @@ public class StockTest {
   }
 
   @Test
-  public void whenUpdateValue_thenStockValueIsIncrementByTheAmount() {
+  public void whenUpdateValue_thenStockValueIsIncrementedByTheAmount() {
     stock.updateValue(10.00);
 
     assertThat(stock.getValue().getCurrentValue()).isEqualTo(new MoneyAmount(60.00, SOME_CURRENCY));
   }
 
   @Test
-  public void whenOpen_thenSetStockValueToCloseValue() {
+  public void whenOpen_thenCreateNewStockValueInHistorianWithLatestCloseValue() {
     stock.open();
 
     assertThat(stock.getValue().getOpenValue()).isEqualTo(SOME_START_AMOUNT);
+    assertThat(stock.getValueHistorian().getAllStoredValues()).hasSize(2);
   }
 
   @Test
