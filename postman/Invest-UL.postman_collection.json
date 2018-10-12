@@ -198,7 +198,7 @@
 							"response": []
 						},
 						{
-							"name": "GetMaxValueLastAllTime",
+							"name": "GetMaxValueAllTime",
 							"request": {
 								"method": "GET",
 								"header": [],
