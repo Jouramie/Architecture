@@ -8,15 +8,15 @@ public class Stock {
   private final String name;
   private final String category;
   private final MarketId marketId;
-  private final StockValueHistorian valueHistorian;
+  private final StockValueHistory valueHistory;
 
   public Stock(String title, String name, String category, MarketId marketId,
-               StockValueHistorian valueHistorian) {
+               StockValueHistory valueHistory) {
     this.title = title;
     this.name = name;
     this.category = category;
     this.marketId = marketId;
-    this.valueHistorian = valueHistorian;
+    this.valueHistory = valueHistory;
   }
 
   public String getTitle() {
@@ -35,8 +35,8 @@ public class Stock {
     return marketId;
   }
 
-  public StockValueHistorian getValueHistorian() {
-    return valueHistorian;
+  public StockValueHistory getValueHistory() {
+    return valueHistory;
   }
 
   public synchronized void updateValue(double variation) {
@@ -46,14 +46,14 @@ public class Stock {
   }
 
   public synchronized StockValue getValue() {
-    return valueHistorian.getLatestValue().value;
+    return valueHistory.getLatestValue().value;
   }
 
   public synchronized void open() {
     MoneyAmount startValue = getValue().getCloseValue();
     StockValue newStockValue = new StockValue(startValue);
 
-    valueHistorian.addNextValue(newStockValue);
+    valueHistory.addNextValue(newStockValue);
   }
 
   public synchronized void close() {

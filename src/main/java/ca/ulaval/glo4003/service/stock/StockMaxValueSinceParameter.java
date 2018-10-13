@@ -6,6 +6,6 @@ public enum StockMaxValueSinceParameter {
   LAST_MONTH,
   LAST_YEAR,
   LAST_FIVE_YEARS,
-  LAST_10_YEARS,
+  LAST_TEN_YEARS,
   ALL_TIME
 }

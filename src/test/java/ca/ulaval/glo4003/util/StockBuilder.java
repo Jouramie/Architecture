@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockValue;
-import ca.ulaval.glo4003.domain.stock.StockValueHistorian;
+import ca.ulaval.glo4003.domain.stock.StockValueHistory;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -56,8 +56,8 @@ public class StockBuilder {
   }
 
   public Stock build() {
-    StockValueHistorian historian = new StockValueHistorian();
-    historian.addValue(LocalDate.now(), new StockValue(openValue, closeValue, closeValue));
-    return new Stock(title, name, category, marketId, historian);
+    StockValueHistory history = new StockValueHistory();
+    history.addValue(LocalDate.now(), new StockValue(openValue, closeValue, closeValue));
+    return new Stock(title, name, category, marketId, history);
   }
 }

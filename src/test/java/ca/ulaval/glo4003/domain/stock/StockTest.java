@@ -78,11 +78,11 @@ public class StockTest {
   }
 
   @Test
-  public void whenOpen_thenCreateNewStockValueInHistorianWithLatestCloseValue() {
+  public void whenOpen_thenCreateNewStockValueInHistoryWithLatestCloseValue() {
     stock.open();
 
     assertThat(stock.getValue().getOpenValue()).isEqualTo(SOME_START_AMOUNT);
-    assertThat(stock.getValueHistorian().getAllStoredValues()).hasSize(2);
+    assertThat(stock.getValueHistory().getAllStoredValues()).hasSize(2);
   }
 
   @Test

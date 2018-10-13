@@ -70,6 +70,6 @@ public class StockCsvLoaderTest {
     assertThat(randomStock.getValue().getOpenValue().getAmount().doubleValue()).isEqualTo(112.63);
     assertThat(randomStock.getValue().getCloseValue().getAmount().doubleValue()).isEqualTo(112.13);
     assertThat(randomStock.getValue().getMaximumValue().getAmount().doubleValue()).isEqualTo(113.17);
-    assertThat(randomStock.getValueHistorian().getAllStoredValues()).hasSize(5984);
+    assertThat(randomStock.getValueHistory().getAllStoredValues()).hasSize(5984);
   }
 }
