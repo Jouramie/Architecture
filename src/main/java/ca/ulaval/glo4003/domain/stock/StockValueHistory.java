@@ -35,7 +35,7 @@ public class StockValueHistory {
   public HistoricalStockValue getMaxValue(LocalDate from, LocalDate to) {
     return values.entrySet().stream()
         .filter((entry) -> !(entry.getKey().isBefore(from) || entry.getKey().isAfter(to)))
-        .max(Comparator.comparing(firstEntry -> firstEntry.getValue().getMaximumValue().toUsd()))
+        .max(Comparator.comparing(entry -> entry.getValue().getMaximumValue().toUsd()))
         .map(StockValueHistory::getHistoricalStockValue).orElse(null);
   }
 }
