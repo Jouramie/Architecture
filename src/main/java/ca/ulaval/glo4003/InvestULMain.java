@@ -6,6 +6,8 @@ import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
+import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.domain.user.User;
@@ -60,7 +62,8 @@ public class InvestULMain {
     createAwsSesSender();
     hardcodeTestUser();
 
-    LocalDate startDate = loadData();
+    loadData();
+    LocalDate startDate = getStartDate();
     startClockAndMarketsUpdater(startDate);
 
     ContextHandlerCollection contexts = new ContextHandlerCollection();
@@ -177,7 +180,7 @@ public class InvestULMain {
         .add(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testEmail));
   }
 
-  private static LocalDate loadData() throws IOException, MarketNotFoundException {
+  private static void loadData() throws IOException, MarketNotFoundException {
     MarketCsvLoader marketLoader = new MarketCsvLoader(
         ServiceLocator.INSTANCE.get(MarketRepository.class),
         ServiceLocator.INSTANCE.get(StockRepository.class),
@@ -187,7 +190,15 @@ public class InvestULMain {
     StockCsvLoader stockLoader = new StockCsvLoader(
         ServiceLocator.INSTANCE.get(StockRepository.class),
         ServiceLocator.INSTANCE.get(MarketRepository.class));
-    return stockLoader.load();
+    stockLoader.load();
+  }
+
+  private static LocalDate getStartDate() {
+    StockRepository stockRepository = ServiceLocator.INSTANCE.get(StockRepository.class);
+    Stock stock = stockRepository.getAll().get(0);
+    HistoricalStockValue latestStockValue = stock.getValueHistory().getLatestValue();
+
+    return latestStockValue.date.plusDays(1);
   }
 
   private static void startClockAndMarketsUpdater(LocalDate startDate) {

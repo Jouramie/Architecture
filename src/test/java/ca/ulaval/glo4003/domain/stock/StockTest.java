@@ -72,7 +72,7 @@ public class StockTest {
 
   @Test
   public void whenUpdateValue_thenStockValueIsIncrementedByTheAmount() {
-    stock.updateValue(10.00);
+    stock.updateValue(new BigDecimal(10.00));
 
     assertThat(stock.getValue().getCurrentValue()).isEqualTo(new MoneyAmount(60.00, SOME_CURRENCY));
   }

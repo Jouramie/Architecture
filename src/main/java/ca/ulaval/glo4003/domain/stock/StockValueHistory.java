@@ -7,13 +7,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 public class StockValueHistory {
   private final TreeMap<LocalDate, StockValue> values = new TreeMap<>();
-
-  private static HistoricalStockValue getHistoricalStockValue(Map.Entry<LocalDate, StockValue> entry) {
-    return new HistoricalStockValue(entry.getKey(), entry.getValue());
-  }
 
   public void addValue(LocalDate date, StockValue value) {
     values.put(date, value);
@@ -29,13 +26,22 @@ public class StockValueHistory {
   }
 
   public List<HistoricalStockValue> getAllStoredValues() {
-    return values.entrySet().stream().map(StockValueHistory::getHistoricalStockValue).collect(toList());
+    return values.entrySet().stream().map(this::getHistoricalStockValue).collect(toList());
   }
 
-  public HistoricalStockValue getMaxValue(LocalDate from, LocalDate to) {
-    return values.entrySet().stream()
-        .filter((entry) -> !(entry.getKey().isBefore(from) || entry.getKey().isAfter(to)))
+  public HistoricalStockValue getMaxValue(LocalDate from, LocalDate to) throws NoStockValueFitsCriteriaException {
+    return getHistoricalValuesBetweenDates(from, to)
         .max(Comparator.comparing(entry -> entry.getValue().getMaximumValue().toUsd()))
-        .map(StockValueHistory::getHistoricalStockValue).orElse(null);
+        .map(this::getHistoricalStockValue).orElseThrow(NoStockValueFitsCriteriaException::new);
+  }
+
+  private Stream<Map.Entry<LocalDate, StockValue>> getHistoricalValuesBetweenDates(LocalDate from, LocalDate to) {
+    return values.entrySet().stream().filter((entry) ->
+        !(entry.getKey().isBefore(from) || entry.getKey().isAfter(to))
+    );
+  }
+
+  private HistoricalStockValue getHistoricalStockValue(Map.Entry<LocalDate, StockValue> entry) {
+    return new HistoricalStockValue(entry.getKey(), entry.getValue());
   }
 }

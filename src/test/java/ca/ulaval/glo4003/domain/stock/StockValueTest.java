@@ -68,6 +68,13 @@ public class StockValueTest {
   }
 
   @Test
+  public void whenUpdateValue_thenStockValueIsIncrementedByTheAmount() {
+    stockValue.updateValue(new BigDecimal(10.00));
+
+    assertThat(stockValue.getCurrentValue()).isEqualTo(new MoneyAmount(110.00, SOME_CURRENCY));
+  }
+
+  @Test
   public void givenOpenStockValue_whenSetValueWithBiggerValue_thenSetUpdateMaximumValue() {
     stockValue.setValue(SOME_START_VALUE);
 

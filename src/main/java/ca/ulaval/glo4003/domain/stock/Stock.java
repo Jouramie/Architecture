@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.domain.stock;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import java.math.BigDecimal;
 
 public class Stock {
   private final String title;
@@ -39,10 +40,8 @@ public class Stock {
     return valueHistory;
   }
 
-  public synchronized void updateValue(double variation) {
-    MoneyAmount moneyVariation = new MoneyAmount(variation, getValue().getCurrentValue().getCurrency());
-    MoneyAmount newMoneyAmount = getValue().getCurrentValue().add(moneyVariation);
-    getValue().setValue(newMoneyAmount);
+  public synchronized void updateValue(BigDecimal variation) {
+    getValue().updateValue(variation);
   }
 
   public synchronized StockValue getValue() {

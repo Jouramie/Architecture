@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.infrastructure.stock;
 
 import static org.mockito.BDDMockito.verify;
-import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.any;
 
 import ca.ulaval.glo4003.domain.stock.Stock;
 import org.junit.Before;
@@ -26,6 +26,6 @@ public class SimulatedStockValueRetrieverTest {
   public void whenUpdateStockValue_thenStockValueIsUpdated() {
     simulator.updateStockValue(someStock);
 
-    verify(someStock).updateValue(anyDouble());
+    verify(someStock).updateValue(any());
   }
 }

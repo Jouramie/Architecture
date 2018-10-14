@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.domain.stock;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import java.math.BigDecimal;
 
 public class StockValue {
   private MoneyAmount currentValue;
@@ -40,6 +41,12 @@ public class StockValue {
 
   boolean isClosed() {
     return closeValue != null;
+  }
+
+  public void updateValue(BigDecimal variation) {
+    MoneyAmount moneyVariation = new MoneyAmount(variation, getCurrentValue().getCurrency());
+    MoneyAmount newMoneyAmount = getCurrentValue().add(moneyVariation);
+    setValue(newMoneyAmount);
   }
 
   public void setValue(MoneyAmount currentValue) {

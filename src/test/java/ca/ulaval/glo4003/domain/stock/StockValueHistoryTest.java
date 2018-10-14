@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.domain.stock;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
@@ -66,7 +67,7 @@ public class StockValueHistoryTest {
   }
 
   @Test
-  public void givenHistoryWithMultipleValues_whenGetMaxValue_thenReturnMaxValueInInterval() {
+  public void givenHistoryWithMultipleValues_whenGetMaxValue_thenReturnMaxValueInInterval() throws NoStockValueFitsCriteriaException {
     StockValue maxValue = buildStockValue(SOME_BIGGER_AMOUNT);
     history.addValue(START_DATE.minusDays(1), buildStockValue(SOME_EVEN_BIGGER_AMOUNT));
     history.addValue(START_DATE, buildStockValue(SOME_AMOUNT));
@@ -81,7 +82,7 @@ public class StockValueHistoryTest {
   }
 
   @Test
-  public void givenHistoryWithMaxValueOnStartDate_whenGetMaxValue_thenReturnMaxValueInInterval() {
+  public void givenHistoryWithMaxValueOnStartDate_whenGetMaxValue_thenReturnMaxValueInInterval() throws NoStockValueFitsCriteriaException {
     StockValue maxValue = buildStockValue(SOME_BIGGER_AMOUNT);
     history.addValue(START_DATE.minusDays(1), buildStockValue(SOME_EVEN_BIGGER_AMOUNT));
     history.addValue(START_DATE, maxValue);
@@ -96,7 +97,7 @@ public class StockValueHistoryTest {
   }
 
   @Test
-  public void givenHistoryWithMaxValueOnEndDate_whenGetMaxValue_thenReturnMaxValueInInterval() {
+  public void givenHistoryWithMaxValueOnEndDate_whenGetMaxValue_thenReturnMaxValueInInterval() throws NoStockValueFitsCriteriaException {
     StockValue maxValue = buildStockValue(SOME_BIGGER_AMOUNT);
     history.addValue(START_DATE.minusDays(1), buildStockValue(SOME_EVEN_BIGGER_AMOUNT));
     history.addValue(START_DATE, buildStockValue(SOME_AMOUNT));
@@ -108,6 +109,13 @@ public class StockValueHistoryTest {
 
     assertThat(result.date).isEqualTo(END_DATE);
     assertThat(result.value).isEqualTo(maxValue);
+  }
+
+  @Test
+  public void givenEmptyHistory_whenGetMaxValue_thenThrowNoStockValueFitsCriteriaException() {
+    assertThatThrownBy(() -> {
+      history.getMaxValue(START_DATE, END_DATE);
+    }).isInstanceOf(NoStockValueFitsCriteriaException.class);
   }
 
   private StockValue buildStockValue(double value) {

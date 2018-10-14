@@ -32,9 +32,7 @@ public class StockCsvLoader {
     this.marketRepository = marketRepository;
   }
 
-  public LocalDate load() throws IOException, MarketNotFoundException {
-    LocalDate startDate = LocalDate.now();
-
+  public void load() throws IOException, MarketNotFoundException {
     Reader file = new FileReader(STOCKS_FILE_PATH);
     Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(file);
     for (CSVRecord record : records) {
@@ -45,12 +43,9 @@ public class StockCsvLoader {
 
       Stock stock = new Stock(title, name, category, marketId, getValueHistory(title, marketId));
       stockRepository.add(stock);
-      startDate = stock.getValueHistory().getLatestValue().date;
     }
 
     file.close();
-
-    return startDate.plusDays(1);
   }
 
   private StockValueHistory getValueHistory(String title, MarketId marketId) throws IOException, MarketNotFoundException {
