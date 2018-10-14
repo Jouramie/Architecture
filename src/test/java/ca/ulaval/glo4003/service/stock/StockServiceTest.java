@@ -10,6 +10,7 @@ import static org.mockito.Mockito.doThrow;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

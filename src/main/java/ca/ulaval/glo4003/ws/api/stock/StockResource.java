@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
-import ca.ulaval.glo4003.service.stock.StockDto;
+import ca.ulaval.glo4003.service.stock.StockMaxValueSinceParameter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -116,4 +116,19 @@ public interface StockResource {
       }
   )
   List<String> getStocksCategories();
+
+  @GET
+  @Path("/{title}/max")
+  @Operation(summary = "Get stock maximum value.",
+      description = "Return the stock maximum value since the interval asked.",
+      responses = {@ApiResponse(description = "Stock maximum value",
+          content = @Content(schema = @Schema(implementation = StockMaxResponseDto.class))),
+          @ApiResponse(responseCode = "400", description = "Missing or invalid since parameter"),
+          @ApiResponse(responseCode = "404", description = "Stock does not exist")})
+  StockDto getStockMaxValue(@Parameter(description = "Title of the stock", required = true)
+                            @PathParam("title") String title,
+                            @Parameter(description = "Since parameter",
+                                schema = @Schema(implementation = StockMaxValueSinceParameter.class),
+                                required = true)
+                            @QueryParam("since") StockMaxValueSinceParameter since);
 }
