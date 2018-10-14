@@ -4,7 +4,7 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
-import ca.ulaval.glo4003.service.cart.InvalidStockTitleException;
+import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import javax.inject.Inject;
 
 @Component

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.stock;
+package ca.ulaval.glo4003.ws.api.stock;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.util.StockBuilder;
+import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import org.junit.Before;
 import org.junit.Test;
 
