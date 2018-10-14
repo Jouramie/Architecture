@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "59a9ccdf-a9b0-4db3-ae9d-d9712ac7bcdd",
+		"_postman_id": "427f63cd-72ad-4689-905f-6a9469da75bf",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -8,6 +8,260 @@
 		{
 			"name": "Stocks",
 			"item": [
+				{
+					"name": "Trend",
+					"item": [
+						{
+							"name": "GetStockValueVariationTrend",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/trend",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"trend"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "max",
+					"item": [
+						{
+							"name": "GetMaxValueLast5Days",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_DAYS",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "LAST_FIVE_DAYS"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueCurrentMonth",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=CURRENT_MONTH",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "CURRENT_MONTH"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLastMonth",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_MONTH",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "LAST_MONTH"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLastYear",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_YEAR",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "LAST_YEAR"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLast5Years",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_YEARS",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "LAST_FIVE_YEARS"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLast10Years",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_10_YEARS",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "LAST_10_YEARS"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueAllTime",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max?since=ALL_TIME",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "ALL_TIME"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
 				{
 					"name": "GetStockByTitle",
 					"request": {
@@ -169,7 +423,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\": \"Atreides\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/users",
@@ -197,7 +451,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\": \"Atreides\",\n\t\"password\": \"foobar\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/authenticate",
@@ -212,6 +466,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/revoke-token",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"revoke-token"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -222,8 +504,16 @@
 					"name": "GetCart",
 					"request": {
 						"method": "GET",
-						"header": [],
-						"body": {},
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:8080/api/cart",
 							"host": [
@@ -241,26 +531,31 @@
 				{
 					"name": "AddStockInCart",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"RBS.l\",\n\t\"quantity\": 1\n}"
+							"raw": "{\n\t\"quantity\": 76\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/api/cart",
+							"raw": "localhost:8080/api/cart/RBS.l",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"cart"
+								"cart",
+								"RBS.l"
 							]
 						}
 					},
@@ -274,21 +569,26 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"RBS.l\",\n\t\"quantity\": 42\n}"
+							"raw": "{\n\t\"quantity\": 42\n}"
 						},
 						"url": {
-							"raw": "localhost:8080/api/cart",
+							"raw": "localhost:8080/api/cart/RBS.l",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"cart"
+								"cart",
+								"RBS.l"
 							]
 						}
 					},
@@ -302,21 +602,26 @@
 							{
 								"key": "Content-Type",
 								"value": "application/json"
+							},
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"title\": \"RBS.l\"\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8080/api/cart",
+							"raw": "localhost:8080/api/cart/RBS.l",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"cart"
+								"cart",
+								"RBS.l"
 							]
 						}
 					},
@@ -326,7 +631,12 @@
 					"name": "EmptyCart",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -349,7 +659,12 @@
 					"name": "CheckoutCart",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
@@ -364,6 +679,39 @@
 								"api",
 								"cart",
 								"checkout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Portfolio",
+			"item": [
+				{
+					"name": "GetPortfolio",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/portfolio",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"portfolio"
 							]
 						}
 					},
