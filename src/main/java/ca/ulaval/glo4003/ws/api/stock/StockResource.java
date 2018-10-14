@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -77,6 +78,7 @@ public interface StockResource {
       @Parameter(description = "Stock category")
           String category,
       @QueryParam("page")
+      @DefaultValue("1")
       @Parameter(
           description = "Page number",
           schema = @Schema(
@@ -85,6 +87,7 @@ public interface StockResource {
       )
           int page,
       @QueryParam("per_page")
+      @DefaultValue("15")
       @Parameter(
           description = "Number of stock per page",
           schema = @Schema(
@@ -94,6 +97,7 @@ public interface StockResource {
           int perPage);
 
   @GET
+  @Path("/categories")
   @Operation(
       summary = "Categories.",
       description = "Return the available categories.",
