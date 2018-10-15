@@ -34,5 +34,5 @@ public interface StockCategoryResource {
           )
       }
   )
-  List<String> getStocksCategories();
+  List<String> getCategories();
 }

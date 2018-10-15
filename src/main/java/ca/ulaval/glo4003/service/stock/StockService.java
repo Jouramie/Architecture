@@ -5,6 +5,7 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
+import java.util.List;
 import javax.inject.Inject;
 
 @Component
@@ -34,5 +35,13 @@ public class StockService {
     } catch (StockNotFoundException exception) {
       throw new StockDoesNotExistException(exception);
     }
+  }
+
+  public List<StockDto> queryStocks(String name, String category) {
+    return null;
+  }
+
+  public List<String> getCategories() {
+    return stockRepository.getCategories();
   }
 }

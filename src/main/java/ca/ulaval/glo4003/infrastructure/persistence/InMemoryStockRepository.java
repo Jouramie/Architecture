@@ -49,4 +49,9 @@ public class InMemoryStockRepository implements StockRepository {
   public boolean doesStockExist(String title) {
     return stocks.containsKey(title);
   }
+
+  @Override
+  public List<String> getCategories() {
+    return stocks.values().stream().map(Stock::getCategory).distinct().collect(Collectors.toList());
+  }
 }

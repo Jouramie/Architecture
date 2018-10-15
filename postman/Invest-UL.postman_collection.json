@@ -322,20 +322,15 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "localhost:8080/api/stocks?category=technology",
+							"raw": "localhost:8080/api/stocks/categories",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"stocks"
-							],
-							"query": [
-								{
-									"key": "category",
-									"value": "technology"
-								}
+								"stocks",
+								"categories"
 							]
 						},
 						"description": "\t\t\t"
@@ -402,6 +397,21 @@
 									"value": "5"
 								}
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": ""
 						}
 					},
 					"response": []
