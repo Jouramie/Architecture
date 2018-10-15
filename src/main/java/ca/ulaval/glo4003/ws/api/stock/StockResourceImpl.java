@@ -25,13 +25,22 @@ public class StockResourceImpl implements StockResource {
   @Override
   public StockDto getStockByName(String name) {
     if (name == null || name.isEmpty()) {
-      throw new BadRequestException("Missing name query parameter");
+      throw new BadRequestException("Missing 'name' query parameter");
     }
     return stockService.getStockByName(name);
   }
 
   @Override
-  public StockMaxResponseDto getStockMaxValue(String title, StockMaxValueSinceParameter since) {
-    return stockService.getStockMaxValue(title, since);
+  public StockMaxResponseDto getStockMaxValue(String title, String since) {
+    if (since == null) {
+      throw new BadRequestException("Missing 'since' query parameter.");
+    }
+
+    try {
+      StockMaxValueSinceParameter sinceParameter = StockMaxValueSinceParameter.valueOf(since);
+      return stockService.getStockMaxValue(title, sinceParameter);
+    } catch (IllegalArgumentException e) {
+      throw new BadRequestException("Invalid 'since' query parameter");
+    }
   }
 }

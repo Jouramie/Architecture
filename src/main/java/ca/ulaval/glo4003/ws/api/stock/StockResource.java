@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -55,5 +54,5 @@ public interface StockResource {
                                        @Parameter(description = "Since parameter",
                                            schema = @Schema(implementation = StockMaxValueSinceParameter.class),
                                            required = true)
-                                       @QueryParam("since") @NotNull StockMaxValueSinceParameter since);
+                                       @QueryParam("since") String since);
 }
