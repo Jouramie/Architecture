@@ -4,7 +4,10 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockValue;
+import ca.ulaval.glo4003.domain.stock.StockValueHistory;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class StockBuilder {
   public static final String DEFAULT_TITLE = "MSFT";
@@ -53,6 +56,8 @@ public class StockBuilder {
   }
 
   public Stock build() {
-    return new Stock(title, name, category, marketId, openValue, closeValue);
+    StockValueHistory history = new StockValueHistory();
+    history.addValue(LocalDate.now(), new StockValue(openValue, closeValue, closeValue));
+    return new Stock(title, name, category, marketId, history);
   }
 }

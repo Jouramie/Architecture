@@ -35,6 +35,11 @@ public class MoneyAmount {
     return new MoneyAmount(amount.add(convertedAmount.getAmount()), getCurrency());
   }
 
+  public MoneyAmount add(BigDecimal variation) {
+    MoneyAmount variationMoneyAmount = new MoneyAmount(variation, getCurrency());
+    return add(variationMoneyAmount);
+  }
+
   public MoneyAmount subtract(MoneyAmount otherAmount) {
     MoneyAmount convertedAmount = currency.convert(otherAmount);
     return new MoneyAmount(amount.subtract(convertedAmount.getAmount()), getCurrency());

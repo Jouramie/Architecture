@@ -18,9 +18,10 @@ public class PingDto {
   public final String echo;
 
   @JsonCreator
-  public PingDto(@JsonProperty("echo") String echo) {
+  public PingDto(@JsonProperty("date") LocalDateTime date,
+                 @JsonProperty("echo") String echo) {
     version = "0.0.1";
-    date = LocalDateTime.now();
+    this.date = date;
     this.echo = echo;
   }
 }

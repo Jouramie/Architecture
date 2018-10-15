@@ -13,8 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 public class StockMaxIT {
-  private static final String API_STOCK_ROUTE = "/api/stocks";
-  private static final String API_MAX_ROUTE = "max";
+  private static final String API_STOCK_ROUTE = "/api/stocks/%s/max";
   private static final String SINCE_PARAMETER = "since";
 
   private static final String TITLE = "title";
@@ -22,6 +21,7 @@ public class StockMaxIT {
   private static final String MAX_VALUE_DATE = "maximumValueDate";
 
   private static final String SOME_TITLE = "RBS.l";
+  private static final String WRONG_TITLE = "wrong";
   private static final String SOME_SINCE_PARAMETER = "LAST_YEAR";
 
   @Rule
@@ -33,7 +33,7 @@ public class StockMaxIT {
     given()
         .param(SINCE_PARAMETER, SOME_SINCE_PARAMETER)
     .when()
-        .get(API_STOCK_ROUTE + "/" + SOME_TITLE + "/" + API_MAX_ROUTE)
+        .get(String.format(API_STOCK_ROUTE, SOME_TITLE))
     .then()
         .statusCode(OK.getStatusCode())
         .body(TITLE, equalTo(SOME_TITLE))
@@ -48,7 +48,7 @@ public class StockMaxIT {
     given()
         .param(SINCE_PARAMETER, SOME_SINCE_PARAMETER)
     .when()
-        .get(API_STOCK_ROUTE + "/" + "wrong" + "/" + API_MAX_ROUTE)
+        .get(String.format(API_STOCK_ROUTE, WRONG_TITLE))
     .then()
         .statusCode(NOT_FOUND.getStatusCode());
     //@formatter:on
@@ -60,7 +60,7 @@ public class StockMaxIT {
     given()
         .param(SINCE_PARAMETER, "wrong")
     .when()
-        .get(API_STOCK_ROUTE + "/" + SOME_TITLE + "/" + API_MAX_ROUTE)
+        .get(String.format(API_STOCK_ROUTE, SOME_TITLE))
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
@@ -70,7 +70,7 @@ public class StockMaxIT {
   public void whenGettingMaxValueOfStockWithoutSinceParameter_thenReturn400() {
     //@formatter:off
     when()
-        .get(API_STOCK_ROUTE + "/" + SOME_TITLE + "/" + API_MAX_ROUTE)
+        .get(String.format(API_STOCK_ROUTE, SOME_TITLE))
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
