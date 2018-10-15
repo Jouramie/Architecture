@@ -63,7 +63,7 @@ public class CartService {
     checkIfStockExists(title);
 
     Cart cart = getCart();
-    cart.remove(title);
+    cart.removeAll(title);
 
     updateUser();
   }

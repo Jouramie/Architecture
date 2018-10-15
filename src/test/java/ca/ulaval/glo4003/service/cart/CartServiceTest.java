@@ -167,7 +167,7 @@ public class CartServiceTest {
   public void whenRemoveStockFromCart_thenStockIsRemoved() throws UserNotFoundException {
     cartService.removeStockFromCart(SOME_TITLE);
 
-    verify(cart).remove(SOME_TITLE);
+    verify(cart).removeAll(SOME_TITLE);
     verify(userRepository).update(currentUser);
   }
 

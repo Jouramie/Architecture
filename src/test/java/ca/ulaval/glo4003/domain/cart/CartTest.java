@@ -47,17 +47,17 @@ public class CartTest {
   }
 
   @Test
-  public void givenCartWithStocks_whenRemove_thenSetStockQtyToZero() {
+  public void givenCartWithStocks_whenRemoveAll_thenSetStockQtyToZero() {
     givenTwoItemInCart();
 
-    cart.remove(SOME_TITLE);
+    cart.removeAll(SOME_TITLE);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
   }
 
   @Test
-  public void whenRemove_thenDoNothing() {
-    cart.remove(SOME_TITLE);
+  public void whenRemoveAll_thenDoNothing() {
+    cart.removeAll(SOME_TITLE);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
   }
