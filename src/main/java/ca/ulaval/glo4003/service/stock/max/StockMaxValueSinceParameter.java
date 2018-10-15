@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.stock;
+package ca.ulaval.glo4003.service.stock.max;
 
 public enum StockMaxValueSinceParameter {
   LAST_FIVE_DAYS,

@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
-import ca.ulaval.glo4003.service.stock.StockMaxValueSinceParameter;
+import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceParameter;
+import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

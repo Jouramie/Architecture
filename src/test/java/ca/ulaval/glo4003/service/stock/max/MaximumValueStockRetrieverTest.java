@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.stock;
+package ca.ulaval.glo4003.service.stock.max;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;

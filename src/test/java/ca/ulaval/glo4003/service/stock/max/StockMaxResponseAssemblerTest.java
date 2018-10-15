@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.stock;
+package ca.ulaval.glo4003.service.stock.max;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -7,7 +7,7 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
 import ca.ulaval.glo4003.domain.stock.StockValue;
-import ca.ulaval.glo4003.ws.api.stock.StockMaxResponseDto;
+import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.Before;

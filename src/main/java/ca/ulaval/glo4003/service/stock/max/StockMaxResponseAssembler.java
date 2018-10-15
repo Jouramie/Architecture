@@ -1,7 +1,7 @@
-package ca.ulaval.glo4003.service.stock;
+package ca.ulaval.glo4003.service.stock.max;
 
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
-import ca.ulaval.glo4003.ws.api.stock.StockMaxResponseDto;
+import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import javax.annotation.Resource;
 
 @Resource

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.stock;
+package ca.ulaval.glo4003.service.stock.max;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;

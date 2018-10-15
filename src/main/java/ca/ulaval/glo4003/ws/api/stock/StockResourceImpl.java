@@ -1,7 +1,8 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
-import ca.ulaval.glo4003.service.stock.StockMaxValueSinceParameter;
 import ca.ulaval.glo4003.service.stock.StockService;
+import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceParameter;
+import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
