@@ -103,27 +103,6 @@ public interface StockResource {
           int perPage);
 
   @GET
-  @Path("/categories")
-  @Operation(
-      summary = "Categories.",
-      description = "Return the available categories.",
-      responses = {
-          @ApiResponse(
-              responseCode = "200",
-              description = "Category.",
-              content = @Content(
-                  array = @ArraySchema(
-                      schema = @Schema(
-                          implementation = String.class
-                      )
-                  )
-              )
-          )
-      }
-  )
-  List<String> getStocksCategories();
-
-  @GET
   @Path("/{title}/max")
   @Operation(summary = "Get stock maximum value.",
       description = "Return the stock maximum value since the interval asked.",

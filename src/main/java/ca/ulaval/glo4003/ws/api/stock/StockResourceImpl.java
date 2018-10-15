@@ -32,11 +32,6 @@ public class StockResourceImpl implements StockResource {
   }
 
   @Override
-  public List<String> getStocksCategories() {
-    return null;
-  }
-
-  @Override
   public StockDto getStockMaxValue(String title, StockMaxValueSinceParameter since) {
     return null;
   }
