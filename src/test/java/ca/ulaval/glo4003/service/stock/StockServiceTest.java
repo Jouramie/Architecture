@@ -72,7 +72,7 @@ public class StockServiceTest {
 
   @Test
   public void givenStockDoesNotExist_whenGettingStockByName_thenStockDoesNotExistExceptionIsThrown()
-      throws StockNotFoundException{
+      throws StockNotFoundException {
     doThrow(StockNotFoundException.class).when(stockRepository).getByName(any());
 
     assertThatThrownBy(() -> stockService.getStockByName(SOME_NAME))
@@ -81,7 +81,7 @@ public class StockServiceTest {
 
   @Test
   public void givenStockDoesNotExist_whenGettingStockByTitle_thenStockDoesNotExistExceptionIsThrown()
-      throws StockNotFoundException{
+      throws StockNotFoundException {
     doThrow(StockNotFoundException.class).when(stockRepository).getByTitle(any());
 
     assertThatThrownBy(() -> stockService.getStockByTitle(SOME_NAME))

@@ -68,7 +68,7 @@ public class UserCreationServiceTest {
 
   @Test
   public void givenUserAlreadyExist_whenCreatingUser_thenInvalidUserEmailExceptionIsThrown()
-      throws UserAlreadyExistsException{
+      throws UserAlreadyExistsException {
     doThrow(UserAlreadyExistsException.class).when(userRepository).add(any());
 
     assertThatThrownBy(() -> service.createUser(SOME_CREATION_REQUEST))

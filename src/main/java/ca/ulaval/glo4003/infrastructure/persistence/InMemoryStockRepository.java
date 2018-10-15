@@ -4,7 +4,6 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

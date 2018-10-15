@@ -12,12 +12,12 @@ import javax.inject.Inject;
 @Component
 public class TransactionAssembler {
 
+  private TransactionItemAssembler itemAssembler;
+
   @Inject
   public TransactionAssembler(TransactionItemAssembler itemAssembler) {
     this.itemAssembler = itemAssembler;
   }
-
-  private TransactionItemAssembler itemAssembler;
 
   public TransactionDto toDto(Transaction transaction) {
     List<TransactionItemDto> itemDtos

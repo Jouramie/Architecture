@@ -16,7 +16,7 @@ public class InMemoryUserRepositoryTest {
   private final InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
 
   @Test
-  public void whenAddingUser_thenUserIsStored() throws Throwable{
+  public void whenAddingUser_thenUserIsStored() throws Throwable {
     inMemoryUserRepository.add(SOME_USER);
 
     User retrievedUser = inMemoryUserRepository.find(SOME_USER.getEmail());

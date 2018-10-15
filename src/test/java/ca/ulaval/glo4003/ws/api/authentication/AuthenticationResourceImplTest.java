@@ -7,9 +7,9 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
-import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import java.util.regex.Pattern;
 import javax.ws.rs.core.Response;
 import org.junit.Before;

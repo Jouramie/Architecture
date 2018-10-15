@@ -3,9 +3,7 @@ package ca.ulaval.glo4003.service.authentication;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
@@ -114,7 +112,7 @@ public class AuthenticationServiceTest {
 
   @Test
   public void givenUserDoesNotExist_whenAuthenticationUser_thenUserDoesNotExistExceptionIsThrown()
-      throws UserNotFoundException{
+      throws UserNotFoundException {
     doThrow(UserNotFoundException.class).when(userRepository).find(any());
 
     ThrowableAssert.ThrowingCallable authenticateUser
@@ -125,7 +123,7 @@ public class AuthenticationServiceTest {
 
   @Test
   public void whenValidatingAuthentication_thenTokenOfUserIsRetrievedFromRepository()
-      throws TokenNotFoundException{
+      throws TokenNotFoundException {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
     verify(tokenRepository).getByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token));
@@ -136,7 +134,7 @@ public class AuthenticationServiceTest {
       throws UserNotFoundException {
     doThrow(UserNotFoundException.class).when(userRepository).find(any());
 
-        ThrowableAssert.ThrowingCallable authenticateUser
+    ThrowableAssert.ThrowingCallable authenticateUser
         = () -> authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
     assertThatThrownBy(authenticateUser).isInstanceOf(UserDoesNotExistException.class);
@@ -190,7 +188,7 @@ public class AuthenticationServiceTest {
 
   @Test
   public void whenRevokingToken_thenTokenIsRemovedFromTokenRepository()
-      throws TokenNotFoundException{
+      throws TokenNotFoundException {
     authenticationService.revokeToken();
 
     verify(tokenRepository).remove(SOME_USER.getEmail());
@@ -198,7 +196,7 @@ public class AuthenticationServiceTest {
 
   @Test
   public void givenInvalidToken_whenRevokingToken_thenInvalidTokenExceptionIsThrown()
-      throws TokenNotFoundException{
+      throws TokenNotFoundException {
     doThrow(TokenNotFoundException.class).when(tokenRepository).remove(any());
 
     assertThatThrownBy(() -> authenticationService.revokeToken())

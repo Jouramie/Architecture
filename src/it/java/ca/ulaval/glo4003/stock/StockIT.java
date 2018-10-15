@@ -61,7 +61,7 @@ public class StockIT {
   public void givenWrongValue_whenGettingByTitle_thenStockIsNotFound() {
     //@formatter:off
     when()
-        .get(String.format(API_STOCK_ROUTE_TITLE,"wrong"))
+        .get(String.format(API_STOCK_ROUTE_TITLE, "wrong"))
     .then()
         .statusCode(NOT_FOUND.getStatusCode());
     //@formatter:on

@@ -6,12 +6,12 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
-import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
 import ca.ulaval.glo4003.util.CartStockRequestBuilder;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.CartResource;
 import ca.ulaval.glo4003.ws.api.cart.CartResourceImpl;
 import ca.ulaval.glo4003.ws.api.cart.CartStockRequest;
+import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Before;

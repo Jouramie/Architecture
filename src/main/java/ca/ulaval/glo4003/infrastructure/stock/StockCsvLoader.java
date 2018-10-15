@@ -64,7 +64,7 @@ public class StockCsvLoader {
     fileStream.close();
     zipFile.close();
 
-    Currency currency  = marketRepository.getById(marketId).getCurrency();
+    Currency currency = marketRepository.getById(marketId).getCurrency();
 
     return new Pair<>(new MoneyAmount(openValue, currency), new MoneyAmount(closeValue, currency));
   }
