@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.ws.api.stock;
 import ca.ulaval.glo4003.service.stock.StockMaxValueSinceParameter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -60,6 +61,11 @@ public interface StockResource {
       responses = {
           @ApiResponse(
               description = "Stocks information",
+              headers = {
+                  @Header(
+                      name = "X-Total-Count",
+                      description = "The number of available stock.")
+              },
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
