@@ -1,9 +1,11 @@
 package ca.ulaval.glo4003.domain.money;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import org.junit.Before;
@@ -73,6 +75,16 @@ public class MoneyAmountTest {
     MoneyAmount result = amount.add(otherAmount);
 
     assertThat(result.getAmount().doubleValue()).isEqualTo(64.59);
+    assertThat(result.getCurrency()).isEqualTo(someCurrency);
+  }
+
+  @Test
+  public void givenBigDecimal_whenAdd_thenAddTheAmountInLocalCurrency() {
+    when(someCurrency.convert(any())).then(returnsFirstArg());
+
+    MoneyAmount result = amount.add(new BigDecimal(SOME_OTHER_AMOUNT));
+
+    assertThat(result.getAmount().doubleValue()).isEqualTo(59.12);
     assertThat(result.getCurrency()).isEqualTo(someCurrency);
   }
 

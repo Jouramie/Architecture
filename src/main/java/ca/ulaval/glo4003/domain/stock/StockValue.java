@@ -44,9 +44,7 @@ public class StockValue {
   }
 
   public void updateValue(BigDecimal variation) {
-    MoneyAmount moneyVariation = new MoneyAmount(variation, getCurrentValue().getCurrency());
-    MoneyAmount newMoneyAmount = getCurrentValue().add(moneyVariation);
-    setValue(newMoneyAmount);
+    setValue(getCurrentValue().add(variation));
   }
 
   public void setValue(MoneyAmount currentValue) {
