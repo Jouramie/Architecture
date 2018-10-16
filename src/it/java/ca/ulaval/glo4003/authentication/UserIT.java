@@ -18,13 +18,13 @@ public class UserIT {
 
   private static final String SOME_EMAIL = "name";
 
-  private static final UserRole SOME_ROLE = UserRole.ADMINISTRATOR;
+  private static final UserRole INVESTOR_USER_ROLE = UserRole.INVESTOR;
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_EMAIL, "password", SOME_ROLE);
+      new UserCreationDto(SOME_EMAIL, "password");
 
   private static final UserCreationDto AN_INVALID_CREATION_REQUEST =
-      new UserCreationDto("", "", null);
+      new UserCreationDto("", "");
 
   private static final String USERS_ROUTE = "/api/users";
 
@@ -42,7 +42,7 @@ public class UserIT {
     .then()
         .statusCode(CREATED.getStatusCode())
         .body("email", equalTo(SOME_EMAIL))
-        .body("role", equalTo(SOME_ROLE.toString()));
+        .body("role", equalTo(INVESTOR_USER_ROLE.toString()));
     //@formatter:on
   }
 
