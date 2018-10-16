@@ -54,4 +54,9 @@ public class InMemoryStockRepository implements StockRepository {
   public List<String> getCategories() {
     return stocks.values().stream().map(Stock::getCategory).distinct().collect(Collectors.toList());
   }
+
+  @Override
+  public List<Stock> queryStocks(String name, String category) {
+    return null;
+  }
 }

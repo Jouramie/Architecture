@@ -17,4 +17,6 @@ public interface StockRepository {
   boolean doesStockExist(String title);
 
   List<String> getCategories();
+
+  List<Stock> queryStocks(String name, String category);
 }

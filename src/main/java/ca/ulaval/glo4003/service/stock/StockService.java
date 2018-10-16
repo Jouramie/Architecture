@@ -28,17 +28,8 @@ public class StockService {
     }
   }
 
-  public StockDto getStockByName(String name) {
-    try {
-      Stock stock = stockRepository.getByName(name);
-      return stockAssembler.toDto(stock);
-    } catch (StockNotFoundException exception) {
-      throw new StockDoesNotExistException(exception);
-    }
-  }
-
   public List<StockDto> queryStocks(String name, String category) {
-    return null;
+    return stockAssembler.toDto(stockRepository.queryStocks(name, category));
   }
 
   public List<String> getCategories() {

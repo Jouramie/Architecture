@@ -23,6 +23,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class StockServiceTest {
   private static final String SOME_TITLE = "title";
   private static final String SOME_NAME = "name";
+  private static final String SOME_CATEGORY = "Technology";
   @Mock
   private StockRepository stockRepository;
   @Mock
@@ -30,7 +31,11 @@ public class StockServiceTest {
   @Mock
   private Stock givenStock;
   @Mock
+  private List<Stock> givenStocks;
+  @Mock
   private StockDto expectedDto;
+  @Mock
+  private List<StockDto> expectedDtos;
   private StockService stockService;
 
   @Before
@@ -56,38 +61,29 @@ public class StockServiceTest {
   }
 
   @Test
-  public void whenGetStockByName_thenStockIsGotFromRepository() throws StockNotFoundException {
-    stockService.getStockByName(SOME_NAME);
-
-    verify(stockRepository).getByName(SOME_NAME);
-  }
-
-  @Test
-  public void whenGetStockByName_thenWeHaveCorrespondingDto() throws StockNotFoundException {
-    given(stockRepository.getByName(SOME_NAME)).willReturn(givenStock);
-    given(stockAssembler.toDto(givenStock)).willReturn(expectedDto);
-
-    StockDto resultingDto = stockService.getStockByName(SOME_NAME);
-
-    assertThat(resultingDto).isEqualTo(expectedDto);
-  }
-
-  @Test
-  public void givenStockDoesNotExist_whenGettingStockByName_thenStockDoesNotExistExceptionIsThrown()
-      throws StockNotFoundException {
-    doThrow(StockNotFoundException.class).when(stockRepository).getByName(any());
-
-    assertThatThrownBy(() -> stockService.getStockByName(SOME_NAME))
-        .isInstanceOf(StockDoesNotExistException.class);
-  }
-
-  @Test
   public void givenStockDoesNotExist_whenGettingStockByTitle_thenStockDoesNotExistExceptionIsThrown()
       throws StockNotFoundException {
     doThrow(StockNotFoundException.class).when(stockRepository).getByTitle(any());
 
     assertThatThrownBy(() -> stockService.getStockByTitle(SOME_NAME))
         .isInstanceOf(StockDoesNotExistException.class);
+  }
+
+  @Test
+  public void whenQueryStocks_thenStockIsGotFromRepository() {
+    stockService.queryStocks(SOME_NAME, SOME_CATEGORY);
+
+    verify(stockRepository).queryStocks(SOME_NAME, SOME_CATEGORY);
+  }
+
+  @Test
+  public void whenQueryStocks_thenWeHaveCorrespondingDto() {
+    given(stockRepository.queryStocks(SOME_NAME, SOME_CATEGORY)).willReturn(givenStocks);
+    given(stockAssembler.toDto(givenStocks)).willReturn(expectedDtos);
+
+    List<StockDto> resultingDtos = stockService.queryStocks(SOME_NAME, SOME_CATEGORY);
+
+    assertThat(resultingDtos).isSameAs(expectedDtos);
   }
 
   @Test
