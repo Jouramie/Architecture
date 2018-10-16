@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.service.stock.StockService;
-import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceParameter;
+import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import ca.ulaval.glo4003.ws.api.stock.StockResource;
 import ca.ulaval.glo4003.ws.api.stock.StockResourceImpl;
@@ -21,7 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class StockResourceTest {
   private static final String SOME_TITLE = "title";
   private static final String SOME_NAME = "name";
-  private static final StockMaxValueSinceParameter SOME_SINCE_PARAMETER = StockMaxValueSinceParameter.LAST_FIVE_DAYS;
+  private static final StockMaxValueSinceRange SOME_SINCE_PARAMETER = StockMaxValueSinceRange.LAST_FIVE_DAYS;
   @Mock
   private StockService stockService;
   @Mock

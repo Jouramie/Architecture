@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
 import ca.ulaval.glo4003.service.stock.StockService;
-import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceParameter;
+import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -37,7 +37,7 @@ public class StockResourceImpl implements StockResource {
     }
 
     try {
-      StockMaxValueSinceParameter sinceParameter = StockMaxValueSinceParameter.valueOf(since);
+      StockMaxValueSinceRange sinceParameter = StockMaxValueSinceRange.valueOf(since);
       return stockService.getStockMaxValue(title, sinceParameter);
     } catch (IllegalArgumentException e) {
       throw new BadRequestException("Invalid 'since' query parameter");

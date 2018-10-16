@@ -19,11 +19,11 @@ public class StockMaxValueRetriever {
     this.clock = clock;
   }
 
-  public HistoricalStockValue getStockMaxValue(Stock stock, StockMaxValueSinceParameter parameter) throws NoStockValueFitsCriteriaException {
+  public HistoricalStockValue getStockMaxValue(Stock stock, StockMaxValueSinceRange range) throws NoStockValueFitsCriteriaException {
     LocalDate currentDate = clock.getCurrentTime().toLocalDate();
     LocalDate from = null;
     LocalDate to = null;
-    switch (parameter) {
+    switch (range) {
       case CURRENT_MONTH:
         from = currentDate.withDayOfMonth(1);
         to = currentDate;

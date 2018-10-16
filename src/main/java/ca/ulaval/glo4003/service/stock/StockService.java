@@ -8,7 +8,7 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.service.stock.max.StockMaxResponseAssembler;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueRetriever;
-import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceParameter;
+import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import javax.inject.Inject;
@@ -47,15 +47,13 @@ public class StockService {
     }
   }
 
-  public StockMaxResponseDto getStockMaxValue(String title, StockMaxValueSinceParameter parameter) {
+  public StockMaxResponseDto getStockMaxValue(String title, StockMaxValueSinceRange parameter) {
     Stock stock = getStockByTitleOrThrowException(title);
     try {
       HistoricalStockValue maximumValue = stockMaxValueRetriever.getStockMaxValue(stock, parameter);
       return stockMaxResponseAssembler.toDto(title, maximumValue);
     } catch (NoStockValueFitsCriteriaException e) {
-      System.out.println("This exception should never happen.");
-      e.printStackTrace();
-      return null;
+      throw new ServerErrorException(Response.Status.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -63,7 +61,7 @@ public class StockService {
     try {
       return stockRepository.getByTitle(title);
     } catch (StockNotFoundException exception) {
-      throw new ServerErrorException(Response.Status.INTERNAL_SERVER_ERROR);
+      throw new StockDoesNotExistException(exception);
     }
   }
 }

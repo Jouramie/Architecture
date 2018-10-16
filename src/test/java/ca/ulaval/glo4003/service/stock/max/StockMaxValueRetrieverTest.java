@@ -38,49 +38,49 @@ public class StockMaxValueRetrieverTest {
 
   @Test
   public void whenGetStockMaxValueWithLastFiveDays_thenGetMaxValueOfLastFiveDays() throws NoStockValueFitsCriteriaException {
-    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceParameter.LAST_FIVE_DAYS);
+    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceRange.LAST_FIVE_DAYS);
 
     verify(stockValueHistory).getMaxValue(LocalDate.of(2018, 10, 10), OCTOBER15_2018);
   }
 
   @Test
   public void whenGetStockMaxValueWithCurrentMonth_thenGetMaxValueOfCurrentMonth() throws NoStockValueFitsCriteriaException {
-    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceParameter.CURRENT_MONTH);
+    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceRange.CURRENT_MONTH);
 
     verify(stockValueHistory).getMaxValue(LocalDate.of(2018, 10, 1), OCTOBER15_2018);
   }
 
   @Test
   public void whenGetStockMaxValueWithLastMonth_thenGetMaxValueOfLastMonth() throws NoStockValueFitsCriteriaException {
-    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceParameter.LAST_MONTH);
+    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceRange.LAST_MONTH);
 
     verify(stockValueHistory).getMaxValue(LocalDate.of(2018, 9, 1), LocalDate.of(2018, 9, 30));
   }
 
   @Test
   public void whenGetStockMaxValueWithLastYear_thenGetMaxValueOfLastYear() throws NoStockValueFitsCriteriaException {
-    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceParameter.LAST_YEAR);
+    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceRange.LAST_YEAR);
 
     verify(stockValueHistory).getMaxValue(LocalDate.of(2017, 10, 15), OCTOBER15_2018);
   }
 
   @Test
   public void whenGetStockMaxValueWithLastFiveYears_thenGetMaxValueOfLastFiveYears() throws NoStockValueFitsCriteriaException {
-    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceParameter.LAST_FIVE_YEARS);
+    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceRange.LAST_FIVE_YEARS);
 
     verify(stockValueHistory).getMaxValue(LocalDate.of(2013, 10, 15), OCTOBER15_2018);
   }
 
   @Test
   public void whenGetStockMaxValueWithLastTenYears_thenGetMaxValueOfLastTenYears() throws NoStockValueFitsCriteriaException {
-    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceParameter.LAST_TEN_YEARS);
+    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceRange.LAST_TEN_YEARS);
 
     verify(stockValueHistory).getMaxValue(LocalDate.of(2008, 10, 15), OCTOBER15_2018);
   }
 
   @Test
   public void whenGetStockMaxValueWithAllTime_thenGetMaxValueOfAllTime() throws NoStockValueFitsCriteriaException {
-    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceParameter.ALL_TIME);
+    stockMaxValueRetriever.getStockMaxValue(stock, StockMaxValueSinceRange.ALL_TIME);
 
     verify(stockValueHistory).getMaxValue(LocalDate.MIN, OCTOBER15_2018);
   }
