@@ -1,28 +1,45 @@
 {
-	"variables": [],
 	"info": {
+		"_postman_id": "427f63cd-72ad-4689-905f-6a9469da75bf",
 		"name": "Invest-UL",
-		"_postman_id": "68ff0ec8-7fb4-5d02-1f21-5c82ed5344a3",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Stocks",
-			"description": "",
 			"item": [
 				{
 					"name": "Trend",
-					"description": "",
 					"item": [
 						{
 							"name": "GetStockValueVariationTrend",
 							"request": {
-								  "url": "localhost:8080/api/stocks/RBS.l/trend"
-              }
-            }]
-        },
-          {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/trend",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"trend"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "max",
 					"item": [
 						{
@@ -248,20 +265,36 @@
 				{
 					"name": "GetStockByTitle",
 					"request": {
-						"url": "localhost:8080/api/stocks/RBS.l",
 						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/stocks/RBS.l",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stocks",
+								"RBS.l"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "GetStockByStockName",
 					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:8080/api/stocks?name=Royal Bank of Scotland",
 							"host": [
@@ -277,16 +310,99 @@
 									"key": "name",
 									"value": "Royal Bank of Scotland"
 								}
-							],
-							"variable": []
-						},
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetStockByCategory",
+					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
+						"body": {},
+						"url": {
+							"raw": "localhost:8080/api/stocks?category=technology",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stocks"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "technology"
+								}
+							]
 						},
-						"description": ""
+						"description": "\t\t\t"
+					},
+					"response": []
+				},
+				{
+					"name": "GetStockByCategoryWithPagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:8080/api/stocks?category=technology&page=2&per_page=5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stocks"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "technology"
+								},
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "per_page",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetStocksWithPagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "localhost:8080/api/stocks?page=2&per_page=5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stocks"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "per_page",
+									"value": "5"
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -294,12 +410,10 @@
 		},
 		{
 			"name": "Authentification",
-			"description": "",
 			"item": [
 				{
 					"name": "CreateUser",
 					"request": {
-						"url": "localhost:8080/api/users",
 						"method": "POST",
 						"header": [
 							{
@@ -311,14 +425,23 @@
 							"mode": "raw",
 							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Authenticate",
 					"request": {
-						"url": "localhost:8080/api/authenticate",
 						"method": "POST",
 						"header": [
 							{
@@ -330,14 +453,23 @@
 							"mode": "raw",
 							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}"
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/authenticate",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"authenticate"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Logout",
 					"request": {
-						"url": "localhost:8080/api/revoke-token",
 						"method": "POST",
 						"header": [
 							{
@@ -349,7 +481,17 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/revoke-token",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"revoke-token"
+							]
+						}
 					},
 					"response": []
 				}
@@ -357,12 +499,10 @@
 		},
 		{
 			"name": "Cart",
-			"description": "",
 			"item": [
 				{
 					"name": "GetCart",
 					"request": {
-						"url": "localhost:8080/api/cart",
 						"method": "GET",
 						"header": [
 							{
@@ -374,14 +514,23 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "AddStockInCart",
 					"request": {
-						"url": "localhost:8080/api/cart/RBS.l",
 						"method": "PUT",
 						"header": [
 							{
@@ -397,14 +546,24 @@
 							"mode": "raw",
 							"raw": "{\n\t\"quantity\": 76\n}"
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/cart/RBS.l",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart",
+								"RBS.l"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "UpdateStockInCart",
 					"request": {
-						"url": "localhost:8080/api/cart/RBS.l",
 						"method": "PATCH",
 						"header": [
 							{
@@ -420,14 +579,24 @@
 							"mode": "raw",
 							"raw": "{\n\t\"quantity\": 42\n}"
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/cart/RBS.l",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart",
+								"RBS.l"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "DeleteStockInCart",
 					"request": {
-						"url": "localhost:8080/api/cart/RBS.l",
 						"method": "DELETE",
 						"header": [
 							{
@@ -443,14 +612,24 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/cart/RBS.l",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart",
+								"RBS.l"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "EmptyCart",
 					"request": {
-						"url": "localhost:8080/api/cart",
 						"method": "DELETE",
 						"header": [
 							{
@@ -462,14 +641,23 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "CheckoutCart",
 					"request": {
-						"url": "localhost:8080/api/cart/checkout",
 						"method": "POST",
 						"header": [
 							{
@@ -481,7 +669,18 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/cart/checkout",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart",
+								"checkout"
+							]
+						}
 					},
 					"response": []
 				}
