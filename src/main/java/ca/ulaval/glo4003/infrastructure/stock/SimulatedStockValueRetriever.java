@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.infrastructure.stock;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.investul.live_stock_emulator.StockSimulator;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public class SimulatedStockValueRetriever implements StockValueRetriever {
   @Override
   public void updateStockValue(Stock stock) {
     double variation = simulator.calculateStockVariation(getPreviousVariation(stock.getTitle()));
-    stock.updateValue(variation);
+    stock.updateValue(new BigDecimal(variation));
     updatePreviousVariation(stock.getTitle(), variation);
   }
 

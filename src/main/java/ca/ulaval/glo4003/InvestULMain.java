@@ -6,6 +6,8 @@ import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
+import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.domain.user.User;
@@ -34,7 +36,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.ws.rs.core.Application;
@@ -61,7 +63,8 @@ public class InvestULMain {
     hardcodeTestUser();
 
     loadData();
-    startClockAndMarketsUpdater();
+    LocalDate startDate = getStartDate();
+    startClockAndMarketsUpdater(startDate);
 
     ContextHandlerCollection contexts = new ContextHandlerCollection();
     contexts.setHandlers(new Handler[] {
@@ -177,27 +180,31 @@ public class InvestULMain {
         .add(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testEmail));
   }
 
-  private static void loadData() {
-    try {
-      MarketCsvLoader marketLoader = new MarketCsvLoader(
-          ServiceLocator.INSTANCE.get(MarketRepository.class),
-          ServiceLocator.INSTANCE.get(StockRepository.class),
-          ServiceLocator.INSTANCE.get(StockValueRetriever.class));
-      marketLoader.load();
+  private static void loadData() throws IOException, MarketNotFoundException {
+    MarketCsvLoader marketLoader = new MarketCsvLoader(
+        ServiceLocator.INSTANCE.get(MarketRepository.class),
+        ServiceLocator.INSTANCE.get(StockRepository.class),
+        ServiceLocator.INSTANCE.get(StockValueRetriever.class));
+    marketLoader.load();
 
-      StockCsvLoader stockLoader = new StockCsvLoader(
-          ServiceLocator.INSTANCE.get(StockRepository.class),
-          ServiceLocator.INSTANCE.get(MarketRepository.class));
-      stockLoader.load();
-    } catch (IOException | MarketNotFoundException e) {
-      System.out.println("Unable to parse the CSV: " + e.getMessage());
-    }
+    StockCsvLoader stockLoader = new StockCsvLoader(
+        ServiceLocator.INSTANCE.get(StockRepository.class),
+        ServiceLocator.INSTANCE.get(MarketRepository.class));
+    stockLoader.load();
   }
 
-  private static void startClockAndMarketsUpdater() {
+  private static LocalDate getStartDate() {
+    StockRepository stockRepository = ServiceLocator.INSTANCE.get(StockRepository.class);
+    Stock stock = stockRepository.getAll().get(0);
+    HistoricalStockValue latestStockValue = stock.getValueHistory().getLatestValue();
+
+    return latestStockValue.date.plusDays(1);
+  }
+
+  private static void startClockAndMarketsUpdater(LocalDate startDate) {
     ServiceLocator.INSTANCE.registerInstance(
         Clock.class,
-        new Clock(LocalDateTime.of(2018, 9, 15, 0, 0, 0),
+        new Clock(startDate.atTime(0, 0, 0),
             SimulationSettings.CLOCK_TICK_DURATION));
     clockDriver = new ClockDriver(
         ServiceLocator.INSTANCE.get(Clock.class),

@@ -14,14 +14,17 @@ import org.junit.Test;
 public class InMemoryStockRepositoryTest {
   private static final String BANKING_CATEGORY = "Banking";
   private static final String MEDIA_CATEGORY = "Media";
+  private static final String GREEN_TECHNOLOGY_CATEGORY = "Green Technology";
+  private static final MarketId SOME_MARKET_ID = new MarketId("NASDAQ");
 
-  private final Stock SOME_STOCK = new StockBuilder().withTitle("ST01").withName("Stock 1").build();
+  private final Stock SOME_STOCK = new StockBuilder().withTitle("STO1").withName("Stock 1")
+      .withMarketId(SOME_MARKET_ID).withCategory(BANKING_CATEGORY).build();
   private final Stock SOME_OTHER_STOCK = new StockBuilder().withTitle("STO2").withName("Stock 2")
-      .withCategory(BANKING_CATEGORY).build();
+      .withMarketId(SOME_MARKET_ID).withCategory(GREEN_TECHNOLOGY_CATEGORY).build();
   private final Stock SOME_STOCK_IN_DIFFERENT_MARKET = new StockBuilder().withTitle("STO3")
-      .withName("Stock 3").withMarketId(new MarketId("TMX")).build();
+      .withName("Stock 3").withMarketId(new MarketId("TSX")).withCategory(BANKING_CATEGORY).build();
   private final Stock SOME_MEDIA_STOCK = new StockBuilder().withTitle("STO4").withName("Stock 4")
-      .withCategory(MEDIA_CATEGORY).build();
+      .withMarketId(SOME_MARKET_ID).withCategory(MEDIA_CATEGORY).build();
 
   private InMemoryStockRepository repository;
 
@@ -77,6 +80,7 @@ public class InMemoryStockRepositoryTest {
   public void whenGetCategories_thenReturnAllCategories() {
     List<String> result = repository.getCategories();
 
-    assertThat(result).containsExactlyInAnyOrder(BANKING_CATEGORY, MEDIA_CATEGORY, StockBuilder.DEFAULT_CATEGORY);
+    assertThat(result).containsExactlyInAnyOrder(BANKING_CATEGORY, MEDIA_CATEGORY,
+        GREEN_TECHNOLOGY_CATEGORY);
   }
 }
