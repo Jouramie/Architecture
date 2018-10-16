@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InMemoryStockRepository implements StockRepository {
   private final Map<String, Stock> stocks = new HashMap<>();
@@ -25,13 +26,6 @@ public class InMemoryStockRepository implements StockRepository {
       throw new StockNotFoundException(title);
     }
     return result;
-  }
-
-  @Override
-  public Stock getByName(String name) throws StockNotFoundException {
-    return stocks.values().stream().filter((stock) -> stock.getName().equals(name))
-        .findFirst()
-        .orElseThrow(() -> new StockNotFoundException("Cannot find stock with name " + name));
   }
 
   @Override
@@ -57,6 +51,16 @@ public class InMemoryStockRepository implements StockRepository {
 
   @Override
   public List<Stock> queryStocks(String name, String category) {
-    return null;
+    Stream<Stock> stockStream = stocks.values().stream();
+
+    if (name != null) {
+      stockStream = stockStream.filter((stock) -> stock.getName().equals(name));
+    }
+
+    if (category != null) {
+      stockStream = stockStream.filter((stock) -> stock.getCategory().equals(category));
+    }
+
+    return stockStream.collect(Collectors.toList());
   }
 }

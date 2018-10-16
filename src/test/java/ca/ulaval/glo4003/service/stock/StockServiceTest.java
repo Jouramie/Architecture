@@ -78,7 +78,8 @@ public class StockServiceTest {
 
   @Test
   public void whenQueryStocks_thenWeHaveCorrespondingDto() {
-    given(stockRepository.queryStocks(SOME_NAME, SOME_CATEGORY)).willReturn(givenStocks);
+    given(stockRepository.queryStocks(SOME_NAME, SOME_CATEGORY))
+        .willReturn(givenStocks);
     given(stockAssembler.toDto(givenStocks)).willReturn(expectedDtos);
 
     List<StockDto> resultingDtos = stockService.queryStocks(SOME_NAME, SOME_CATEGORY);
