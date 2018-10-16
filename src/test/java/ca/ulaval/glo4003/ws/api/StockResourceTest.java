@@ -10,6 +10,8 @@ import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import ca.ulaval.glo4003.ws.api.stock.StockResource;
 import ca.ulaval.glo4003.ws.api.stock.StockResourceImpl;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
+import java.util.Collections;
+import java.util.List;
 import javax.ws.rs.BadRequestException;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +23,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class StockResourceTest {
   private static final String SOME_TITLE = "title";
   private static final String SOME_NAME = "name";
-  private static final StockMaxValueSinceRange SOME_SINCE_PARAMETER = StockMaxValueSinceRange.LAST_FIVE_DAYS;
+  private static final StockMaxValueSinceRange SOME_RANGE = StockMaxValueSinceRange.LAST_FIVE_DAYS;
+  private static final int DEFAULT_PAGE = 1;
+  private static final int DEFAULT_PER_PAGE = 15;
   @Mock
   private StockService stockService;
   @Mock
@@ -46,19 +50,19 @@ public class StockResourceTest {
   }
 
   @Test
-  public void whenGetStockByName_thenReturningDto() {
+  public void whenGetStock_thenReturningSingletonListOfDto() {
     given(stockService.getStockByName(SOME_NAME)).willReturn(expectedDto);
 
-    StockDto resultingDto = stockResource.getStockByName(SOME_NAME);
+    List<StockDto> resultingDto = stockResource.getStocks(SOME_NAME, null, DEFAULT_PAGE, DEFAULT_PER_PAGE);
 
-    assertThat(resultingDto).isEqualTo(expectedDto);
+    assertThat(resultingDto).isEqualTo(Collections.singletonList(expectedDto));
   }
 
   @Test
   public void whenGetStockMaxValue_thenReturningDto() {
-    given(stockService.getStockMaxValue(SOME_TITLE, SOME_SINCE_PARAMETER)).willReturn(expectedMaxResponseDto);
+    given(stockService.getStockMaxValue(SOME_TITLE, SOME_RANGE)).willReturn(expectedMaxResponseDto);
 
-    StockMaxResponseDto resultingDto = stockResource.getStockMaxValue(SOME_TITLE, SOME_SINCE_PARAMETER.toString());
+    StockMaxResponseDto resultingDto = stockResource.getStockMaxValue(SOME_TITLE, SOME_RANGE.toString());
 
     assertThat(resultingDto).isEqualTo(expectedMaxResponseDto);
   }
