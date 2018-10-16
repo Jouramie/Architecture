@@ -7,13 +7,15 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import java.time.LocalDate;
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.ws.rs.ServerErrorException;
+import javax.ws.rs.core.Response;
 
 @Resource
-public class MaximumValueStockRetriever {
+public class StockMaxValueRetriever {
   private final Clock clock;
 
   @Inject
-  public MaximumValueStockRetriever(Clock clock) {
+  public StockMaxValueRetriever(Clock clock) {
     this.clock = clock;
   }
 
@@ -52,8 +54,8 @@ public class MaximumValueStockRetriever {
         to = currentDate;
         break;
       default:
-        // All cases are threated.
-        break;
+        // This should never happen, but if it happens, we throw a 500.
+        throw new ServerErrorException(Response.Status.INTERNAL_SERVER_ERROR);
     }
 
     return stock.getValueHistory().getMaxValue(from, to);

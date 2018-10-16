@@ -12,8 +12,8 @@ import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.service.stock.max.MaximumValueStockRetriever;
 import ca.ulaval.glo4003.service.stock.max.StockMaxResponseAssembler;
+import ca.ulaval.glo4003.service.stock.max.StockMaxValueRetriever;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceParameter;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
@@ -34,7 +34,7 @@ public class StockServiceTest {
   @Mock
   private StockAssembler stockAssembler;
   @Mock
-  private MaximumValueStockRetriever maximumValueStockRetriever;
+  private StockMaxValueRetriever stockMaxValueRetriever;
   @Mock
   private StockMaxResponseAssembler stockMaxResponseAssembler;
   @Mock
@@ -51,7 +51,7 @@ public class StockServiceTest {
 
   @Before
   public void setup() {
-    stockService = new StockService(stockRepository, stockAssembler, maximumValueStockRetriever,
+    stockService = new StockService(stockRepository, stockAssembler, stockMaxValueRetriever,
         stockMaxResponseAssembler);
   }
 
@@ -99,7 +99,7 @@ public class StockServiceTest {
   }
 
   @Test
-  public void givenStockDoesNotExist_whenGettingStockByTitle_thenStockDoesNotExistExceptionIsThrown()
+  public void givenStockNotFound_whenGettingStockByTitle_thenStockDoesNotExistExceptionIsThrown()
       throws StockNotFoundException {
     doThrow(StockNotFoundException.class).when(stockRepository).getByTitle(any());
 
@@ -110,7 +110,7 @@ public class StockServiceTest {
   @Test
   public void whenGetStockMaxValue_thenWeHaveCorrespondingDto() throws StockNotFoundException, NoStockValueFitsCriteriaException {
     given(stockRepository.getByTitle(SOME_TITLE)).willReturn(givenStock);
-    given(maximumValueStockRetriever.getStockMaxValue(givenStock, SOME_PARAMETER)).willReturn(givenMaximumStockValue);
+    given(stockMaxValueRetriever.getStockMaxValue(givenStock, SOME_PARAMETER)).willReturn(givenMaximumStockValue);
     given(stockMaxResponseAssembler.toDto(SOME_TITLE, givenMaximumStockValue)).willReturn(expectedMaxResponseDto);
 
     StockMaxResponseDto resultingDto = stockService.getStockMaxValue(SOME_TITLE, SOME_PARAMETER);
