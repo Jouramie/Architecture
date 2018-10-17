@@ -52,6 +52,20 @@
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "max",
+					"description": "",
+					"item": [
+						{
+							"name": "GetMaxValueLast5Days",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_DAYS",
 									"host": [
@@ -69,20 +83,22 @@
 											"key": "since",
 											"value": "LAST_FIVE_DAYS"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueCurrentMonth",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueCurrentMonth",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=CURRENT_MONTH",
 									"host": [
@@ -100,20 +116,22 @@
 											"key": "since",
 											"value": "CURRENT_MONTH"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLastMonth",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLastMonth",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_MONTH",
 									"host": [
@@ -131,20 +149,22 @@
 											"key": "since",
 											"value": "LAST_MONTH"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLastYear",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLastYear",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_YEAR",
 									"host": [
@@ -162,20 +182,22 @@
 											"key": "since",
 											"value": "LAST_YEAR"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLast5Years",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLast5Years",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_YEARS",
 									"host": [
@@ -193,20 +215,22 @@
 											"key": "since",
 											"value": "LAST_FIVE_YEARS"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLast10Years",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLast10Years",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_10_YEARS",
 									"host": [
@@ -224,20 +248,22 @@
 											"key": "since",
 											"value": "LAST_10_YEARS"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueAllTime",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueAllTime",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=ALL_TIME",
 									"host": [
@@ -255,8 +281,16 @@
 											"key": "since",
 											"value": "ALL_TIME"
 										}
-									]
-								}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						}
@@ -451,12 +485,13 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/users",
@@ -721,10 +756,12 @@
 		},
 		{
 			"name": "Portfolio",
+			"description": "",
 			"item": [
 				{
 					"name": "GetPortfolio",
 					"request": {
+						"url": "localhost:8080/api/portfolio",
 						"method": "GET",
 						"header": [
 							{
@@ -736,17 +773,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": {
-							"raw": "localhost:8080/api/portfolio",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"portfolio"
-							]
-						}
+						"description": ""
 					},
 					"response": []
 				}
@@ -755,12 +782,6 @@
 		{
 			"name": "Ping",
 			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:8080/api/ping?echo=test",
 					"host": [
