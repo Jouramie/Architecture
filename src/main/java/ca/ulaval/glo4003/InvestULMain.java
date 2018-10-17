@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003;
 
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
@@ -29,6 +30,9 @@ import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
@@ -115,6 +119,8 @@ public class InvestULMain {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     resourceConfig.register(CORSResponseFilter.class);
+    setupJacksonJavaTimeModule(resourceConfig);
+
     ServiceLocator.INSTANCE.getClassesForAnnotation(
         WEB_SERVICE_PACKAGE_PREFIX,
         FilterRegistration.class)
@@ -125,6 +131,15 @@ public class InvestULMain {
     context.addServlet(servletHolder, "/*");
 
     return context;
+  }
+
+  private static void setupJacksonJavaTimeModule(ResourceConfig resourceConfig) {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);
+    JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
+    provider.setMapper(mapper);
+    resourceConfig.register(provider);
   }
 
   private static void createSwaggerApi(String apiUrl) {

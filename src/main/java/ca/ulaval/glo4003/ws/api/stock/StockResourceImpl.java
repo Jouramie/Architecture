@@ -1,7 +1,9 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
-import ca.ulaval.glo4003.service.stock.StockMaxValueSinceParameter;
 import ca.ulaval.glo4003.service.stock.StockService;
+import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
+import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
@@ -22,15 +24,21 @@ public class StockResourceImpl implements StockResource {
   }
 
   @Override
-  public StockDto getStockByName(String name) {
-    if (name == null || name.isEmpty()) {
-      throw new BadRequestException("Missing name query parameter");
-    }
-    return stockService.getStockByName(name);
+  public List<StockDto> getStocks(String name, String category, int page, int perPage) {
+    return stockService.queryStocks(name, category);
   }
 
   @Override
-  public StockDto getStockMaxValue(String title, StockMaxValueSinceParameter since) {
-    return null;
+  public StockMaxResponseDto getStockMaxValue(String title, String since) {
+    if (since == null) {
+      throw new BadRequestException("Missing 'since' query parameter.");
+    }
+
+    try {
+      StockMaxValueSinceRange sinceParameter = StockMaxValueSinceRange.valueOf(since);
+      return stockService.getStockMaxValue(title, sinceParameter);
+    } catch (IllegalArgumentException e) {
+      throw new BadRequestException("Invalid 'since' query parameter");
+    }
   }
 }

@@ -30,7 +30,5 @@ public interface AuthenticationResource {
           )
       }
   )
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
   Response authenticate(AuthenticationRequestDto authenticationRequest);
 }
