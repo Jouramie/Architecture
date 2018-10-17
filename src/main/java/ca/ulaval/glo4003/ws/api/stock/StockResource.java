@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
+import javax.validation.constraints.Min;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -86,6 +87,7 @@ public interface StockResource {
           String category,
       @QueryParam("page")
       @DefaultValue("1")
+      @Min(1)
       @Parameter(
           description = "Page number",
           schema = @Schema(
@@ -95,6 +97,7 @@ public interface StockResource {
           int page,
       @QueryParam("per_page")
       @DefaultValue("15")
+      @Min(1)
       @Parameter(
           description = "Number of stock per page",
           schema = @Schema(
@@ -111,10 +114,20 @@ public interface StockResource {
           content = @Content(schema = @Schema(implementation = StockMaxResponseDto.class))),
           @ApiResponse(responseCode = "400", description = "Missing or invalid since parameter"),
           @ApiResponse(responseCode = "404", description = "Stock does not exist")})
-  StockMaxResponseDto getStockMaxValue(@Parameter(description = "Title of the stock", required = true)
-                                       @PathParam("title") String title,
-                                       @Parameter(description = "Since parameter",
-                                           schema = @Schema(implementation = StockMaxValueSinceRange.class),
-                                           required = true)
-                                       @QueryParam("since") String since);
+  StockMaxResponseDto getStockMaxValue(
+      @PathParam("title")
+      @Parameter(
+          description = "Title of the stock",
+          required = true
+      )
+          String title,
+      @QueryParam("since")
+      @Parameter(
+          description = "Since parameter",
+          schema = @Schema(
+              implementation = StockMaxValueSinceRange.class
+          ),
+          required = true
+      )
+          String since);
 }
