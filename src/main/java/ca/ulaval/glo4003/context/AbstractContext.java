@@ -3,19 +3,31 @@ package ca.ulaval.glo4003.context;
 import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
+import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
+import ca.ulaval.glo4003.domain.user.UserRepository;
+import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
+import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.infrastructure.config.ServiceLocatorInitializer;
 import ca.ulaval.glo4003.infrastructure.config.SimulationSettings;
 import ca.ulaval.glo4003.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
+import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
+import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -39,10 +51,11 @@ public abstract class AbstractContext {
     this.serviceLocator = serviceLocator;
   }
 
-  public void configureApplication() {
+  public void configureApplication(String apiUrl) {
     initializeServiceLocator();
     loadData();
     initializeClock();
+    createSwaggerApi(apiUrl);
   }
 
   protected void initializeServiceLocator() {
@@ -56,7 +69,40 @@ public abstract class AbstractContext {
     return serviceLocatorInitializer.createInstances(serviceLocator);
   }
 
-  protected abstract void loadData();
+  protected void loadData() {
+    try {
+      loadCsvData();
+      createAdministrator();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private void createAdministrator() {
+    String testEmail = "Archi.test.42@gmail.com";
+    try {
+      serviceLocator.get(UserRepository.class)
+          .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
+    } catch (UserAlreadyExistsException exception) {
+      System.out.println("Test user couldn't be added");
+      exception.printStackTrace();
+    }
+    serviceLocator.get(AuthenticationTokenRepository.class)
+        .add(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testEmail));
+  }
+
+  private void loadCsvData() throws IOException, MarketNotFoundException {
+    MarketCsvLoader marketLoader = new MarketCsvLoader(
+        serviceLocator.get(MarketRepository.class),
+        serviceLocator.get(StockRepository.class),
+        serviceLocator.get(StockValueRetriever.class));
+    marketLoader.load();
+
+    StockCsvLoader stockLoader = new StockCsvLoader(
+        serviceLocator.get(StockRepository.class),
+        serviceLocator.get(MarketRepository.class));
+    stockLoader.load();
+  }
 
   private void initializeClock() {
     StockRepository stockRepository = serviceLocator.get(StockRepository.class);
@@ -84,7 +130,7 @@ public abstract class AbstractContext {
     return contexts;
   }
 
-  protected Handler createApiHandler() {
+  private Handler createApiHandler() {
     Application application = new Application() {
       @Override
       public Set<Object> getSingletons() {

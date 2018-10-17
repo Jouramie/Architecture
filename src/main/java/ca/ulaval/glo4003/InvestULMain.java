@@ -11,20 +11,21 @@ public class InvestULMain {
   private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
   private static Server server;
 
-
   public static void main(String[] args) throws Exception {
-
-    // TODO add possibility to load other context
     AbstractContext context = new ProductionContext(WEB_SERVICE_PACKAGE_PREFIX, ServiceLocator.INSTANCE);
-    context.configureApplication();
+    startServer(context);
+  }
 
+  public static void startServer(AbstractContext context) throws Exception {
     int port = 8080;
     server = new Server(port);
-    server.setHandler(context.createJettyContextHandlers());
 
     URL serverUrl = server.getURI().toURL();
     URL apiUrl = new URL(serverUrl.getProtocol(), serverUrl.getHost(), port, serverUrl.getFile());
-    context.createSwaggerApi(apiUrl.toString());
+
+    context.configureApplication(apiUrl.toString());
+    server.setHandler(context.createJettyContextHandlers());
+
 
     try {
       server.start();
