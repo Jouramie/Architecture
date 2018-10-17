@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "427f63cd-72ad-4689-905f-6a9469da75bf",
+		"_postman_id": "8e07f576-c142-45e6-8629-20967fbba8e3",
 		"name": "Invest-UL",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
@@ -51,6 +52,20 @@
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "max",
+					"description": "",
+					"item": [
+						{
+							"name": "GetMaxValueLast5Days",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_DAYS",
 									"host": [
@@ -68,20 +83,22 @@
 											"key": "since",
 											"value": "LAST_FIVE_DAYS"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueCurrentMonth",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueCurrentMonth",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=CURRENT_MONTH",
 									"host": [
@@ -99,20 +116,22 @@
 											"key": "since",
 											"value": "CURRENT_MONTH"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLastMonth",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLastMonth",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_MONTH",
 									"host": [
@@ -130,20 +149,22 @@
 											"key": "since",
 											"value": "LAST_MONTH"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLastYear",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLastYear",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_YEAR",
 									"host": [
@@ -161,20 +182,22 @@
 											"key": "since",
 											"value": "LAST_YEAR"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLast5Years",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLast5Years",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_YEARS",
 									"host": [
@@ -192,20 +215,22 @@
 											"key": "since",
 											"value": "LAST_FIVE_YEARS"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLast10Years",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueLast10Years",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_10_YEARS",
 									"host": [
@@ -223,20 +248,22 @@
 											"key": "since",
 											"value": "LAST_10_YEARS"
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueAllTime",
-							"request": {
+									],
+									"variable": []
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
 									"raw": ""
 								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "GetMaxValueAllTime",
+							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=ALL_TIME",
 									"host": [
@@ -254,8 +281,16 @@
 											"key": "since",
 											"value": "ALL_TIME"
 										}
-									]
-								}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"description": ""
 							},
 							"response": []
 						}
@@ -320,17 +355,25 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
-							"raw": "localhost:8080/api/stocks/categories",
+							"raw": "localhost:8080/api/stocks?category=technology",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"stocks",
-								"categories"
+								"stocks"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "technology"
+								}
 							]
 						},
 						"description": "\t\t\t"
@@ -342,7 +385,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:8080/api/stocks?category=technology&page=2&per_page=5",
 							"host": [
@@ -376,7 +422,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:8080/api/stocks?page=2&per_page=5",
 							"host": [
@@ -411,7 +460,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": ""
+							"raw": "localhost:8080/api/stock_categories",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stock_categories"
+							]
 						}
 					},
 					"response": []
@@ -428,12 +485,13 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/users",
@@ -697,14 +755,33 @@
 			]
 		},
 		{
+			"name": "Portfolio",
+			"description": "",
+			"item": [
+				{
+					"name": "GetPortfolio",
+					"request": {
+						"url": "localhost:8080/api/portfolio",
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Ping",
 			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:8080/api/ping?echo=test",
 					"host": [
@@ -724,39 +801,6 @@
 				}
 			},
 			"response": []
-		},
-		{
-			"name": "Portfolio",
-			"item": [
-				{
-					"name": "GetPortfolio",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:8080/api/portfolio",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"portfolio"
-							]
-						}
-					},
-					"response": []
-				}
-			]
 		}
 	]
 }

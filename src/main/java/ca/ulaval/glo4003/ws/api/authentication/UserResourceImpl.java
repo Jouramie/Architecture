@@ -25,7 +25,7 @@ public class UserResourceImpl implements UserResource {
   @Override
   public Response createUser(UserCreationDto userCreationDto) {
     requestValidator.validate(userCreationDto);
-    UserDto createdUser = userCreationService.createUser(userCreationDto);
+    UserDto createdUser = userCreationService.createInvestorUser(userCreationDto);
     return Response.status(CREATED).entity(createdUser).build();
   }
 }
