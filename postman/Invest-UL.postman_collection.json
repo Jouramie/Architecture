@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "1bde6e3a-0927-4bf7-a947-13566af94579",
+		"_postman_id": "8e07f576-c142-45e6-8629-20967fbba8e3",
 		"name": "Invest-UL",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
