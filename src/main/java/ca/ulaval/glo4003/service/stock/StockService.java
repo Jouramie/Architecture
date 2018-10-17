@@ -11,6 +11,7 @@ import ca.ulaval.glo4003.service.stock.max.StockMaxValueRetriever;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
+import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.ServerErrorException;
 import javax.ws.rs.core.Response;
@@ -63,5 +64,13 @@ public class StockService {
     } catch (StockNotFoundException exception) {
       throw new StockDoesNotExistException(exception);
     }
+  }
+
+  public List<StockDto> queryStocks(String name, String category) {
+    return null;
+  }
+
+  public List<String> getCategories() {
+    return stockRepository.getCategories();
   }
 }

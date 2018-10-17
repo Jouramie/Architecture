@@ -17,6 +17,8 @@ import ca.ulaval.glo4003.service.stock.max.StockMaxValueRetriever;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
+import com.google.common.collect.Lists;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -125,5 +127,15 @@ public class StockServiceTest {
 
     assertThatThrownBy(() -> stockService.getStockMaxValue(SOME_TITLE, SOME_RANGE))
         .isInstanceOf(StockDoesNotExistException.class);
+  }
+
+  @Test
+  public void whenGettingCategories_thenReturnCategories() {
+    List<String> expectedCategories = Lists.newArrayList("technology", "banking", "media");
+    given(stockRepository.getCategories()).willReturn(expectedCategories);
+
+    List<String> resultingCategories = stockService.getCategories();
+
+    assertThat(resultingCategories).isSameAs(expectedCategories);
   }
 }

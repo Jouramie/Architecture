@@ -321,7 +321,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:8080/api/stocks?category=technology",
 							"host": [
@@ -348,7 +351,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:8080/api/stocks?category=technology&page=2&per_page=5",
 							"host": [
@@ -382,7 +388,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:8080/api/stocks?page=2&per_page=5",
 							"host": [
@@ -402,6 +411,29 @@
 									"key": "per_page",
 									"value": "5"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/stock_categories",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stock_categories"
 							]
 						}
 					},
@@ -688,35 +720,6 @@
 			]
 		},
 		{
-			"name": "Ping",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "localhost:8080/api/ping?echo=test",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"ping"
-					],
-					"query": [
-						{
-							"key": "echo",
-							"value": "test"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Portfolio",
 			"item": [
 				{
@@ -748,6 +751,35 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/api/ping?echo=test",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ping"
+					],
+					"query": [
+						{
+							"key": "echo",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
