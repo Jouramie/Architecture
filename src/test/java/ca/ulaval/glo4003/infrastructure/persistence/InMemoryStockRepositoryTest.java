@@ -12,10 +12,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class InMemoryStockRepositoryTest {
-  private final MarketId SOME_MARKET_ID = new MarketId("NASDAQ");
-  private final Stock SOME_STOCK = new StockBuilder().withTitle("STO1").withName("Stock 1").withMarketId(SOME_MARKET_ID).build();
-  private final Stock SOME_OTHER_STOCK = new StockBuilder().withTitle("STO2").withName("Stock 2").withMarketId(SOME_MARKET_ID).build();
-  private final Stock SOME_STOCK_IN_DIFFERENT_MARKET = new StockBuilder().withTitle("STO3").withName("Stock 3").withMarketId(new MarketId("TSX")).build();
+  private static final String BANKING_CATEGORY = "Banking";
+  private static final String MEDIA_CATEGORY = "Media";
+  private static final String GREEN_TECHNOLOGY_CATEGORY = "Green Technology";
+  private static final MarketId SOME_MARKET_ID = new MarketId("NASDAQ");
+
+  private final Stock SOME_STOCK = new StockBuilder().withTitle("STO1").withName("Stock 1")
+      .withMarketId(SOME_MARKET_ID).withCategory(BANKING_CATEGORY).build();
+  private final Stock SOME_OTHER_STOCK = new StockBuilder().withTitle("STO2").withName("Stock 2")
+      .withMarketId(SOME_MARKET_ID).withCategory(GREEN_TECHNOLOGY_CATEGORY).build();
+  private final Stock SOME_STOCK_IN_DIFFERENT_MARKET = new StockBuilder().withTitle("STO3")
+      .withName("Stock 3").withMarketId(new MarketId("TSX")).withCategory(BANKING_CATEGORY).build();
+  private final Stock SOME_MEDIA_STOCK = new StockBuilder().withTitle("STO4").withName("Stock 4")
+      .withMarketId(SOME_MARKET_ID).withCategory(MEDIA_CATEGORY).build();
 
   private InMemoryStockRepository repository;
 
@@ -25,6 +34,7 @@ public class InMemoryStockRepositoryTest {
     repository.add(SOME_STOCK);
     repository.add(SOME_OTHER_STOCK);
     repository.add(SOME_STOCK_IN_DIFFERENT_MARKET);
+    repository.add(SOME_MEDIA_STOCK);
   }
 
   @Test
@@ -55,13 +65,22 @@ public class InMemoryStockRepositoryTest {
   public void whenGetAll_thenReturnAllStocks() {
     List<Stock> result = repository.getAll();
 
-    assertThat(result).containsExactlyInAnyOrder(SOME_STOCK, SOME_OTHER_STOCK, SOME_STOCK_IN_DIFFERENT_MARKET);
+    assertThat(result).containsExactlyInAnyOrder(SOME_STOCK, SOME_OTHER_STOCK,
+        SOME_STOCK_IN_DIFFERENT_MARKET, SOME_MEDIA_STOCK);
   }
 
   @Test
   public void whenGetAllByMarket_thenReturnAllStocksOfMarket() {
-    List<Stock> result = repository.getByMarket(SOME_MARKET_ID);
+    List<Stock> result = repository.getByMarket(StockBuilder.DEFAULT_MARKET_ID);
 
-    assertThat(result).containsExactlyInAnyOrder(SOME_STOCK, SOME_OTHER_STOCK);
+    assertThat(result).containsExactlyInAnyOrder(SOME_STOCK, SOME_OTHER_STOCK, SOME_MEDIA_STOCK);
+  }
+
+  @Test
+  public void whenGetCategories_thenReturnAllCategories() {
+    List<String> result = repository.getCategories();
+
+    assertThat(result).containsExactlyInAnyOrder(BANKING_CATEGORY, MEDIA_CATEGORY,
+        GREEN_TECHNOLOGY_CATEGORY);
   }
 }

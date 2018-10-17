@@ -11,6 +11,8 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
+import com.google.common.collect.Lists;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,7 +74,7 @@ public class StockServiceTest {
 
   @Test
   public void givenStockDoesNotExist_whenGettingStockByName_thenStockDoesNotExistExceptionIsThrown()
-      throws StockNotFoundException{
+      throws StockNotFoundException {
     doThrow(StockNotFoundException.class).when(stockRepository).getByName(any());
 
     assertThatThrownBy(() -> stockService.getStockByName(SOME_NAME))
@@ -81,10 +83,20 @@ public class StockServiceTest {
 
   @Test
   public void givenStockDoesNotExist_whenGettingStockByTitle_thenStockDoesNotExistExceptionIsThrown()
-      throws StockNotFoundException{
+      throws StockNotFoundException {
     doThrow(StockNotFoundException.class).when(stockRepository).getByTitle(any());
 
     assertThatThrownBy(() -> stockService.getStockByTitle(SOME_NAME))
         .isInstanceOf(StockDoesNotExistException.class);
+  }
+
+  @Test
+  public void whenGettingCategories_thenReturnCategories() {
+    List<String> expectedCategories = Lists.newArrayList("technology", "banking", "media");
+    given(stockRepository.getCategories()).willReturn(expectedCategories);
+
+    List<String> resultingCategories = stockService.getCategories();
+
+    assertThat(resultingCategories).isSameAs(expectedCategories);
   }
 }

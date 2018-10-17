@@ -1,13 +1,11 @@
-package ca.ulaval.glo4003.ws.api;
+package ca.ulaval.glo4003.ws.api.stock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.service.stock.StockService;
-import ca.ulaval.glo4003.ws.api.stock.StockDto;
-import ca.ulaval.glo4003.ws.api.stock.StockResource;
-import ca.ulaval.glo4003.ws.api.stock.StockResourceImpl;
-import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,12 +17,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class StockResourceTest {
   private static final String SOME_TITLE = "title";
   private static final String SOME_NAME = "name";
+  private static final String SOME_CATEGORY = "technology";
   private static final int DEFAULT_PAGE = 1;
   private static final int DEFAULT_PER_PAGE = 15;
   @Mock
   private StockService stockService;
   @Mock
   private StockDto expectedDto;
+  @Mock
+  private List<StockDto> expectedDtos;
   private StockResource stockResource;
 
   @Before
@@ -38,15 +39,23 @@ public class StockResourceTest {
 
     StockDto resultingDto = stockResource.getStockByTitle(SOME_TITLE);
 
-    assertThat(resultingDto).isEqualTo(expectedDto);
+    assertThat(resultingDto).isSameAs(expectedDto);
   }
 
   @Test
-  public void whenGetStock_thenReturningSingletonListOfDto() {
-    given(stockService.getStockByName(SOME_NAME)).willReturn(expectedDto);
+  public void whenGetStocks_thenQueryStocks() {
+    stockResource.getStocks(SOME_NAME, SOME_CATEGORY, DEFAULT_PAGE, DEFAULT_PER_PAGE);
 
-    List<StockDto> resultingDto = stockResource.getStocks(SOME_NAME, null, DEFAULT_PAGE, DEFAULT_PER_PAGE);
+    verify(stockService).queryStocks(SOME_NAME, SOME_CATEGORY);
+  }
 
-    assertThat(resultingDto).isEqualTo(Collections.singletonList(expectedDto));
+  @Test
+  public void whenGetStocks_thenReturnStocks() {
+    given(stockService.queryStocks(any(), any())).willReturn(expectedDtos);
+
+    List<StockDto> resultingDtos = stockResource.getStocks(SOME_NAME, SOME_CATEGORY, DEFAULT_PAGE,
+        DEFAULT_PER_PAGE);
+
+    assertThat(resultingDtos).isSameAs(expectedDtos);
   }
 }
