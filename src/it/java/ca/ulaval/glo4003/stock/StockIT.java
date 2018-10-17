@@ -92,7 +92,7 @@ public class StockIT {
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", hasSize(1))
-        .root("$[0]")
+        .root("[0]")
         .body(TITLE, equalTo(SOME_TITLE))
         .body(NAME, equalTo(SOME_NAME))
         .body(MARKET, equalTo(SOME_MARKET))

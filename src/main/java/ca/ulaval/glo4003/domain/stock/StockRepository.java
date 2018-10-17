@@ -8,8 +8,6 @@ public interface StockRepository {
 
   Stock getByTitle(String title) throws StockNotFoundException;
 
-  Stock getByName(String name) throws StockNotFoundException;
-
   List<Stock> getByMarket(MarketId marketId);
 
   void add(Stock stock);
@@ -17,4 +15,6 @@ public interface StockRepository {
   boolean doesStockExist(String title);
 
   List<String> getCategories();
+
+  List<Stock> queryStocks(String name, String category);
 }

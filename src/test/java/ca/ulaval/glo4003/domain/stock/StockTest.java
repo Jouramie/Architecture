@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import ca.ulaval.glo4003.util.StockBuilder;
+import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class StockTest {
 
   @Before
   public void setupStock() {
-    stock = new StockBuilder()
+    stock = new TestStockBuilder()
         .withTitle(SOME_TITLE)
         .withName(SOME_NAME)
         .withCategory(SOME_CATEGORY)

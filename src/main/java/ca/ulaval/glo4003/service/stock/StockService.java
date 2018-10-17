@@ -38,15 +38,6 @@ public class StockService {
     return stockAssembler.toDto(stock);
   }
 
-  public StockDto getStockByName(String name) {
-    try {
-      Stock stock = stockRepository.getByName(name);
-      return stockAssembler.toDto(stock);
-    } catch (StockNotFoundException exception) {
-      throw new StockDoesNotExistException(exception);
-    }
-  }
-
   public StockMaxResponseDto getStockMaxValue(String title, StockMaxValueSinceRange parameter) {
     Stock stock = getStockByTitleOrThrowException(title);
     try {
@@ -66,7 +57,7 @@ public class StockService {
   }
 
   public List<StockDto> queryStocks(String name, String category) {
-    return null;
+    return stockAssembler.toDtoList(stockRepository.queryStocks(name, category));
   }
 
   public List<String> getCategories() {
