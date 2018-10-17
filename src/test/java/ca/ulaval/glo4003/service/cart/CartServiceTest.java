@@ -17,7 +17,6 @@ import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import ca.ulaval.glo4003.ws.api.cart.StockNotInCartExceptionMapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -130,7 +129,7 @@ public class CartServiceTest {
 
   @Test
   public void givenInvalidStockTitle_whenUpdateStockQuantityInCart_thenInvalidStockTitleException()
-      throws StockNotFoundException{
+      throws StockNotFoundException {
     String invalidTitle = "invalid title";
     given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
@@ -174,7 +173,7 @@ public class CartServiceTest {
 
   @Test
   public void givenInvalidStockTitle_whenRemoveStockFromCart_thenInvalidStockTitleException()
-      throws StockNotFoundException{
+      throws StockNotFoundException {
     String invalidTitle = "invalid title";
     given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
@@ -194,7 +193,7 @@ public class CartServiceTest {
 
   @Test
   public void givenCurrentUserDoesNotExist_whenAddingStockToCart_thenUserDoesNotExistExceptionIsThrown()
-      throws UserNotFoundException{
+      throws UserNotFoundException {
     doThrow(UserNotFoundException.class).when(userRepository).update(any());
 
     assertThatThrownBy(() -> cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY))

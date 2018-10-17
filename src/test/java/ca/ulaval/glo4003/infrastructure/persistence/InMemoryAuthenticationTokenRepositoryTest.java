@@ -25,7 +25,7 @@ public class InMemoryAuthenticationTokenRepositoryTest {
   }
 
   @Test
-  public void whenAddingToken_thenTokenIsSaved() throws TokenNotFoundException{
+  public void whenAddingToken_thenTokenIsSaved() throws TokenNotFoundException {
     inMemoryAuthenticationTokenRepository.add(token);
 
     AuthenticationToken retrievedToken =
@@ -40,7 +40,7 @@ public class InMemoryAuthenticationTokenRepositoryTest {
   }
 
   @Test
-  public void whenRemovingToken_thenTokenIsRemoved() throws TokenNotFoundException{
+  public void whenRemovingToken_thenTokenIsRemoved() throws TokenNotFoundException {
     inMemoryAuthenticationTokenRepository.add(token);
 
     inMemoryAuthenticationTokenRepository.remove(token.email);

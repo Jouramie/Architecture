@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.authentication.UserCreationService;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
@@ -19,15 +18,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class UserResourceImplTest {
 
   private static final UserCreationDto SOME_CREATION_REQUEST =
-      new UserCreationDto("email", "password", UserRole.ADMINISTRATOR);
+      new UserCreationDto("email", "password");
   private static final UserCreationDto CREATION_REQUEST_WITH_INVALID_EMAIL =
-      new UserCreationDto("", "password", UserRole.ADMINISTRATOR);
+      new UserCreationDto("", "password");
 
   private static final UserCreationDto CREATION_REQUEST_WITH_INVALID_PASSWORD =
-      new UserCreationDto("email", "", UserRole.ADMINISTRATOR);
+      new UserCreationDto("email", "");
 
   private static final UserCreationDto CREATION_REQUEST_WITHOUT_ROLE =
-      new UserCreationDto("email", "passord", null);
+      new UserCreationDto("email", "passord");
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
 
@@ -48,7 +47,7 @@ public class UserResourceImplTest {
   public void whenCreatingUser_thenUserIsCreated() {
     userResource.createUser(SOME_CREATION_REQUEST);
 
-    verify(userCreationService).createUser(SOME_CREATION_REQUEST);
+    verify(userCreationService).createInvestorUser(SOME_CREATION_REQUEST);
   }
 
   @Test
@@ -69,15 +68,6 @@ public class UserResourceImplTest {
     assertThat(thrown).isInstanceOf(InvalidInputException.class);
     InvalidInputException exception = (InvalidInputException) thrown;
     assertThatExceptionContainsErrorFor(exception, "password");
-  }
-
-  @Test
-  public void givenNullRole_whenCreatingUser_thenInvalidInputExceptionShouldBeThrown() {
-    Throwable thrown = catchThrowable(() -> userResource.createUser(CREATION_REQUEST_WITHOUT_ROLE));
-
-    assertThat(thrown).isInstanceOf(InvalidInputException.class);
-    InvalidInputException exception = (InvalidInputException) thrown;
-    assertThatExceptionContainsErrorFor(exception, "role");
   }
 
   private void assertThatExceptionContainsErrorFor(InvalidInputException exception, String field) {
