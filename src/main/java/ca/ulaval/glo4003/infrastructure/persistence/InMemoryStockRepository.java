@@ -4,7 +4,6 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +14,12 @@ public class InMemoryStockRepository implements StockRepository {
   private final Map<String, Stock> stocks = new HashMap<>();
 
   @Override
-  public List<Stock> getAll() {
+  public List<Stock> findAll() {
     return new ArrayList<>(stocks.values());
   }
 
   @Override
-  public Stock getByTitle(String title) throws StockNotFoundException {
+  public Stock findByTitle(String title) throws StockNotFoundException {
     Stock result = stocks.get(title);
     if (result == null) {
       throw new StockNotFoundException(title);
@@ -29,14 +28,14 @@ public class InMemoryStockRepository implements StockRepository {
   }
 
   @Override
-  public Stock getByName(String name) throws StockNotFoundException {
+  public Stock findByName(String name) throws StockNotFoundException {
     return stocks.values().stream().filter((stock) -> stock.getName().equals(name))
         .findFirst()
         .orElseThrow(() -> new StockNotFoundException("Cannot find stock with name " + name));
   }
 
   @Override
-  public List<Stock> getByMarket(MarketId marketId) {
+  public List<Stock> findByMarket(MarketId marketId) {
     return stocks.values().stream().filter((stock) -> stock.getMarketId().equals(marketId))
         .collect(Collectors.toList());
   }

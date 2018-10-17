@@ -22,7 +22,7 @@ public interface AuthenticationResource {
       description = "Request a personal identification token.",
       responses = {
           @ApiResponse(
-              responseCode = "200",
+              responseCode = "202",
               content = @Content(schema = @Schema(implementation = AuthenticationResponseDto.class))
           ),
           @ApiResponse(

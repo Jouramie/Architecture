@@ -20,7 +20,7 @@ public class StockService {
 
   public StockDto getStockByTitle(String title) {
     try {
-      Stock stock = stockRepository.getByTitle(title);
+      Stock stock = stockRepository.findByTitle(title);
       return stockAssembler.toDto(stock);
     } catch (StockNotFoundException exception) {
       throw new StockDoesNotExistException(exception);
@@ -29,7 +29,7 @@ public class StockService {
 
   public StockDto getStockByName(String name) {
     try {
-      Stock stock = stockRepository.getByName(name);
+      Stock stock = stockRepository.findByName(name);
       return stockAssembler.toDto(stock);
     } catch (StockNotFoundException exception) {
       throw new StockDoesNotExistException(exception);

@@ -7,15 +7,15 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-@Path("/revoke-token")
+@Path("/logout")
 public interface TokenRevocationResource {
 
   @POST
   @Operation(
-      summary = "Revoke the current user's authentication token.",
+      summary = "Logout the current user.",
       responses = {
           @ApiResponse(
-              responseCode = "200", description = "The token was successfully revoked."
+              responseCode = "200", description = "The user was successfully revoked."
           ),
           @ApiResponse(
               responseCode = "401", description = "The provided token is invalid."

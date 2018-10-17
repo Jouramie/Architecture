@@ -40,12 +40,12 @@ public class StockServiceTest {
   public void whenGetStockByTitle_thenStockIsGotFromRepository() throws StockNotFoundException {
     stockService.getStockByTitle(SOME_TITLE);
 
-    verify(stockRepository).getByTitle(SOME_TITLE);
+    verify(stockRepository).findByTitle(SOME_TITLE);
   }
 
   @Test
   public void whenGetStockByTitle_thenWeHaveCorrespondingDto() throws StockNotFoundException {
-    given(stockRepository.getByTitle(SOME_TITLE)).willReturn(givenStock);
+    given(stockRepository.findByTitle(SOME_TITLE)).willReturn(givenStock);
     given(stockAssembler.toDto(givenStock)).willReturn(expectedDto);
 
     StockDto resultingDto = stockService.getStockByTitle(SOME_TITLE);
@@ -57,12 +57,12 @@ public class StockServiceTest {
   public void whenGetStockByName_thenStockIsGotFromRepository() throws StockNotFoundException {
     stockService.getStockByName(SOME_NAME);
 
-    verify(stockRepository).getByName(SOME_NAME);
+    verify(stockRepository).findByName(SOME_NAME);
   }
 
   @Test
   public void whenGetStockByName_thenWeHaveCorrespondingDto() throws StockNotFoundException {
-    given(stockRepository.getByName(SOME_NAME)).willReturn(givenStock);
+    given(stockRepository.findByName(SOME_NAME)).willReturn(givenStock);
     given(stockAssembler.toDto(givenStock)).willReturn(expectedDto);
 
     StockDto resultingDto = stockService.getStockByName(SOME_NAME);
@@ -73,7 +73,7 @@ public class StockServiceTest {
   @Test
   public void givenStockDoesNotExist_whenGettingStockByName_thenStockDoesNotExistExceptionIsThrown()
       throws StockNotFoundException{
-    doThrow(StockNotFoundException.class).when(stockRepository).getByName(any());
+    doThrow(StockNotFoundException.class).when(stockRepository).findByName(any());
 
     assertThatThrownBy(() -> stockService.getStockByName(SOME_NAME))
         .isInstanceOf(StockDoesNotExistException.class);
@@ -82,7 +82,7 @@ public class StockServiceTest {
   @Test
   public void givenStockDoesNotExist_whenGettingStockByTitle_thenStockDoesNotExistExceptionIsThrown()
       throws StockNotFoundException{
-    doThrow(StockNotFoundException.class).when(stockRepository).getByTitle(any());
+    doThrow(StockNotFoundException.class).when(stockRepository).findByTitle(any());
 
     assertThatThrownBy(() -> stockService.getStockByTitle(SOME_NAME))
         .isInstanceOf(StockDoesNotExistException.class);

@@ -29,38 +29,38 @@ public class InMemoryStockRepositoryTest {
 
   @Test
   public void whenGetByTitleAnExistingStock_thenStockIsReturned() throws StockNotFoundException {
-    Stock result = repository.getByTitle(SOME_STOCK.getTitle());
+    Stock result = repository.findByTitle(SOME_STOCK.getTitle());
 
     assertThat(result).isEqualTo(SOME_STOCK);
   }
 
   @Test
   public void whenGetByTitleANonExistingStock_thenStockNotFoundExceptionIsThrown() {
-    assertThatExceptionOfType(StockNotFoundException.class).isThrownBy(() -> repository.getByTitle("ASDF"));
+    assertThatExceptionOfType(StockNotFoundException.class).isThrownBy(() -> repository.findByTitle("ASDF"));
   }
 
   @Test
   public void whenGetByNameAnExistingStock_thenStockIsReturned() throws StockNotFoundException {
-    Stock result = repository.getByName(SOME_STOCK.getName());
+    Stock result = repository.findByName(SOME_STOCK.getName());
 
     assertThat(result).isEqualTo(SOME_STOCK);
   }
 
   @Test
   public void whenGetByNameANonExistingStock_thenStockNotFoundExceptionIsThrown() {
-    assertThatExceptionOfType(StockNotFoundException.class).isThrownBy(() -> repository.getByName("ASDF"));
+    assertThatExceptionOfType(StockNotFoundException.class).isThrownBy(() -> repository.findByName("ASDF"));
   }
 
   @Test
   public void whenGetAll_thenReturnAllStocks() {
-    List<Stock> result = repository.getAll();
+    List<Stock> result = repository.findAll();
 
     assertThat(result).containsExactlyInAnyOrder(SOME_STOCK, SOME_OTHER_STOCK, SOME_STOCK_IN_DIFFERENT_MARKET);
   }
 
   @Test
   public void whenGetAllByMarket_thenReturnAllStocksOfMarket() {
-    List<Stock> result = repository.getByMarket(SOME_MARKET_ID);
+    List<Stock> result = repository.findByMarket(SOME_MARKET_ID);
 
     assertThat(result).containsExactlyInAnyOrder(SOME_STOCK, SOME_OTHER_STOCK);
   }

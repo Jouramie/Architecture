@@ -1,7 +1,5 @@
 package ca.ulaval.glo4003.domain.transaction;
 
-import static java.util.stream.Collectors.toList;
-
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.cart.CartItem;
 import ca.ulaval.glo4003.domain.clock.Clock;
@@ -33,14 +31,14 @@ public class TransactionFactory {
   private List<TransactionItem> buildTransactionItems(Collection<CartItem> cartItems)
       throws StockNotFoundException {
     List<TransactionItem> transactionItems = new ArrayList<>();
-    for (CartItem cartItem: cartItems) {
+    for (CartItem cartItem : cartItems) {
       transactionItems.add(buildTransactionItem(cartItem));
     }
     return transactionItems;
   }
 
   private TransactionItem buildTransactionItem(CartItem item) throws StockNotFoundException {
-    MoneyAmount amount = stockRepository.getByTitle(item.title).getValue().getCurrentValue();
+    MoneyAmount amount = stockRepository.findByTitle(item.title).getValue().getCurrentValue();
     return new TransactionItem(item.title, item.quantity, amount);
   }
 }

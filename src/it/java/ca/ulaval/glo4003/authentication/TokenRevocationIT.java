@@ -16,7 +16,7 @@ import org.junit.Test;
 
 public class TokenRevocationIT {
 
-  private static final String REVOCATION_ROUTE = "/api/revoke-token";
+  private static final String REVOCATION_ROUTE = "/api/logout";
 
   private static final String USERS_ROUTE = "/api/users";
 

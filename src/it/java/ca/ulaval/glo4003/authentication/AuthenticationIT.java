@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.authentication;
 
 import static io.restassured.RestAssured.given;
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.Matchers.any;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
@@ -53,7 +53,7 @@ public class AuthenticationIT {
     .when()
         .post(AUTHENTICATION_ROUTE)
     .then()
-        .statusCode(OK.getStatusCode())
+        .statusCode(ACCEPTED.getStatusCode())
         .body("token", any(String.class));
     //@formatter:on
   }

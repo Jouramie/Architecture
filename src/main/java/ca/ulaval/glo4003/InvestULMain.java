@@ -195,7 +195,7 @@ public class InvestULMain {
 
   private static LocalDate getStartDate() {
     StockRepository stockRepository = ServiceLocator.INSTANCE.get(StockRepository.class);
-    Stock stock = stockRepository.getAll().get(0);
+    Stock stock = stockRepository.findAll().get(0);
     HistoricalStockValue latestStockValue = stock.getValueHistory().getLatestValue();
 
     return latestStockValue.date.plusDays(1);

@@ -1,752 +1,612 @@
 {
-	"info": {
-		"_postman_id": "427f63cd-72ad-4689-905f-6a9469da75bf",
-		"name": "Invest-UL",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
+	"owner": "1747221",
+	"lastUpdatedBy": "1747221",
+	"lastRevision": 5234929883,
+	"team": null,
+	"id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+	"name": "Invest-UL",
+	"description": "",
+	"variables": null,
+	"auth": null,
+	"events": null,
+	"folders_order": [
+		"64b20178-8f6d-5c70-b47a-83b727cab4de",
+		"73d4a9d1-493f-9ba6-6d85-f3d44e633f3a",
+		"9177f713-d8be-473b-5cfc-2acb00b636de",
+		"f02fccab-d040-a5a9-407f-6301a0cbc388"
+	],
+	"order": [
+		"3b4e6197-293d-7b09-bb39-7bc1f68fd6b4"
+	],
+	"requests": [
 		{
-			"name": "Stocks",
-			"item": [
+			"id": "09bba413-b57f-1b1d-1346-8b60d7753aba",
+			"name": "GetMaxValueAllTime",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=ALL_TIME",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
 				{
-					"name": "Trend",
-					"item": [
-						{
-							"name": "GetStockValueVariationTrend",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "localhost:8080/api/stocks/RBS.l/trend",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"stocks",
-										"RBS.l",
-										"trend"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "max",
-					"item": [
-						{
-							"name": "GetMaxValueLast5Days",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_DAYS",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"stocks",
-										"RBS.l",
-										"max"
-									],
-									"query": [
-										{
-											"key": "since",
-											"value": "LAST_FIVE_DAYS"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueCurrentMonth",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "localhost:8080/api/stocks/RBS.l/max?since=CURRENT_MONTH",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"stocks",
-										"RBS.l",
-										"max"
-									],
-									"query": [
-										{
-											"key": "since",
-											"value": "CURRENT_MONTH"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLastMonth",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_MONTH",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"stocks",
-										"RBS.l",
-										"max"
-									],
-									"query": [
-										{
-											"key": "since",
-											"value": "LAST_MONTH"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLastYear",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_YEAR",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"stocks",
-										"RBS.l",
-										"max"
-									],
-									"query": [
-										{
-											"key": "since",
-											"value": "LAST_YEAR"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLast5Years",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_YEARS",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"stocks",
-										"RBS.l",
-										"max"
-									],
-									"query": [
-										{
-											"key": "since",
-											"value": "LAST_FIVE_YEARS"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueLast10Years",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_10_YEARS",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"stocks",
-										"RBS.l",
-										"max"
-									],
-									"query": [
-										{
-											"key": "since",
-											"value": "LAST_10_YEARS"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetMaxValueAllTime",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "localhost:8080/api/stocks/RBS.l/max?since=ALL_TIME",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"stocks",
-										"RBS.l",
-										"max"
-									],
-									"query": [
-										{
-											"key": "since",
-											"value": "ALL_TIME"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "GetStockByTitle",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:8080/api/stocks/RBS.l",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"stocks",
-								"RBS.l"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetStockByStockName",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:8080/api/stocks?name=Royal Bank of Scotland",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"stocks"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "Royal Bank of Scotland"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetStockByCategory",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"url": {
-							"raw": "localhost:8080/api/stocks?category=technology",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"stocks"
-							],
-							"query": [
-								{
-									"key": "category",
-									"value": "technology"
-								}
-							]
-						},
-						"description": "\t\t\t"
-					},
-					"response": []
-				},
-				{
-					"name": "GetStockByCategoryWithPagination",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"url": {
-							"raw": "localhost:8080/api/stocks?category=technology&page=2&per_page=5",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"stocks"
-							],
-							"query": [
-								{
-									"key": "category",
-									"value": "technology"
-								},
-								{
-									"key": "page",
-									"value": "2"
-								},
-								{
-									"key": "per_page",
-									"value": "5"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetStocksWithPagination",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"url": {
-							"raw": "localhost:8080/api/stocks?page=2&per_page=5",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"stocks"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "2"
-								},
-								{
-									"key": "per_page",
-									"value": "5"
-								}
-							]
-						}
-					},
-					"response": []
+					"key": "since",
+					"value": "ALL_TIME"
 				}
-			]
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
 		},
 		{
-			"name": "Authentification",
-			"item": [
+			"id": "0f88d024-497f-3fe4-6af7-c3cdfa1b2577",
+			"name": "AddStockInCart",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "PUT",
+			"headers": "Content-Type: application/json\ntoken: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n\t\"quantity\": 76\n}",
+			"url": "localhost:8080/api/cart/RBS.l",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
 				{
-					"name": "CreateUser",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
-						},
-						"url": {
-							"raw": "localhost:8080/api/users",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"users"
-							]
-						}
-					},
-					"response": []
+					"key": "Content-Type",
+					"value": "application/json",
+					"enabled": true,
+					"description": ""
 				},
 				{
-					"name": "Authenticate",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}"
-						},
-						"url": {
-							"raw": "localhost:8080/api/authenticate",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"authenticate"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Logout",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "token",
-								"value": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:8080/api/revoke-token",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"revoke-token"
-							]
-						}
-					},
-					"response": []
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000",
+					"enabled": true,
+					"description": ""
 				}
-			]
+			],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de",
+			"timestamp": null
 		},
 		{
-			"name": "Cart",
-			"item": [
+			"id": "105f8d2d-d1ca-9240-e4e2-b047827b17ed",
+			"name": "CreateUser",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}",
+			"url": "localhost:8080/api/users",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
 				{
-					"name": "GetCart",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:8080/api/cart",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"cart"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "AddStockInCart",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"quantity\": 76\n}"
-						},
-						"url": {
-							"raw": "localhost:8080/api/cart/RBS.l",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"cart",
-								"RBS.l"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "UpdateStockInCart",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"quantity\": 42\n}"
-						},
-						"url": {
-							"raw": "localhost:8080/api/cart/RBS.l",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"cart",
-								"RBS.l"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DeleteStockInCart",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:8080/api/cart/RBS.l",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"cart",
-								"RBS.l"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "EmptyCart",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:8080/api/cart",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"cart"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "CheckoutCart",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:8080/api/cart/checkout",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"cart",
-								"checkout"
-							]
-						}
-					},
-					"response": []
+					"key": "Content-Type",
+					"value": "application/json",
+					"enabled": true,
+					"description": ""
 				}
-			]
+			],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "73d4a9d1-493f-9ba6-6d85-f3d44e633f3a",
+			"timestamp": null
 		},
 		{
+			"id": "3065f83f-f304-5e1f-bbdc-d5e6833281ee",
+			"name": "GetMaxValueLast10Years",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_10_YEARS",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "LAST_10_YEARS"
+				}
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
+		},
+		{
+			"id": "3b4e6197-293d-7b09-bb39-7bc1f68fd6b4",
 			"name": "Ping",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "localhost:8080/api/ping?echo=test",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"ping"
-					],
-					"query": [
-						{
-							"key": "echo",
-							"value": "test"
-						}
-					]
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/ping?echo=test",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "echo",
+					"value": "test"
 				}
-			},
-			"response": []
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9"
 		},
 		{
-			"name": "Portfolio",
-			"item": [
+			"id": "3c8f4ecb-7869-5a68-2cae-0db4ab1c1c8c",
+			"name": "EmptyCart",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "DELETE",
+			"headers": "token: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/cart",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
 				{
-					"name": "GetPortfolio",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "token",
-								"value": "00000000-0000-0000-0000-000000000000"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "localhost:8080/api/portfolio",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"portfolio"
-							]
-						}
-					},
-					"response": []
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
 				}
-			]
+			],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de"
+		},
+		{
+			"id": "436e1c40-8f0e-6a4b-0a50-147c1857f580",
+			"name": "CheckoutCart",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "POST",
+			"headers": "token: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/cart/checkout",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de"
+		},
+		{
+			"id": "445e111d-8aba-4407-dd50-8758072fa581",
+			"name": "GetStockByTitle",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks/RBS.l",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "64b20178-8f6d-5c70-b47a-83b727cab4de"
+		},
+		{
+			"id": "46c7a7f3-1860-b105-7ffa-773e190e000d",
+			"name": "GetStockByCategoryWithPagination",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks?category=technology&page=2&per_page=5",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "category",
+					"value": "technology"
+				},
+				{
+					"key": "page",
+					"value": "2"
+				},
+				{
+					"key": "per_page",
+					"value": "5"
+				}
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "64b20178-8f6d-5c70-b47a-83b727cab4de"
+		},
+		{
+			"id": "4917443c-cf84-32b0-cae6-26045173bcb7",
+			"name": "DeleteStockInCart",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "DELETE",
+			"headers": "Content-Type: application/json\ntoken: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/cart/RBS.l",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de"
+		},
+		{
+			"id": "56fdc7b5-daf0-fe38-0f20-496c7e1e4346",
+			"name": "GetStockValueVariationTrend",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks/RBS.l/trend",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "9303e88b-72a7-bc6e-6a25-06885a60503b"
+		},
+		{
+			"id": "7011e8fe-30f4-3c7e-0708-46588bed5dbb",
+			"name": "GetStocksWithPagination",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks?page=2&per_page=5",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "page",
+					"value": "2"
+				},
+				{
+					"key": "per_page",
+					"value": "5"
+				}
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "64b20178-8f6d-5c70-b47a-83b727cab4de"
+		},
+		{
+			"id": "8110940f-43c6-c557-3dc4-4381550c75a1",
+			"name": "Authenticate",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}",
+			"url": "localhost:8080/api/authenticate",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"enabled": true,
+					"description": ""
+				}
+			],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "73d4a9d1-493f-9ba6-6d85-f3d44e633f3a",
+			"timestamp": null
+		},
+		{
+			"id": "82e927bd-64e0-11f8-b491-5636182df9db",
+			"name": "GetCart",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "token: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/cart",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de"
+		},
+		{
+			"id": "86e11d06-3d35-520a-b7db-d6b6019b1689",
+			"name": "GetMaxValueCurrentMonth",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=CURRENT_MONTH",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "CURRENT_MONTH"
+				}
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
+		},
+		{
+			"id": "8dcd65f8-97cd-902e-0a4b-a13482694736",
+			"name": "GetStockByStockName",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks?name=Royal Bank of Scotland",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "name",
+					"value": "Royal Bank of Scotland"
+				}
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "64b20178-8f6d-5c70-b47a-83b727cab4de"
+		},
+		{
+			"id": "926bbbe2-c815-51df-8c0e-85903160527f",
+			"name": "GetMaxValueLast5Days",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_DAYS",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "LAST_FIVE_DAYS"
+				}
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
+		},
+		{
+			"id": "a8413bca-d6c9-c183-762a-10fab294588c",
+			"name": "GetMaxValueLastYear",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_YEAR",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "LAST_YEAR"
+				}
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
+		},
+		{
+			"id": "ad6ba3d3-0d46-cd8b-2fc2-ec2f87646bc8",
+			"name": "UpdateStockInCart",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "PATCH",
+			"headers": "Content-Type: application/json\ntoken: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n\t\"quantity\": 42\n}",
+			"url": "localhost:8080/api/cart/RBS.l",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"enabled": true,
+					"description": ""
+				},
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000",
+					"enabled": true,
+					"description": ""
+				}
+			],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de",
+			"timestamp": null
+		},
+		{
+			"id": "babb07d8-6ded-0c33-d1b7-93d2907f253d",
+			"name": "GetMaxValueLastMonth",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_MONTH",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "LAST_MONTH"
+				}
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
+		},
+		{
+			"id": "c33c6b9b-82ea-c3c8-f237-75fff91dad75",
+			"name": "GetPortfolio",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "token: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/portfolio",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "f02fccab-d040-a5a9-407f-6301a0cbc388"
+		},
+		{
+			"id": "cb29f6a6-6d85-b453-4cba-de420c0ea8f7",
+			"name": "GetMaxValueLast5Years",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_YEARS",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "LAST_FIVE_YEARS"
+				}
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
+		},
+		{
+			"id": "dd3b7e7a-effe-c8b1-9310-4843fc7fd25d",
+			"name": "GetStockByCategory",
+			"description": "\t\t\t",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"method": "GET",
+			"headers": "",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks?category=technology",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "category",
+					"value": "technology",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"headerData": [],
+			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"folder": "64b20178-8f6d-5c70-b47a-83b727cab4de",
+			"timestamp": null
+		},
+		{
+			"id": "e9dd396d-107b-81a4-4a88-d7e2e2a4f2bb",
+			"headers": "token: \n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:8080/api/logout",
+			"folder": "73d4a9d1-493f-9ba6-6d85-f3d44e633f3a",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1539744541054,
+			"name": "Logout",
+			"description": "",
+			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"responses": [],
+			"rawModeData": ""
 		}
 	]
 }

@@ -1,15 +1,15 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
 
-import static javax.ws.rs.core.Response.Status.OK;
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
-import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import java.util.regex.Pattern;
 import javax.ws.rs.core.Response;
 import org.junit.Before;
@@ -57,10 +57,10 @@ public class AuthenticationResourceImplTest {
   }
 
   @Test
-  public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenResponseStatusIsOK() {
+  public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenResponseStatusIsAccepted() {
     Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
-    assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
+    assertThat(response.getStatus()).isEqualTo(ACCEPTED.getStatusCode());
   }
 
   @Test

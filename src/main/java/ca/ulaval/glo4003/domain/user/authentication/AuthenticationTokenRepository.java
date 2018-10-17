@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public interface AuthenticationTokenRepository {
 
-  AuthenticationToken getByUUID(UUID uuid) throws TokenNotFoundException;
+  AuthenticationToken findByUUID(UUID uuid) throws TokenNotFoundException;
 
   void add(AuthenticationToken token);
 

@@ -17,7 +17,6 @@ import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import ca.ulaval.glo4003.ws.api.cart.StockNotInCartExceptionMapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -101,7 +100,7 @@ public class CartServiceTest {
   public void givenInvalidStockTitle_whenAddStockToCart_thenInvalidStockTitleException()
       throws StockNotFoundException {
     String invalidTitle = "invalid title";
-    given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
+    given(stockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
     ThrowableAssert.ThrowingCallable addStockToCart
         = () -> cartService.addStockToCart(invalidTitle, SOME_QUANTITY);
@@ -130,9 +129,9 @@ public class CartServiceTest {
 
   @Test
   public void givenInvalidStockTitle_whenUpdateStockQuantityInCart_thenInvalidStockTitleException()
-      throws StockNotFoundException{
+      throws StockNotFoundException {
     String invalidTitle = "invalid title";
-    given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
+    given(stockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.updateStockInCart(invalidTitle, SOME_QUANTITY);
@@ -174,9 +173,9 @@ public class CartServiceTest {
 
   @Test
   public void givenInvalidStockTitle_whenRemoveStockFromCart_thenInvalidStockTitleException()
-      throws StockNotFoundException{
+      throws StockNotFoundException {
     String invalidTitle = "invalid title";
-    given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
+    given(stockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.removeStockFromCart(invalidTitle);
@@ -194,7 +193,7 @@ public class CartServiceTest {
 
   @Test
   public void givenCurrentUserDoesNotExist_whenAddingStockToCart_thenUserDoesNotExistExceptionIsThrown()
-      throws UserNotFoundException{
+      throws UserNotFoundException {
     doThrow(UserNotFoundException.class).when(userRepository).update(any());
 
     assertThatThrownBy(() -> cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY))

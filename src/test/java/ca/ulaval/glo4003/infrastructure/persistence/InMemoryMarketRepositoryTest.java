@@ -27,20 +27,20 @@ public class InMemoryMarketRepositoryTest {
 
   @Test
   public void whenGetAll_thenReturnAllMarkets() {
-    List<Market> result = repository.getAll();
+    List<Market> result = repository.findAll();
 
     assertThat(result).containsExactlyInAnyOrder(SOME_MARKET, SOME_OTHER_MARKET);
   }
 
   @Test
   public void whenGetByIdAnExistingStock_thenMarketIsReturned() throws MarketNotFoundException {
-    Market result = repository.getById(SOME_MARKET_ID);
+    Market result = repository.findById(SOME_MARKET_ID);
 
     assertThat(result).isEqualTo(SOME_MARKET);
   }
 
   @Test
   public void whenGetByTitleANonExistingStock_thenStockNotFoundExceptionIsThrown() {
-    assertThatExceptionOfType(MarketNotFoundException.class).isThrownBy(() -> repository.getById(new MarketId("ASDF")));
+    assertThatExceptionOfType(MarketNotFoundException.class).isThrownBy(() -> repository.findById(new MarketId("ASDF")));
   }
 }

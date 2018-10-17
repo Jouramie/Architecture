@@ -8,7 +8,6 @@ import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
-import java.io.IOException;
 import java.time.LocalTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +35,8 @@ public class MarketCsvLoaderTest {
   public void whenLoad_thenLoadTheValuesFromTheCsvFile() throws Exception {
     loader.load();
 
-    assertThat(marketRepository.getAll()).hasSize(7);
-    Market randomMarket = marketRepository.getById(new MarketId("New York"));
+    assertThat(marketRepository.findAll()).hasSize(7);
+    Market randomMarket = marketRepository.findById(new MarketId("New York"));
     assertThat(randomMarket.getId()).isEqualTo(new MarketId("New York"));
     assertThat(randomMarket.getOpeningTime()).isEqualTo(LocalTime.of(14, 30, 0));
     assertThat(randomMarket.getClosingTime()).isEqualTo(LocalTime.of(21, 0, 0));
