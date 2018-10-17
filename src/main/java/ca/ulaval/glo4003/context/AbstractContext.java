@@ -161,7 +161,7 @@ public abstract class AbstractContext {
     return webapp;
   }
 
-  public void createSwaggerApi(String apiUrl) {
+  private void createSwaggerApi(String apiUrl) {
     OpenAPI oas = new OpenAPI();
     Info info = new Info()
         .title("Invest-UL")
