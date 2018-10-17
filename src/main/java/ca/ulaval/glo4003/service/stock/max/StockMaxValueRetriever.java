@@ -4,11 +4,10 @@ import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.service.InternalErrorException;
 import java.time.LocalDate;
 import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.ws.rs.ServerErrorException;
-import javax.ws.rs.core.Response;
 
 @Resource
 public class StockMaxValueRetriever {
@@ -54,8 +53,7 @@ public class StockMaxValueRetriever {
         to = currentDate;
         break;
       default:
-        // This should never happen, but if it happens, we throw a 500.
-        throw new ServerErrorException(Response.Status.INTERNAL_SERVER_ERROR);
+        throw new InternalErrorException("Unhandled case of StockMaxValueSinceRange.");
     }
 
     return stock.getValueHistory().getMaxValue(from, to);
