@@ -7,7 +7,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.any;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.ws.api.stock.trend.StockTrend;
+import ca.ulaval.glo4003.domain.stock.StockTrend;
 import org.junit.Rule;
 import org.junit.Test;
 
