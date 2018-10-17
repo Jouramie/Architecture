@@ -107,7 +107,7 @@ public class CartTest {
 
   @Test
   public void givenCartWithStocks_whenUpdateStocksAlreadyThere_thenUpdateQuantity()
-      throws Throwable {
+      throws StockNotFoundException {
     givenTwoItemInCart();
 
     cart.update(SOME_TITLE, SOME_OTHER_QUANTITY);
