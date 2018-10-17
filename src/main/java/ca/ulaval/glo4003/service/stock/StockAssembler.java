@@ -27,7 +27,7 @@ public class StockAssembler {
         closeValue);
   }
 
-  public List<StockDto> toDto(List<Stock> stocks) {
+  public List<StockDto> toDtoList(List<Stock> stocks) {
     return stocks.stream().map(this::toDto).collect(Collectors.toList());
   }
 }

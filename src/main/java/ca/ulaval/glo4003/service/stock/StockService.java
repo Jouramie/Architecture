@@ -29,7 +29,7 @@ public class StockService {
   }
 
   public List<StockDto> queryStocks(String name, String category) {
-    return stockAssembler.toDto(stockRepository.queryStocks(name, category));
+    return stockAssembler.toDtoList(stockRepository.queryStocks(name, category));
   }
 
   public List<String> getCategories() {

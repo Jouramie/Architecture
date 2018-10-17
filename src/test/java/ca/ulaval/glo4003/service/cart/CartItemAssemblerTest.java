@@ -11,7 +11,7 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.util.StockBuilder;
+import ca.ulaval.glo4003.util.TestStockBuilder;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +28,7 @@ public class CartItemAssemblerTest {
   private static final String SOME_NAME = "someName";
   private static final String SOME_MARKET_ID = "NASDAQ";
   private static final String SOME_CATEGORY = "someCategory";
-  private final Stock SOME_STOCK = new StockBuilder()
+  private final Stock SOME_STOCK = new TestStockBuilder()
       .withTitle(SOME_TITLE)
       .withName(SOME_NAME)
       .withCategory(SOME_CATEGORY)

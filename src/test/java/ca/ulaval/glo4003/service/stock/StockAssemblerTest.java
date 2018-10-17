@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
-import ca.ulaval.glo4003.util.StockBuilder;
+import ca.ulaval.glo4003.util.TestStockBuilder;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class StockAssemblerTest {
 
   @Test
   public void whenAssemblerToDto_thenStockDtoIsCreated() {
-    Stock someStock = new StockBuilder()
+    Stock someStock = new TestStockBuilder()
         .withTitle(SOME_TITLE)
         .withName(SOME_NAME)
         .withCategory(SOME_CATEGORY)

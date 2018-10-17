@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
-import ca.ulaval.glo4003.util.StockBuilder;
+import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,16 +17,16 @@ public class InMemoryStockRepositoryTest {
   private static final String GREEN_TECHNOLOGY_CATEGORY = "Green Technology";
   private static final MarketId SOME_MARKET_ID = new MarketId("NASDAQ");
 
-  private final Stock SOME_NASDAQ_BANKING_STOCK = new StockBuilder().withTitle("SNBS")
+  private final Stock SOME_NASDAQ_BANKING_STOCK = new TestStockBuilder().withTitle("SNBS")
       .withName("NASDAQ banking stock").withMarketId(SOME_MARKET_ID).withCategory(BANKING_CATEGORY)
       .build();
-  private final Stock SOME_NASDAQ_GREEN_TECH_STOCK = new StockBuilder().withTitle("SNQTS")
+  private final Stock SOME_NASDAQ_GREEN_TECH_STOCK = new TestStockBuilder().withTitle("SNQTS")
       .withName("NASDAQ green tech stock").withMarketId(SOME_MARKET_ID)
       .withCategory(GREEN_TECHNOLOGY_CATEGORY).build();
-  private final Stock SOME_TSX_BANKING_STOCK = new StockBuilder().withTitle("STNS")
+  private final Stock SOME_TSX_BANKING_STOCK = new TestStockBuilder().withTitle("STNS")
       .withName("TSX banking stock").withMarketId(new MarketId("TSX"))
       .withCategory(BANKING_CATEGORY).build();
-  private final Stock SOME_NASDAQ_MEDIA_STOCK = new StockBuilder().withTitle("SNMS")
+  private final Stock SOME_NASDAQ_MEDIA_STOCK = new TestStockBuilder().withTitle("SNMS")
       .withName("NASDAQ media stock").withMarketId(SOME_MARKET_ID).withCategory(MEDIA_CATEGORY)
       .build();
 
@@ -106,7 +106,7 @@ public class InMemoryStockRepositoryTest {
 
   @Test
   public void whenGetAllByMarket_thenReturnAllStocksOfMarket() {
-    List<Stock> result = repository.getByMarket(StockBuilder.DEFAULT_MARKET_ID);
+    List<Stock> result = repository.getByMarket(TestStockBuilder.DEFAULT_MARKET_ID);
 
     assertThat(result).containsExactlyInAnyOrder(SOME_NASDAQ_BANKING_STOCK,
         SOME_NASDAQ_GREEN_TECH_STOCK, SOME_NASDAQ_MEDIA_STOCK);
