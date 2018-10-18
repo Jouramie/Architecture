@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class Portfolio {
+  private static final Currency DEFAULT_CURRENCY = new Currency("USD", new BigDecimal(1));
   private final StockRepository stockRepository;
   private StockCollection stocks;
 
@@ -65,7 +66,7 @@ public class Portfolio {
   }
 
   private Currency getFirstStockCurrencyOrDefault(List<Stock> stockList) {
-    Currency currency = new Currency("USD", new BigDecimal(1));
+    Currency currency = DEFAULT_CURRENCY;
 
     if (!stockList.isEmpty()) {
       currency = stockList.get(0).getValue().getCurrentValue().getCurrency();
