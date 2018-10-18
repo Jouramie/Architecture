@@ -1,7 +1,5 @@
 package ca.ulaval.glo4003.domain.portfolio;
 
-import static java.util.stream.Collectors.toList;
-
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
@@ -9,6 +7,7 @@ import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Portfolio {
@@ -30,9 +29,8 @@ public class Portfolio {
     return stocks.getQuantity(title);
   }
 
-  public MoneyAmount getCurrentTotalValue() {
-    List<Stock> stockList = stocks.getStocks().stream().map(this::tryGetStockByTitle)
-        .collect(toList());
+  public MoneyAmount getCurrentTotalValue() throws InvalidStockInPortfolioException {
+    List<Stock> stockList = getStockList();
 
     Currency currency = getFirstStockCurrencyOrDefault(stockList);
     MoneyAmount currentTotalValue = MoneyAmount.zero(currency);
@@ -53,25 +51,23 @@ public class Portfolio {
     return currentValue.multiply(quantity);
   }
 
-  private Stock tryGetStockByTitle(String title) {
-    Stock stock;
-
-    try {
-      stock = stockRepository.getByTitle(title);
-    } catch (StockNotFoundException e) {
-      throw new RuntimeException();
+  private List<Stock> getStockList() throws InvalidStockInPortfolioException {
+    List<Stock> stockList = new ArrayList<>();
+    for (String title : stocks.getStocks()) {
+      try {
+        stockList.add(stockRepository.getByTitle(title));
+      } catch (StockNotFoundException e) {
+        throw new InvalidStockInPortfolioException("Portfolio contains invalid stock with title " + title);
+      }
     }
-
-    return stock;
+    return stockList;
   }
 
   private Currency getFirstStockCurrencyOrDefault(List<Stock> stockList) {
-    Currency currency = DEFAULT_CURRENCY;
-
-    if (!stockList.isEmpty()) {
-      currency = stockList.get(0).getValue().getCurrentValue().getCurrency();
+    if (stockList.isEmpty()) {
+      return DEFAULT_CURRENCY;
     }
 
-    return currency;
+    return stockList.get(0).getCurrency();
   }
 }

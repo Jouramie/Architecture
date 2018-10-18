@@ -43,6 +43,7 @@ public class PortfolioTest {
     portfolio = new Portfolio(someStockRepository);
 
     willReturn(SOME_STOCK_VALUE).given(someStock).getValue();
+    willReturn(SOME_CURRENCY).given(someStock).getCurrency();
     willReturn(SOME_TITLE).given(someStock).getTitle();
 
     willReturn(someStock).given(someStockRepository).getByTitle(SOME_TITLE);
@@ -68,7 +69,7 @@ public class PortfolioTest {
   }
 
   @Test
-  public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues() throws StockNotFoundException {
+  public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues() throws StockNotFoundException, InvalidStockInPortfolioException {
     portfolio.add(SOME_TITLE, SOME_QUANTITY);
 
     BigDecimal currentTotal = SOME_VALUE.getAmount().multiply(new BigDecimal(SOME_QUANTITY));
@@ -76,8 +77,19 @@ public class PortfolioTest {
   }
 
   @Test
-  public void givenPortfolioIsEmpty_whenGetCurrentTotalValue_thenReturnZero() {
+  public void givenPortfolioIsEmpty_whenGetCurrentTotalValue_thenReturnZero() throws InvalidStockInPortfolioException {
     BigDecimal currentTotal = new BigDecimal(0).setScale(2, RoundingMode.HALF_EVEN);
     assertThat(portfolio.getCurrentTotalValue().getAmount()).isEqualTo(currentTotal);
+  }
+
+  @Test
+  public void givenPortfolioContainsInvalidStock_whenGetCurrentTotalValue_thenAnExceptionIsThrown()
+      throws StockNotFoundException {
+    String invalidTitle = "invalid";
+    willReturn(someStock).given(someStockRepository).getByTitle(invalidTitle);
+    portfolio.add(invalidTitle, SOME_QUANTITY);
+    willThrow(StockNotFoundException.class).given(someStockRepository).getByTitle(invalidTitle);
+
+    assertThatExceptionOfType(InvalidStockInPortfolioException.class).isThrownBy(() -> portfolio.getCurrentTotalValue());
   }
 }
