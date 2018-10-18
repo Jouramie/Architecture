@@ -99,10 +99,10 @@ public class CartTest {
   }
 
   @Test
-  public void whenUpdate_thenStockNotFoundExceptionIsThrown() {
+  public void whenUpdate_thenIllegalArgumentExceptionIsThrown() {
     ThrowingCallable update = () -> cart.update(SOME_TITLE, SOME_QUANTITY);
 
-    assertThatThrownBy(update).isInstanceOf(StockNotFoundException.class);
+    assertThatThrownBy(update).isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test

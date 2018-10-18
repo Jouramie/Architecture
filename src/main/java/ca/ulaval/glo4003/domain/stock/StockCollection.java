@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class StockCollection {
   private final Map<String, Integer> stocks;
@@ -12,45 +13,87 @@ public class StockCollection {
     stocks = new HashMap<>();
   }
 
+  private StockCollection(Map<String, Integer> stocks) {
+    this.stocks = stocks;
+  }
+
   public boolean contains(String title) {
     return stocks.containsKey(title);
   }
 
-  public void add(String title, int addedQuantity) {
-    stocks.put(title, getQuantity(title) + addedQuantity);
+  public StockCollection add(String title, int addedQuantity) {
+    if (addedQuantity < 0) {
+      throw new IllegalArgumentException();
+    }
+
+    Map<String, Integer> newMap = new HashMap<>(stocks);
+
+    if (addedQuantity != 0) {
+      newMap.put(title, getQuantity(title) + addedQuantity);
+    }
+
+    return new StockCollection(newMap);
   }
 
   public int getQuantity(String title) {
-    int quantity = 0;
-
-    if (stocks.containsKey(title)) {
-      quantity = stocks.get(title);
-    }
-
-    return quantity;
+    return Optional.ofNullable(stocks.get(title)).orElse(0);
   }
 
-  public void update(String title, int quantity) {
-    stocks.put(title, quantity);
+  public StockCollection update(String title, int quantity) {
+    if (!stocks.containsKey(title) || quantity < 0) {
+      throw new IllegalArgumentException();
+    }
+
+    Map<String, Integer> newMap = new HashMap<>(stocks);
+
+    if (quantity == 0) {
+      newMap.remove(title);
+    } else {
+      newMap.put(title, quantity);
+    }
+
+    return new StockCollection(newMap);
   }
 
   public List<String> getStocks() {
     return new ArrayList<>(stocks.keySet());
   }
 
-  public void remove(String title, int quantity) {
-    stocks.put(title, getQuantity(title) - quantity);
+  public StockCollection remove(String title, int quantity) {
+    if (!stocks.containsKey(title) || quantity < 0) {
+      throw new IllegalArgumentException();
+    }
+
+    Map<String, Integer> newMap = new HashMap<>(stocks);
+
+    if (getQuantity(title) - quantity < 0) {
+      throw new RuntimeException("Removed quantity is higher than remaining quantity");
+    } else if (getQuantity(title) - quantity == 0) {
+      newMap.remove(title);
+    } else {
+      newMap.put(title, getQuantity(title) - quantity);
+    }
+
+    return new StockCollection(newMap);
   }
 
-  public void removeAll(String title) {
-    stocks.remove(title);
+  public StockCollection removeAll(String title) {
+    Map<String, Integer> newMap = new HashMap<>(stocks);
+
+    newMap.remove(title);
+
+    return new StockCollection(newMap);
   }
 
   public boolean isEmpty() {
     return stocks.isEmpty();
   }
 
-  public void empty() {
-    stocks.clear();
+  public StockCollection empty() {
+    Map<String, Integer> newMap = new HashMap<>(stocks);
+
+    newMap.clear();
+
+    return new StockCollection(newMap);
   }
 }

@@ -1,36 +1,30 @@
 package ca.ulaval.glo4003.domain.cart;
 
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
-  private final StockCollection items;
+  private StockCollection items;
 
   public Cart() {
     items = new StockCollection();
   }
 
   public void add(String title, int addedQuantity) {
-    if (addedQuantity > 0) {
-      items.add(title, addedQuantity);
-    }
+    items = items.add(title, addedQuantity);
   }
 
-  public void update(String title, int newQuantity) throws StockNotFoundException {
-    checkIfStockInCart(title);
-    if (newQuantity > 0) {
-      items.update(title, newQuantity);
-    }
+  public void update(String title, int newQuantity) {
+    items = items.update(title, newQuantity);
   }
 
   public void removeAll(String title) {
-    items.removeAll(title);
+    items = items.removeAll(title);
   }
 
   public void empty() {
-    items.empty();
+    items = items.empty();
   }
 
   public boolean isEmpty() {
@@ -39,12 +33,6 @@ public class Cart {
 
   public int getQuantity(String title) {
     return items.getQuantity(title);
-  }
-
-  private void checkIfStockInCart(String title) throws StockNotFoundException {
-    if (!items.contains(title)) {
-      throw new StockNotFoundException(title);
-    }
   }
 
   public List<CartItem> getItems() {

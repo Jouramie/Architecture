@@ -69,7 +69,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenGetCartContent_thenWeHaveCorrespondingDtos() throws StockNotFoundException {
+  public void whenGetCartContent_thenWeHaveCorrespondingDtos() {
     List<CartItem> cartItems = Collections.singletonList(cartItem);
     List<CartItemResponseDto> cartItemDtos = Collections.singletonList(cartItemDto);
     given(cart.getItems()).willReturn(cartItems);
@@ -81,8 +81,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenOneStockOfCartDoesNotExist_whenGetCartContent_thenInvalidStockExceptionIsThrown()
-      throws StockNotFoundException {
+  public void givenOneStockOfCartDoesNotExist_whenGetCartContent_thenInvalidStockExceptionIsThrown() {
     doThrow(StockNotFoundException.class).when(cartItemAssembler).toDtoList(any());
 
     assertThatThrownBy(() -> cartService.getCartContent());
@@ -120,7 +119,7 @@ public class CartServiceTest {
 
   @Test
   public void whenUpdateStockQuantityInCart_thenStockIsUpdated()
-      throws UserNotFoundException, StockNotFoundException {
+      throws UserNotFoundException {
     cartService.updateStockInCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).update(SOME_TITLE, SOME_QUANTITY);
@@ -150,12 +149,10 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenStockTitleNotInCart_whenUpdateStockQuantityInCart_thenStockNotInCartException()
-      throws StockNotFoundException {
+  public void givenStockTitleNotInCart_whenUpdateStockQuantityInCart_thenStockNotInCartException() {
     String notInCartTitle = "stock not in cart";
-    doThrow(new StockNotFoundException(notInCartTitle))
-        .when(cart).update(notInCartTitle, SOME_QUANTITY);
     given(stockRepository.doesStockExist(notInCartTitle)).willReturn(true);
+    given(currentUser.getCart()).willReturn(new Cart());
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.updateStockInCart(notInCartTitle, SOME_QUANTITY);
