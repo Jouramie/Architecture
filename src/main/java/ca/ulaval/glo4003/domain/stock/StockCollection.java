@@ -90,10 +90,6 @@ public class StockCollection {
   }
 
   public StockCollection empty() {
-    Map<String, Integer> newMap = new HashMap<>(stocks);
-
-    newMap.clear();
-
-    return new StockCollection(newMap);
+    return new StockCollection();
   }
 }

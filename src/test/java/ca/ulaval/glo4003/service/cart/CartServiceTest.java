@@ -8,7 +8,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
-import ca.ulaval.glo4003.domain.cart.CartItem;
+import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
@@ -17,7 +17,6 @@ import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert;
@@ -44,10 +43,7 @@ public class CartServiceTest {
   @Mock
   private Cart cart;
   @Mock
-  private CartItem cartItem;
-  @Mock
   private CartItemResponseDto cartItemDto;
-
 
   private CartService cartService;
 
@@ -55,7 +51,7 @@ public class CartServiceTest {
   public void setup() {
     given(currentUserSession.getCurrentUser()).willReturn(currentUser);
     given(currentUser.getCart()).willReturn(cart);
-    given(cart.getItems()).willReturn(new ArrayList<>());
+    given(cart.getItems()).willReturn(new StockCollection());
     given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
 
     cartService = new CartService(stockRepository, currentUserSession, userRepository, cartItemAssembler);
@@ -70,10 +66,10 @@ public class CartServiceTest {
 
   @Test
   public void whenGetCartContent_thenWeHaveCorrespondingDtos() {
-    List<CartItem> cartItems = Collections.singletonList(cartItem);
+    StockCollection stockCollection = new StockCollection();
     List<CartItemResponseDto> cartItemDtos = Collections.singletonList(cartItemDto);
-    given(cart.getItems()).willReturn(cartItems);
-    given(cartItemAssembler.toDtoList(cartItems)).willReturn(cartItemDtos);
+    given(cart.getItems()).willReturn(stockCollection);
+    given(cartItemAssembler.toDtoList(stockCollection)).willReturn(cartItemDtos);
 
     List<CartItemResponseDto> resultingDtos = cartService.getCartContent();
 

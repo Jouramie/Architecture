@@ -3,8 +3,8 @@ package ca.ulaval.glo4003.domain.cart;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
-import java.util.Collection;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +43,7 @@ public class CartTest {
     cart.add(SOME_TITLE, 0);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
-    assertThat(cart.getItems()).isEmpty();
+    assertThat(cart.getItems().isEmpty()).isTrue();
   }
 
   @Test
@@ -68,7 +68,7 @@ public class CartTest {
 
     cart.empty();
 
-    assertThat(cart.getItems()).isEmpty();
+    assertThat(cart.getItems().isEmpty()).isTrue();
   }
 
   @Test
@@ -88,14 +88,12 @@ public class CartTest {
   }
 
   @Test
-  public void givenCartWithStocks_whenGetItems_thenReturnCollectionOfItems() {
+  public void givenCartWithStocks_whenGetItems_thenStockCollectionContainsStocks() {
     givenTwoItemInCart();
 
-    Collection<CartItem> items = cart.getItems();
+    StockCollection items = cart.getItems();
 
-    assertThat(items).contains(
-        new CartItem(SOME_TITLE, SOME_QUANTITY),
-        new CartItem(SOME_OTHER_TITLE, SOME_OTHER_QUANTITY));
+    assertThat(items.getStocks()).contains(SOME_TITLE, SOME_OTHER_TITLE);
   }
 
   @Test

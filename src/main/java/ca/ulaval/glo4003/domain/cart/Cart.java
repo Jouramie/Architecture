@@ -1,8 +1,6 @@
 package ca.ulaval.glo4003.domain.cart;
 
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Cart {
   private StockCollection items;
@@ -35,12 +33,7 @@ public class Cart {
     return items.getQuantity(title);
   }
 
-  public List<CartItem> getItems() {
-    List<CartItem> cartItems = new ArrayList<>();
-    for (String title : items.getStocks()) {
-      int quantity = items.getQuantity(title);
-      cartItems.add(new CartItem(title, quantity));
-    }
-    return cartItems;
+  public StockCollection getItems() {
+    return items;
   }
 }
