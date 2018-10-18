@@ -149,10 +149,11 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenStockTitleNotInCart_whenUpdateStockQuantityInCart_thenStockNotInCartException() {
+  public void givenStockTitleNotInCart_whenUpdateStockQuantityInCart_thenIllegalArgumentException() {
     String notInCartTitle = "stock not in cart";
+    doThrow(new IllegalArgumentException())
+        .when(cart).update(notInCartTitle, SOME_QUANTITY);
     given(stockRepository.doesStockExist(notInCartTitle)).willReturn(true);
-    given(currentUser.getCart()).willReturn(new Cart());
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.updateStockInCart(notInCartTitle, SOME_QUANTITY);
