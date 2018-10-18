@@ -15,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public interface StockCategoryResource {
 
-
   @GET
   @Operation(
       summary = "Categories.",
@@ -34,5 +33,5 @@ public interface StockCategoryResource {
           )
       }
   )
-  List<String> getStocksCategories();
+  List<String> getCategories();
 }

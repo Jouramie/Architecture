@@ -5,6 +5,8 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class StockAssembler {
@@ -23,5 +25,9 @@ public class StockAssembler {
         stock.getValue().getOpenValue().toUsd(),
         stock.getValue().getCurrentValue().toUsd(),
         closeValue);
+  }
+
+  public List<StockDto> toDtoList(List<Stock> stocks) {
+    return stocks.stream().map(this::toDto).collect(Collectors.toList());
   }
 }

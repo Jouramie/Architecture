@@ -5,7 +5,6 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import io.restassured.http.Header;
@@ -27,11 +26,11 @@ public class TokenRevocationIT {
   private static final String SOME_PASSWORD = "a password";
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD, UserRole.ADMINISTRATOR);
+      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
 
   private static final AuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
       new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
-  private final Header userHeader = new Header("email", SOME_EMAIL);
+
   @Rule
   public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 

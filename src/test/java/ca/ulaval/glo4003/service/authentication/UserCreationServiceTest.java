@@ -26,10 +26,10 @@ public class UserCreationServiceTest {
 
   private static final String SOME_EMAIL = "email";
   private static final String SOME_PASSWORD = "password";
-  private static final UserRole SOME_ROLE = UserRole.ADMINISTRATOR;
-  private static final UserDto USER_DTO = new UserDto(SOME_EMAIL, SOME_ROLE);
+  private static final UserRole USER_ROLE = UserRole.INVESTOR;
+  private static final UserDto USER_DTO = new UserDto(SOME_EMAIL, USER_ROLE);
   private static final UserCreationDto SOME_CREATION_REQUEST
-      = new UserCreationDto(SOME_EMAIL, SOME_PASSWORD, SOME_ROLE);
+      = new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
   private static final User USER = new UserBuilder().buildDefault();
 
   @Mock
@@ -44,16 +44,16 @@ public class UserCreationServiceTest {
 
   @Test
   public void whenCreatingUser_thenUserIsCreated() {
-    service.createUser(SOME_CREATION_REQUEST);
+    service.createInvestorUser(SOME_CREATION_REQUEST);
 
-    verify(userFactory).create(SOME_EMAIL, SOME_PASSWORD, SOME_ROLE);
+    verify(userFactory).create(SOME_EMAIL, SOME_PASSWORD, USER_ROLE);
   }
 
   @Test
   public void whenCreatingUser_thenUserIsAdded() throws UserAlreadyExistsException {
-    given(userFactory.create(SOME_EMAIL, SOME_PASSWORD, SOME_ROLE)).willReturn(USER);
+    given(userFactory.create(SOME_EMAIL, SOME_PASSWORD, USER_ROLE)).willReturn(USER);
 
-    service.createUser(SOME_CREATION_REQUEST);
+    service.createInvestorUser(SOME_CREATION_REQUEST);
     verify(userRepository).add(USER);
   }
 
@@ -61,17 +61,17 @@ public class UserCreationServiceTest {
   public void whenCreatingUser_thenReturnsUserDto() {
     given(userAssembler.toDto(any())).willReturn(USER_DTO);
 
-    UserDto createdUser = service.createUser(SOME_CREATION_REQUEST);
+    UserDto createdUser = service.createInvestorUser(SOME_CREATION_REQUEST);
 
     assertThat(createdUser).isEqualTo(USER_DTO);
   }
 
   @Test
   public void givenUserAlreadyExist_whenCreatingUser_thenInvalidUserEmailExceptionIsThrown()
-      throws UserAlreadyExistsException{
+      throws UserAlreadyExistsException {
     doThrow(UserAlreadyExistsException.class).when(userRepository).add(any());
 
-    assertThatThrownBy(() -> service.createUser(SOME_CREATION_REQUEST))
+    assertThatThrownBy(() -> service.createInvestorUser(SOME_CREATION_REQUEST))
         .isInstanceOf(InvalidUserEmailException.class);
   }
 }

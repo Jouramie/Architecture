@@ -13,7 +13,6 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import org.junit.Rule;
@@ -22,7 +21,6 @@ import org.junit.Test;
 public class StockIT {
   private static final String API_STOCK_ROUTE = "/api/stocks";
   private static final String API_STOCK_ROUTE_TITLE = "/api/stocks/%s";
-  private static final String API_STOCK_CATEGORIES_ROUTE = "/api/stocks/categories";
 
   private static final String TITLE = "title";
   private static final String NAME = "name";
@@ -61,7 +59,7 @@ public class StockIT {
   public void givenWrongValue_whenGettingByTitle_thenStockIsNotFound() {
     //@formatter:off
     when()
-        .get(String.format(API_STOCK_ROUTE_TITLE,"wrong"))
+        .get(String.format(API_STOCK_ROUTE_TITLE, "wrong"))
     .then()
         .statusCode(NOT_FOUND.getStatusCode());
     //@formatter:on
@@ -94,7 +92,7 @@ public class StockIT {
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", hasSize(1))
-        .root("$[0]")
+        .root("[0]")
         .body(TITLE, equalTo(SOME_TITLE))
         .body(NAME, equalTo(SOME_NAME))
         .body(MARKET, equalTo(SOME_MARKET))
@@ -154,17 +152,6 @@ public class StockIT {
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", hasSize(20));
-    //@formatter:on
-  }
-
-  @Test
-  public void whenGettingCategories_thenReturnCategories() {
-    //@formatter:off
-    when()
-        .get(API_STOCK_CATEGORIES_ROUTE)
-    .then()
-        .statusCode(OK.getStatusCode())
-        .body("$", not(emptyIterable()));
     //@formatter:on
   }
 }

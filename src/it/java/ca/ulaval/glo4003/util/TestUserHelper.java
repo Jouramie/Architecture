@@ -2,7 +2,6 @@ package ca.ulaval.glo4003.util;
 
 import static io.restassured.RestAssured.given;
 
-import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import io.restassured.response.Response;
@@ -16,7 +15,7 @@ public class TestUserHelper {
   private static final String SOME_PASSWORD = "stockistock";
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD, UserRole.INVESTOR);
+      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
   private static final AuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
       new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
 

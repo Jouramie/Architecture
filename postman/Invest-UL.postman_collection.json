@@ -1,136 +1,127 @@
 {
-	"owner": "1747221",
-	"lastUpdatedBy": "1747221",
-	"lastRevision": 5234929883,
-	"team": null,
-	"id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+	"id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
 	"name": "Invest-UL",
 	"description": "",
-	"variables": null,
-	"auth": null,
-	"events": null,
-	"folders_order": [
-		"64b20178-8f6d-5c70-b47a-83b727cab4de",
-		"73d4a9d1-493f-9ba6-6d85-f3d44e633f3a",
-		"9177f713-d8be-473b-5cfc-2acb00b636de",
-		"f02fccab-d040-a5a9-407f-6301a0cbc388"
-	],
 	"order": [
-		"3b4e6197-293d-7b09-bb39-7bc1f68fd6b4"
+		"08411b73-9491-1a81-8fc1-7ca2d37974cf"
 	],
+	"folders_order": [
+		"b6517ef9-ffcf-f6a4-b27b-d174d7e003f2",
+		"33b64814-e1ce-0182-0052-6fd446406156",
+		"abeb7e3a-a615-a43f-e0f3-4d4fbd2a2096",
+		"23ff2d06-df04-6930-ffab-2c7435f190bf"
+	],
+	"folders": [
+		{
+			"id": "33b64814-e1ce-0182-0052-6fd446406156",
+			"name": "Authentification",
+			"description": "",
+			"order": [
+				"0e9a5595-57b0-9cf7-5e8c-44f8b02cd789",
+				"9d5651a6-7221-7ae2-e86c-363168cbb944",
+				"899b1382-6010-0199-c37e-b329512d1c3f"
+			],
+			"folders_order": [],
+			"owner": "1747221",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958"
+		},
+		{
+			"id": "abeb7e3a-a615-a43f-e0f3-4d4fbd2a2096",
+			"name": "Cart",
+			"description": "",
+			"order": [
+				"8f41bb57-6bdd-b08a-771d-8f00e412e9ec",
+				"694a5ba7-73c4-ebfb-e6c9-6626e5b1ef89",
+				"28e3ad1e-45bf-951d-6bca-1ca7d4e443e2",
+				"5290fc57-b19d-5274-f24e-decf8970abf0",
+				"4d0f79c8-fe87-dc18-04c0-2b4f16111a2c",
+				"7461b263-6248-f29c-04dd-735266dca6fb"
+			],
+			"folders_order": [],
+			"owner": "1747221",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958"
+		},
+		{
+			"id": "23ff2d06-df04-6930-ffab-2c7435f190bf",
+			"name": "Portfolio",
+			"description": "",
+			"order": [
+				"34a94d92-08c7-736d-6c9c-05825e366c73"
+			],
+			"folders_order": [],
+			"owner": "1747221",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958"
+		},
+		{
+			"id": "b6517ef9-ffcf-f6a4-b27b-d174d7e003f2",
+			"name": "Stocks",
+			"description": "",
+			"order": [
+				"c70b69a7-07b5-d72f-e29e-44901111a721",
+				"d09ff61f-62ed-733d-5b9c-1089fc10809d",
+				"f98a1762-c5e4-6b76-f775-cd837780e66f",
+				"486e3928-ca50-6a9e-d577-f553d75ab858",
+				"eb230915-7070-8857-6c4a-e5987ca8ab80",
+				"f2f28a17-6b47-a7f4-866b-5079aec35870"
+			],
+			"folders_order": [
+				"74294e54-1406-4b36-163c-be0339d51463",
+				"5058fce0-3cb8-d6c4-7333-323810a462f1",
+				"54a532c4-9474-c411-3b1e-2562a5e1e342"
+			],
+			"owner": "1747221",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958"
+		},
+		{
+			"id": "74294e54-1406-4b36-163c-be0339d51463",
+			"name": "Trend",
+			"description": "",
+			"order": [
+				"9e963596-1bbd-b1ba-6965-87fdb0f3af56"
+			],
+			"folders_order": [],
+			"owner": "1747221",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958"
+		},
+		{
+			"id": "5058fce0-3cb8-d6c4-7333-323810a462f1",
+			"name": "max",
+			"description": "",
+			"order": [
+				"a86dbd44-47e8-f5ff-8517-b3766cf116ff"
+			],
+			"folders_order": [],
+			"owner": "1747221",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958"
+		},
+		{
+			"id": "54a532c4-9474-c411-3b1e-2562a5e1e342",
+			"name": "max",
+			"description": "",
+			"order": [
+				"d89d8cbf-fde3-931a-c4b9-770b5e7da997",
+				"5b6e7816-aef0-60db-1e82-b77aa0234143",
+				"bc737c86-06d0-33eb-b1bb-79fb35be1dea",
+				"6c3c1931-af5a-5721-12ad-c12b3caeba8b",
+				"8d4f5017-192e-f556-baf7-0f0ec2bf301b",
+				"384b5ce5-a70f-4963-fce9-aa24107378a5",
+				"179d1390-5ec7-d607-91ba-31f7138ae436"
+			],
+			"folders_order": [],
+			"owner": "1747221",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958"
+		}
+	],
+	"owner": "1747221",
+	"hasRequests": true,
 	"requests": [
 		{
-			"id": "09bba413-b57f-1b1d-1346-8b60d7753aba",
-			"name": "GetMaxValueAllTime",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "GET",
-			"headers": "",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/stocks/RBS.l/max?since=ALL_TIME",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "since",
-					"value": "ALL_TIME"
-				}
-			],
-			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
-		},
-		{
-			"id": "0f88d024-497f-3fe4-6af7-c3cdfa1b2577",
-			"name": "AddStockInCart",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "PUT",
-			"headers": "Content-Type: application/json\ntoken: 00000000-0000-0000-0000-000000000000",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"quantity\": 76\n}",
-			"url": "localhost:8080/api/cart/RBS.l",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"enabled": true,
-					"description": ""
-				},
-				{
-					"key": "token",
-					"value": "00000000-0000-0000-0000-000000000000",
-					"enabled": true,
-					"description": ""
-				}
-			],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de",
-			"timestamp": null
-		},
-		{
-			"id": "105f8d2d-d1ca-9240-e4e2-b047827b17ed",
-			"name": "CreateUser",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}",
-			"url": "localhost:8080/api/users",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"enabled": true,
-					"description": ""
-				}
-			],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "73d4a9d1-493f-9ba6-6d85-f3d44e633f3a",
-			"timestamp": null
-		},
-		{
-			"id": "3065f83f-f304-5e1f-bbdc-d5e6833281ee",
-			"name": "GetMaxValueLast10Years",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "GET",
-			"headers": "",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_10_YEARS",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "since",
-					"value": "LAST_10_YEARS"
-				}
-			],
-			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
-		},
-		{
-			"id": "3b4e6197-293d-7b09-bb39-7bc1f68fd6b4",
+			"id": "08411b73-9491-1a81-8fc1-7ca2d37974cf",
 			"name": "Ping",
 			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
 			"method": "GET",
 			"headers": "",
-			"dataMode": "raw",
 			"data": [],
 			"rawModeData": "",
 			"url": "localhost:8080/api/ping?echo=test",
@@ -143,79 +134,138 @@
 				}
 			],
 			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9"
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958"
 		},
 		{
-			"id": "3c8f4ecb-7869-5a68-2cae-0db4ab1c1c8c",
-			"name": "EmptyCart",
+			"id": "0e9a5595-57b0-9cf7-5e8c-44f8b02cd789",
+			"name": "CreateUser",
 			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "DELETE",
-			"headers": "token: 00000000-0000-0000-0000-000000000000",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/cart",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "token",
-					"value": "00000000-0000-0000-0000-000000000000"
-				}
-			],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de"
-		},
-		{
-			"id": "436e1c40-8f0e-6a4b-0a50-147c1857f580",
-			"name": "CheckoutCart",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
 			"method": "POST",
-			"headers": "token: 00000000-0000-0000-0000-000000000000",
+			"headers": "Content-Type: application/json",
 			"dataMode": "raw",
 			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/cart/checkout",
+			"rawModeData": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}",
+			"url": "localhost:8080/api/users",
 			"responses": [],
 			"pathVariableData": [],
 			"queryParams": [],
 			"headerData": [
 				{
-					"key": "token",
-					"value": "00000000-0000-0000-0000-000000000000"
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": ""
 				}
 			],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de"
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "33b64814-e1ce-0182-0052-6fd446406156"
 		},
 		{
-			"id": "445e111d-8aba-4407-dd50-8758072fa581",
-			"name": "GetStockByTitle",
+			"id": "179d1390-5ec7-d607-91ba-31f7138ae436",
+			"name": "GetMaxValueAllTime",
 			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
 			"method": "GET",
 			"headers": "",
 			"dataMode": "raw",
 			"data": [],
 			"rawModeData": "",
-			"url": "localhost:8080/api/stocks/RBS.l",
+			"pathVariables": {},
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=ALL_TIME",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "ALL_TIME"
+				}
+			],
+			"headerData": [],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "54a532c4-9474-c411-3b1e-2562a5e1e342"
+		},
+		{
+			"id": "28e3ad1e-45bf-951d-6bca-1ca7d4e443e2",
+			"name": "UpdateStockInCart",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "PATCH",
+			"headers": "Content-Type: application/json\ntoken: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n\t\"quantity\": 42\n}",
+			"url": "localhost:8080/api/cart/RBS.l",
 			"responses": [],
 			"pathVariableData": [],
 			"queryParams": [],
-			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "64b20178-8f6d-5c70-b47a-83b727cab4de"
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "abeb7e3a-a615-a43f-e0f3-4d4fbd2a2096"
 		},
 		{
-			"id": "46c7a7f3-1860-b105-7ffa-773e190e000d",
+			"id": "34a94d92-08c7-736d-6c9c-05825e366c73",
+			"name": "GetPortfolio",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "token: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/portfolio",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "23ff2d06-df04-6930-ffab-2c7435f190bf"
+		},
+		{
+			"id": "384b5ce5-a70f-4963-fce9-aa24107378a5",
+			"name": "GetMaxValueLast10Years",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_10_YEARS",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "LAST_10_YEARS"
+				}
+			],
+			"headerData": [],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "54a532c4-9474-c411-3b1e-2562a5e1e342"
+		},
+		{
+			"id": "486e3928-ca50-6a9e-d577-f553d75ab858",
 			"name": "GetStockByCategoryWithPagination",
 			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
 			"method": "GET",
 			"headers": "",
+			"dataMode": "raw",
 			"data": [],
 			"rawModeData": "",
 			"url": "localhost:8080/api/stocks?category=technology&page=2&per_page=5",
@@ -236,14 +286,37 @@
 				}
 			],
 			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "64b20178-8f6d-5c70-b47a-83b727cab4de"
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "b6517ef9-ffcf-f6a4-b27b-d174d7e003f2"
 		},
 		{
-			"id": "4917443c-cf84-32b0-cae6-26045173bcb7",
+			"id": "4d0f79c8-fe87-dc18-04c0-2b4f16111a2c",
+			"name": "EmptyCart",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "DELETE",
+			"headers": "token: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/cart",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "abeb7e3a-a615-a43f-e0f3-4d4fbd2a2096"
+		},
+		{
+			"id": "5290fc57-b19d-5274-f24e-decf8970abf0",
 			"name": "DeleteStockInCart",
 			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
 			"method": "DELETE",
 			"headers": "Content-Type: application/json\ntoken: 00000000-0000-0000-0000-000000000000",
 			"dataMode": "raw",
@@ -263,14 +336,212 @@
 					"value": "00000000-0000-0000-0000-000000000000"
 				}
 			],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de"
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "abeb7e3a-a615-a43f-e0f3-4d4fbd2a2096"
 		},
 		{
-			"id": "56fdc7b5-daf0-fe38-0f20-496c7e1e4346",
+			"id": "5b6e7816-aef0-60db-1e82-b77aa0234143",
+			"name": "GetMaxValueCurrentMonth",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=CURRENT_MONTH",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "CURRENT_MONTH"
+				}
+			],
+			"headerData": [],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "54a532c4-9474-c411-3b1e-2562a5e1e342"
+		},
+		{
+			"id": "694a5ba7-73c4-ebfb-e6c9-6626e5b1ef89",
+			"name": "AddStockInCart",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "PUT",
+			"headers": "Content-Type: application/json\ntoken: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n\t\"quantity\": 76\n}",
+			"url": "localhost:8080/api/cart/RBS.l",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "abeb7e3a-a615-a43f-e0f3-4d4fbd2a2096"
+		},
+		{
+			"id": "6c3c1931-af5a-5721-12ad-c12b3caeba8b",
+			"name": "GetMaxValueLastYear",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_YEAR",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "LAST_YEAR"
+				}
+			],
+			"headerData": [],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "54a532c4-9474-c411-3b1e-2562a5e1e342"
+		},
+		{
+			"id": "7461b263-6248-f29c-04dd-735266dca6fb",
+			"name": "CheckoutCart",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "POST",
+			"headers": "token: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/cart/checkout",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "abeb7e3a-a615-a43f-e0f3-4d4fbd2a2096"
+		},
+		{
+			"id": "899b1382-6010-0199-c37e-b329512d1c3f",
+			"headers": "token: \n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:8080/api/logout",
+			"folder": "33b64814-e1ce-0182-0052-6fd446406156",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1539831060097,
+			"name": "Logout",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "8d4f5017-192e-f556-baf7-0f0ec2bf301b",
+			"name": "GetMaxValueLast5Years",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_YEARS",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "LAST_FIVE_YEARS"
+				}
+			],
+			"headerData": [],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "54a532c4-9474-c411-3b1e-2562a5e1e342"
+		},
+		{
+			"id": "8f41bb57-6bdd-b08a-771d-8f00e412e9ec",
+			"name": "GetCart",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "token: 00000000-0000-0000-0000-000000000000",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/cart",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "token",
+					"value": "00000000-0000-0000-0000-000000000000"
+				}
+			],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "abeb7e3a-a615-a43f-e0f3-4d4fbd2a2096"
+		},
+		{
+			"id": "9d5651a6-7221-7ae2-e86c-363168cbb944",
+			"name": "Authenticate",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "POST",
+			"headers": "Content-Type: application/json",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}",
+			"url": "localhost:8080/api/authenticate",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "33b64814-e1ce-0182-0052-6fd446406156"
+		},
+		{
+			"id": "9e963596-1bbd-b1ba-6965-87fdb0f3af56",
 			"name": "GetStockValueVariationTrend",
 			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
 			"method": "GET",
 			"headers": "",
 			"dataMode": "raw",
@@ -281,16 +552,122 @@
 			"pathVariableData": [],
 			"queryParams": [],
 			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "9303e88b-72a7-bc6e-6a25-06885a60503b"
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "74294e54-1406-4b36-163c-be0339d51463"
 		},
 		{
-			"id": "7011e8fe-30f4-3c7e-0708-46588bed5dbb",
-			"name": "GetStocksWithPagination",
+			"id": "a86dbd44-47e8-f5ff-8517-b3766cf116ff",
+			"name": "GetMaxValueLast5Days",
 			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
 			"method": "GET",
 			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "",
+			"responses": [],
+			"headerData": [],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "5058fce0-3cb8-d6c4-7333-323810a462f1"
+		},
+		{
+			"id": "bc737c86-06d0-33eb-b1bb-79fb35be1dea",
+			"name": "GetMaxValueLastMonth",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_MONTH",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "LAST_MONTH"
+				}
+			],
+			"headerData": [],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "54a532c4-9474-c411-3b1e-2562a5e1e342"
+		},
+		{
+			"id": "c70b69a7-07b5-d72f-e29e-44901111a721",
+			"name": "GetStockByTitle",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks/RBS.l",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "b6517ef9-ffcf-f6a4-b27b-d174d7e003f2"
+		},
+		{
+			"id": "d09ff61f-62ed-733d-5b9c-1089fc10809d",
+			"name": "GetStockByStockName",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"url": "localhost:8080/api/stocks?name=Royal Bank of Scotland",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "name",
+					"value": "Royal Bank of Scotland"
+				}
+			],
+			"headerData": [],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "b6517ef9-ffcf-f6a4-b27b-d174d7e003f2"
+		},
+		{
+			"id": "d89d8cbf-fde3-931a-c4b9-770b5e7da997",
+			"name": "GetMaxValueLast5Days",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "",
+			"pathVariables": {},
+			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_DAYS",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [
+				{
+					"key": "since",
+					"value": "LAST_FIVE_DAYS"
+				}
+			],
+			"headerData": [],
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "54a532c4-9474-c411-3b1e-2562a5e1e342"
+		},
+		{
+			"id": "eb230915-7070-8857-6c4a-e5987ca8ab80",
+			"name": "GetStocksWithPagination",
+			"description": "",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "",
+			"dataMode": "raw",
 			"data": [],
 			"rawModeData": "",
 			"url": "localhost:8080/api/stocks?page=2&per_page=5",
@@ -307,258 +684,35 @@
 				}
 			],
 			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "64b20178-8f6d-5c70-b47a-83b727cab4de"
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "b6517ef9-ffcf-f6a4-b27b-d174d7e003f2"
 		},
 		{
-			"id": "8110940f-43c6-c557-3dc4-4381550c75a1",
-			"name": "Authenticate",
+			"id": "f2f28a17-6b47-a7f4-866b-5079aec35870",
+			"name": "GetCategories",
 			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"method": "GET",
+			"headers": "",
 			"dataMode": "raw",
 			"data": [],
-			"rawModeData": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}",
-			"url": "localhost:8080/api/authenticate",
+			"rawModeData": "",
+			"url": "localhost:8080/api/stock_categories",
 			"responses": [],
 			"pathVariableData": [],
 			"queryParams": [],
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"enabled": true,
-					"description": ""
-				}
-			],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "73d4a9d1-493f-9ba6-6d85-f3d44e633f3a",
-			"timestamp": null
-		},
-		{
-			"id": "82e927bd-64e0-11f8-b491-5636182df9db",
-			"name": "GetCart",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "GET",
-			"headers": "token: 00000000-0000-0000-0000-000000000000",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/cart",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "token",
-					"value": "00000000-0000-0000-0000-000000000000"
-				}
-			],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de"
-		},
-		{
-			"id": "86e11d06-3d35-520a-b7db-d6b6019b1689",
-			"name": "GetMaxValueCurrentMonth",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "GET",
-			"headers": "",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/stocks/RBS.l/max?since=CURRENT_MONTH",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "since",
-					"value": "CURRENT_MONTH"
-				}
-			],
 			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "b6517ef9-ffcf-f6a4-b27b-d174d7e003f2"
 		},
 		{
-			"id": "8dcd65f8-97cd-902e-0a4b-a13482694736",
-			"name": "GetStockByStockName",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "GET",
-			"headers": "",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/stocks?name=Royal Bank of Scotland",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "name",
-					"value": "Royal Bank of Scotland"
-				}
-			],
-			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "64b20178-8f6d-5c70-b47a-83b727cab4de"
-		},
-		{
-			"id": "926bbbe2-c815-51df-8c0e-85903160527f",
-			"name": "GetMaxValueLast5Days",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "GET",
-			"headers": "",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_DAYS",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "since",
-					"value": "LAST_FIVE_DAYS"
-				}
-			],
-			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
-		},
-		{
-			"id": "a8413bca-d6c9-c183-762a-10fab294588c",
-			"name": "GetMaxValueLastYear",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "GET",
-			"headers": "",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_YEAR",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "since",
-					"value": "LAST_YEAR"
-				}
-			],
-			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
-		},
-		{
-			"id": "ad6ba3d3-0d46-cd8b-2fc2-ec2f87646bc8",
-			"name": "UpdateStockInCart",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "PATCH",
-			"headers": "Content-Type: application/json\ntoken: 00000000-0000-0000-0000-000000000000",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"quantity\": 42\n}",
-			"url": "localhost:8080/api/cart/RBS.l",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "Content-Type",
-					"value": "application/json",
-					"enabled": true,
-					"description": ""
-				},
-				{
-					"key": "token",
-					"value": "00000000-0000-0000-0000-000000000000",
-					"enabled": true,
-					"description": ""
-				}
-			],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "9177f713-d8be-473b-5cfc-2acb00b636de",
-			"timestamp": null
-		},
-		{
-			"id": "babb07d8-6ded-0c33-d1b7-93d2907f253d",
-			"name": "GetMaxValueLastMonth",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "GET",
-			"headers": "",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_MONTH",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "since",
-					"value": "LAST_MONTH"
-				}
-			],
-			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
-		},
-		{
-			"id": "c33c6b9b-82ea-c3c8-f237-75fff91dad75",
-			"name": "GetPortfolio",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "GET",
-			"headers": "token: 00000000-0000-0000-0000-000000000000",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/portfolio",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [],
-			"headerData": [
-				{
-					"key": "token",
-					"value": "00000000-0000-0000-0000-000000000000"
-				}
-			],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "f02fccab-d040-a5a9-407f-6301a0cbc388"
-		},
-		{
-			"id": "cb29f6a6-6d85-b453-4cba-de420c0ea8f7",
-			"name": "GetMaxValueLast5Years",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"method": "GET",
-			"headers": "",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "",
-			"url": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_YEARS",
-			"responses": [],
-			"pathVariableData": [],
-			"queryParams": [
-				{
-					"key": "since",
-					"value": "LAST_FIVE_YEARS"
-				}
-			],
-			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "0ee7b1a7-c071-a737-2963-58c1947c1044"
-		},
-		{
-			"id": "dd3b7e7a-effe-c8b1-9310-4843fc7fd25d",
+			"id": "f98a1762-c5e4-6b76-f775-cd837780e66f",
 			"name": "GetStockByCategory",
 			"description": "\t\t\t",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
+			"collectionId": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
 			"method": "GET",
 			"headers": "",
+			"dataMode": "raw",
 			"data": [],
 			"rawModeData": "",
 			"url": "localhost:8080/api/stocks?category=technology",
@@ -567,46 +721,12 @@
 			"queryParams": [
 				{
 					"key": "category",
-					"value": "technology",
-					"equals": true,
-					"description": "",
-					"enabled": true
+					"value": "technology"
 				}
 			],
 			"headerData": [],
-			"collection_id": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"folder": "64b20178-8f6d-5c70-b47a-83b727cab4de",
-			"timestamp": null
-		},
-		{
-			"id": "e9dd396d-107b-81a4-4a88-d7e2e2a4f2bb",
-			"headers": "token: \n",
-			"headerData": [
-				{
-					"key": "token",
-					"value": "",
-					"description": "",
-					"enabled": true
-				}
-			],
-			"url": "localhost:8080/api/logout",
-			"folder": "73d4a9d1-493f-9ba6-6d85-f3d44e633f3a",
-			"queryParams": [],
-			"preRequestScript": null,
-			"pathVariables": {},
-			"pathVariableData": [],
-			"method": "POST",
-			"data": [],
-			"dataMode": "raw",
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1539744541054,
-			"name": "Logout",
-			"description": "",
-			"collectionId": "7a8f4942-1a7f-5f6f-32ab-0a1aa52de6d9",
-			"responses": [],
-			"rawModeData": ""
+			"collection_id": "ac49c753-9de8-cca8-ffdd-b5bb97cdf958",
+			"folder": "b6517ef9-ffcf-f6a4-b27b-d174d7e003f2"
 		}
 	]
 }

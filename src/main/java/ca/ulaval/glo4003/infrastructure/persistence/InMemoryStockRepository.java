@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InMemoryStockRepository implements StockRepository {
   private final Map<String, Stock> stocks = new HashMap<>();
@@ -28,13 +29,6 @@ public class InMemoryStockRepository implements StockRepository {
   }
 
   @Override
-  public Stock findByName(String name) throws StockNotFoundException {
-    return stocks.values().stream().filter((stock) -> stock.getName().equals(name))
-        .findFirst()
-        .orElseThrow(() -> new StockNotFoundException("Cannot find stock with name " + name));
-  }
-
-  @Override
   public List<Stock> findByMarket(MarketId marketId) {
     return stocks.values().stream().filter((stock) -> stock.getMarketId().equals(marketId))
         .collect(Collectors.toList());
@@ -48,5 +42,25 @@ public class InMemoryStockRepository implements StockRepository {
   @Override
   public boolean doesStockExist(String title) {
     return stocks.containsKey(title);
+  }
+
+  @Override
+  public List<String> getCategories() {
+    return stocks.values().stream().map(Stock::getCategory).distinct().collect(Collectors.toList());
+  }
+
+  @Override
+  public List<Stock> queryStocks(String name, String category) {
+    Stream<Stock> stockStream = stocks.values().stream();
+
+    if (name != null) {
+      stockStream = stockStream.filter((stock) -> stock.getName().equals(name));
+    }
+
+    if (category != null) {
+      stockStream = stockStream.filter((stock) -> stock.getCategory().equals(category));
+    }
+
+    return stockStream.collect(Collectors.toList());
   }
 }
