@@ -39,7 +39,7 @@ public class CartService {
     checkIfValidQuantity(quantity);
 
     Cart cart = getCart();
-    cart.add(title, quantity);
+    cart.add(title, quantity, stockRepository);
 
     updateUser();
   }

@@ -50,8 +50,8 @@ public class TransactionFactoryTest {
     given(someStockRepository.findByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
     given(someStockRepository.findByTitle(SOME_TITLE).getValue().getCurrentValue()).willReturn(DEFAULT_AMOUNT);
 
-    cart = new Cart(someStockRepository);
-    cart.add(SOME_TITLE, SOME_QUANTITY);
+    cart = new Cart();
+    cart.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
     factory = new TransactionFactory(clock, someStockRepository);
   }
 

@@ -65,7 +65,7 @@ public class CartServiceTest {
 
   @Test
   public void whenGetCartContent_thenWeHaveCorrespondingDtos() {
-    StockCollection stockCollection = new StockCollection(stockRepository);
+    StockCollection stockCollection = new StockCollection();
     List<CartItemResponseDto> cartItemDtos = Collections.singletonList(cartItemDto);
     given(cart.getStocks()).willReturn(stockCollection);
     given(cartItemAssembler.toDtoList(stockCollection)).willReturn(cartItemDtos);
@@ -86,7 +86,7 @@ public class CartServiceTest {
   public void whenAddStockToCart_thenStockIsAddedToCart() throws UserNotFoundException {
     cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY);
 
-    verify(cart).add(SOME_TITLE, SOME_QUANTITY);
+    verify(cart).add(SOME_TITLE, SOME_QUANTITY, stockRepository);
     verify(userRepository).update(currentUser);
   }
 

@@ -30,8 +30,8 @@ public class StockCollectionTest {
     willReturn(true).given(someStockRepository).doesStockExist(MISSING_STOCK_TITLE);
     willReturn(false).given(someStockRepository).doesStockExist(INVALID_TITLE);
 
-    stockCollection = new StockCollection(someStockRepository)
-        .add(INCLUDED_STOCK_TITLE, INCLUDED_STOCK_QUANTITY);
+    stockCollection = new StockCollection()
+        .add(INCLUDED_STOCK_TITLE, INCLUDED_STOCK_QUANTITY, someStockRepository);
   }
 
   @Test
@@ -46,35 +46,35 @@ public class StockCollectionTest {
 
   @Test
   public void whenAddStock_thenStockQuantityCanBeRetrieved() {
-    stockCollection = stockCollection.add(MISSING_STOCK_TITLE, MISSING_STOCK_QUANTITY);
+    stockCollection = stockCollection.add(MISSING_STOCK_TITLE, MISSING_STOCK_QUANTITY, someStockRepository);
 
     assertThat(stockCollection.getQuantity(MISSING_STOCK_TITLE)).isEqualTo(MISSING_STOCK_QUANTITY);
   }
 
   @Test
   public void givenStockAlreadyInCollection_whenAddStock_thenNumberOfStockIsIncreasedByQuantity() {
-    stockCollection = stockCollection.add(INCLUDED_STOCK_TITLE, 1);
+    stockCollection = stockCollection.add(INCLUDED_STOCK_TITLE, 1, someStockRepository);
 
     assertThat(stockCollection.getQuantity(INCLUDED_STOCK_TITLE)).isEqualTo(INCLUDED_STOCK_QUANTITY + 1);
   }
 
   @Test
   public void givenStockNotInCollection_whenAddZeroStock_thenStockIsNotAddedToCollection() {
-    stockCollection = stockCollection.add(MISSING_STOCK_TITLE, 0);
+    stockCollection = stockCollection.add(MISSING_STOCK_TITLE, 0, someStockRepository);
 
     assertThat(stockCollection.getTitles()).doesNotContain(MISSING_STOCK_TITLE);
   }
 
   @Test
   public void whenAddNegativeQuantityOfStocks_thenIllegalArgumentExceptionIsThrown() {
-    assertThatThrownBy(() -> stockCollection.add(INCLUDED_STOCK_TITLE, -1))
+    assertThatThrownBy(() -> stockCollection.add(INCLUDED_STOCK_TITLE, -1, someStockRepository))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
   public void givenStockDoesNotExist_whenAddStock_thenAnExceptionIsThrown() {
     assertThatExceptionOfType(IllegalArgumentException.class)
-        .isThrownBy(() -> stockCollection.add(INVALID_TITLE, INCLUDED_STOCK_QUANTITY));
+        .isThrownBy(() -> stockCollection.add(INVALID_TITLE, INCLUDED_STOCK_QUANTITY, someStockRepository));
   }
 
   @Test
@@ -116,7 +116,7 @@ public class StockCollectionTest {
 
   @Test
   public void givenStocksInCollection_whenGetStocks_thenReturnAllStocks() {
-    stockCollection = stockCollection.add(MISSING_STOCK_TITLE, MISSING_STOCK_QUANTITY);
+    stockCollection = stockCollection.add(MISSING_STOCK_TITLE, MISSING_STOCK_QUANTITY, someStockRepository);
 
     assertThat(stockCollection.getTitles()).contains(INCLUDED_STOCK_TITLE, MISSING_STOCK_TITLE);
   }

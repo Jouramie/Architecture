@@ -74,9 +74,9 @@ public class CartItemAssemblerTest {
 
   @Test
   public void whenToDtoList_thenAllItemsArePresent() {
-    StockCollection stockCollection = new StockCollection(stockRepository)
-        .add(SOME_TITLE, SOME_QUANTITY)
-        .add(SOME_OTHER_TITLE, SOME_QUANTITY);
+    StockCollection stockCollection = new StockCollection()
+        .add(SOME_TITLE, SOME_QUANTITY, stockRepository)
+        .add(SOME_OTHER_TITLE, SOME_QUANTITY, stockRepository);
     List<CartItemResponseDto> dtos = assembler.toDtoList(stockCollection);
 
     assertThat(dtos).hasSize(2);

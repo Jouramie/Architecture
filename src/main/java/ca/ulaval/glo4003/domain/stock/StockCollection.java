@@ -8,22 +8,20 @@ import java.util.Optional;
 
 public class StockCollection {
   private final Map<String, Integer> stocks;
-  private final StockRepository stockRepository;
 
-  public StockCollection(StockRepository stockRepository) {
-    this(new HashMap<>(), stockRepository);
+  public StockCollection() {
+    this(new HashMap<>());
   }
 
-  private StockCollection(Map<String, Integer> stocks, StockRepository stockRepository) {
+  private StockCollection(Map<String, Integer> stocks) {
     this.stocks = stocks;
-    this.stockRepository = stockRepository;
   }
 
   public boolean contains(String title) {
     return stocks.containsKey(title);
   }
 
-  public StockCollection add(String title, int addedQuantity) {
+  public StockCollection add(String title, int addedQuantity, StockRepository stockRepository) {
     if (!stockRepository.doesStockExist(title) || addedQuantity < 0) {
       throw new IllegalArgumentException();
     }
@@ -34,7 +32,7 @@ public class StockCollection {
       newMap.put(title, getQuantity(title) + addedQuantity);
     }
 
-    return new StockCollection(newMap, stockRepository);
+    return new StockCollection(newMap);
   }
 
   public int getQuantity(String title) {
@@ -54,7 +52,7 @@ public class StockCollection {
       newMap.put(title, quantity);
     }
 
-    return new StockCollection(newMap, stockRepository);
+    return new StockCollection(newMap);
   }
 
   public List<String> getTitles() {
@@ -76,7 +74,7 @@ public class StockCollection {
       newMap.put(title, getQuantity(title) - quantity);
     }
 
-    return new StockCollection(newMap, stockRepository);
+    return new StockCollection(newMap);
   }
 
   public StockCollection removeAll(String title) {
@@ -84,7 +82,7 @@ public class StockCollection {
 
     newMap.remove(title);
 
-    return new StockCollection(newMap, stockRepository);
+    return new StockCollection(newMap);
   }
 
   public boolean isEmpty() {
@@ -92,6 +90,6 @@ public class StockCollection {
   }
 
   public StockCollection empty() {
-    return new StockCollection(stockRepository);
+    return new StockCollection();
   }
 }

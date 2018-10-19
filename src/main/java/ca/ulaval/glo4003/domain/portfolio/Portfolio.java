@@ -10,24 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Portfolio {
-  private final StockRepository stockRepository;
   private StockCollection stocks;
 
-  public Portfolio(StockRepository stockRepository) {
-    stocks = new StockCollection(stockRepository);
-    this.stockRepository = stockRepository;
+  public Portfolio() {
+    stocks = new StockCollection();
   }
 
-  public void add(String title, int quantity) {
-    stocks = stocks.add(title, quantity);
+  public void add(String title, int quantity, StockRepository stockRepository) {
+    stocks = stocks.add(title, quantity, stockRepository);
   }
 
   public int getQuantity(String title) {
     return stocks.getQuantity(title);
   }
 
-  public MoneyAmount getCurrentTotalValue() throws InvalidStockInPortfolioException {
-    return getStockList().stream().map(this::getSubtotal)
+  public MoneyAmount getCurrentTotalValue(StockRepository stockRepository) throws InvalidStockInPortfolioException {
+    return getStockList(stockRepository).stream().map(this::getSubtotal)
         .reduce(MoneyAmount.zero(Currency.USD), MoneyAmount::add);
   }
 
@@ -41,7 +39,7 @@ public class Portfolio {
     return currentValue.multiply(quantity);
   }
 
-  private List<Stock> getStockList() throws InvalidStockInPortfolioException {
+  private List<Stock> getStockList(StockRepository stockRepository) throws InvalidStockInPortfolioException {
     List<Stock> stockList = new ArrayList<>();
     for (String title : stocks.getTitles()) {
       try {

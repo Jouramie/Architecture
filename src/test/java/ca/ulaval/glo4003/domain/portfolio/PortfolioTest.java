@@ -39,7 +39,7 @@ public class PortfolioTest {
 
   @Before
   public void setupPortfolio() throws StockNotFoundException {
-    portfolio = new Portfolio(someStockRepository);
+    portfolio = new Portfolio();
 
     willReturn(SOME_STOCK_VALUE).given(someStock).getValue();
     willReturn(SOME_CURRENCY).given(someStock).getCurrency();
@@ -51,7 +51,7 @@ public class PortfolioTest {
 
   @Test
   public void whenAddStockToPortfolio_thenItCanBeRetrieved() {
-    portfolio.add(SOME_TITLE, SOME_QUANTITY);
+    portfolio.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
 
     assertThat(portfolio.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY);
   }
@@ -63,16 +63,16 @@ public class PortfolioTest {
 
   @Test
   public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues() throws InvalidStockInPortfolioException {
-    portfolio.add(SOME_TITLE, SOME_QUANTITY);
+    portfolio.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
 
     BigDecimal currentTotal = SOME_VALUE.getAmount().multiply(new BigDecimal(SOME_QUANTITY));
-    assertThat(portfolio.getCurrentTotalValue().getAmount()).isEqualTo(currentTotal);
+    assertThat(portfolio.getCurrentTotalValue(someStockRepository).getAmount()).isEqualTo(currentTotal);
   }
 
   @Test
   public void givenPortfolioIsEmpty_whenGetCurrentTotalValue_thenReturnZero() throws InvalidStockInPortfolioException {
     BigDecimal currentTotal = new BigDecimal(0).setScale(2, RoundingMode.HALF_EVEN);
-    assertThat(portfolio.getCurrentTotalValue().getAmount()).isEqualTo(currentTotal);
+    assertThat(portfolio.getCurrentTotalValue(someStockRepository).getAmount()).isEqualTo(currentTotal);
   }
 
   @Test
@@ -81,8 +81,8 @@ public class PortfolioTest {
     String invalidTitle = "invalid";
     willReturn(true).given(someStockRepository).doesStockExist(invalidTitle);
     willThrow(StockNotFoundException.class).given(someStockRepository).findByTitle(invalidTitle);
-    portfolio.add(invalidTitle, SOME_QUANTITY);
+    portfolio.add(invalidTitle, SOME_QUANTITY, someStockRepository);
 
-    assertThatExceptionOfType(InvalidStockInPortfolioException.class).isThrownBy(() -> portfolio.getCurrentTotalValue());
+    assertThatExceptionOfType(InvalidStockInPortfolioException.class).isThrownBy(() -> portfolio.getCurrentTotalValue(someStockRepository));
   }
 }

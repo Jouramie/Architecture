@@ -12,12 +12,12 @@ public class User {
   private final Cart cart;
   private final Portfolio portfolio;
 
-  public User(String email, String password, UserRole role, StockRepository stockRepository) {
+  public User(String email, String password, UserRole role) {
     this.email = email;
     this.password = password;
     this.role = role;
-    cart = new Cart(stockRepository);
-    portfolio = new Portfolio(stockRepository);
+    cart = new Cart();
+    portfolio = new Portfolio();
   }
 
   public String getEmail() {
@@ -40,8 +40,8 @@ public class User {
     return cart;
   }
 
-  public void acquireStock(String title, int quantity) {
-    portfolio.add(title, quantity);
+  public void acquireStock(String title, int quantity, StockRepository stockRepository) {
+    portfolio.add(title, quantity, stockRepository);
   }
 
   public List<String> getStocks() {

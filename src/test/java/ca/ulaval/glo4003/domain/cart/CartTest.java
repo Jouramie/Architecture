@@ -27,7 +27,7 @@ public class CartTest {
 
   @Before
   public void setupCarts() {
-    cart = new Cart(someStockRepository);
+    cart = new Cart();
 
     willReturn(true).given(someStockRepository).doesStockExist(SOME_TITLE);
     willReturn(true).given(someStockRepository).doesStockExist(SOME_OTHER_TITLE);
@@ -35,7 +35,7 @@ public class CartTest {
 
   @Test
   public void whenAdd_thenStocksAreAddedToTheCart() {
-    cart.add(SOME_TITLE, SOME_QUANTITY);
+    cart.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY);
   }
@@ -44,14 +44,14 @@ public class CartTest {
   public void givenCartWithStocks_whenAddStocksAlreadyThere_thenPerformAddition() {
     givenTwoStocksInCart();
 
-    cart.add(SOME_TITLE, SOME_QUANTITY);
+    cart.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY * 2);
   }
 
   @Test
   public void whenAddStockWithNoQuantity_thenStockIsNotAdded() {
-    cart.add(SOME_TITLE, 0);
+    cart.add(SOME_TITLE, 0, someStockRepository);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
     assertThat(cart.getStocks().isEmpty()).isTrue();
@@ -124,7 +124,7 @@ public class CartTest {
   }
 
   private void givenTwoStocksInCart() {
-    cart.add(SOME_TITLE, SOME_QUANTITY);
-    cart.add(SOME_OTHER_TITLE, SOME_OTHER_QUANTITY);
+    cart.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
+    cart.add(SOME_OTHER_TITLE, SOME_OTHER_QUANTITY, someStockRepository);
   }
 }

@@ -27,7 +27,7 @@ public class UserTest {
 
   @Before
   public void initialize() {
-    user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withStockRepository(stockRepository).build();
+    user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
 
     willReturn(true).given(stockRepository).doesStockExist(SOME_STOCK_TITLE);
   }
@@ -54,7 +54,7 @@ public class UserTest {
 
   @Test
   public void whenAcquireStock_thenStockCanBeRetrieved() {
-    user.acquireStock(SOME_STOCK_TITLE, SOME_STOCK_QUANTITY);
+    user.acquireStock(SOME_STOCK_TITLE, SOME_STOCK_QUANTITY, stockRepository);
 
     assertThat(user.getStocks()).contains(SOME_STOCK_TITLE);
   }

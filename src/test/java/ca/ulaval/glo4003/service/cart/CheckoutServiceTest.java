@@ -16,6 +16,7 @@ import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
@@ -58,6 +59,8 @@ public class CheckoutServiceTest {
   private TransactionDto expectedDto;
   @Mock
   private StockCollection stockCollection;
+  @Mock
+  private StockRepository stockRepository;
 
   private CheckoutService checkoutService;
 
@@ -76,7 +79,8 @@ public class CheckoutServiceTest {
         transactionLedger,
         notificationSender,
         notificationFactory,
-        transactionAssembler);
+        transactionAssembler,
+        stockRepository);
   }
 
   @Test
@@ -107,7 +111,7 @@ public class CheckoutServiceTest {
     checkoutService.checkoutCart();
 
     int numberOfStocksInCart = cart.getStocks().getTitles().size();
-    verify(currentUser, times(numberOfStocksInCart)).acquireStock(any(), anyInt());
+    verify(currentUser, times(numberOfStocksInCart)).acquireStock(any(), anyInt(), any());
   }
 
   @Test

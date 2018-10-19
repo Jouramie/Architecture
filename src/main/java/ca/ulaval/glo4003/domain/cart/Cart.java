@@ -6,12 +6,12 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 public class Cart {
   private StockCollection stocks;
 
-  public Cart(StockRepository stockRepository) {
-    stocks = new StockCollection(stockRepository);
+  public Cart() {
+    stocks = new StockCollection();
   }
 
-  public void add(String title, int addedQuantity) {
-    stocks = stocks.add(title, addedQuantity);
+  public void add(String title, int addedQuantity, StockRepository stockRepository) {
+    stocks = stocks.add(title, addedQuantity, stockRepository);
   }
 
   public void update(String title, int newQuantity) {
