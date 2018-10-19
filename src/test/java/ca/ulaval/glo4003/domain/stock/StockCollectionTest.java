@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.domain.stock;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
-import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.BDDMockito.given;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,9 +26,9 @@ public class StockCollectionTest {
 
   @Before
   public void setupStockCollection() {
-    willReturn(true).given(someStockRepository).doesStockExist(INCLUDED_STOCK_TITLE);
-    willReturn(true).given(someStockRepository).doesStockExist(MISSING_STOCK_TITLE);
-    willReturn(false).given(someStockRepository).doesStockExist(INVALID_TITLE);
+    given(someStockRepository.doesStockExist(INCLUDED_STOCK_TITLE)).willReturn(true);
+    given(someStockRepository.doesStockExist(MISSING_STOCK_TITLE)).willReturn(true);
+    given(someStockRepository.doesStockExist(INVALID_TITLE)).willReturn(false);
 
     stockCollection = new StockCollection()
         .add(INCLUDED_STOCK_TITLE, INCLUDED_STOCK_QUANTITY, someStockRepository);

@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.domain.cart;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
@@ -29,8 +29,8 @@ public class CartTest {
   public void setupCarts() {
     cart = new Cart();
 
-    willReturn(true).given(someStockRepository).doesStockExist(SOME_TITLE);
-    willReturn(true).given(someStockRepository).doesStockExist(SOME_OTHER_TITLE);
+    given(someStockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(someStockRepository.doesStockExist(SOME_OTHER_TITLE)).willReturn(true);
   }
 
   @Test

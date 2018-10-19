@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.domain.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.util.UserBuilder;
@@ -29,7 +29,7 @@ public class UserTest {
   public void initialize() {
     user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
 
-    willReturn(true).given(stockRepository).doesStockExist(SOME_STOCK_TITLE);
+    given(stockRepository.doesStockExist(SOME_STOCK_TITLE)).willReturn(true);
   }
 
   @Test

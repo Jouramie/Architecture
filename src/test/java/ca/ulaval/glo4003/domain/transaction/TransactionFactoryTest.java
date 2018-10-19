@@ -2,7 +2,6 @@ package ca.ulaval.glo4003.domain.transaction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willReturn;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.clock.Clock;
@@ -45,7 +44,7 @@ public class TransactionFactoryTest {
   @Before
   public void setup() throws StockNotFoundException {
     given(clock.getCurrentTime()).willReturn(SOME_TIME);
-    willReturn(true).given(someStockRepository).doesStockExist(SOME_TITLE);
+    given(someStockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(stock);
     given(someStockRepository.findByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
     given(someStockRepository.findByTitle(SOME_TITLE).getValue().getCurrentValue()).willReturn(DEFAULT_AMOUNT);

@@ -2,8 +2,7 @@ package ca.ulaval.glo4003.domain.portfolio;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.mockito.BDDMockito.willReturn;
-import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
@@ -41,12 +40,12 @@ public class PortfolioTest {
   public void setupPortfolio() throws StockNotFoundException {
     portfolio = new Portfolio();
 
-    willReturn(SOME_STOCK_VALUE).given(someStock).getValue();
-    willReturn(SOME_CURRENCY).given(someStock).getCurrency();
-    willReturn(SOME_TITLE).given(someStock).getTitle();
+    given(someStock.getValue()).willReturn(SOME_STOCK_VALUE);
+    given(someStock.getCurrency()).willReturn(SOME_CURRENCY);
+    given(someStock.getTitle()).willReturn(SOME_TITLE);
 
-    willReturn(true).given(someStockRepository).doesStockExist(SOME_TITLE);
-    willReturn(someStock).given(someStockRepository).findByTitle(SOME_TITLE);
+    given(someStockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(someStock);
   }
 
   @Test
@@ -79,8 +78,8 @@ public class PortfolioTest {
   public void givenPortfolioContainsInvalidStock_whenGetCurrentTotalValue_thenAnExceptionIsThrown()
       throws StockNotFoundException {
     String invalidTitle = "invalid";
-    willReturn(true).given(someStockRepository).doesStockExist(invalidTitle);
-    willThrow(StockNotFoundException.class).given(someStockRepository).findByTitle(invalidTitle);
+    given(someStockRepository.doesStockExist(invalidTitle)).willReturn(true);
+    given(someStockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
     portfolio.add(invalidTitle, SOME_QUANTITY, someStockRepository);
 
     assertThatExceptionOfType(InvalidStockInPortfolioException.class).isThrownBy(() -> portfolio.getCurrentTotalValue(someStockRepository));
