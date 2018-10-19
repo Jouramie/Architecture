@@ -25,7 +25,7 @@ public class PaginationFilterTest {
   private final List<Object> paginatedResponse = new ArrayList<>();
   private final int page = 2;
   private final int perPage = 5;
-  private MultivaluedHashMap<String, String> headers;
+  private MultivaluedHashMap<String, Object> headers;
   private MultivaluedHashMap<String, String> queryParams;
   @Mock
   private UriInfo uriInfo;
@@ -46,7 +46,7 @@ public class PaginationFilterTest {
     given(requestContext.getUriInfo()).willReturn(uriInfo);
 
     headers = new MultivaluedHashMap<>();
-    given(requestContext.getHeaders()).willReturn(headers);
+    given(responseContext.getHeaders()).willReturn(headers);
 
     given(responseContext.getEntity()).willReturn(responseBody);
     given(pagination.getPaginatedResponse(responseBody, page, perPage))
