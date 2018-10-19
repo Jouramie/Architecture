@@ -77,11 +77,7 @@ public class CheckoutService {
 
   private void makeUserAcquireStocks(User currentUser, Cart cart) throws InvalidStockTitleException {
     for (String title : cart.getStocks().getTitles()) {
-      try {
-        currentUser.acquireStock(title, cart.getQuantity(title));
-      } catch (StockNotFoundException e) {
-        throw new InvalidStockTitleException("Cart contains invalid stock with title " + title);
-      }
+      currentUser.acquireStock(title, cart.getQuantity(title));
     }
   }
 

@@ -2,7 +2,6 @@ package ca.ulaval.glo4003.domain.user;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class User {
     this.email = email;
     this.password = password;
     this.role = role;
-    cart = new Cart();
+    cart = new Cart(stockRepository);
     portfolio = new Portfolio(stockRepository);
   }
 
@@ -41,7 +40,7 @@ public class User {
     return cart;
   }
 
-  public void acquireStock(String title, int quantity) throws StockNotFoundException {
+  public void acquireStock(String title, int quantity) {
     portfolio.add(title, quantity);
   }
 

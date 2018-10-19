@@ -103,7 +103,7 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenStocksAreAcquiredByUser() throws StockNotFoundException {
+  public void whenCheckoutCart_thenStocksAreAcquiredByUser() {
     checkoutService.checkoutCart();
 
     int numberOfStocksInCart = cart.getStocks().getTitles().size();

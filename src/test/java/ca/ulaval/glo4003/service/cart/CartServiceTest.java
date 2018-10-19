@@ -51,7 +51,6 @@ public class CartServiceTest {
   public void setup() {
     given(currentUserSession.getCurrentUser()).willReturn(currentUser);
     given(currentUser.getCart()).willReturn(cart);
-    given(cart.getStocks()).willReturn(new StockCollection());
     given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
 
     cartService = new CartService(stockRepository, currentUserSession, userRepository, cartItemAssembler);
@@ -66,7 +65,7 @@ public class CartServiceTest {
 
   @Test
   public void whenGetCartContent_thenWeHaveCorrespondingDtos() {
-    StockCollection stockCollection = new StockCollection();
+    StockCollection stockCollection = new StockCollection(stockRepository);
     List<CartItemResponseDto> cartItemDtos = Collections.singletonList(cartItemDto);
     given(cart.getStocks()).willReturn(stockCollection);
     given(cartItemAssembler.toDtoList(stockCollection)).willReturn(cartItemDtos);

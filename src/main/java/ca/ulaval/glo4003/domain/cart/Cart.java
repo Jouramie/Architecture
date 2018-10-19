@@ -1,12 +1,13 @@
 package ca.ulaval.glo4003.domain.cart;
 
 import ca.ulaval.glo4003.domain.stock.StockCollection;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
 
 public class Cart {
   private StockCollection stocks;
 
-  public Cart() {
-    stocks = new StockCollection();
+  public Cart(StockRepository stockRepository) {
+    stocks = new StockCollection(stockRepository);
   }
 
   public void add(String title, int addedQuantity) {

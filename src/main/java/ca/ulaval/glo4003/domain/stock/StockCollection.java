@@ -8,13 +8,15 @@ import java.util.Optional;
 
 public class StockCollection {
   private final Map<String, Integer> stocks;
+  private final StockRepository stockRepository;
 
-  public StockCollection() {
-    stocks = new HashMap<>();
+  public StockCollection(StockRepository stockRepository) {
+    this(new HashMap<>(), stockRepository);
   }
 
-  private StockCollection(Map<String, Integer> stocks) {
+  private StockCollection(Map<String, Integer> stocks, StockRepository stockRepository) {
     this.stocks = stocks;
+    this.stockRepository = stockRepository;
   }
 
   public boolean contains(String title) {
@@ -22,7 +24,7 @@ public class StockCollection {
   }
 
   public StockCollection add(String title, int addedQuantity) {
-    if (addedQuantity < 0) {
+    if (!stockRepository.doesStockExist(title) || addedQuantity < 0) {
       throw new IllegalArgumentException();
     }
 
@@ -32,7 +34,7 @@ public class StockCollection {
       newMap.put(title, getQuantity(title) + addedQuantity);
     }
 
-    return new StockCollection(newMap);
+    return new StockCollection(newMap, stockRepository);
   }
 
   public int getQuantity(String title) {
@@ -52,7 +54,7 @@ public class StockCollection {
       newMap.put(title, quantity);
     }
 
-    return new StockCollection(newMap);
+    return new StockCollection(newMap, stockRepository);
   }
 
   public List<String> getTitles() {
@@ -74,7 +76,7 @@ public class StockCollection {
       newMap.put(title, getQuantity(title) - quantity);
     }
 
-    return new StockCollection(newMap);
+    return new StockCollection(newMap, stockRepository);
   }
 
   public StockCollection removeAll(String title) {
@@ -82,7 +84,7 @@ public class StockCollection {
 
     newMap.remove(title);
 
-    return new StockCollection(newMap);
+    return new StockCollection(newMap, stockRepository);
   }
 
   public boolean isEmpty() {
@@ -90,6 +92,6 @@ public class StockCollection {
   }
 
   public StockCollection empty() {
-    return new StockCollection();
+    return new StockCollection(stockRepository);
   }
 }

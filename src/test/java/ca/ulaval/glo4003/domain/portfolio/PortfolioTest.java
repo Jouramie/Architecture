@@ -22,7 +22,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class PortfolioTest {
   private final String SOME_TITLE = "MSFT";
-  private final String SOME_INVALID_TITLE = "invalid";
   private final int SOME_QUANTITY = 3;
   private final String SOME_CURRENCY_NAME = "CAD";
   private final BigDecimal SOME_RATE_TO_USD = new BigDecimal(1);
@@ -48,20 +47,13 @@ public class PortfolioTest {
 
     willReturn(true).given(someStockRepository).doesStockExist(SOME_TITLE);
     willReturn(someStock).given(someStockRepository).findByTitle(SOME_TITLE);
-    willThrow(StockNotFoundException.class).given(someStockRepository).findByTitle(SOME_INVALID_TITLE);
   }
 
   @Test
-  public void whenAddStockToPortfolio_thenItCanBeRetrieved() throws StockNotFoundException {
+  public void whenAddStockToPortfolio_thenItCanBeRetrieved() {
     portfolio.add(SOME_TITLE, SOME_QUANTITY);
 
     assertThat(portfolio.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY);
-  }
-
-  @Test
-  public void givenStockDoesNotExist_whenAddStockToPortfolio_thenAnExceptionIsThrown() {
-    assertThatExceptionOfType(StockNotFoundException.class)
-        .isThrownBy(() -> portfolio.add(SOME_INVALID_TITLE, SOME_QUANTITY));
   }
 
   @Test
@@ -70,7 +62,7 @@ public class PortfolioTest {
   }
 
   @Test
-  public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues() throws StockNotFoundException, InvalidStockInPortfolioException {
+  public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues() throws InvalidStockInPortfolioException {
     portfolio.add(SOME_TITLE, SOME_QUANTITY);
 
     BigDecimal currentTotal = SOME_VALUE.getAmount().multiply(new BigDecimal(SOME_QUANTITY));

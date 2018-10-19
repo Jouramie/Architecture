@@ -2,22 +2,36 @@ package ca.ulaval.glo4003.domain.stock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.BDDMockito.willReturn;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class StockCollectionTest {
   private final String INCLUDED_STOCK_TITLE = "MSFT";
   private final int INCLUDED_STOCK_QUANTITY = 3;
   private final String MISSING_STOCK_TITLE = "RBS.1";
   private final int MISSING_STOCK_QUANTITY = 7;
+  private final String INVALID_TITLE = "invalid";
+
+  @Mock
+  private StockRepository someStockRepository;
 
   private StockCollection stockCollection;
 
   @Before
   public void setupStockCollection() {
-    stockCollection = new StockCollection();
-    stockCollection = stockCollection.add(INCLUDED_STOCK_TITLE, INCLUDED_STOCK_QUANTITY);
+    willReturn(true).given(someStockRepository).doesStockExist(INCLUDED_STOCK_TITLE);
+    willReturn(true).given(someStockRepository).doesStockExist(MISSING_STOCK_TITLE);
+    willReturn(false).given(someStockRepository).doesStockExist(INVALID_TITLE);
+
+    stockCollection = new StockCollection(someStockRepository)
+        .add(INCLUDED_STOCK_TITLE, INCLUDED_STOCK_QUANTITY);
   }
 
   @Test
@@ -55,6 +69,12 @@ public class StockCollectionTest {
   public void whenAddNegativeQuantityOfStocks_thenIllegalArgumentExceptionIsThrown() {
     assertThatThrownBy(() -> stockCollection.add(INCLUDED_STOCK_TITLE, -1))
         .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  public void givenStockDoesNotExist_whenAddStock_thenAnExceptionIsThrown() {
+    assertThatExceptionOfType(IllegalArgumentException.class)
+        .isThrownBy(() -> stockCollection.add(INVALID_TITLE, INCLUDED_STOCK_QUANTITY));
   }
 
   @Test

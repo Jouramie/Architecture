@@ -2,23 +2,35 @@ package ca.ulaval.glo4003.domain.cart;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.willReturn;
 
 import ca.ulaval.glo4003.domain.stock.StockCollection;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CartTest {
   private static final String SOME_TITLE = "MSFT";
   private static final int SOME_QUANTITY = 3;
   private static final String SOME_OTHER_TITLE = "AAPL";
   private static final int SOME_OTHER_QUANTITY = 2;
 
+  @Mock
+  private StockRepository someStockRepository;
+
   private Cart cart;
 
   @Before
   public void setupCarts() {
-    cart = new Cart();
+    cart = new Cart(someStockRepository);
+
+    willReturn(true).given(someStockRepository).doesStockExist(SOME_TITLE);
+    willReturn(true).given(someStockRepository).doesStockExist(SOME_OTHER_TITLE);
   }
 
   @Test

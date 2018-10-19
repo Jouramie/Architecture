@@ -16,12 +16,11 @@ public class Portfolio {
   private StockCollection stocks;
 
   public Portfolio(StockRepository stockRepository) {
-    stocks = new StockCollection();
+    stocks = new StockCollection(stockRepository);
     this.stockRepository = stockRepository;
   }
 
-  public void add(String title, int quantity) throws StockNotFoundException {
-    checkIfStockExists(title);
+  public void add(String title, int quantity) {
     stocks = stocks.add(title, quantity);
   }
 
@@ -38,12 +37,6 @@ public class Portfolio {
 
   public StockCollection getStocks() {
     return stocks;
-  }
-
-  private void checkIfStockExists(String title) throws StockNotFoundException {
-    if (!stockRepository.doesStockExist(title)) {
-      throw new StockNotFoundException("Stock with title " + title + " does not exist.");
-    }
   }
 
   private MoneyAmount getSubtotal(Stock stock) {

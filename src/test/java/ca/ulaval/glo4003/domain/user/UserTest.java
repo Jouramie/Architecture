@@ -3,7 +3,6 @@ package ca.ulaval.glo4003.domain.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.willReturn;
 
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.util.UserBuilder;
 import org.junit.Before;
@@ -54,7 +53,7 @@ public class UserTest {
   }
 
   @Test
-  public void whenAcquireStock_thenStockCanBeRetrieved() throws StockNotFoundException {
+  public void whenAcquireStock_thenStockCanBeRetrieved() {
     user.acquireStock(SOME_STOCK_TITLE, SOME_STOCK_QUANTITY);
 
     assertThat(user.getStocks()).contains(SOME_STOCK_TITLE);
