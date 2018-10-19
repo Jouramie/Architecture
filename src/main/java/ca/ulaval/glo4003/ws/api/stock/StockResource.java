@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.ws.api.stock;
 
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
+import ca.ulaval.glo4003.ws.http.PaginationBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;
@@ -10,9 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
-import javax.validation.constraints.Min;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -55,6 +54,7 @@ public interface StockResource {
           String title);
 
   @GET
+  @PaginationBinding
   @Operation(
       summary = "Get all stocks.",
       description = "A list of all stocks. Each stock contains a title, market, stock name, "
@@ -86,8 +86,6 @@ public interface StockResource {
       @Parameter(description = "Stock category")
           String category,
       @QueryParam("page")
-      @DefaultValue("1")
-      @Min(1)
       @Parameter(
           description = "Page number",
           schema = @Schema(
@@ -96,8 +94,6 @@ public interface StockResource {
       )
           int page,
       @QueryParam("per_page")
-      @DefaultValue("15")
-      @Min(1)
       @Parameter(
           description = "Number of stock per page",
           schema = @Schema(
