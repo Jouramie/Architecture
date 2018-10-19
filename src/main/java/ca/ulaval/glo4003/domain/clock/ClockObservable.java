@@ -16,7 +16,6 @@ public abstract class ClockObservable {
     observers.add(observer);
   }
 
-
   protected void notifyObservers(LocalDateTime currentTime) {
     observers.forEach(observer -> observer.onTick(currentTime));
   }
