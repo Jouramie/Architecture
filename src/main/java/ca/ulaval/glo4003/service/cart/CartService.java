@@ -31,7 +31,7 @@ public class CartService {
 
   public List<CartItemResponseDto> getCartContent() {
     Cart cart = getCart();
-    return assembler.toDtoList(cart.getItems());
+    return assembler.toDtoList(cart.getStocks());
   }
 
   public void addStockToCart(String title, int quantity) {

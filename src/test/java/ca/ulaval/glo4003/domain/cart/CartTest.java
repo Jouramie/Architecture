@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +22,7 @@ public class CartTest {
   }
 
   @Test
-  public void whenAdd_thenItemsAreAddedToTheCart() {
+  public void whenAdd_thenStocksAreAddedToTheCart() {
     cart.add(SOME_TITLE, SOME_QUANTITY);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY);
@@ -31,7 +30,7 @@ public class CartTest {
 
   @Test
   public void givenCartWithStocks_whenAddStocksAlreadyThere_thenPerformAddition() {
-    givenTwoItemInCart();
+    givenTwoStocksInCart();
 
     cart.add(SOME_TITLE, SOME_QUANTITY);
 
@@ -39,16 +38,16 @@ public class CartTest {
   }
 
   @Test
-  public void whenAddStockWithNoQuantity_thenItemIsNotAdded() {
+  public void whenAddStockWithNoQuantity_thenStockIsNotAdded() {
     cart.add(SOME_TITLE, 0);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
-    assertThat(cart.getItems().isEmpty()).isTrue();
+    assertThat(cart.getStocks().isEmpty()).isTrue();
   }
 
   @Test
   public void givenCartWithStocks_whenRemoveAll_thenSetStockQtyToZero() {
-    givenTwoItemInCart();
+    givenTwoStocksInCart();
 
     cart.removeAll(SOME_TITLE);
 
@@ -64,16 +63,16 @@ public class CartTest {
 
   @Test
   public void givenCartWithStocks_whenEmpty_thenRemoveAllStocks() {
-    givenTwoItemInCart();
+    givenTwoStocksInCart();
 
     cart.empty();
 
-    assertThat(cart.getItems().isEmpty()).isTrue();
+    assertThat(cart.getStocks().isEmpty()).isTrue();
   }
 
   @Test
   public void givenCartWithStocks_whenIsEmpty_thenReturnFalse() {
-    givenTwoItemInCart();
+    givenTwoStocksInCart();
 
     boolean cartIsEmpty = cart.isEmpty();
 
@@ -88,12 +87,12 @@ public class CartTest {
   }
 
   @Test
-  public void givenCartWithStocks_whenGetItems_thenStockCollectionContainsStocks() {
-    givenTwoItemInCart();
+  public void givenCartWithStocks_whenGetStocks_thenStockCollectionContainsStocks() {
+    givenTwoStocksInCart();
 
-    StockCollection items = cart.getItems();
+    StockCollection stocks = cart.getStocks();
 
-    assertThat(items.getTitles()).contains(SOME_TITLE, SOME_OTHER_TITLE);
+    assertThat(stocks.getTitles()).contains(SOME_TITLE, SOME_OTHER_TITLE);
   }
 
   @Test
@@ -104,16 +103,15 @@ public class CartTest {
   }
 
   @Test
-  public void givenCartWithStocks_whenUpdateStocksAlreadyThere_thenUpdateQuantity()
-      throws StockNotFoundException {
-    givenTwoItemInCart();
+  public void givenCartWithStocks_whenUpdateStocksAlreadyThere_thenUpdateQuantity() {
+    givenTwoStocksInCart();
 
     cart.update(SOME_TITLE, SOME_OTHER_QUANTITY);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(SOME_OTHER_QUANTITY);
   }
 
-  private void givenTwoItemInCart() {
+  private void givenTwoStocksInCart() {
     cart.add(SOME_TITLE, SOME_QUANTITY);
     cart.add(SOME_OTHER_TITLE, SOME_OTHER_QUANTITY);
   }

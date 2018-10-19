@@ -23,7 +23,7 @@ public class TransactionFactory {
   }
 
   public Transaction createPurchase(Cart cart) throws StockNotFoundException {
-    List<TransactionItem> transactionItems = buildTransactionItems(cart.getItems());
+    List<TransactionItem> transactionItems = buildTransactionItems(cart.getStocks());
     return new Transaction(clock.getCurrentTime(), transactionItems, TransactionType.PURCHASE);
   }
 

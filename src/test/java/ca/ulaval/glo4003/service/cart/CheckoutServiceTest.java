@@ -67,7 +67,7 @@ public class CheckoutServiceTest {
     given(currentUser.getCart()).willReturn(cart);
     given(transactionFactory.createPurchase(cart)).willReturn(transaction);
     given(cart.isEmpty()).willReturn(false);
-    given(cart.getItems()).willReturn(stockCollection);
+    given(cart.getStocks()).willReturn(stockCollection);
     given(stockCollection.getTitles()).willReturn(Arrays.asList("stock1", "stock2", "stock3"));
 
     checkoutService = new CheckoutService(paymentProcessor,
@@ -106,7 +106,7 @@ public class CheckoutServiceTest {
   public void whenCheckoutCart_thenStocksAreAcquiredByUser() throws StockNotFoundException {
     checkoutService.checkoutCart();
 
-    int numberOfStocksInCart = cart.getItems().getTitles().size();
+    int numberOfStocksInCart = cart.getStocks().getTitles().size();
     verify(currentUser, times(numberOfStocksInCart)).acquireStock(any(), anyInt());
   }
 
