@@ -15,10 +15,13 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.service.stock.max.StockMaxResponseAssembler;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueRetriever;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
+import ca.ulaval.glo4003.util.TestStockBuilder;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import com.google.common.collect.Lists;
+import java.util.Collections;
 import java.util.List;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +30,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StockServiceTest {
-  private static final String SOME_TITLE = "title";
-  private static final String SOME_NAME = "name";
+  private static final String SOME_TITLE = TestStockBuilder.DEFAULT_TITLE;
+  private static final String SOME_NAME = TestStockBuilder.DEFAULT_NAME;
+  private static final String SOME_CATEGORY = TestStockBuilder.DEFAULT_CATEGORY;
   private static final StockMaxValueSinceRange SOME_RANGE = StockMaxValueSinceRange.LAST_FIVE_DAYS;
 
   @Mock
@@ -66,7 +70,9 @@ public class StockServiceTest {
 
   @Test
   public void whenGetStockByTitle_thenWeHaveCorrespondingDto() throws StockNotFoundException {
-    given(stockRepository.getByTitle(SOME_TITLE)).willReturn(givenStock);
+    Stock givenStock = new TestStockBuilder().build();
+    StockDto expectedDto = new TestStockBuilder().buildDto();
+    given(stockRepository.getByTitle(any())).willReturn(givenStock);
     given(stockAssembler.toDto(givenStock)).willReturn(expectedDto);
 
     StockDto resultingDto = stockService.getStockByTitle(SOME_TITLE);
@@ -75,38 +81,34 @@ public class StockServiceTest {
   }
 
   @Test
-  public void whenGetStockByName_thenStockIsGotFromRepository() throws StockNotFoundException {
-    stockService.getStockByName(SOME_NAME);
-
-    verify(stockRepository).getByName(SOME_NAME);
-  }
-
-  @Test
-  public void whenGetStockByName_thenWeHaveCorrespondingDto() throws StockNotFoundException {
-    given(stockRepository.getByName(SOME_NAME)).willReturn(givenStock);
-    given(stockAssembler.toDto(givenStock)).willReturn(expectedDto);
-
-    StockDto resultingDto = stockService.getStockByName(SOME_NAME);
-
-    assertThat(resultingDto).isEqualTo(expectedDto);
-  }
-
-  @Test
-  public void givenStockDoesNotExist_whenGettingStockByName_thenStockDoesNotExistExceptionIsThrown()
-      throws StockNotFoundException {
-    doThrow(StockNotFoundException.class).when(stockRepository).getByName(any());
-
-    assertThatThrownBy(() -> stockService.getStockByName(SOME_NAME))
-        .isInstanceOf(StockDoesNotExistException.class);
-  }
-
-  @Test
   public void givenStockNotFound_whenGettingStockByTitle_thenStockDoesNotExistExceptionIsThrown()
       throws StockNotFoundException {
+    String wrongTitle = "wrong";
     doThrow(StockNotFoundException.class).when(stockRepository).getByTitle(any());
 
-    assertThatThrownBy(() -> stockService.getStockByTitle(SOME_NAME))
-        .isInstanceOf(StockDoesNotExistException.class);
+    ThrowableAssert.ThrowingCallable getStockByTitle =
+        () -> stockService.getStockByTitle(wrongTitle);
+
+    assertThatThrownBy(getStockByTitle).isInstanceOf(StockDoesNotExistException.class);
+  }
+
+  @Test
+  public void whenQueryStocks_thenStockIsGotFromRepository() {
+    stockService.queryStocks(SOME_NAME, SOME_CATEGORY);
+
+    verify(stockRepository).queryStocks(SOME_NAME, SOME_CATEGORY);
+  }
+
+  @Test
+  public void whenQueryStocks_thenWeHaveCorrespondingDto() {
+    List<Stock> givenStocks = Collections.singletonList(new TestStockBuilder().build());
+    List<StockDto> expectedDtos = Collections.singletonList(new TestStockBuilder().buildDto());
+    given(stockRepository.queryStocks(any(), any())).willReturn(givenStocks);
+    given(stockAssembler.toDtoList(givenStocks)).willReturn(expectedDtos);
+
+    List<StockDto> resultingDtos = stockService.queryStocks(SOME_NAME, SOME_CATEGORY);
+
+    assertThat(resultingDtos).isSameAs(expectedDtos);
   }
 
   @Test
