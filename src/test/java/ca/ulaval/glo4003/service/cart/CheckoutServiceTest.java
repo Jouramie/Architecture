@@ -107,11 +107,11 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenStocksAreAcquiredByUser() {
+  public void whenCheckoutCart_thenStocksAreAddedToUserPortfolio() {
     checkoutService.checkoutCart();
 
     int numberOfStocksInCart = cart.getStocks().getTitles().size();
-    verify(currentUser, times(numberOfStocksInCart)).acquireStock(any(), anyInt(), any());
+    verify(currentUser, times(numberOfStocksInCart)).addStockToPortfolio(any(), anyInt(), any());
   }
 
   @Test

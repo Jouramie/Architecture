@@ -40,7 +40,7 @@ public class User {
     return cart;
   }
 
-  public void acquireStock(String title, int quantity, StockRepository stockRepository) {
+  public void addStockToPortfolio(String title, int quantity, StockRepository stockRepository) {
     portfolio.add(title, quantity, stockRepository);
   }
 

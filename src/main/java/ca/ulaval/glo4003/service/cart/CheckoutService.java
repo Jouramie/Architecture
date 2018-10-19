@@ -55,7 +55,7 @@ public class CheckoutService {
     Transaction transaction = createTransaction(cart);
     processTransaction(transaction);
     sendTransactionNotification(transaction, currentUser);
-    makeUserAcquireStocks(currentUser, cart);
+    addStocksToUserPortfolio(currentUser, cart);
     cart.empty();
     return transactionAssembler.toDto(transaction);
   }
@@ -79,9 +79,9 @@ public class CheckoutService {
     notificationSender.sendNotification(notification, currentUser);
   }
 
-  private void makeUserAcquireStocks(User currentUser, Cart cart) throws InvalidStockTitleException {
+  private void addStocksToUserPortfolio(User currentUser, Cart cart) throws InvalidStockTitleException {
     for (String title : cart.getStocks().getTitles()) {
-      currentUser.acquireStock(title, cart.getQuantity(title), stockRepository);
+      currentUser.addStockToPortfolio(title, cart.getQuantity(title), stockRepository);
     }
   }
 

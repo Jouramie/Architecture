@@ -53,8 +53,8 @@ public class UserTest {
   }
 
   @Test
-  public void whenAcquireStock_thenStockCanBeRetrieved() {
-    user.acquireStock(SOME_STOCK_TITLE, SOME_STOCK_QUANTITY, stockRepository);
+  public void whenAddStockToPortfolio_thenStockCanBeRetrieved() {
+    user.addStockToPortfolio(SOME_STOCK_TITLE, SOME_STOCK_QUANTITY, stockRepository);
 
     assertThat(user.getStocks()).contains(SOME_STOCK_TITLE);
   }
