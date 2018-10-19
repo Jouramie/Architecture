@@ -22,6 +22,7 @@ import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryTransactionLedger;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryUserRepository;
 import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
+import ca.ulaval.glo4003.investul.live_stock_emulator.StockSimulator;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import java.util.Collection;
 import java.util.List;
@@ -45,6 +46,7 @@ public class ServiceLocatorInitializer {
     serviceLocator.registerSingleton(AuthenticationTokenRepository.class,
         InMemoryAuthenticationTokenRepository.class);
     serviceLocator.registerSingleton(CurrentUserSession.class, CurrentUserSession.class);
+    serviceLocator.registerInstance(StockSimulator.class, new StockSimulator());
     serviceLocator.registerSingleton(StockRepository.class, InMemoryStockRepository.class);
     serviceLocator.registerSingleton(MarketRepository.class, InMemoryMarketRepository.class);
     serviceLocator.registerSingleton(StockValueRetriever.class, SimulatedStockValueRetriever.class);
