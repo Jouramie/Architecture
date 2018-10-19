@@ -31,14 +31,9 @@ public class Portfolio {
 
   public MoneyAmount getCurrentTotalValue() throws InvalidStockInPortfolioException {
     List<Stock> stockList = getStockList();
-
     Currency currency = getFirstStockCurrencyOrDefault(stockList);
-    MoneyAmount currentTotalValue = MoneyAmount.zero(currency);
-    for (Stock stock : stockList) {
-      currentTotalValue = currentTotalValue.add(getSubtotal(stock));
-    }
-
-    return currentTotalValue;
+    return stockList.stream().map(this::getSubtotal)
+        .reduce(MoneyAmount.zero(currency), MoneyAmount::add);
   }
 
   public StockCollection getStocks() {
