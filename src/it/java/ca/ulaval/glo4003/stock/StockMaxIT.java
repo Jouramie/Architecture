@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 public class StockMaxIT {
@@ -24,8 +24,8 @@ public class StockMaxIT {
   private static final String WRONG_TITLE = "wrong";
   private static final String SOME_SINCE_PARAMETER = "LAST_YEAR";
 
-  @Rule
-  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+  @ClassRule
+  public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 
   @Test
   public void whenGettingMaxValueOfStock_thenReturnTitleWithMaxValueAndDate() {

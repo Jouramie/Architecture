@@ -8,7 +8,7 @@ import static org.hamcrest.Matchers.any;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.ws.api.stock.trend.StockTrend;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 public class StockTrendIT {
@@ -16,8 +16,8 @@ public class StockTrendIT {
   private static final String STOCK_TITLE = "RBS.l";
   private static final String INEXISTENT_STOCK_TITLE = "foobar";
 
-  @Rule
-  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+  @ClassRule
+  public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 
   @Test
   public void whenGettingStockVariationTrend_thenReturnVariationTrend() {
