@@ -27,7 +27,7 @@ public class PortfolioAssembler {
   public PortfolioResponseDto toDto(Portfolio portfolio) throws InvalidStockInPortfolioException {
     List<PortfolioItemResponseDto> items = portfolio.getStocks().getTitles().stream()
         .map((title) -> itemToDto(title, portfolio.getQuantity(title))).collect(toList());
-    BigDecimal currentTotalValue = portfolio.getCurrentTotalValue(stockRepository).toUsd();
+    BigDecimal currentTotalValue = portfolio.getCurrentTotalValue(stockRepository).getAmount();
     return new PortfolioResponseDto(items, currentTotalValue);
   }
 
