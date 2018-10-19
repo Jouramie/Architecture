@@ -71,7 +71,7 @@ public class CartItemAssemblerTest {
   }
 
   @Test
-  public void whenToDtoList_thenAllItemArePresent() throws StockNotFoundException {
+  public void whenToDtoList_thenAllItemsArePresent() throws StockNotFoundException {
     StockCollection stockCollection = new StockCollection();
     stockCollection = stockCollection
         .add(SOME_TITLE, SOME_QUANTITY)
