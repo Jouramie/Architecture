@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.OK;
 
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
@@ -26,6 +27,12 @@ public class AuthenticationResourceImpl implements AuthenticationResource {
     requestValidator.validate(authenticationRequest);
     AuthenticationResponseDto authenticationResponse
         = authenticationService.authenticate(authenticationRequest);
-    return Response.status(OK).entity(authenticationResponse).build();
+    return Response.status(ACCEPTED).entity(authenticationResponse).build();
+  }
+
+  @Override
+  public Response logout() {
+    authenticationService.revokeToken();
+    return Response.status(OK).build();
   }
 }

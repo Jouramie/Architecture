@@ -51,7 +51,7 @@ public class InMemoryUserRepositoryTest {
   }
 
   @Test
-  public void givenUserDoesNotExist_whenGettingUser_thenUserNotFoundExceptionIsThrown() {
+  public void givenUserDoesNotExist_whenFindingUser_thenUserNotFoundExceptionIsThrown() {
     assertThatThrownBy(() -> inMemoryUserRepository.find(SOME_USER.getEmail()))
         .isInstanceOf(UserNotFoundException.class);
   }

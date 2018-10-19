@@ -42,15 +42,16 @@ public class InMemoryStockRepositoryTest {
   }
 
   @Test
-  public void whenGetByTitleAnExistingStock_thenStockIsReturned() throws StockNotFoundException {
-    Stock result = repository.getByTitle(SOME_NASDAQ_BANKING_STOCK.getTitle());
+  public void whenFindingByTitle_thenStockIsReturned() throws StockNotFoundException {
+    Stock result = repository.findByTitle(SOME_NASDAQ_BANKING_STOCK.getTitle());
 
     assertThat(result).isEqualTo(SOME_NASDAQ_BANKING_STOCK);
   }
 
   @Test
-  public void whenGetByTitleANonExistingStock_thenStockNotFoundExceptionIsThrown() {
-    assertThatExceptionOfType(StockNotFoundException.class).isThrownBy(() -> repository.getByTitle("ASDF"));
+  public void givenStockDoesNotExist_whenFindingByTitle_thenStockNotFoundExceptionIsThrown() {
+    assertThatExceptionOfType(StockNotFoundException.class)
+        .isThrownBy(() -> repository.findByTitle("ASDF"));
   }
 
   @Test
@@ -97,24 +98,24 @@ public class InMemoryStockRepositoryTest {
   }
 
   @Test
-  public void whenGetAll_thenReturnAllStocks() {
-    List<Stock> result = repository.getAll();
+  public void whenFindingAllStocks_thenReturnAllStocks() {
+    List<Stock> result = repository.findAll();
 
     assertThat(result).containsExactlyInAnyOrder(SOME_NASDAQ_BANKING_STOCK,
         SOME_NASDAQ_GREEN_TECH_STOCK, SOME_TSX_BANKING_STOCK, SOME_NASDAQ_MEDIA_STOCK);
   }
 
   @Test
-  public void whenGetAllByMarket_thenReturnAllStocksOfMarket() {
-    List<Stock> result = repository.getByMarket(TestStockBuilder.DEFAULT_MARKET_ID);
+  public void whenFindingAllByMarket_thenReturnAllStocksOfMarket() {
+    List<Stock> result = repository.findByMarket(TestStockBuilder.DEFAULT_MARKET_ID);
 
     assertThat(result).containsExactlyInAnyOrder(SOME_NASDAQ_BANKING_STOCK,
         SOME_NASDAQ_GREEN_TECH_STOCK, SOME_NASDAQ_MEDIA_STOCK);
   }
 
   @Test
-  public void whenGetCategories_thenReturnAllCategories() {
-    List<String> result = repository.getCategories();
+  public void whenFindingAllCategories_thenReturnAllCategories() {
+    List<String> result = repository.findAllCategories();
 
     assertThat(result).containsExactlyInAnyOrder(BANKING_CATEGORY, MEDIA_CATEGORY,
         GREEN_TECHNOLOGY_CATEGORY);

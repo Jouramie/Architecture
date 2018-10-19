@@ -47,9 +47,9 @@ public class TransactionFactoryTest {
     cart = new Cart();
     cart.add(SOME_TITLE, SOME_QUANTITY);
 
-    given(stockRepository.getByTitle(SOME_TITLE)).willReturn(stock);
-    given(stockRepository.getByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
-    given(stockRepository.getByTitle(SOME_TITLE).getValue().getCurrentValue()).willReturn(DEFAULT_AMOUNT);
+    given(stockRepository.findByTitle(SOME_TITLE)).willReturn(stock);
+    given(stockRepository.findByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
+    given(stockRepository.findByTitle(SOME_TITLE).getValue().getCurrentValue()).willReturn(DEFAULT_AMOUNT);
 
     factory = new TransactionFactory(clock, stockRepository);
   }

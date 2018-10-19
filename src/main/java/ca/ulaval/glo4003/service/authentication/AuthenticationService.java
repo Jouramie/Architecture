@@ -51,7 +51,7 @@ public class AuthenticationService {
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {
     try {
       AuthenticationToken savedToken =
-          authenticationTokenRepository.getByUUID(UUID.fromString(authenticationTokenDto.token));
+          authenticationTokenRepository.findByUUID(UUID.fromString(authenticationTokenDto.token));
       User currentUser = getUserByEmail(savedToken.email);
       currentUserSession.setCurrentUser(currentUser);
     } catch (TokenNotFoundException exception) {
