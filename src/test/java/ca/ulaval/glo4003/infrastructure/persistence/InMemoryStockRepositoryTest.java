@@ -42,15 +42,16 @@ public class InMemoryStockRepositoryTest {
   }
 
   @Test
-  public void whenGetByTitleAnExistingStock_thenStockIsReturned() throws StockNotFoundException {
+  public void whenFindingByTitle_thenStockIsReturned() throws StockNotFoundException {
     Stock result = repository.findByTitle(SOME_NASDAQ_BANKING_STOCK.getTitle());
 
     assertThat(result).isEqualTo(SOME_NASDAQ_BANKING_STOCK);
   }
 
   @Test
-  public void whenGetByTitleANonExistingStock_thenStockNotFoundExceptionIsThrown() {
-    assertThatExceptionOfType(StockNotFoundException.class).isThrownBy(() -> repository.findByTitle("ASDF"));
+  public void givenStockDoesNotExist_whenFindingByTitle_thenStockNotFoundExceptionIsThrown() {
+    assertThatExceptionOfType(StockNotFoundException.class)
+        .isThrownBy(() -> repository.findByTitle("ASDF"));
   }
 
   @Test
@@ -97,7 +98,7 @@ public class InMemoryStockRepositoryTest {
   }
 
   @Test
-  public void whenGetAll_thenReturnAllStocks() {
+  public void whenFindingAllStocks_thenReturnAllStocks() {
     List<Stock> result = repository.findAll();
 
     assertThat(result).containsExactlyInAnyOrder(SOME_NASDAQ_BANKING_STOCK,
@@ -105,7 +106,7 @@ public class InMemoryStockRepositoryTest {
   }
 
   @Test
-  public void whenGetAllByMarket_thenReturnAllStocksOfMarket() {
+  public void whenFindingAllByMarket_thenReturnAllStocksOfMarket() {
     List<Stock> result = repository.findByMarket(TestStockBuilder.DEFAULT_MARKET_ID);
 
     assertThat(result).containsExactlyInAnyOrder(SOME_NASDAQ_BANKING_STOCK,
@@ -113,8 +114,8 @@ public class InMemoryStockRepositoryTest {
   }
 
   @Test
-  public void whenGetCategories_thenReturnAllCategories() {
-    List<String> result = repository.getCategories();
+  public void whenFindingAllCategories_thenReturnAllCategories() {
+    List<String> result = repository.findAllCategories();
 
     assertThat(result).containsExactlyInAnyOrder(BANKING_CATEGORY, MEDIA_CATEGORY,
         GREEN_TECHNOLOGY_CATEGORY);

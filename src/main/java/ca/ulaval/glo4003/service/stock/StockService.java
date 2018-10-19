@@ -61,6 +61,6 @@ public class StockService {
   }
 
   public List<String> getCategories() {
-    return stockRepository.getCategories();
+    return stockRepository.findAllCategories();
   }
 }

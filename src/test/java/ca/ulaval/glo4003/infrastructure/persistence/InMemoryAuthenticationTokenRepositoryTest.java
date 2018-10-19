@@ -34,7 +34,7 @@ public class InMemoryAuthenticationTokenRepositoryTest {
   }
 
   @Test
-  public void givenTokenDoesNotExist_whenGettingTokenByUUID_thenTokenNotFoundExceptionIsThrown() {
+  public void givenTokenDoesNotExist_whenFindingTokenByUUID_thenTokenNotFoundExceptionIsThrown() {
     assertThatThrownBy(() -> inMemoryAuthenticationTokenRepository.findByUUID(UUID.randomUUID()))
         .isInstanceOf(TokenNotFoundException.class);
   }

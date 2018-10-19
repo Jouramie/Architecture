@@ -131,7 +131,7 @@ public class StockServiceTest {
   @Test
   public void whenGettingCategories_thenReturnCategories() {
     List<String> expectedCategories = Lists.newArrayList("technology", "banking", "media");
-    given(stockRepository.getCategories()).willReturn(expectedCategories);
+    given(stockRepository.findAllCategories()).willReturn(expectedCategories);
 
     List<String> resultingCategories = stockService.getCategories();
 
