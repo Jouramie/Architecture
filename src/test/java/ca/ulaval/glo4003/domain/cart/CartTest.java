@@ -3,8 +3,8 @@ package ca.ulaval.glo4003.domain.cart;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
-import java.util.Collection;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,21 +43,21 @@ public class CartTest {
     cart.add(SOME_TITLE, 0);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
-    assertThat(cart.getItems()).isEmpty();
+    assertThat(cart.getItems().isEmpty()).isTrue();
   }
 
   @Test
-  public void givenCartWithStocks_whenRemove_thenSetStockQtyToZero() {
+  public void givenCartWithStocks_whenRemoveAll_thenSetStockQtyToZero() {
     givenTwoItemInCart();
 
-    cart.remove(SOME_TITLE);
+    cart.removeAll(SOME_TITLE);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
   }
 
   @Test
-  public void whenRemove_thenDoNothing() {
-    cart.remove(SOME_TITLE);
+  public void whenRemoveAll_thenDoNothing() {
+    cart.removeAll(SOME_TITLE);
 
     assertThat(cart.getQuantity(SOME_TITLE)).isEqualTo(0);
   }
@@ -68,7 +68,7 @@ public class CartTest {
 
     cart.empty();
 
-    assertThat(cart.getItems()).isEmpty();
+    assertThat(cart.getItems().isEmpty()).isTrue();
   }
 
   @Test
@@ -88,21 +88,19 @@ public class CartTest {
   }
 
   @Test
-  public void givenCartWithStocks_whenGetItems_thenReturnCollectionOfItems() {
+  public void givenCartWithStocks_whenGetItems_thenStockCollectionContainsStocks() {
     givenTwoItemInCart();
 
-    Collection<CartItem> items = cart.getItems();
+    StockCollection items = cart.getItems();
 
-    assertThat(items).contains(
-        new CartItem(SOME_TITLE, SOME_QUANTITY),
-        new CartItem(SOME_OTHER_TITLE, SOME_OTHER_QUANTITY));
+    assertThat(items.getStocks()).contains(SOME_TITLE, SOME_OTHER_TITLE);
   }
 
   @Test
-  public void whenUpdate_thenStockNotFoundExceptionIsThrown() {
+  public void whenUpdate_thenIllegalArgumentExceptionIsThrown() {
     ThrowingCallable update = () -> cart.update(SOME_TITLE, SOME_QUANTITY);
 
-    assertThatThrownBy(update).isInstanceOf(StockNotFoundException.class);
+    assertThatThrownBy(update).isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
