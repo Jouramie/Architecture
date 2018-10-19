@@ -30,7 +30,7 @@ public class TransactionFactory {
   private List<TransactionItem> buildTransactionItems(StockCollection items)
       throws StockNotFoundException {
     List<TransactionItem> transactionItems = new ArrayList<>();
-    for (String title : items.getStocks()) {
+    for (String title : items.getTitles()) {
       int quantity = items.getQuantity(title);
       transactionItems.add(buildTransactionItem(title, quantity));
     }

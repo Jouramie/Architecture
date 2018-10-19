@@ -93,7 +93,7 @@ public class CartTest {
 
     StockCollection items = cart.getItems();
 
-    assertThat(items.getStocks()).contains(SOME_TITLE, SOME_OTHER_TITLE);
+    assertThat(items.getTitles()).contains(SOME_TITLE, SOME_OTHER_TITLE);
   }
 
   @Test

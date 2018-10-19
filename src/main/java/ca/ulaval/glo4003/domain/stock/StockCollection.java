@@ -55,7 +55,7 @@ public class StockCollection {
     return new StockCollection(newMap);
   }
 
-  public List<String> getStocks() {
+  public List<String> getTitles() {
     return new ArrayList<>(stocks.keySet());
   }
 

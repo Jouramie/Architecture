@@ -41,8 +41,14 @@ public class Portfolio {
     return currentTotalValue;
   }
 
+  public StockCollection getStocks() {
+    return stocks;
+  }
+
   private void checkIfStockExists(String title) throws StockNotFoundException {
-    stockRepository.getByTitle(title);
+    if (!stockRepository.doesStockExist(title)) {
+      throw new StockNotFoundException("Stock with title " + title + " does not exist.");
+    }
   }
 
   private MoneyAmount getSubtotal(Stock stock) {
@@ -53,9 +59,9 @@ public class Portfolio {
 
   private List<Stock> getStockList() throws InvalidStockInPortfolioException {
     List<Stock> stockList = new ArrayList<>();
-    for (String title : stocks.getStocks()) {
+    for (String title : stocks.getTitles()) {
       try {
-        stockList.add(stockRepository.getByTitle(title));
+        stockList.add(stockRepository.findByTitle(title));
       } catch (StockNotFoundException e) {
         throw new InvalidStockInPortfolioException("Portfolio contains invalid stock with title " + title);
       }

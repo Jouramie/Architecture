@@ -113,7 +113,8 @@ public abstract class AbstractContext {
     String testEmail = "Archi.test.42@gmail.com";
     try {
       serviceLocator.get(UserRepository.class)
-          .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
+          .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR,
+              serviceLocator.get(StockRepository.class)));
     } catch (UserAlreadyExistsException exception) {
       System.out.println("Test user couldn't be added");
       exception.printStackTrace();

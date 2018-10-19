@@ -48,7 +48,7 @@ public class StockCollectionTest {
   public void givenStockNotInCollection_whenAddZeroStock_thenStockIsNotAddedToCollection() {
     stockCollection = stockCollection.add(MISSING_STOCK_TITLE, 0);
 
-    assertThat(stockCollection.getStocks()).doesNotContain(MISSING_STOCK_TITLE);
+    assertThat(stockCollection.getTitles()).doesNotContain(MISSING_STOCK_TITLE);
   }
 
   @Test
@@ -79,7 +79,7 @@ public class StockCollectionTest {
   public void givenStockInCollection_whenUpdateWithQuantityOfZero_thenStockIsRemovedFromCollection() {
     stockCollection = stockCollection.update(INCLUDED_STOCK_TITLE, 0);
 
-    assertThat(stockCollection.getStocks()).doesNotContain(INCLUDED_STOCK_TITLE);
+    assertThat(stockCollection.getTitles()).doesNotContain(INCLUDED_STOCK_TITLE);
   }
 
   @Test
@@ -98,7 +98,7 @@ public class StockCollectionTest {
   public void givenStocksInCollection_whenGetStocks_thenReturnAllStocks() {
     stockCollection = stockCollection.add(MISSING_STOCK_TITLE, MISSING_STOCK_QUANTITY);
 
-    assertThat(stockCollection.getStocks()).contains(INCLUDED_STOCK_TITLE, MISSING_STOCK_TITLE);
+    assertThat(stockCollection.getTitles()).contains(INCLUDED_STOCK_TITLE, MISSING_STOCK_TITLE);
   }
 
   @Test
@@ -112,7 +112,7 @@ public class StockCollectionTest {
   public void givenStockInCollection_whenRemoveRemainingStocks_thenStockIsRemovedFromCollection() {
     stockCollection = stockCollection.remove(INCLUDED_STOCK_TITLE, INCLUDED_STOCK_QUANTITY);
 
-    assertThat(stockCollection.getStocks()).doesNotContain(INCLUDED_STOCK_TITLE);
+    assertThat(stockCollection.getTitles()).doesNotContain(INCLUDED_STOCK_TITLE);
   }
 
   @Test

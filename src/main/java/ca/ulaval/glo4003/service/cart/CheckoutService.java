@@ -43,7 +43,7 @@ public class CheckoutService {
     this.transactionAssembler = transactionAssembler;
   }
 
-  public TransactionDto checkoutCart() {
+  public TransactionDto checkoutCart() throws InvalidStockTitleException {
     User currentUser = currentUserSession.getCurrentUser();
     Cart cart = currentUser.getCart();
     checkIfCartIsEmpty(cart);
@@ -51,6 +51,7 @@ public class CheckoutService {
     Transaction transaction = createTransaction(cart);
     processTransaction(transaction);
     sendTransactionNotification(transaction, currentUser);
+    makeUserAcquireStocks(currentUser, cart);
     cart.empty();
     return transactionAssembler.toDto(transaction);
   }
@@ -72,6 +73,16 @@ public class CheckoutService {
   private void sendTransactionNotification(Transaction transaction, User currentUser) {
     Notification notification = notificationFactory.create(transaction);
     notificationSender.sendNotification(notification, currentUser);
+  }
+
+  private void makeUserAcquireStocks(User currentUser, Cart cart) throws InvalidStockTitleException {
+    for (String title : cart.getItems().getTitles()) {
+      try {
+        currentUser.acquireStock(title, cart.getQuantity(title));
+      } catch (StockNotFoundException e) {
+        throw new InvalidStockTitleException("Cart contains invalid stock with title " + title);
+      }
+    }
   }
 
   private void processTransaction(Transaction transaction) {
