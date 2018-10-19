@@ -51,6 +51,7 @@ public class CartItemAssemblerTest {
     assembler = new CartItemAssembler(stockRepository);
 
     given(stockRepository.findByTitle(SOME_TITLE)).willReturn(SOME_STOCK);
+    given(stockRepository.findByTitle(SOME_OTHER_TITLE)).willReturn(SOME_OTHER_STOCK);
   }
 
   @Test

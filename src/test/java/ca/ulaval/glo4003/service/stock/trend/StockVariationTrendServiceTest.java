@@ -40,11 +40,11 @@ public class StockVariationTrendServiceTest {
 
   @Test
   public void whenGettingStockVariationSummary_thenFetchStockAndSendsToCalculator() throws StockNotFoundException {
-    given(stockRepositoryMock.getByTitle(STOCK_TITLE)).willReturn(mock(Stock.class));
+    given(stockRepositoryMock.findByTitle(STOCK_TITLE)).willReturn(mock(Stock.class));
 
     stockVariationTrendService.getStockVariationSummary(STOCK_TITLE);
 
-    verify(stockRepositoryMock).getByTitle(STOCK_TITLE);
+    verify(stockRepositoryMock).findByTitle(STOCK_TITLE);
     verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(historicalDatetimeService.getFiveDaysAgo().toLocalDate()));
     verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(historicalDatetimeService.getThirtyDaysAgo().toLocalDate()));
     verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(historicalDatetimeService.getOneYearAgo().toLocalDate()));
