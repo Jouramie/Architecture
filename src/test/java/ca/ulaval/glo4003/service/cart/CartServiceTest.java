@@ -95,7 +95,7 @@ public class CartServiceTest {
   public void givenInvalidStockTitle_whenAddStockToCart_thenInvalidStockTitleException()
       throws StockNotFoundException {
     String invalidTitle = "invalid title";
-    given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
+    given(stockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
     ThrowableAssert.ThrowingCallable addStockToCart
         = () -> cartService.addStockToCart(invalidTitle, SOME_QUANTITY);
@@ -126,7 +126,7 @@ public class CartServiceTest {
   public void givenInvalidStockTitle_whenUpdateStockQuantityInCart_thenInvalidStockTitleException()
       throws StockNotFoundException {
     String invalidTitle = "invalid title";
-    given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
+    given(stockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.updateStockInCart(invalidTitle, SOME_QUANTITY);
@@ -169,7 +169,7 @@ public class CartServiceTest {
   public void givenInvalidStockTitle_whenRemoveStockFromCart_thenInvalidStockTitleException()
       throws StockNotFoundException {
     String invalidTitle = "invalid title";
-    given(stockRepository.getByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
+    given(stockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.removeStockFromCart(invalidTitle);

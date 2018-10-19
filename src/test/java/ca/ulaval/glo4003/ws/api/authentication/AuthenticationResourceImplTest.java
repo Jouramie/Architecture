@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
 
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -57,10 +58,10 @@ public class AuthenticationResourceImplTest {
   }
 
   @Test
-  public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenResponseStatusIsOK() {
+  public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenResponseStatusIsAccepted() {
     Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
-    assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
+    assertThat(response.getStatus()).isEqualTo(ACCEPTED.getStatusCode());
   }
 
   @Test
@@ -97,5 +98,19 @@ public class AuthenticationResourceImplTest {
     String expectMessageErrorPattern = String.format(ERROR_MESSAGE_PATTERN, field);
     assertThat(exception.getInputErrors().inputErrors)
         .anyMatch(errorMessage -> Pattern.matches(expectMessageErrorPattern, errorMessage));
+  }
+
+  @Test
+  public void whenLoggingOut_thenTokenIsRevoked() {
+    authenticationResource.logout();
+
+    verify(authenticationService).revokeToken();
+  }
+
+  @Test
+  public void whenLoggingOut_thenResponseIsOk() {
+    Response response = authenticationResource.logout();
+
+    assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
   }
 }

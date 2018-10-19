@@ -28,7 +28,7 @@ public class StockVariationTrendService {
 
   public StockVariationSummary getStockVariationSummary(String stockTitle) {
     try {
-      Stock stock = stockRepository.getByTitle(stockTitle);
+      Stock stock = stockRepository.findByTitle(stockTitle);
       StockValueHistory valueHistory = stock.getValueHistory();
 
       return new StockVariationSummary(

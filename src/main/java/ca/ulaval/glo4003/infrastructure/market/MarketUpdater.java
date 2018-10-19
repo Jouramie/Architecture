@@ -17,6 +17,6 @@ public class MarketUpdater implements ClockObserver {
 
   @Override
   public void onTick(LocalDateTime currentTime) {
-    marketRepository.getAll().forEach(market -> market.update(currentTime));
+    marketRepository.findAll().forEach(market -> market.update(currentTime));
   }
 }

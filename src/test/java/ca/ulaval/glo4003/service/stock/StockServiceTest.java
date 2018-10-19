@@ -46,12 +46,9 @@ public class StockServiceTest {
   @Mock
   private Stock givenStock;
   @Mock
-  private StockDto expectedDto;
-  @Mock
   private HistoricalStockValue givenMaximumStockValue;
   @Mock
   private StockMaxResponseDto expectedMaxResponseDto;
-
 
   private StockService stockService;
 
@@ -65,14 +62,14 @@ public class StockServiceTest {
   public void whenGetStockByTitle_thenStockIsGotFromRepository() throws StockNotFoundException {
     stockService.getStockByTitle(SOME_TITLE);
 
-    verify(stockRepository).getByTitle(SOME_TITLE);
+    verify(stockRepository).findByTitle(SOME_TITLE);
   }
 
   @Test
   public void whenGetStockByTitle_thenWeHaveCorrespondingDto() throws StockNotFoundException {
     Stock givenStock = new TestStockBuilder().build();
     StockDto expectedDto = new TestStockBuilder().buildDto();
-    given(stockRepository.getByTitle(any())).willReturn(givenStock);
+    given(stockRepository.findByTitle(any())).willReturn(givenStock);
     given(stockAssembler.toDto(givenStock)).willReturn(expectedDto);
 
     StockDto resultingDto = stockService.getStockByTitle(SOME_TITLE);
@@ -84,7 +81,7 @@ public class StockServiceTest {
   public void givenStockNotFound_whenGettingStockByTitle_thenStockDoesNotExistExceptionIsThrown()
       throws StockNotFoundException {
     String wrongTitle = "wrong";
-    doThrow(StockNotFoundException.class).when(stockRepository).getByTitle(any());
+    doThrow(StockNotFoundException.class).when(stockRepository).findByTitle(any());
 
     ThrowableAssert.ThrowingCallable getStockByTitle =
         () -> stockService.getStockByTitle(wrongTitle);
@@ -113,7 +110,7 @@ public class StockServiceTest {
 
   @Test
   public void whenGetStockMaxValue_thenWeHaveCorrespondingDto() throws StockNotFoundException, NoStockValueFitsCriteriaException {
-    given(stockRepository.getByTitle(SOME_TITLE)).willReturn(givenStock);
+    given(stockRepository.findByTitle(SOME_TITLE)).willReturn(givenStock);
     given(stockMaxValueRetriever.getStockMaxValue(givenStock, SOME_RANGE)).willReturn(givenMaximumStockValue);
     given(stockMaxResponseAssembler.toDto(SOME_TITLE, givenMaximumStockValue)).willReturn(expectedMaxResponseDto);
 
@@ -125,7 +122,7 @@ public class StockServiceTest {
   @Test
   public void givenStockDoesNotExist_whenGetStockMaxValue_thenStockDoesNotExistExceptionIsThrown()
       throws StockNotFoundException {
-    doThrow(StockNotFoundException.class).when(stockRepository).getByTitle(any());
+    doThrow(StockNotFoundException.class).when(stockRepository).findByTitle(any());
 
     assertThatThrownBy(() -> stockService.getStockMaxValue(SOME_TITLE, SOME_RANGE))
         .isInstanceOf(StockDoesNotExistException.class);
@@ -134,7 +131,7 @@ public class StockServiceTest {
   @Test
   public void whenGettingCategories_thenReturnCategories() {
     List<String> expectedCategories = Lists.newArrayList("technology", "banking", "media");
-    given(stockRepository.getCategories()).willReturn(expectedCategories);
+    given(stockRepository.findAllCategories()).willReturn(expectedCategories);
 
     List<String> resultingCategories = stockService.getCategories();
 

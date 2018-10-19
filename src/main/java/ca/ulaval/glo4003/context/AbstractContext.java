@@ -137,7 +137,7 @@ public abstract class AbstractContext {
 
   private void initializeClock() {
     StockRepository stockRepository = serviceLocator.get(StockRepository.class);
-    Stock stock = stockRepository.getAll().get(0);
+    Stock stock = stockRepository.findAll().get(0);
     HistoricalStockValue latestStockValue = stock.getValueHistory().getLatestValue();
 
     LocalDate startDate = latestStockValue.date.plusDays(1);

@@ -50,8 +50,8 @@ public class CartItemAssemblerTest {
   public void setupCartItemAssembler() throws StockNotFoundException {
     assembler = new CartItemAssembler(stockRepository);
 
-    given(stockRepository.getByTitle(SOME_TITLE)).willReturn(SOME_STOCK);
-    given(stockRepository.getByTitle(SOME_OTHER_TITLE)).willReturn(SOME_OTHER_STOCK);
+    given(stockRepository.findByTitle(SOME_TITLE)).willReturn(SOME_STOCK);
+    given(stockRepository.findByTitle(SOME_OTHER_TITLE)).willReturn(SOME_OTHER_STOCK);
   }
 
   @Test
@@ -64,7 +64,7 @@ public class CartItemAssemblerTest {
   @Test
   public void givenInvalidStockTitle_whenToDto_thenInvalidStockTitleExceptionIsThrown()
       throws StockNotFoundException {
-    doThrow(StockNotFoundException.class).when(stockRepository).getByTitle(any());
+    doThrow(StockNotFoundException.class).when(stockRepository).findByTitle(any());
 
     assertThatThrownBy(() -> assembler.toDto(SOME_TITLE, SOME_QUANTITY))
         .isInstanceOf(InvalidStockTitleException.class);

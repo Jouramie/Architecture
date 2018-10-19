@@ -35,7 +35,7 @@ public class CartItemAssembler {
 
   private Stock getStock(String title) {
     try {
-      return stockRepository.getByTitle(title);
+      return stockRepository.findByTitle(title);
     } catch (StockNotFoundException exception) {
       throw new InvalidStockTitleException(exception);
     }
