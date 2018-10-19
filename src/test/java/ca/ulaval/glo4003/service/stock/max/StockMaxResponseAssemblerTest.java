@@ -8,7 +8,6 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class StockMaxResponseAssemblerTest {
   private static final String SOME_TITLE = "someTitle";
   private static final LocalDate SOME_DATE = LocalDate.now();
-  private static final MoneyAmount SOME_VALUE = new MoneyAmount(10.00, new Currency("USD", BigDecimal.ONE));
+  private static final MoneyAmount SOME_VALUE = new MoneyAmount(10.00, Currency.USD);
 
   @Mock
   private StockValue someStockValue;
