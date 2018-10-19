@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.ws.api.authentication;
 
 
 import static javax.ws.rs.core.Response.Status.ACCEPTED;
+import static javax.ws.rs.core.Response.Status.OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
@@ -97,5 +98,19 @@ public class AuthenticationResourceImplTest {
     String expectMessageErrorPattern = String.format(ERROR_MESSAGE_PATTERN, field);
     assertThat(exception.getInputErrors().inputErrors)
         .anyMatch(errorMessage -> Pattern.matches(expectMessageErrorPattern, errorMessage));
+  }
+
+  @Test
+  public void whenLoggingOut_thenTokenIsRevoked() {
+    authenticationResource.logout();
+
+    verify(authenticationService).revokeToken();
+  }
+
+  @Test
+  public void whenLoggingOut_thenResponseIsOk() {
+    Response response = authenticationResource.logout();
+
+    assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
   }
 }
