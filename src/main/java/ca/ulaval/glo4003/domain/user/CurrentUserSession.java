@@ -1,5 +1,8 @@
 package ca.ulaval.glo4003.domain.user;
 
+import ca.ulaval.glo4003.infrastructure.injection.Component;
+
+@Component
 public class CurrentUserSession {
 
   private final ThreadLocal<User> currentUser = new ThreadLocal<>();
