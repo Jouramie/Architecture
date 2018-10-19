@@ -26,9 +26,11 @@ public class PortfolioAssemblerTest {
   private static final String SOME_TITLE = "title";
   private static final int SOME_QUANTITY = 45;
   private static final BigDecimal SOME_VALUE = new BigDecimal(23);
-  private static final Currency SOME_CURRENCY = new Currency("CAD", new BigDecimal(1));
+  private static final Currency SOME_CURRENCY = new Currency("CAD", new BigDecimal(12));
   private static final MoneyAmount SOME_MONEY_AMOUNT = new MoneyAmount(SOME_VALUE, SOME_CURRENCY);
   private static final StockValue SOME_STOCK_VALUE = new StockValue(SOME_MONEY_AMOUNT, SOME_MONEY_AMOUNT, SOME_MONEY_AMOUNT);
+  private static final MoneyAmount SOME_PORTFOLIO_TOTAL = new MoneyAmount(SOME_MONEY_AMOUNT.toUsd()
+      .multiply(new BigDecimal(SOME_QUANTITY)), Currency.USD);
 
   @Mock
   private Portfolio somePortfolio;
@@ -49,7 +51,8 @@ public class PortfolioAssemblerTest {
     given(somePortfolio.getQuantity(SOME_TITLE)).willReturn(SOME_QUANTITY);
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(someStock);
     given(someStock.getValue()).willReturn(SOME_STOCK_VALUE);
-    given(somePortfolio.getCurrentTotalValue(someStockRepository)).willReturn(SOME_MONEY_AMOUNT.multiply(SOME_QUANTITY));
+
+    given(somePortfolio.getCurrentTotalValue(someStockRepository)).willReturn(SOME_PORTFOLIO_TOTAL);
   }
 
   @Test
@@ -73,16 +76,6 @@ public class PortfolioAssemblerTest {
   }
 
   @Test
-  public void givenPortfolioNotEmpty_whenToDto_thenPortfolioItemListIsMappedCorrectly()
-      throws InvalidStockInPortfolioException {
-    PortfolioResponseDto responseDto = portfolioAssembler.toDto(somePortfolio);
-
-    for (PortfolioItemResponseDto itemDto : responseDto.stocks) {
-      assertThatItemDtosAreMappedCorrectly(itemDto);
-    }
-  }
-
-  @Test
   public void whenToDto_thenPortfolioIsMappedCorrectly()
       throws InvalidStockInPortfolioException {
     PortfolioResponseDto responseDto = portfolioAssembler.toDto(somePortfolio);
@@ -91,8 +84,7 @@ public class PortfolioAssemblerTest {
   }
 
   private void assertThatDtoIsMappedCorrectly(PortfolioResponseDto dto) {
-    assertThat(dto.currentTotalValue)
-        .isEqualTo(SOME_MONEY_AMOUNT.toUsd().multiply(new BigDecimal(SOME_QUANTITY)));
+    assertThat(dto.currentTotalValue).isEqualTo(SOME_PORTFOLIO_TOTAL.getAmount());
     for (PortfolioItemResponseDto itemDto : dto.stocks) {
       assertThatItemDtosAreMappedCorrectly(itemDto);
     }

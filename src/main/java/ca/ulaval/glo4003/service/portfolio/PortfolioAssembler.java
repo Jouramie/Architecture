@@ -33,7 +33,7 @@ public class PortfolioAssembler {
 
   private PortfolioItemResponseDto itemToDto(String title, int quantity) {
     Stock stock = getStock(title);
-    BigDecimal currentValue = stock.getValue().getCurrentValue().getAmount();
+    BigDecimal currentValue = stock.getValue().getCurrentValue().toUsd();
     return new PortfolioItemResponseDto(title, currentValue, quantity);
   }
 
