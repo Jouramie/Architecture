@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
@@ -33,6 +34,10 @@ public class StockValueHistory {
     return getHistoricalValuesBetweenDates(from, to)
         .max(Comparator.comparing(entry -> entry.getValue().getMaximumValue().toUsd()))
         .map(this::getHistoricalStockValue).orElseThrow(NoStockValueFitsCriteriaException::new);
+  }
+
+  public StockValue getValueOnDay(LocalDate day) throws NoStockValueFitsCriteriaException {
+    return Optional.ofNullable(values.get(day)).orElseThrow(NoStockValueFitsCriteriaException::new);
   }
 
   private Stream<Map.Entry<LocalDate, StockValue>> getHistoricalValuesBetweenDates(LocalDate from, LocalDate to) {
