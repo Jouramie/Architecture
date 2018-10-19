@@ -1,8 +1,7 @@
-package ca.ulaval.glo4003.ws.http;
+package ca.ulaval.glo4003.ws.http.pagination;
 
 import ca.ulaval.glo4003.infrastructure.injection.FilterRegistration;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
-import ca.ulaval.glo4003.ws.pagination.Pagination;
 import java.util.List;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;

@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.ws.api.stock;
 
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
-import ca.ulaval.glo4003.ws.http.PaginationBinding;
+import ca.ulaval.glo4003.ws.http.pagination.PaginationBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;

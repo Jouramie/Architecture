@@ -1,8 +1,7 @@
-package ca.ulaval.glo4003.ws;
+package ca.ulaval.glo4003.ws.http.pagination;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.ulaval.glo4003.ws.pagination.Pagination;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

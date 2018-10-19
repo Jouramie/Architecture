@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.http;
+package ca.ulaval.glo4003.ws.http.pagination;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

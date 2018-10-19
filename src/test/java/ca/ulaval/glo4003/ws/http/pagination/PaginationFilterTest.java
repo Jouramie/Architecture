@@ -1,11 +1,10 @@
-package ca.ulaval.glo4003.ws.http;
+package ca.ulaval.glo4003.ws.http.pagination;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
-import ca.ulaval.glo4003.ws.pagination.Pagination;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.container.ContainerRequestContext;

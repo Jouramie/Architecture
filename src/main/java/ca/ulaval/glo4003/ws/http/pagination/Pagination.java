@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.pagination;
+package ca.ulaval.glo4003.ws.http.pagination;
 
 import ca.ulaval.glo4003.infrastructure.injection.Component;
 import java.util.ArrayList;
