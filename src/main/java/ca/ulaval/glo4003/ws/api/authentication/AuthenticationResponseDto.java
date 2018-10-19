@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
-    name = "AuthenticationResponseDto",
-    description = "Authentication response"
+    name = "Authentication response"
 )
 public class AuthenticationResponseDto {
 
@@ -14,7 +13,8 @@ public class AuthenticationResponseDto {
   public final String token;
 
   @JsonCreator
-  public AuthenticationResponseDto(@JsonProperty("token") String token) {
+  public AuthenticationResponseDto(
+      @JsonProperty("token") String token) {
     this.token = token;
   }
 }

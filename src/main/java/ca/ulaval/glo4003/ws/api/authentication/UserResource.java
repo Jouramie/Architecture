@@ -25,12 +25,20 @@ public interface UserResource {
       responses = {
           @ApiResponse(
               responseCode = "201",
-              content = @Content(schema = @Schema(implementation = UserCreationDto.class))
+              content = @Content(
+                  schema = @Schema(
+                      implementation = UserCreationDto.class
+                  )
+              )
           ),
           @ApiResponse(
-              responseCode = "400", description = "Email already exists, email, password "
-              + "and role should not be empty",
-              content = @Content(schema = @Schema(implementation = InputErrorResponseModel.class))
+              responseCode = "400",
+              description = "Email already exists, email, password and role should not be empty",
+              content = @Content(
+                  schema = @Schema(
+                      implementation = InputErrorResponseModel.class
+                  )
+              )
           )
       }
   )

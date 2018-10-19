@@ -15,10 +15,12 @@ public interface TokenRevocationResource {
       summary = "Revoke the current user's authentication token.",
       responses = {
           @ApiResponse(
-              responseCode = "200", description = "The token was successfully revoked."
+              responseCode = "200",
+              description = "The token was successfully revoked."
           ),
           @ApiResponse(
-              responseCode = "401", description = "The provided token is invalid."
+              responseCode = "401",
+              description = "The provided token is invalid."
           )
       }
   )
