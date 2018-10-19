@@ -49,13 +49,13 @@ public class UserTest {
 
   @Test
   public void whenCreatingUser_thenUserDoesNotOwnStock() {
-    assertThat(user.getStocks()).isEmpty();
+    assertThat(user.getPortfolio().getStocks().isEmpty()).isTrue();
   }
 
   @Test
   public void whenAddStockToPortfolio_thenStockCanBeRetrieved() {
     user.addStockToPortfolio(SOME_STOCK_TITLE, SOME_STOCK_QUANTITY, stockRepository);
 
-    assertThat(user.getStocks()).contains(SOME_STOCK_TITLE);
+    assertThat(user.getPortfolio().getStocks().getTitles()).contains(SOME_STOCK_TITLE);
   }
 }
