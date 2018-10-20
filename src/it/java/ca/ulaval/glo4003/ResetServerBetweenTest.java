@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003;
 
-import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
+import ca.ulaval.glo4003.infrasctructure.injection.ServiceLocator;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
