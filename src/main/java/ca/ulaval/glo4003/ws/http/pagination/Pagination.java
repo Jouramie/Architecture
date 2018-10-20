@@ -8,8 +8,6 @@ import java.util.List;
 public class Pagination {
 
   public <T> List<T> getPaginatedResponse(List<T> response, int page, int perPage) {
-    checkIfRequestedPageIsValid(page, perPage);
-
     int pageFirstIndex = getPageFirstIndex(page, perPage);
     int pageLastIndex = getPageLastIndex(page, perPage, response.size());
 
@@ -17,15 +15,6 @@ public class Pagination {
       return new ArrayList<>();
     }
     return response.subList(pageFirstIndex, pageLastIndex);
-  }
-
-  private void checkIfRequestedPageIsValid(int page, int perPage) {
-    if (page < 0) {
-      throw new RuntimeException();
-    }
-    if (perPage < 0) {
-      throw new RuntimeException();
-    }
   }
 
   private int getPageFirstIndex(int page, int perPage) {

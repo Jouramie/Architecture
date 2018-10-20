@@ -48,7 +48,7 @@ public class PaginationValidator implements ContainerRequestFilter {
       if (queryParam != null && Integer.parseInt(queryParam) < 1) {
         return true;
       }
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
       return true;
     }
     return false;
