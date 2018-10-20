@@ -13,7 +13,6 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
 import java.io.IOException;
-import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +21,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StockCsvLoaderTest {
-  private final Currency SOME_CURRENCY = new Currency("USD", new BigDecimal(1.0));
+  private final Currency SOME_CURRENCY = Currency.USD;
   @Mock
   private Market someMarket;
   @Mock
@@ -34,7 +33,7 @@ public class StockCsvLoaderTest {
   @Before
   public void setupStockCSVLoader() throws MarketNotFoundException {
     given(someMarket.getCurrency()).willReturn(SOME_CURRENCY);
-    given(marketRepository.getById(any())).willReturn(someMarket);
+    given(marketRepository.findById(any())).willReturn(someMarket);
     stockRepository = new InMemoryStockRepository();
     loader = new StockCsvLoader(stockRepository, marketRepository);
   }
@@ -44,8 +43,8 @@ public class StockCsvLoaderTest {
       throws StockNotFoundException, IOException, MarketNotFoundException {
     loader.load();
 
-    assertThat(stockRepository.getAll()).hasSize(35);
-    Stock randomStock = stockRepository.getByTitle("MSFT");
+    assertThat(stockRepository.findAll()).hasSize(35);
+    Stock randomStock = stockRepository.findByTitle("MSFT");
     assertThat(randomStock.getTitle()).isEqualTo("MSFT");
     assertThat(randomStock.getName()).isEqualTo("Microsoft");
     assertThat(randomStock.getCategory()).isEqualTo("Technologies");
@@ -57,7 +56,7 @@ public class StockCsvLoaderTest {
       throws StockNotFoundException, IOException, MarketNotFoundException {
     loader.load();
 
-    Stock randomStock = stockRepository.getByTitle("MMM");
+    Stock randomStock = stockRepository.findByTitle("MMM");
     assertThat(randomStock.getValue().getCurrentValue().getCurrency()).isEqualTo(SOME_CURRENCY);
   }
 
@@ -66,7 +65,7 @@ public class StockCsvLoaderTest {
       throws StockNotFoundException, IOException, MarketNotFoundException {
     loader.load();
 
-    Stock randomStock = stockRepository.getByTitle("MSFT");
+    Stock randomStock = stockRepository.findByTitle("MSFT");
     assertThat(randomStock.getValue().getOpenValue().getAmount().doubleValue()).isEqualTo(112.63);
     assertThat(randomStock.getValue().getCloseValue().getAmount().doubleValue()).isEqualTo(112.13);
     assertThat(randomStock.getValue().getMaximumValue().getAmount().doubleValue()).isEqualTo(113.17);

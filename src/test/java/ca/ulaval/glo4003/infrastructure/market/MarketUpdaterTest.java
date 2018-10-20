@@ -31,7 +31,7 @@ public class MarketUpdaterTest {
 
   @Before
   public void setupMarketsUpdater() {
-    given(someMarketRepository.getAll()).willReturn(Arrays.asList(someMarket, someOtherMarket));
+    given(someMarketRepository.findAll()).willReturn(Arrays.asList(someMarket, someOtherMarket));
 
     marketUpdater = new MarketUpdater(someClock, someMarketRepository);
   }

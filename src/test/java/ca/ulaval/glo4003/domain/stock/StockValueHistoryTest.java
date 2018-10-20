@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
 import org.junit.Before;
 import org.junit.Test;
 
 public class StockValueHistoryTest {
-  private final Currency SOME_CURRENCY = new Currency("USD", BigDecimal.ONE);
+  private final Currency SOME_CURRENCY = Currency.USD;
   private final double SOME_AMOUNT = 12.34;
   private final double SOME_OTHER_AMOUNT = 45.67;
   private final double SOME_BIGGER_AMOUNT = 300.00;
@@ -122,5 +122,26 @@ public class StockValueHistoryTest {
     MoneyAmount amount = new MoneyAmount(value, SOME_CURRENCY);
     StockValue result = new StockValue(amount);
     return result;
+  }
+
+  @Test
+  public void givenMissingDataOnRequestedDay_whenGettingValueOnASpecificDay_thenThrowNoStockValueFitsCriteriaException() {
+    LocalDate missingDate = LocalDate.of(1970, Month.JANUARY, 1);
+
+    assertThatThrownBy(() -> {
+      history.getValueOnDay(missingDate);
+    });
+  }
+
+  @Test
+  public void whenGettingValueOnASpecificDay_thenReturnStockValueOnThatDay() {
+    history.addValue(SOME_DATE, buildStockValue(SOME_AMOUNT));
+
+    try {
+      StockValue valueOnDay = history.getValueOnDay(SOME_DATE);
+      assertThat(valueOnDay.getCurrentValue().getAmount().doubleValue()).isEqualTo(SOME_AMOUNT);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 }

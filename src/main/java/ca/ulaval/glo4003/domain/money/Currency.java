@@ -5,6 +5,8 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 public class Currency {
+  public static final Currency USD = new Currency("USD", BigDecimal.ONE);
+
   private final String name;
   private final BigDecimal rateToUsd;
 

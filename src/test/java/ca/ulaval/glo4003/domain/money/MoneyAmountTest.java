@@ -1,6 +1,8 @@
 package ca.ulaval.glo4003.domain.money;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -21,7 +23,7 @@ public class MoneyAmountTest {
   private final double SOME_CONVERTED_AMOUNT = 52.25;
 
   @Mock
-  Currency someCurrency;
+  private Currency someCurrency;
 
   private MoneyAmount amount;
 
@@ -162,5 +164,27 @@ public class MoneyAmountTest {
     int secondHash = new MoneyAmount(SOME_AMOUNT, someCurrency).hashCode();
 
     assertThat(firstHash).isEqualTo(secondHash);
+  }
+
+  @Test
+  public void whenCheckingIsGreater_thenCompareUsdValues() {
+    Currency simpleCurrency = new Currency("", BigDecimal.ONE);
+    MoneyAmount smallerAmount = new MoneyAmount(SOME_AMOUNT - 10, simpleCurrency);
+    amount = new MoneyAmount(SOME_AMOUNT, simpleCurrency);
+
+    boolean isGreaterThan = amount.isGreaterThan(smallerAmount);
+
+    assertTrue(isGreaterThan);
+  }
+
+  @Test
+  public void whenCheckingIsLesser_thenCompareUsdValues() {
+    Currency simpleCurrency = new Currency("", BigDecimal.ONE);
+    MoneyAmount smallerAmount = new MoneyAmount(SOME_AMOUNT - 10, simpleCurrency);
+    amount = new MoneyAmount(SOME_AMOUNT, simpleCurrency);
+
+    boolean isLessThan = amount.isLessThan(smallerAmount);
+
+    assertFalse(isLessThan);
   }
 }

@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "8e07f576-c142-45e6-8629-20967fbba8e3",
+		"_postman_id": "ddebab66-fcfb-4e34-8545-48f7eb1884d1",
 		"name": "Invest-UL",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -52,20 +51,6 @@
 									"mode": "raw",
 									"raw": ""
 								},
-								"description": ""
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "max",
-					"description": "",
-					"item": [
-						{
-							"name": "GetMaxValueLast5Days",
-							"request": {
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_DAYS",
 									"host": [
@@ -83,22 +68,20 @@
 											"key": "since",
 											"value": "LAST_FIVE_DAYS"
 										}
-									],
-									"variable": []
-								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"description": ""
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "GetMaxValueCurrentMonth",
 							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=CURRENT_MONTH",
 									"host": [
@@ -116,22 +99,20 @@
 											"key": "since",
 											"value": "CURRENT_MONTH"
 										}
-									],
-									"variable": []
-								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"description": ""
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "GetMaxValueLastMonth",
 							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_MONTH",
 									"host": [
@@ -149,22 +130,20 @@
 											"key": "since",
 											"value": "LAST_MONTH"
 										}
-									],
-									"variable": []
-								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"description": ""
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "GetMaxValueLastYear",
 							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_YEAR",
 									"host": [
@@ -182,22 +161,20 @@
 											"key": "since",
 											"value": "LAST_YEAR"
 										}
-									],
-									"variable": []
-								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"description": ""
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "GetMaxValueLast5Years",
 							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_YEARS",
 									"host": [
@@ -215,22 +192,20 @@
 											"key": "since",
 											"value": "LAST_FIVE_YEARS"
 										}
-									],
-									"variable": []
-								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"description": ""
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "GetMaxValueLast10Years",
 							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_10_YEARS",
 									"host": [
@@ -248,22 +223,20 @@
 											"key": "since",
 											"value": "LAST_10_YEARS"
 										}
-									],
-									"variable": []
-								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"description": ""
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "GetMaxValueAllTime",
 							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "localhost:8080/api/stocks/RBS.l/max?since=ALL_TIME",
 									"host": [
@@ -281,16 +254,8 @@
 											"key": "since",
 											"value": "ALL_TIME"
 										}
-									],
-									"variable": []
-								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"description": ""
+									]
+								}
 							},
 							"response": []
 						}
@@ -485,8 +450,7 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -550,14 +514,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8080/api/revoke-token",
+							"raw": "localhost:8080/api/logout",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"revoke-token"
+								"logout"
 							]
 						}
 					},
@@ -756,12 +720,10 @@
 		},
 		{
 			"name": "Portfolio",
-			"description": "",
 			"item": [
 				{
 					"name": "GetPortfolio",
 					"request": {
-						"url": "localhost:8080/api/portfolio",
 						"method": "GET",
 						"header": [
 							{
@@ -773,7 +735,17 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:8080/api/portfolio",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"portfolio"
+							]
+						}
 					},
 					"response": []
 				}
@@ -782,6 +754,12 @@
 		{
 			"name": "Ping",
 			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "localhost:8080/api/ping?echo=test",
 					"host": [

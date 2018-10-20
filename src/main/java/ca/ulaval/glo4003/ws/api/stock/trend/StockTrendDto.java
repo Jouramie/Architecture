@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.stock.trend;
 
+import ca.ulaval.glo4003.domain.stock.StockTrend;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(

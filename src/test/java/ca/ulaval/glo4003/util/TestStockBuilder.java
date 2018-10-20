@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.domain.stock.StockValueHistory;
 import ca.ulaval.glo4003.ws.api.stock.StockDto;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class TestStockBuilder {
@@ -15,7 +14,7 @@ public class TestStockBuilder {
   public static final String DEFAULT_NAME = "Microsoft";
   public static final String DEFAULT_CATEGORY = "Tech";
   public static final MarketId DEFAULT_MARKET_ID = new MarketId("NASDAQ");
-  public static final Currency DEFAULT_CURRENCY = new Currency("USD", new BigDecimal(1));
+  public static final Currency DEFAULT_CURRENCY = Currency.USD;
   public static final MoneyAmount DEFAULT_OPEN_VALUE = new MoneyAmount(12.34, DEFAULT_CURRENCY);
   public static final MoneyAmount DEFAULT_CLOSE_VALUE = new MoneyAmount(56.78, DEFAULT_CURRENCY);
 

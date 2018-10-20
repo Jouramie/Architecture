@@ -38,7 +38,7 @@ public class StockMaxIT {
         .statusCode(OK.getStatusCode())
         .body(TITLE, equalTo(SOME_TITLE))
         .body(MAX_VALUE, any(Float.class))
-        .body(MAX_VALUE_DATE, any(String.class));
+        .body(MAX_VALUE_DATE, any(Object.class));
     //@formatter:on
   }
 

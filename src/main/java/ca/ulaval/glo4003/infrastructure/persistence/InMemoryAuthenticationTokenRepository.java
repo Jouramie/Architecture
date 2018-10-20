@@ -13,7 +13,7 @@ public class InMemoryAuthenticationTokenRepository implements AuthenticationToke
   private final Map<String, AuthenticationToken> tokens = new ConcurrentHashMap<>();
 
   @Override
-  public AuthenticationToken getByUUID(UUID uuid) throws TokenNotFoundException {
+  public AuthenticationToken findByUUID(UUID uuid) throws TokenNotFoundException {
     return Optional.ofNullable(tokens.get(uuid.toString())).orElseThrow(TokenNotFoundException::new);
   }
 

@@ -71,4 +71,12 @@ public class MoneyAmount {
   public int hashCode() {
     return getAmount().hashCode() ^ getCurrency().hashCode();
   }
+
+  public boolean isGreaterThan(MoneyAmount other) {
+    return toUsd().compareTo(other.toUsd()) == 1;
+  }
+
+  public boolean isLessThan(MoneyAmount other) {
+    return toUsd().compareTo(other.toUsd()) == -1;
+  }
 }
