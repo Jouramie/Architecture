@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class CurrentUserSessionTest {
 
-  private static final User SOME_USER = new UserBuilder().buildDefault();
+  private static final User SOME_USER = new UserBuilder().build();
   private final CurrentUserSession userRepository = new CurrentUserSession();
 
   @Test

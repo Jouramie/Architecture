@@ -5,14 +5,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import org.junit.Before;
 import org.junit.Test;
 
 public class StockValueHistoryTest {
-  private final Currency SOME_CURRENCY = new Currency("USD", BigDecimal.ONE);
+  private final Currency SOME_CURRENCY = Currency.USD;
   private final double SOME_AMOUNT = 12.34;
   private final double SOME_OTHER_AMOUNT = 45.67;
   private final double SOME_BIGGER_AMOUNT = 300.00;

@@ -1,39 +1,40 @@
 package ca.ulaval.glo4003.domain.cart;
 
 import ca.ulaval.glo4003.domain.stock.StockCollection;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
 
 public class Cart {
-  private StockCollection items;
+  private StockCollection stocks;
 
   public Cart() {
-    items = new StockCollection();
+    stocks = new StockCollection();
   }
 
-  public void add(String title, int addedQuantity) {
-    items = items.add(title, addedQuantity);
+  public void add(String title, int addedQuantity, StockRepository stockRepository) {
+    stocks = stocks.add(title, addedQuantity, stockRepository);
   }
 
   public void update(String title, int newQuantity) {
-    items = items.update(title, newQuantity);
+    stocks = stocks.update(title, newQuantity);
   }
 
   public void removeAll(String title) {
-    items = items.removeAll(title);
+    stocks = stocks.removeAll(title);
   }
 
   public void empty() {
-    items = items.empty();
+    stocks = stocks.empty();
   }
 
   public boolean isEmpty() {
-    return items.isEmpty();
+    return stocks.isEmpty();
   }
 
   public int getQuantity(String title) {
-    return items.getQuantity(title);
+    return stocks.getQuantity(title);
   }
 
-  public StockCollection getItems() {
-    return items;
+  public StockCollection getStocks() {
+    return stocks;
   }
 }
