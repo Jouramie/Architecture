@@ -26,7 +26,7 @@ public class SimulatedStockValueRetrieverTest {
   private StockSimulator stockSimulator;
 
   @InjectMocks
-  private SimulatedStockValueRetriever simulator;
+  private SimulatedStockValueRetriever stockValueRetriever;
 
   @Before
   public void setupStockSimulator() {
@@ -35,16 +35,16 @@ public class SimulatedStockValueRetrieverTest {
 
   @Test
   public void whenUpdateStockValue_thenStockValueIsUpdated() {
-    simulator.updateStockValue(someStock);
+    stockValueRetriever.updateStockValue(someStock);
 
     verify(someStock).updateValue(eq(new BigDecimal(SOME_VARIATION)));
   }
 
   @Test
   public void givenVariationWasAlreadyCalculatedOnce_whenUpdateStockValue_thenVariationIsCalculatedWithPreviousVariation() {
-    simulator.updateStockValue(someStock);
+    stockValueRetriever.updateStockValue(someStock);
 
-    simulator.updateStockValue(someStock);
+    stockValueRetriever.updateStockValue(someStock);
 
     verify(stockSimulator).calculateStockVariation(SOME_VARIATION);
   }
