@@ -10,6 +10,9 @@ import javax.ws.rs.container.ContainerResponseFilter;
 @FilterRegistration
 @PaginationBinding
 public class PaginationFilter implements ContainerResponseFilter {
+  public static final int DEFAULT_PAGE = 1;
+  public static final int DEFAULT_PER_PAGE = 15;
+
   private final Pagination pagination;
 
   public PaginationFilter() {
@@ -19,6 +22,9 @@ public class PaginationFilter implements ContainerResponseFilter {
   @Override
   public void filter(ContainerRequestContext requestContext,
                      ContainerResponseContext responseContext) {
+    if (responseContext.getStatus() != 200) {
+      return;
+    }
     List initialResponse = (List) responseContext.getEntity();
     responseContext.getHeaders().add("X-Total-Count",
         Integer.toString(initialResponse.size()));
@@ -32,11 +38,11 @@ public class PaginationFilter implements ContainerResponseFilter {
 
   private int getPageQueryParamOrDefault(ContainerRequestContext requestContext) {
     String page = requestContext.getUriInfo().getQueryParameters().getFirst("page");
-    return (page != null) ? Integer.parseInt(page) : 1;
+    return (page != null) ? Integer.parseInt(page) : DEFAULT_PAGE;
   }
 
   private int getPerPageQueryParamOrDefault(ContainerRequestContext requestContext) {
     String perPage = requestContext.getUriInfo().getQueryParameters().getFirst("per_page");
-    return (perPage != null) ? Integer.parseInt(perPage) : 15;
+    return (perPage != null) ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
   }
 }
