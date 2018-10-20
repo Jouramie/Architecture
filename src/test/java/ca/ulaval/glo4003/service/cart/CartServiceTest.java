@@ -69,7 +69,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void whenGetCartContent_thenWeHaveCorrespondingDtos() throws StockNotFoundException {
+  public void whenGetCartContent_thenWeHaveCorrespondingDtos() {
     List<CartItem> cartItems = Collections.singletonList(cartItem);
     List<CartItemResponseDto> cartItemDtos = Collections.singletonList(cartItemDto);
     given(cart.getItems()).willReturn(cartItems);
@@ -81,8 +81,7 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenOneStockOfCartDoesNotExist_whenGetCartContent_thenInvalidStockExceptionIsThrown()
-      throws StockNotFoundException {
+  public void givenOneStockOfCartDoesNotExist_whenGetCartContent_thenInvalidStockExceptionIsThrown() {
     doThrow(StockNotFoundException.class).when(cartItemAssembler).toDtoList(any());
 
     assertThatThrownBy(() -> cartService.getCartContent());
@@ -109,16 +108,6 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenInvalidStockQuantity_whenAddStockToCart_thenInvalidStockQuantityException() {
-    int invalidQuantity = -1;
-
-    ThrowableAssert.ThrowingCallable addStockToCart
-        = () -> cartService.addStockToCart(SOME_TITLE, invalidQuantity);
-
-    assertThatThrownBy(addStockToCart).isInstanceOf(InvalidStockQuantityException.class);
-  }
-
-  @Test
   public void whenUpdateStockQuantityInCart_thenStockIsUpdated()
       throws UserNotFoundException, StockNotFoundException {
     cartService.updateStockInCart(SOME_TITLE, SOME_QUANTITY);
@@ -137,16 +126,6 @@ public class CartServiceTest {
         = () -> cartService.updateStockInCart(invalidTitle, SOME_QUANTITY);
 
     assertThatThrownBy(updateStockInCart).isInstanceOf(InvalidStockTitleException.class);
-  }
-
-  @Test
-  public void givenInvalidStockQuantity_whenUpdateStockQuantityInCart_thenInvalidStockQuantityException() {
-    int invalidQuantity = -1;
-
-    ThrowableAssert.ThrowingCallable updateStockInCart
-        = () -> cartService.updateStockInCart(SOME_TITLE, invalidQuantity);
-
-    assertThatThrownBy(updateStockInCart).isInstanceOf(InvalidStockQuantityException.class);
   }
 
   @Test

@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TokenRevocationResourceImplTest {
+public class TokenRevocationResourceTest {
 
 
   @Mock

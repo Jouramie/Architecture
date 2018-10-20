@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
 
+import static ca.ulaval.glo4003.util.InputValidationTestUtil.assertThatExceptionContainsErrorFor;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -10,7 +11,6 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
-import java.util.regex.Pattern;
 import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AuthenticationResourceImplTest {
+public class AuthenticationResourceTest {
 
   private static final AuthenticationRequestDto SOME_AUTHENTICATION_REQUEST =
       new AuthenticationRequestDto("email", "password");
@@ -32,8 +32,6 @@ public class AuthenticationResourceImplTest {
 
   private static final AuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_PASSWORD =
       new AuthenticationRequestDto("email", null);
-
-  private static final String ERROR_MESSAGE_PATTERN = "%s.+";
 
   @Mock
   private AuthenticationService authenticationService;
@@ -91,11 +89,5 @@ public class AuthenticationResourceImplTest {
     assertThat(thrown).isInstanceOf(InvalidInputException.class);
     InvalidInputException exception = (InvalidInputException) thrown;
     assertThatExceptionContainsErrorFor(exception, "password");
-  }
-
-  private void assertThatExceptionContainsErrorFor(InvalidInputException exception, String field) {
-    String expectMessageErrorPattern = String.format(ERROR_MESSAGE_PATTERN, field);
-    assertThat(exception.getInputErrors().inputErrors)
-        .anyMatch(errorMessage -> Pattern.matches(expectMessageErrorPattern, errorMessage));
   }
 }

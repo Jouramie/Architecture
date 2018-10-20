@@ -85,6 +85,5 @@ public class UserIT {
         .statusCode(BAD_REQUEST.getStatusCode())
         .body("inputErrors", any(List.class));
     //@formatter:on
-
   }
 }

@@ -25,6 +25,7 @@ public interface UserResource {
       responses = {
           @ApiResponse(
               responseCode = "201",
+              description = "User successfully created.",
               content = @Content(
                   schema = @Schema(
                       implementation = UserCreationDto.class
