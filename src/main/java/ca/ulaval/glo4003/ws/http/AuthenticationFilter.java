@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.ws.http;
 
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
-import ca.ulaval.glo4003.infrasctructure.injection.ServiceLocator;
+import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;

@@ -2,7 +2,7 @@ package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.context.AbstractContext;
 import ca.ulaval.glo4003.context.ProductionContext;
-import ca.ulaval.glo4003.infrasctructure.injection.ServiceLocator;
+import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import java.net.URL;
 import org.eclipse.jetty.server.Server;
 
