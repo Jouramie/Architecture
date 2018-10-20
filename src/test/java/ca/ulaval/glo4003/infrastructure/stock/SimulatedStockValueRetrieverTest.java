@@ -41,7 +41,7 @@ public class SimulatedStockValueRetrieverTest {
   }
 
   @Test
-  public void whenUpdateStockValue_thenVariationIsCalculatedWithPreviousVariation() {
+  public void givenVariationWasAlreadyCalculatedOnce_whenUpdateStockValue_thenVariationIsCalculatedWithPreviousVariation() {
     simulator.updateStockValue(someStock);
 
     simulator.updateStockValue(someStock);
