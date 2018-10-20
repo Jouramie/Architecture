@@ -1,8 +1,7 @@
-package ca.ulaval.glo4003.infrastructure.market;
+package ca.ulaval.glo4003.domain.market;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.clock.ClockObserver;
-import ca.ulaval.glo4003.domain.market.MarketRepository;
 import java.time.LocalDateTime;
 import javax.inject.Inject;
 
