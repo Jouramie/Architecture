@@ -74,7 +74,7 @@ public class AuthenticationServiceTest {
   public void initializeMocks() throws UserNotFoundException, TokenNotFoundException {
     given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
     given(userRepository.find(any())).willReturn(SOME_USER);
-    given(tokenRepository.getByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token)))
+    given(tokenRepository.findByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token)))
         .willReturn(AUTHENTICATION_TOKEN);
     given(tokenFactory.createToken(any())).willReturn(AUTHENTICATION_TOKEN);
   }
@@ -126,7 +126,7 @@ public class AuthenticationServiceTest {
       throws TokenNotFoundException {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    verify(tokenRepository).getByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token));
+    verify(tokenRepository).findByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token));
   }
 
   @Test
@@ -144,7 +144,7 @@ public class AuthenticationServiceTest {
   public void givenInvalidToken_whenValidatingToken_thenInvalidTokenExceptionIsThrown()
       throws TokenNotFoundException {
     doThrow(TokenNotFoundException.class)
-        .when(tokenRepository).getByUUID(UUID.fromString(INVALID_AUTHENTICATION_TOKEN_DTO.token));
+        .when(tokenRepository).findByUUID(UUID.fromString(INVALID_AUTHENTICATION_TOKEN_DTO.token));
 
     ThrowableAssert.ThrowingCallable validateToken
         = () -> authenticationService.validateAuthentication(INVALID_AUTHENTICATION_TOKEN_DTO);

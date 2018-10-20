@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.ws.api.authentication;
 
 
 import static ca.ulaval.glo4003.util.InputValidationTestUtil.assertThatExceptionContainsErrorFor;
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -55,10 +56,10 @@ public class AuthenticationResourceTest {
   }
 
   @Test
-  public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenResponseStatusIsOK() {
+  public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenResponseStatusIsAccepted() {
     Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
-    assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
+    assertThat(response.getStatus()).isEqualTo(ACCEPTED.getStatusCode());
   }
 
   @Test
@@ -89,5 +90,19 @@ public class AuthenticationResourceTest {
     assertThat(thrown).isInstanceOf(InvalidInputException.class);
     InvalidInputException exception = (InvalidInputException) thrown;
     assertThatExceptionContainsErrorFor(exception, "password");
+  }
+
+  @Test
+  public void whenLoggingOut_thenTokenIsRevoked() {
+    authenticationResource.logout();
+
+    verify(authenticationService).revokeToken();
+  }
+
+  @Test
+  public void whenLoggingOut_thenResponseIsOk() {
+    Response response = authenticationResource.logout();
+
+    assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
   }
 }

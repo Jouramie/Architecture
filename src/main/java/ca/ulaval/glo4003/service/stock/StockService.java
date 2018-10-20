@@ -50,7 +50,7 @@ public class StockService {
 
   private Stock getStockByTitleOrThrowException(String title) {
     try {
-      return stockRepository.getByTitle(title);
+      return stockRepository.findByTitle(title);
     } catch (StockNotFoundException exception) {
       throw new StockDoesNotExistException(exception);
     }
@@ -61,6 +61,6 @@ public class StockService {
   }
 
   public List<String> getCategories() {
-    return stockRepository.getCategories();
+    return stockRepository.findAllCategories();
   }
 }

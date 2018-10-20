@@ -50,7 +50,7 @@ public class StockCsvLoader {
 
   private StockValueHistory getValueHistory(String title, MarketId marketId) throws IOException, MarketNotFoundException {
     StockValueHistory history = new StockValueHistory();
-    Currency currency = marketRepository.getById(marketId).getCurrency();
+    Currency currency = marketRepository.findById(marketId).getCurrency();
 
     ZipFile zipFile = new ZipFile(STOCKS_DATA_ZIP_PATH);
     ZipEntry zipEntry = zipFile.getEntry(title + ".csv");
