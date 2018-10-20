@@ -27,14 +27,14 @@ public class TransactionFactoryTest {
   private static final MoneyAmount DEFAULT_AMOUNT = new MoneyAmount(DEFAULT_LAST_OPEN_VALUE, DEFAULT_CURRENCY);
   private static final LocalDateTime SOME_TIME = LocalDateTime.now();
 
-  private static final int SOME_QUANTITY = 1;
   private static final String SOME_TITLE = "title";
+  private static final int SOME_QUANTITY = 1;
 
   private TransactionFactory factory;
   @Mock
   private Clock clock;
   @Mock
-  private StockRepository stockRepository;
+  private StockRepository someStockRepository;
   @Mock
   private Stock stock;
   @Mock
@@ -44,14 +44,14 @@ public class TransactionFactoryTest {
   @Before
   public void setup() throws StockNotFoundException {
     given(clock.getCurrentTime()).willReturn(SOME_TIME);
+    given(someStockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(stock);
+    given(someStockRepository.findByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
+    given(someStockRepository.findByTitle(SOME_TITLE).getValue().getCurrentValue()).willReturn(DEFAULT_AMOUNT);
+
     cart = new Cart();
-    cart.add(SOME_TITLE, SOME_QUANTITY);
-
-    given(stockRepository.findByTitle(SOME_TITLE)).willReturn(stock);
-    given(stockRepository.findByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
-    given(stockRepository.findByTitle(SOME_TITLE).getValue().getCurrentValue()).willReturn(DEFAULT_AMOUNT);
-
-    factory = new TransactionFactory(clock, stockRepository);
+    cart.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
+    factory = new TransactionFactory(clock, someStockRepository);
   }
 
   @Test

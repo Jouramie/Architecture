@@ -46,7 +46,7 @@ public class AuthenticationServiceTest {
   private static final AuthenticationToken AUTHENTICATION_TOKEN
       = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
 
-  private static final User SOME_USER = new UserBuilder().buildDefault();
+  private static final User SOME_USER = new UserBuilder().build();
 
   private final AuthenticationResponseAssembler responseAssembler = new AuthenticationResponseAssembler();
 

@@ -25,8 +25,4 @@ public class UserBuilder {
   public User build() {
     return new User(email, password, userRole);
   }
-
-  public User buildDefault() {
-    return new User(DEFAULT_EMAIL, DEFAULT_PASSWORD, DEFAULT_USER_ROLE);
-  }
 }

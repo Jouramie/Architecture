@@ -21,7 +21,7 @@ public class CartItemAssembler {
   }
 
   public List<CartItemResponseDto> toDtoList(StockCollection items) {
-    return items.getStocks().stream()
+    return items.getTitles().stream()
         .map((title) -> toDto(title, items.getQuantity(title)))
         .collect(toList());
   }

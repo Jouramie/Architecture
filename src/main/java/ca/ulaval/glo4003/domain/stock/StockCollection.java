@@ -10,7 +10,7 @@ public class StockCollection {
   private final Map<String, Integer> stocks;
 
   public StockCollection() {
-    stocks = new HashMap<>();
+    this(new HashMap<>());
   }
 
   private StockCollection(Map<String, Integer> stocks) {
@@ -21,8 +21,8 @@ public class StockCollection {
     return stocks.containsKey(title);
   }
 
-  public StockCollection add(String title, int addedQuantity) {
-    if (addedQuantity < 0) {
+  public StockCollection add(String title, int addedQuantity, StockRepository stockRepository) {
+    if (!stockRepository.doesStockExist(title) || addedQuantity < 0) {
       throw new IllegalArgumentException();
     }
 
@@ -55,7 +55,7 @@ public class StockCollection {
     return new StockCollection(newMap);
   }
 
-  public List<String> getStocks() {
+  public List<String> getTitles() {
     return new ArrayList<>(stocks.keySet());
   }
 

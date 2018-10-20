@@ -49,7 +49,9 @@ public class CartItemAssemblerTest {
   @Before
   public void setupCartItemAssembler() throws StockNotFoundException {
     assembler = new CartItemAssembler(stockRepository);
-
+    
+    given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(stockRepository.doesStockExist(SOME_OTHER_TITLE)).willReturn(true);
     given(stockRepository.findByTitle(SOME_TITLE)).willReturn(SOME_STOCK);
     given(stockRepository.findByTitle(SOME_OTHER_TITLE)).willReturn(SOME_OTHER_STOCK);
   }
@@ -71,11 +73,10 @@ public class CartItemAssemblerTest {
   }
 
   @Test
-  public void whenToDtoList_thenAllItemsArePresent() throws StockNotFoundException {
-    StockCollection stockCollection = new StockCollection();
-    stockCollection = stockCollection
-        .add(SOME_TITLE, SOME_QUANTITY)
-        .add(SOME_OTHER_TITLE, SOME_QUANTITY);
+  public void whenToDtoList_thenAllItemsArePresent() {
+    StockCollection stockCollection = new StockCollection()
+        .add(SOME_TITLE, SOME_QUANTITY, stockRepository)
+        .add(SOME_OTHER_TITLE, SOME_QUANTITY, stockRepository);
     List<CartItemResponseDto> dtos = assembler.toDtoList(stockCollection);
 
     assertThat(dtos).hasSize(2);
