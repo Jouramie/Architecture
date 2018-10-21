@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.infrastructure.stock;
+package ca.ulaval.glo4003.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -12,6 +12,7 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
+import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;

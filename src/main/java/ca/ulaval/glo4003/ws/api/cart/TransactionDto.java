@@ -4,12 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Schema(
+    name = "Transaction"
+)
 public class TransactionDto {
-  @Schema(description = "Type")
   public final String type;
-  @Schema(description = "Transaction Items")
   public final List<TransactionItemDto> items;
-  @Schema(description = "Transaction Timestamp")
   public final LocalDateTime timestamp;
 
   public TransactionDto(String type, List<TransactionItemDto> items, LocalDateTime timestamp) {

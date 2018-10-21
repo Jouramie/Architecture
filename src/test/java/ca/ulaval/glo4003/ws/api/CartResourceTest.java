@@ -1,6 +1,8 @@
 package ca.ulaval.glo4003.ws.api;
 
+import static ca.ulaval.glo4003.util.InputValidationTestUtil.assertThatExceptionContainsErrorFor;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -12,6 +14,7 @@ import ca.ulaval.glo4003.ws.api.cart.CartResource;
 import ca.ulaval.glo4003.ws.api.cart.CartResourceImpl;
 import ca.ulaval.glo4003.ws.api.cart.CartStockRequest;
 import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
+import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
@@ -64,6 +67,17 @@ public class CartResourceTest {
   }
 
   @Test
+  public void givenNegativeQuantityStockRequest_whenAddStockToCart_thenInvalidInputExceptionShouldBeThrown() {
+    CartStockRequest negativeQuantityStockRequest = new CartStockRequest(-1);
+
+    Throwable thrown = catchThrowable(() -> cartResource.addStockToCart(SOME_TITLE, negativeQuantityStockRequest));
+
+    assertThat(thrown).isInstanceOf(InvalidInputException.class);
+    InvalidInputException exception = (InvalidInputException) thrown;
+    assertThatExceptionContainsErrorFor(exception, "quantity");
+  }
+
+  @Test
   public void whenUpdateStockInCart_thenStockIsUpdated() {
     cartResource.updateStockInCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
 
@@ -75,6 +89,17 @@ public class CartResourceTest {
     List<CartItemResponseDto> resultingDto = cartResource.updateStockInCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
+  }
+
+  @Test
+  public void givenNegativeQuantityStockRequest_whenUpdateStockToCart_thenInvalidInputExceptionShouldBeThrown() {
+    CartStockRequest negativeQuantityStockRequest = new CartStockRequest(-1);
+
+    Throwable thrown = catchThrowable(() -> cartResource.updateStockInCart(SOME_TITLE, negativeQuantityStockRequest));
+
+    assertThat(thrown).isInstanceOf(InvalidInputException.class);
+    InvalidInputException exception = (InvalidInputException) thrown;
+    assertThatExceptionContainsErrorFor(exception, "quantity");
   }
 
   @Test

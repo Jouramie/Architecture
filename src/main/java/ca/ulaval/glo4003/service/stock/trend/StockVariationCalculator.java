@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.StockTrend;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.domain.stock.StockValueHistory;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import java.time.LocalDate;
 
 @Component
