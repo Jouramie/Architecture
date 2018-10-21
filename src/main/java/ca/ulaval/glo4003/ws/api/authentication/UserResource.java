@@ -34,7 +34,7 @@ public interface UserResource {
           ),
           @ApiResponse(
               responseCode = "400",
-              description = "Email already exists, email, password and role should not be empty",
+              description = "Email already exists, email and password should not be empty",
               content = @Content(
                   schema = @Schema(
                       implementation = InputErrorResponseModel.class

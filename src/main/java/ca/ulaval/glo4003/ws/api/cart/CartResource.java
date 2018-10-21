@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -56,7 +55,7 @@ public interface CartResource {
       responses = {
           @ApiResponse(
               responseCode = "200",
-              description = "Stock successfully added.",
+              description = "Stock successfully added to cart.",
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
@@ -85,17 +84,10 @@ public interface CartResource {
       summary = "Update a stock in the cart.",
       description = "Update the quantity of a stock. "
           + "Return every stocks in the cart, with their details and quantity.",
-      requestBody = @RequestBody(
-          content = @Content(
-              schema = @Schema(
-                  implementation = CartStockRequest.class
-              )
-          )
-      ),
       responses = {
           @ApiResponse(
               responseCode = "200",
-              description = "Stock successfully added.",
+              description = "Stock successfully updated.",
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
