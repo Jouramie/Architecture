@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.List;
@@ -31,14 +31,14 @@ public class CartService {
 
   public List<CartItemResponseDto> getCartContent() {
     Cart cart = getCart();
-    return assembler.toDtoList(cart.getItems());
+    return assembler.toDtoList(cart.getStocks());
   }
 
   public void addStockToCart(String title, int quantity) {
     checkIfStockExists(title);
 
     Cart cart = getCart();
-    cart.add(title, quantity);
+    cart.add(title, quantity, stockRepository);
 
     updateUser();
   }

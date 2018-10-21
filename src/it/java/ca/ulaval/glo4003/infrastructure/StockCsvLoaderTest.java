@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.infrastructure.stock;
+package ca.ulaval.glo4003.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -12,8 +12,8 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
+import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import java.io.IOException;
-import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StockCsvLoaderTest {
-  private final Currency SOME_CURRENCY = new Currency("USD", new BigDecimal(1.0));
+  private final Currency SOME_CURRENCY = Currency.USD;
   @Mock
   private Market someMarket;
   @Mock

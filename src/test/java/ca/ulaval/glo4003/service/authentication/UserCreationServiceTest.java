@@ -30,7 +30,7 @@ public class UserCreationServiceTest {
   private static final UserDto USER_DTO = new UserDto(SOME_EMAIL, USER_ROLE);
   private static final UserCreationDto SOME_CREATION_REQUEST
       = new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
-  private static final User USER = new UserBuilder().buildDefault();
+  private static final User USER = new UserBuilder().build();
 
   @Mock
   private UserFactory userFactory;

@@ -6,7 +6,7 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -23,14 +23,14 @@ public class TransactionFactory {
   }
 
   public Transaction createPurchase(Cart cart) throws StockNotFoundException {
-    List<TransactionItem> transactionItems = buildTransactionItems(cart.getItems());
+    List<TransactionItem> transactionItems = buildTransactionItems(cart.getStocks());
     return new Transaction(clock.getCurrentTime(), transactionItems, TransactionType.PURCHASE);
   }
 
   private List<TransactionItem> buildTransactionItems(StockCollection items)
       throws StockNotFoundException {
     List<TransactionItem> transactionItems = new ArrayList<>();
-    for (String title : items.getStocks()) {
+    for (String title : items.getTitles()) {
       int quantity = items.getQuantity(title);
       transactionItems.add(buildTransactionItem(title, quantity));
     }

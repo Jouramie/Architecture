@@ -6,7 +6,7 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.List;
 import javax.inject.Inject;
@@ -21,7 +21,7 @@ public class CartItemAssembler {
   }
 
   public List<CartItemResponseDto> toDtoList(StockCollection items) {
-    return items.getStocks().stream()
+    return items.getTitles().stream()
         .map((title) -> toDto(title, items.getQuantity(title)))
         .collect(toList());
   }

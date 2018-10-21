@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.authentication.UserDto;
 import javax.inject.Inject;

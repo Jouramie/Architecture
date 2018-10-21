@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 public class StockIT {
@@ -35,8 +35,8 @@ public class StockIT {
   private static final String SOME_MARKET = "London";
   private static final String SOME_CATEGORY = "Banking";
 
-  @Rule
-  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+  @ClassRule
+  public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 
   @Test
   public void whenGettingByTitle_thenReturnStockInformation() {

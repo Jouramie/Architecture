@@ -11,8 +11,8 @@ import org.junit.Test;
 
 public class InMemoryUserRepositoryTest {
 
-  private static final User SOME_USER = new UserBuilder().buildDefault();
-  private static final User SOME_OTHER_USER = new UserBuilder().buildDefault();
+  private static final User SOME_USER = new UserBuilder().build();
+  private static final User SOME_OTHER_USER = new UserBuilder().build();
   private final InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
 
   @Test
