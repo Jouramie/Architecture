@@ -29,7 +29,7 @@
         <commons-csv.version>1.5</commons-csv.version>
         <live-stock-simulator.version>1.0.0</live-stock-simulator.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <swagger.version>2.0.0</swagger.version>
+        <swagger.version>2.0.2</swagger.version>
 
         <!-- Test dependencies -->
         <junit.version>4.11</junit.version>

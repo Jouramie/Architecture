@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.ws.api.cart;
 
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
+import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -10,11 +11,13 @@ import javax.inject.Inject;
 public class CartResourceImpl implements CartResource {
   private final CartService cartService;
   private final CheckoutService checkoutService;
+  private final RequestValidator requestValidator;
 
   @Inject
   public CartResourceImpl(CartService cartService, CheckoutService checkoutService) {
     this.cartService = cartService;
     this.checkoutService = checkoutService;
+    this.requestValidator = new RequestValidator();
   }
 
   @Override
@@ -25,6 +28,7 @@ public class CartResourceImpl implements CartResource {
   @Override
   public List<CartItemResponseDto> addStockToCart(String title,
                                                   CartStockRequest cartStockRequest) {
+    requestValidator.validate(cartStockRequest);
     cartService.addStockToCart(title, cartStockRequest.quantity);
     return cartService.getCartContent();
   }
@@ -32,6 +36,7 @@ public class CartResourceImpl implements CartResource {
   @Override
   public List<CartItemResponseDto> updateStockInCart(String title,
                                                      CartStockRequest cartStockRequest) {
+    requestValidator.validate(cartStockRequest);
     cartService.updateStockInCart(title, cartStockRequest.quantity);
     return cartService.getCartContent();
   }

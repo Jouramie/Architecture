@@ -131,6 +131,23 @@ public class CartIT {
   }
 
   @Test
+  public void givenNegativeQuantityCartStockRequest_whenAddStockToCart_thenBadRequest() {
+    givenUserAlreadyRegistered();
+    String token = givenUserAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .body(cartStockRequestBuilder.withQuantity(-1).build())
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
+        .put(API_CART_ROUTE_WITH_TITLE)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
   public void givenCartContainsDefaultStock_whenAddSameStockToCart_thenAddAmountOfStocks() {
     givenUserAlreadyRegistered();
     String token = givenUserAlreadyAuthenticated();
@@ -163,14 +180,32 @@ public class CartIT {
   }
 
   @Test
-  public void givenEmptyCart_whenUpdateStockToCart_thenReturn400() {
+  public void givenEmptyCart_whenUpdateStockToCart_thenBadRequest() {
     givenUserAlreadyRegistered();
     String token = givenUserAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
         .header(tokenHeader)
-        .body(cartStockRequestBuilder.build(2))
+        .body(cartStockRequestBuilder.build())
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
+        .patch(API_CART_ROUTE_WITH_TITLE)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenNegativeQuantityCartStockRequest_whenUpdateStockToCart_thenBadRequest() {
+    givenUserAlreadyRegistered();
+    String token = givenUserAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    givenCartContainsDefaultStock(tokenHeader);
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .body(cartStockRequestBuilder.withQuantity(-1).build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .patch(API_CART_ROUTE_WITH_TITLE)
