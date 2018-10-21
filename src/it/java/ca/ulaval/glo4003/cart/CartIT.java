@@ -131,7 +131,7 @@ public class CartIT {
   }
 
   @Test
-  public void givenNegativeQuantityCartStockRequest_whenAddStockToCart_thenReturnStockInList() {
+  public void givenNegativeQuantityCartStockRequest_whenAddStockToCart_thenBadRequest() {
     givenUserAlreadyRegistered();
     String token = givenUserAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
@@ -197,7 +197,7 @@ public class CartIT {
   }
 
   @Test
-  public void givenNegativeQuantityCartStockRequest_whenUpdateStockToCart_thenReturnStockInList() {
+  public void givenNegativeQuantityCartStockRequest_whenUpdateStockToCart_thenBadRequest() {
     givenUserAlreadyRegistered();
     String token = givenUserAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);

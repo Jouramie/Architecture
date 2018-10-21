@@ -22,7 +22,7 @@ public class UserIT {
   private static final UserRole INVESTOR_USER_ROLE = UserRole.INVESTOR;
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_EMAIL, "password");
+      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
 
   private static final String USERS_ROUTE = "/api/users";
 

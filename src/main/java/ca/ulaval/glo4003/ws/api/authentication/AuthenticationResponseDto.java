@@ -14,7 +14,8 @@ public class AuthenticationResponseDto {
 
   @JsonCreator
   public AuthenticationResponseDto(
-      @JsonProperty("token") String token) {
+      @JsonProperty("token")
+          String token) {
     this.token = token;
   }
 }
