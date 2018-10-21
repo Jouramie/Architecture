@@ -20,7 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PaginationValidatorTest {
-  public static final String FORMAT = "'%s'";
+  private static final String FORMAT = "'%s'";
   private static final String PAGE_PARAM = "page";
   private static final String PER_PAGE_PARAM = "per_page";
   private final String SOME_PAGE = "2";

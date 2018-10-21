@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.http.pagination;
 
-import ca.ulaval.glo4003.infrastructure.injection.FilterRegistration;
+import ca.ulaval.glo4003.ws.http.FilterRegistration;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -21,11 +21,11 @@ public class PaginationValidator implements ContainerRequestFilter {
         .getUriInfo()
         .getQueryParameters();
 
-    if (isInvalidQueryParam(queryParameters, "page")) {
+    if (!isNullOrPositiveQueryParam(queryParameters, "page")) {
       errorMessages.add("Invalid 'page' query parameter");
     }
 
-    if (isInvalidQueryParam(queryParameters, "per_page")) {
+    if (!isNullOrPositiveQueryParam(queryParameters, "per_page")) {
       errorMessages.add("Invalid 'per_page' query parameter");
     }
 
@@ -41,16 +41,26 @@ public class PaginationValidator implements ContainerRequestFilter {
     return errorMessage.substring(1, errorMessage.length() - 1);
   }
 
-  private boolean isInvalidQueryParam(MultivaluedMap<String, String> queryParameters,
-                                      String queryParamName) {
-    try {
-      String queryParam = queryParameters.getFirst(queryParamName);
-      if (queryParam != null && Integer.parseInt(queryParam) < 1) {
-        return true;
-      }
-    } catch (NumberFormatException e) {
+  private boolean isNullOrPositiveQueryParam(MultivaluedMap<String, String> queryParameters,
+                                             String queryParamName) {
+    String queryParam = queryParameters.getFirst(queryParamName);
+    if (queryParam == null) {
       return true;
     }
-    return false;
+
+    Integer queryParamValue = tryParseInt(queryParam);
+    if (queryParamValue == null) {
+      return false;
+    }
+
+    return queryParamValue >= 1;
+  }
+
+  private Integer tryParseInt(String number) {
+    try {
+      return Integer.parseInt(number);
+    } catch (NumberFormatException e) {
+      return null;
+    }
   }
 }
