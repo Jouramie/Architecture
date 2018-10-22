@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.infrastructure.market;
+package ca.ulaval.glo4003.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
+import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
 import java.time.LocalTime;
 import org.junit.Before;

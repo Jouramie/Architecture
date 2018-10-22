@@ -25,25 +25,33 @@ public interface AuthenticationResource {
       responses = {
           @ApiResponse(
               responseCode = "202",
-              content = @Content(schema = @Schema(implementation = AuthenticationResponseDto.class))
+              description = "Successfully authenticated.",
+              content = @Content(
+                  schema = @Schema(
+                      implementation = AuthenticationResponseDto.class
+                  )
+              )
           ),
           @ApiResponse(
-              responseCode = "400", description = "Invalid email or password"
+              responseCode = "400",
+              description = "Email or password is invalid."
           )
       }
   )
   Response authenticate(AuthenticationRequestDto authenticationRequest);
 
-  @POST
+  @POST()
   @Path("/logout")
   @Operation(
-      summary = "Logout the current user.",
+      summary = "Revoke the current user's authentication token.",
       responses = {
           @ApiResponse(
-              responseCode = "200", description = "The user was successfully revoked."
+              responseCode = "200",
+              description = "The token was successfully revoked."
           ),
           @ApiResponse(
-              responseCode = "401", description = "The provided token is invalid."
+              responseCode = "401",
+              description = "The provided token is invalid."
           )
       }
   )

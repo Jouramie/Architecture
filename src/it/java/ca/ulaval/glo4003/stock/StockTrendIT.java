@@ -8,15 +8,17 @@ import static org.hamcrest.Matchers.anyOf;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import org.hamcrest.Matcher;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 public class StockTrendIT {
   private static final String STOCK_TREND_API_ROUTE = "/api/stocks/%s/trend";
   private static final String STOCK_TITLE = "RBS.l";
   private static final String INEXISTENT_STOCK_TITLE = "foobar";
-  @Rule
-  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+
+  @ClassRule
+  public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+
   Matcher<?> stockTrendEnumMatcher = anyOf(equalTo("INCREASING"), equalTo("DECREASING"), equalTo("STABLE"), equalTo("NO_DATA"));
 
   @Test

@@ -6,7 +6,7 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;

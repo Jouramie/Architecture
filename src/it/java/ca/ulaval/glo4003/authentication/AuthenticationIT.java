@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.authentication;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -107,8 +108,7 @@ public class AuthenticationIT {
   @Test
   public void givenNotAuthenticatedUser_whenLoggingOut_thenResponseIsUnauthorized() {
     //@formatter:off
-    given()
-    .when()
+    when()
         .post(LOGOUT_ROUTE)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());

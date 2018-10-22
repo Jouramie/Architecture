@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.InternalErrorException;
 import ca.ulaval.glo4003.service.stock.max.StockMaxResponseAssembler;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueRetriever;
