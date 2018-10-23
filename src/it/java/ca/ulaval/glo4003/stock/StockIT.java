@@ -13,6 +13,7 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import org.junit.ClassRule;
@@ -72,6 +73,7 @@ public class StockIT {
         .get(API_STOCK_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
+        .header("X-Total-Count", is(notNullValue()))
         .body("$", everyItem(hasKey(TITLE)))
         .body("$", everyItem(hasKey(NAME)))
         .body("$", everyItem(hasKey(MARKET)))
@@ -91,6 +93,7 @@ public class StockIT {
         .get(API_STOCK_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
+        .header("X-Total-Count", is("1"))
         .body("$", hasSize(1))
         .root("[0]")
         .body(TITLE, equalTo(SOME_TITLE))
@@ -112,6 +115,7 @@ public class StockIT {
         .get(API_STOCK_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
+        .header("X-Total-Count", is("0"))
         .body("$", is(emptyIterable()));
     //@formatter:on
   }
@@ -125,6 +129,7 @@ public class StockIT {
         .get(API_STOCK_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
+        .header("X-Total-Count", is(notNullValue()))
         .body("$", hasSize(greaterThanOrEqualTo(1)))
         .body("$", everyItem(hasEntry(CATEGORY, SOME_CATEGORY)));
     //@formatter:on
@@ -139,6 +144,7 @@ public class StockIT {
         .get(API_STOCK_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
+        .header("X-Total-Count", is("0"))
         .body("$", is(emptyIterable()));
     //@formatter:on
   }
@@ -148,9 +154,10 @@ public class StockIT {
   public void given20PerPage_whenGettingAll_thenReturn20Stocks() {
     //@formatter:off
     when()
-        .get(API_STOCK_ROUTE + "$per_page=20")
+        .get(API_STOCK_ROUTE + "?per_page=20")
     .then()
         .statusCode(OK.getStatusCode())
+        .header("X-Total-Count", is(notNullValue()))
         .body("$", hasSize(20));
     //@formatter:on
   }
