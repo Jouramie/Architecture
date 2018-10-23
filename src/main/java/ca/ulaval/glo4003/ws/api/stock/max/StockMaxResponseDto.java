@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class StockMaxResponseDto {
   public final String title;
   public final BigDecimal maximumValue;
-  @Schema(description = "Date when the maximum value was reached.")
+  @Schema(description = "Date on which the maximum value was reached.")
   @JsonFormat
   public final LocalDate maximumValueDate;
 

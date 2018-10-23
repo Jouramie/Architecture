@@ -22,7 +22,7 @@ public interface StockMaxResource {
 
   @GET
   @Operation(summary = "Get the maximum value for a given stock title.",
-      description = "Return the stock maximum value since the interval asked.",
+      description = "Return the stock maximum value in the requested time period.",
       responses = {
           @ApiResponse(
               responseCode = "200",

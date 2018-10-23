@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 public class StockDto {
   public final String title;
   public final String market;
+  @Schema(description = "Name of the company")
   public final String name;
   public final String category;
   @Schema(description = "Stock value at market opening")

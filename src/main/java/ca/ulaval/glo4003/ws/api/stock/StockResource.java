@@ -47,7 +47,8 @@ public interface StockResource {
   @PaginationBinding
   @Operation(
       summary = "Get all stocks.",
-      description = "Return a list of all stocks with their information. ",
+      description = "Return all stocks paginated, with their information. Query parameters can be "
+          + "used to filter the stocks.",
       responses = {
           @ApiResponse(
               responseCode = "200",
