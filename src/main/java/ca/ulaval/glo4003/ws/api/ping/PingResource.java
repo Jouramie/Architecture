@@ -18,12 +18,12 @@ import javax.ws.rs.core.MediaType;
 public interface PingResource {
   @GET
   @Operation(
-      summary = "Ping the API for basic smoke-test",
+      summary = "Ping the API for basic smoke-test.",
       description = "Return the version and the current date of the server.",
       responses = {
           @ApiResponse(
               responseCode = "200",
-              description = "Ping value",
+              description = "Pong",
               content = @Content(
                   schema = @Schema(
                       implementation = PingDto.class
@@ -32,13 +32,13 @@ public interface PingResource {
           ),
           @ApiResponse(
               responseCode = "400",
-              description = "Missing echo query parameter"
+              description = "Missing echo query parameter."
           )
       }
   )
   PingDto ping(
       @Parameter(
-          description = "Echo message to print back",
+          description = "Message to send back.",
           required = true
       )
       @QueryParam("echo") String echo
