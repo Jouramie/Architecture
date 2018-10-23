@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
-import ca.ulaval.glo4003.ws.api.validation.InputErrorResponseModel;
+import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,7 +37,7 @@ public interface UserResource {
               description = "Email already exists, email and password should not be empty",
               content = @Content(
                   schema = @Schema(
-                      implementation = InputErrorResponseModel.class
+                      implementation = InputErrorResponse.class
                   )
               )
           )
