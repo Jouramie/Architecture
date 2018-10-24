@@ -7,11 +7,11 @@ import javax.validation.ConstraintViolation;
 
 public class InvalidInputException extends RuntimeException {
 
-  private final InputErrorResponseModel inputErrors;
+  private final InputErrorResponse inputErrors;
 
   <T> InvalidInputException(Set<ConstraintViolation<T>> violations) {
     inputErrors =
-        new InputErrorResponseModel(violations.stream()
+        new InputErrorResponse(violations.stream()
             .map(this::buildErrorMessage)
             .collect(toList()));
   }
@@ -20,7 +20,7 @@ public class InvalidInputException extends RuntimeException {
     return violation.getPropertyPath() + " " + violation.getMessage();
   }
 
-  public InputErrorResponseModel getInputErrors() {
+  public InputErrorResponse getInputErrors() {
     return inputErrors;
   }
 }

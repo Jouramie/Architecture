@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserResourceImplTest {
+public class UserResourceTest {
 
   private static final UserCreationDto SOME_CREATION_REQUEST =
       new UserCreationDto("email", "password");

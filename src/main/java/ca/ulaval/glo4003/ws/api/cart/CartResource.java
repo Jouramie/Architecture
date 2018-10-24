@@ -26,7 +26,7 @@ public interface CartResource {
   @GET
   @Operation(
       summary = "Get the content of the cart.",
-      description = "Return the every stocks in the cart, with their details and quantity.",
+      description = "Return every stock in the cart, with their details and quantity.",
       responses = {
           @ApiResponse(
               responseCode = "200",

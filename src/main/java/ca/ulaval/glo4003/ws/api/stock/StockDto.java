@@ -1,23 +1,16 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 
 @Schema(
-    name = "StockResponse",
-    description = "Stock response containing title, market, stock name, category, "
-        + "stock value at market opening, current stock value and stock value at market close."
+    name = "Stock"
 )
 public class StockDto {
-  @Schema(description = "Title")
   public final String title;
-  @Schema(description = "Market")
   public final String market;
   @Schema(description = "Name of the company")
   public final String name;
-  @Schema(description = "Category")
   public final String category;
   @Schema(description = "Stock value at market opening")
   public final BigDecimal openValue;
@@ -26,14 +19,13 @@ public class StockDto {
   @Schema(description = "Stock value at market close")
   public final BigDecimal closeValue;
 
-  @JsonCreator
-  public StockDto(@JsonProperty("title") String title,
-                  @JsonProperty("name") String name,
-                  @JsonProperty("category") String category,
-                  @JsonProperty("market") String market,
-                  @JsonProperty("openValue") BigDecimal openValue,
-                  @JsonProperty("currentValue") BigDecimal currentValue,
-                  @JsonProperty("closeValue") BigDecimal closeValue) {
+  public StockDto(String title,
+                  String name,
+                  String category,
+                  String market,
+                  BigDecimal openValue,
+                  BigDecimal currentValue,
+                  BigDecimal closeValue) {
     this.title = title;
     this.market = market;
     this.name = name;

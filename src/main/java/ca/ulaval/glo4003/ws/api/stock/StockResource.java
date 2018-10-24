@@ -1,7 +1,5 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
-import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
-import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import ca.ulaval.glo4003.ws.http.pagination.PaginationBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,13 +24,11 @@ public interface StockResource {
   @GET
   @Path("/{title}")
   @Operation(
-      summary = "Stock information for given title.",
-      description = "Return the stock title, market, stock name, category, "
-          + "stock value at market opening, current stock value and stock value at market close.",
+      summary = "Get a stock for a given title.",
+      description = "Return the details of the stock with the corresponding title.",
       responses = {
           @ApiResponse(
               responseCode = "200",
-              description = "Stock information",
               content = @Content(
                   schema = @Schema(
                       implementation = StockDto.class
@@ -41,28 +37,21 @@ public interface StockResource {
           ),
           @ApiResponse(
               responseCode = "404",
-              description = "Stock does not exist"
+              description = "Stock does not exist."
           )
       }
   )
-  StockDto getStockByTitle(
-      @PathParam("title")
-      @Parameter(
-          description = "Title",
-          required = true
-      )
-          String title);
+  StockDto getStockByTitle(@PathParam("title") String title);
 
   @GET
   @PaginationBinding
   @Operation(
       summary = "Get all stocks.",
-      description = "A list of all stocks. Each stock contains a title, market, stock name, "
-          + "category, stock value at market opening, current stock value "
-          + "and stock value at market close.",
+      description = "Return all stocks paginated, with their information. Query parameters can be "
+          + "used to filter the stocks.",
       responses = {
           @ApiResponse(
-              description = "Stocks information",
+              responseCode = "200",
               headers = {
                   @Header(
                       name = "X-Total-Count",
@@ -80,14 +69,14 @@ public interface StockResource {
   )
   List<StockDto> getStocks(
       @QueryParam("name")
-      @Parameter(description = "Stock name")
+      @Parameter(description = "Search stock by name.")
           String name,
       @QueryParam("category")
-      @Parameter(description = "Stock category")
+      @Parameter(description = "Search stock by category.")
           String category,
       @QueryParam("page")
       @Parameter(
-          description = "Page number",
+          description = "The page to display",
           schema = @Schema(
               defaultValue = "1"
           )
@@ -95,35 +84,10 @@ public interface StockResource {
           int page,
       @QueryParam("per_page")
       @Parameter(
-          description = "Number of stock per page",
+          description = "The number of stock per page",
           schema = @Schema(
               defaultValue = "15"
           )
       )
           int perPage);
-
-  @GET
-  @Path("/{title}/max")
-  @Operation(summary = "Get stock maximum value.",
-      description = "Return the stock maximum value since the interval asked.",
-      responses = {@ApiResponse(description = "Stock maximum value",
-          content = @Content(schema = @Schema(implementation = StockMaxResponseDto.class))),
-          @ApiResponse(responseCode = "400", description = "Missing or invalid since parameter"),
-          @ApiResponse(responseCode = "404", description = "Stock does not exist")})
-  StockMaxResponseDto getStockMaxValue(
-      @PathParam("title")
-      @Parameter(
-          description = "Title of the stock",
-          required = true
-      )
-          String title,
-      @QueryParam("since")
-      @Parameter(
-          description = "Since parameter",
-          schema = @Schema(
-              implementation = StockMaxValueSinceRange.class
-          ),
-          required = true
-      )
-          String since);
 }
