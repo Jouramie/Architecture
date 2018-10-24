@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.ws.api.cart;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 
-public class TransactionItemDto {
+public class ApiTransactionItemDto {
 
   @Schema(description = "Title")
   public final String title;
@@ -14,7 +14,7 @@ public class TransactionItemDto {
   @Schema(description = "Currency")
   public final String currency;
 
-  public TransactionItemDto(String title, int quantity, BigDecimal moneyAmount, String currency) {
+  public ApiTransactionItemDto(String title, int quantity, BigDecimal moneyAmount, String currency) {
     this.title = title;
     this.quantity = quantity;
     this.moneyAmount = moneyAmount;

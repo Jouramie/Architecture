@@ -36,12 +36,15 @@ public class UserResourceImplTest {
 
   private RequestValidator requestValidator;
 
+  @Mock
+  private ApiUserAssembler apiUserAssembler;
+
   private UserResourceImpl userResource;
 
   @Before
   public void setup() {
     requestValidator = new RequestValidator();
-    userResource = new UserResourceImpl(userCreationService, requestValidator);
+    userResource = new UserResourceImpl(userCreationService, requestValidator, apiUserAssembler);
   }
 
   @Test

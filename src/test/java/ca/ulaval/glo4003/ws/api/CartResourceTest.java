@@ -4,19 +4,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.service.cart.CartItemDto;
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
+import ca.ulaval.glo4003.service.cart.TransactionDto;
 import ca.ulaval.glo4003.util.CartStockRequestBuilder;
-import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
+import ca.ulaval.glo4003.ws.api.cart.ApiCartItemAssembler;
+import ca.ulaval.glo4003.ws.api.cart.ApiCartItemResponseDto;
+import ca.ulaval.glo4003.ws.api.cart.ApiTransactionAssembler;
+import ca.ulaval.glo4003.ws.api.cart.ApiTransactionDto;
 import ca.ulaval.glo4003.ws.api.cart.CartResource;
-import ca.ulaval.glo4003.ws.api.cart.CartResourceImpl;
 import ca.ulaval.glo4003.ws.api.cart.CartStockRequest;
-import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -24,27 +28,38 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class CartResourceTest {
   private static final String SOME_TITLE = "title";
   private static final CartStockRequest SOME_CART_STOCK_REQUEST = new CartStockRequestBuilder().build();
+
+
   @Mock
-  private CartItemResponseDto expectedDto;
+  private CartItemDto serviceDto; //= new CartItemDto(SOME_TITLE, "market", "name", "category", new BigDecimal(0.825), 1);
+  @Mock
+  private ApiCartItemResponseDto expectedDto;
   @Mock
   private TransactionDto transactionDto;
   @Mock
   private CartService cartService;
   @Mock
   private CheckoutService checkoutService;
-  private CartResource cartResource;
 
+  @Mock
+  private ApiTransactionAssembler apiTransactionAssembler;
+
+  @Mock
+  private ApiCartItemAssembler apiCartItemAssembler;
+
+  @InjectMocks
+  private CartResource cartResource;
 
   @Before
   public void setup() {
-    given(cartService.getCartContent()).willReturn(Collections.singletonList(expectedDto));
-
-    cartResource = new CartResourceImpl(cartService, checkoutService);
+    given(cartService.getCartContent()).willReturn(Collections.singletonList(serviceDto));
+    given(apiCartItemAssembler.toDtoList(Collections.singletonList(serviceDto)))
+        .willReturn(Collections.singletonList(expectedDto));
   }
 
   @Test
   public void whenGetCartContent_thenReturningCartContent() {
-    List<CartItemResponseDto> resultingDto = cartResource.getCartContent();
+    List<ApiCartItemResponseDto> resultingDto = cartResource.getCartContent();
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
   }
@@ -58,7 +73,7 @@ public class CartResourceTest {
 
   @Test
   public void whenAddStockToCart_thenReturnCartContent() {
-    List<CartItemResponseDto> resultingDto = cartResource.addStockToCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
+    List<ApiCartItemResponseDto> resultingDto = cartResource.addStockToCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
   }
@@ -72,7 +87,7 @@ public class CartResourceTest {
 
   @Test
   public void whenUpdateStockInCart_thenReturnCartContent() {
-    List<CartItemResponseDto> resultingDto = cartResource.updateStockInCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
+    List<ApiCartItemResponseDto> resultingDto = cartResource.updateStockInCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
   }
@@ -86,7 +101,7 @@ public class CartResourceTest {
 
   @Test
   public void whenRemoveStockFromCart_thenReturnCartContent() {
-    List<CartItemResponseDto> resultingDto = cartResource.deleteStockInCart(SOME_TITLE);
+    List<ApiCartItemResponseDto> resultingDto = cartResource.deleteStockInCart(SOME_TITLE);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
   }
@@ -102,9 +117,10 @@ public class CartResourceTest {
   public void whenCheckoutCart_thenReturnPreviousCartContent() {
     given(checkoutService.checkoutCart()).willReturn(transactionDto);
 
-    TransactionDto resultingDto = cartResource.checkoutCart();
+    ApiTransactionDto resultingDto = cartResource.checkoutCart();
 
-    assertThat(resultingDto).isEqualTo(transactionDto);
+    ApiTransactionDto assemblerResult = apiTransactionAssembler.toDto(transactionDto);
+    assertThat(resultingDto).isEqualTo(assemblerResult);
   }
 
   @Test

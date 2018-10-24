@@ -4,11 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 
 @Schema(
-    name = "CartItemResponseDto",
+    name = "ApiCartItemResponseDto",
     description = "Cart stock response containing title, market, stock name, category, "
         + "current stock value and quantity of that stock."
 )
-public class CartItemResponseDto {
+public class ApiCartItemResponseDto {
   @Schema(description = "Title")
   public final String title;
   @Schema(description = "Market")
@@ -22,8 +22,8 @@ public class CartItemResponseDto {
   @Schema(description = "Quantity")
   public final int quantity;
 
-  public CartItemResponseDto(String title, String market, String name, String category,
-                             BigDecimal currentValue, int quantity) {
+  public ApiCartItemResponseDto(String title, String market, String name, String category,
+                                BigDecimal currentValue, int quantity) {
     this.title = title;
     this.market = market;
     this.name = name;

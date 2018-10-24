@@ -11,7 +11,6 @@ import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.infrastructure.injection.Component;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
 import java.util.UUID;
 import javax.inject.Inject;

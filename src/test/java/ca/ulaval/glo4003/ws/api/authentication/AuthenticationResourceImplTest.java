@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.service.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
@@ -40,17 +41,21 @@ public class AuthenticationResourceImplTest {
 
   private RequestValidator requestValidator;
 
+  @Mock
+  private ApiAuthenticationResponseAssembler apiAuthenticationResponseAssembler;
+
   private AuthenticationResourceImpl authenticationResource;
 
   @Before
   public void setup() {
     requestValidator = new RequestValidator();
     authenticationResource
-        = new AuthenticationResourceImpl(authenticationService, requestValidator);
+        = new AuthenticationResourceImpl(authenticationService, requestValidator, apiAuthenticationResponseAssembler);
   }
 
   @Test
   public void whenAuthenticatingUser_thenUserIsAuthenticated() {
+    given(authenticationService.authenticate(SOME_AUTHENTICATION_REQUEST)).willReturn(SOME_AUTHENTICATION_RESPONSE);
     authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
     verify(authenticationService).authenticate(SOME_AUTHENTICATION_REQUEST);
@@ -58,6 +63,7 @@ public class AuthenticationResourceImplTest {
 
   @Test
   public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenResponseStatusIsOK() {
+    given(authenticationService.authenticate(SOME_AUTHENTICATION_REQUEST)).willReturn(SOME_AUTHENTICATION_RESPONSE);
     Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
     assertThat(response.getStatus()).isEqualTo(OK.getStatusCode());
@@ -65,12 +71,13 @@ public class AuthenticationResourceImplTest {
 
   @Test
   public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenTokenIsReturned() {
-    given(authenticationService.authenticate(SOME_AUTHENTICATION_REQUEST))
-        .willReturn(SOME_AUTHENTICATION_RESPONSE);
+    given(authenticationService.authenticate(SOME_AUTHENTICATION_REQUEST)).willReturn(SOME_AUTHENTICATION_RESPONSE);
 
     Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
-    assertThat(response.getEntity()).isEqualTo(SOME_AUTHENTICATION_RESPONSE);
+    ApiAuthenticationResponseDto apiResponse = apiAuthenticationResponseAssembler.toDto(SOME_AUTHENTICATION_RESPONSE);
+
+    assertThat(response.getEntity()).isEqualTo(apiResponse);
   }
 
   @Test

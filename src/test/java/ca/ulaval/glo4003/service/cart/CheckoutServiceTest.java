@@ -19,7 +19,6 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -99,9 +98,9 @@ public class CheckoutServiceTest {
     given(transactionAssembler.toDto(transaction))
         .willReturn(expectedDto);
 
-    TransactionDto transactionDto = checkoutService.checkoutCart();
+    TransactionDto apiTransactionDto = checkoutService.checkoutCart();
 
-    assertThat(transactionDto).isEqualTo(expectedDto);
+    assertThat(apiTransactionDto).isEqualTo(expectedDto);
   }
 
   @Test
