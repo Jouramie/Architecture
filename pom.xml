@@ -24,11 +24,12 @@
         <jetty.version>9.2.3.v20140905</jetty.version>
         <jersey.version>2.7</jersey.version>
         <javax.ws.rs.version>2.1</javax.ws.rs.version>
+        <jackson.version>2.9.1</jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commons-csv.version>1.5</commons-csv.version>
         <live-stock-simulator.version>1.0.0</live-stock-simulator.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <swagger.version>2.0.0</swagger.version>
+        <swagger.version>2.0.2</swagger.version>
 
         <!-- Test dependencies -->
         <junit.version>4.11</junit.version>
@@ -106,6 +107,16 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>${commons-csv.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>archi</groupId>

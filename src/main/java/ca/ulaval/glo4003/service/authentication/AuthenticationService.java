@@ -8,7 +8,7 @@ import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenFactory;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
@@ -50,7 +50,7 @@ public class AuthenticationService {
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {
     try {
       AuthenticationToken savedToken =
-          authenticationTokenRepository.getByUUID(UUID.fromString(authenticationTokenDto.token));
+          authenticationTokenRepository.findByUUID(UUID.fromString(authenticationTokenDto.token));
       User currentUser = getUserByEmail(savedToken.email);
       currentUserSession.setCurrentUser(currentUser);
     } catch (TokenNotFoundException exception) {

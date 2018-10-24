@@ -1,12 +1,11 @@
 package ca.ulaval.glo4003.service.cart;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import java.util.List;
 import javax.inject.Inject;
@@ -31,27 +30,25 @@ public class CartService {
 
   public List<CartItemDto> getCartContent() {
     Cart cart = getCart();
-    return assembler.toDtoList(cart.getItems());
+    return assembler.toDtoList(cart.getStocks());
   }
 
   public void addStockToCart(String title, int quantity) {
     checkIfStockExists(title);
-    checkIfValidQuantity(quantity);
 
     Cart cart = getCart();
-    cart.add(title, quantity);
+    cart.add(title, quantity, stockRepository);
 
     updateUser();
   }
 
   public void updateStockInCart(String title, int quantity) {
     checkIfStockExists(title);
-    checkIfValidQuantity(quantity);
 
     Cart cart = getCart();
     try {
       cart.update(title, quantity);
-    } catch (StockNotFoundException exception) {
+    } catch (IllegalArgumentException exception) {
       throw new StockNotInCartException(exception);
     }
 
@@ -62,7 +59,7 @@ public class CartService {
     checkIfStockExists(title);
 
     Cart cart = getCart();
-    cart.remove(title);
+    cart.removeAll(title);
 
     updateUser();
   }
@@ -81,12 +78,6 @@ public class CartService {
   private void checkIfStockExists(String title) {
     if (!stockRepository.doesStockExist(title)) {
       throw new InvalidStockTitleException(title);
-    }
-  }
-
-  private void checkIfValidQuantity(int quantity) {
-    if (quantity <= 0) {
-      throw new InvalidStockQuantityException();
     }
   }
 

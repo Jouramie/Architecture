@@ -4,17 +4,17 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import java.util.List;
 
 public interface StockRepository {
-  List<Stock> getAll();
+  List<Stock> findAll();
 
-  Stock getByTitle(String title) throws StockNotFoundException;
+  Stock findByTitle(String title) throws StockNotFoundException;
 
-  Stock getByName(String name) throws StockNotFoundException;
-
-  List<Stock> getByMarket(MarketId marketId);
+  List<Stock> findByMarket(MarketId marketId);
 
   void add(Stock stock);
 
   boolean doesStockExist(String title);
 
-  List<String> getCategories();
+  List<String> findAllCategories();
+
+  List<Stock> queryStocks(String name, String category);
 }

@@ -4,7 +4,8 @@ import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import javax.inject.Inject;
 
@@ -23,9 +24,9 @@ public class UserCreationService {
     this.userAssembler = userAssembler;
   }
 
-  public UserDto createUser(UserCreationDto creationRequest) {
+  public UserDto createInvestorUser(UserCreationDto creationRequest) {
     User user = userFactory.create(creationRequest.email, creationRequest.password,
-        creationRequest.role);
+        UserRole.INVESTOR);
     try {
       userRepository.add(user);
     } catch (UserAlreadyExistsException exception) {

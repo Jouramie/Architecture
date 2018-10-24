@@ -17,14 +17,12 @@ import org.junit.Test;
 public class UserIT {
 
   private static final String SOME_EMAIL = "name";
+  private static final String SOME_PASSWORD = "password";
 
-  private static final UserRole SOME_ROLE = UserRole.ADMINISTRATOR;
+  private static final UserRole INVESTOR_USER_ROLE = UserRole.INVESTOR;
 
   private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_EMAIL, "password", SOME_ROLE);
-
-  private static final UserCreationDto AN_INVALID_CREATION_REQUEST =
-      new UserCreationDto("", "", null);
+      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
 
   private static final String USERS_ROUTE = "/api/users";
 
@@ -42,7 +40,7 @@ public class UserIT {
     .then()
         .statusCode(CREATED.getStatusCode())
         .body("email", equalTo(SOME_EMAIL))
-        .body("role", equalTo(SOME_ROLE.toString()));
+        .body("role", equalTo(INVESTOR_USER_ROLE.toString()));
     //@formatter:on
   }
 
@@ -62,10 +60,24 @@ public class UserIT {
   }
 
   @Test
-  public void givenInvalidInputs_whenCreatingUser_thenBadRequest() {
+  public void givenEmptyEmail_whenCreatingUser_thenBadRequest() {
     //@formatter:off
     given()
-        .body(AN_INVALID_CREATION_REQUEST)
+        .body(new UserCreationDto("", SOME_PASSWORD))
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
+        .post(USERS_ROUTE)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode())
+        .body("inputErrors", any(List.class));
+    //@formatter:on
+  }
+
+  @Test
+  public void givenTooSmallPassword_whenCreatingUser_thenBadRequest() {
+    //@formatter:off
+    given()
+        .body(new UserCreationDto(SOME_EMAIL, "1234567"))
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .post(USERS_ROUTE)

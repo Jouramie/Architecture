@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1bde6e3a-0927-4bf7-a947-13566af94579",
+		"_postman_id": "ddebab66-fcfb-4e34-8545-48f7eb1884d1",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -455,7 +455,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/users",
@@ -514,14 +514,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8080/api/revoke-token",
+							"raw": "localhost:8080/api/logout",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"revoke-token"
+								"logout"
 							]
 						}
 					},

@@ -5,13 +5,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Schema(
-    name = "PortfolioResponseDto",
-    description = "Portfolio response containing all stocks and the current total value of the portfolio."
+    name = "Portfolio"
 )
 public class PortfolioResponseDto {
-  @Schema(description = "Portfolio stocks")
   public final List<PortfolioItemResponseDto> stocks;
-  @Schema(description = "Current total value")
   public final BigDecimal currentTotalValue;
 
   public PortfolioResponseDto(List<PortfolioItemResponseDto> stocks, BigDecimal currentTotalValue) {

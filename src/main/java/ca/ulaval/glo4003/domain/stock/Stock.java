@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.domain.stock;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
+import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
 
@@ -38,6 +39,10 @@ public class Stock {
 
   public StockValueHistory getValueHistory() {
     return valueHistory;
+  }
+
+  public Currency getCurrency() {
+    return getValue().getCurrentValue().getCurrency();
   }
 
   public synchronized void updateValue(BigDecimal variation) {

@@ -121,7 +121,7 @@ public class PortfolioIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .body(cartStockRequestBuilder.build(SOME_QUANTITY))
+        .body(cartStockRequestBuilder.withQuantity(SOME_QUANTITY).build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .put(API_CART_ROUTE_WITH_TITLE);

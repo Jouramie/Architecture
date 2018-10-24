@@ -13,6 +13,7 @@ public class CartResourceImpl implements CartResource {
   private final CheckoutService checkoutService;
   private final ApiTransactionAssembler apiTransactionAssembler;
   private final ApiCartItemAssembler apiCartItemAssembler;
+  private final RequestValidator requestValidator;
 
   @Inject
   public CartResourceImpl(CartService cartService, CheckoutService checkoutService, ApiTransactionAssembler apiTransactionAssembler, ApiCartItemAssembler apiCartItemAssembler) {
@@ -20,6 +21,7 @@ public class CartResourceImpl implements CartResource {
     this.checkoutService = checkoutService;
     this.apiTransactionAssembler = apiTransactionAssembler;
     this.apiCartItemAssembler = apiCartItemAssembler;
+    this.requestValidator = new RequestValidator();
   }
 
   @Override
@@ -29,13 +31,17 @@ public class CartResourceImpl implements CartResource {
 
   @Override
   public List<ApiCartItemResponseDto> addStockToCart(String title,
-                                                     CartStockRequest cartStockRequest) {
+                                                  CartStockRequest cartStockRequest) {
+    requestValidator.validate(cartStockRequest);
     cartService.addStockToCart(title, cartStockRequest.quantity);
 
     return apiCartItemAssembler.toDtoList(cartService.getCartContent());
   }
 
   @Override
+  public List<ApiCartItemResponseDto> updateStockInCart(String title,
+                                                     CartStockRequest cartStockRequest) {
+    requestValidator.validate(cartStockRequest);
   public List<ApiCartItemResponseDto> updateStockInCart(String title,
                                                         CartStockRequest cartStockRequest) {
     cartService.updateStockInCart(title, cartStockRequest.quantity);

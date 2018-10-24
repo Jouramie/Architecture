@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.infrastructure.persistence;
 
+import static java.util.stream.Collectors.toList;
+
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -8,18 +10,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InMemoryStockRepository implements StockRepository {
   private final Map<String, Stock> stocks = new HashMap<>();
 
   @Override
-  public List<Stock> getAll() {
+  public List<Stock> findAll() {
     return new ArrayList<>(stocks.values());
   }
 
   @Override
-  public Stock getByTitle(String title) throws StockNotFoundException {
+  public Stock findByTitle(String title) throws StockNotFoundException {
     Stock result = stocks.get(title);
     if (result == null) {
       throw new StockNotFoundException(title);
@@ -28,16 +30,9 @@ public class InMemoryStockRepository implements StockRepository {
   }
 
   @Override
-  public Stock getByName(String name) throws StockNotFoundException {
-    return stocks.values().stream().filter((stock) -> stock.getName().equals(name))
-        .findFirst()
-        .orElseThrow(() -> new StockNotFoundException("Cannot find stock with name " + name));
-  }
-
-  @Override
-  public List<Stock> getByMarket(MarketId marketId) {
+  public List<Stock> findByMarket(MarketId marketId) {
     return stocks.values().stream().filter((stock) -> stock.getMarketId().equals(marketId))
-        .collect(Collectors.toList());
+        .collect(toList());
   }
 
   @Override
@@ -51,7 +46,22 @@ public class InMemoryStockRepository implements StockRepository {
   }
 
   @Override
-  public List<String> getCategories() {
-    return stocks.values().stream().map(Stock::getCategory).distinct().collect(Collectors.toList());
+  public List<String> findAllCategories() {
+    return stocks.values().stream().map(Stock::getCategory).distinct().collect(toList());
+  }
+
+  @Override
+  public List<Stock> queryStocks(String name, String category) {
+    Stream<Stock> stockStream = stocks.values().stream();
+
+    if (name != null) {
+      stockStream = stockStream.filter((stock) -> stock.getName().equals(name));
+    }
+
+    if (category != null) {
+      stockStream = stockStream.filter((stock) -> stock.getCategory().equals(category));
+    }
+
+    return stockStream.collect(toList());
   }
 }

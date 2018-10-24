@@ -7,9 +7,9 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.service.stock.StockService;
 import java.util.List;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -20,18 +20,17 @@ public class StockResourceTest {
   private static final String SOME_CATEGORY = "technology";
   private static final int DEFAULT_PAGE = 1;
   private static final int DEFAULT_PER_PAGE = 15;
+
   @Mock
   private StockService stockService;
   @Mock
   private StockDto expectedDto;
   @Mock
   private List<StockDto> expectedDtos;
-  private StockResource stockResource;
 
-  @Before
-  public void setup() {
-    stockResource = new StockResourceImpl(stockService);
-  }
+  @InjectMocks
+  private StockResourceImpl stockResource;
+
 
   @Test
   public void whenGetStockByTitle_thenReturningDto() {

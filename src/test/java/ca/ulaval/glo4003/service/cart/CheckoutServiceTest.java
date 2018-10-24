@@ -4,21 +4,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +57,10 @@ public class CheckoutServiceTest {
   private TransactionAssembler transactionAssembler;
   @Mock
   private TransactionDto expectedDto;
+  @Mock
+  private StockCollection stockCollection;
+  @Mock
+  private StockRepository stockRepository;
 
   private CheckoutService checkoutService;
 
@@ -60,6 +70,8 @@ public class CheckoutServiceTest {
     given(currentUser.getCart()).willReturn(cart);
     given(transactionFactory.createPurchase(cart)).willReturn(transaction);
     given(cart.isEmpty()).willReturn(false);
+    given(cart.getStocks()).willReturn(stockCollection);
+    given(stockCollection.getTitles()).willReturn(Arrays.asList("stock1", "stock2", "stock3"));
 
     checkoutService = new CheckoutService(paymentProcessor,
         currentUserSession,
@@ -67,7 +79,8 @@ public class CheckoutServiceTest {
         transactionLedger,
         notificationSender,
         notificationFactory,
-        transactionAssembler);
+        transactionAssembler,
+        stockRepository);
   }
 
   @Test
@@ -94,7 +107,15 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenPreviousCartContentIsReturned() throws StockNotFoundException {
+  public void whenCheckoutCart_thenStocksAreAddedToUserPortfolio() {
+    checkoutService.checkoutCart();
+
+    int numberOfStocksInCart = cart.getStocks().getTitles().size();
+    verify(currentUser, times(numberOfStocksInCart)).addStockToPortfolio(any(), anyInt(), any());
+  }
+
+  @Test
+  public void whenCheckoutCart_thenPreviousCartContentIsReturned() {
     given(transactionAssembler.toDto(transaction))
         .willReturn(expectedDto);
 

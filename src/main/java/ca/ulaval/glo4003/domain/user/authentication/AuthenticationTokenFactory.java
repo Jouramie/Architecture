@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.domain.user.authentication;
 
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import java.util.UUID;
 
 @Component

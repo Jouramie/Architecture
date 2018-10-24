@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.ws.api.stock;
 
-import ca.ulaval.glo4003.service.stock.StockMaxValueSinceParameter;
 import ca.ulaval.glo4003.service.stock.StockService;
 import java.util.List;
 import javax.annotation.Resource;
@@ -24,10 +23,5 @@ public class StockResourceImpl implements StockResource {
   @Override
   public List<StockDto> getStocks(String name, String category, int page, int perPage) {
     return stockService.queryStocks(name, category);
-  }
-
-  @Override
-  public StockDto getStockMaxValue(String title, StockMaxValueSinceParameter since) {
-    return null;
   }
 }

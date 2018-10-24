@@ -4,11 +4,11 @@ import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.Matchers.any;
+import static org.hamcrest.Matchers.anyOf;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.ws.api.stock.trend.StockTrend;
-import org.junit.Rule;
+import org.hamcrest.Matcher;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 public class StockTrendIT {
@@ -16,8 +16,10 @@ public class StockTrendIT {
   private static final String STOCK_TITLE = "RBS.l";
   private static final String INEXISTENT_STOCK_TITLE = "foobar";
 
-  @Rule
-  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+  @ClassRule
+  public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+
+  Matcher<?> stockTrendEnumMatcher = anyOf(equalTo("INCREASING"), equalTo("DECREASING"), equalTo("STABLE"), equalTo("NO_DATA"));
 
   @Test
   public void whenGettingStockVariationTrend_thenReturnVariationTrend() {
@@ -27,9 +29,9 @@ public class StockTrendIT {
     .then()
         .statusCode(OK.getStatusCode())
         .body("title", equalTo(STOCK_TITLE))
-        .body("last5Days", any(StockTrend.class))
-        .body("last30Days", any(StockTrend.class))
-        .body("lastYear", any(StockTrend.class));
+        .body("last5Days", stockTrendEnumMatcher)
+        .body("last30Days", stockTrendEnumMatcher)
+        .body("lastYear", stockTrendEnumMatcher);
     //@formatter:on
   }
 

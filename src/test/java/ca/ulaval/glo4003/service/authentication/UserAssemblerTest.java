@@ -12,7 +12,7 @@ public class UserAssemblerTest {
 
   @Test
   public void whenAssemblingToDto_thenAssembleFieldByField() {
-    User someUser = new UserBuilder().buildDefault();
+    User someUser = new UserBuilder().build();
 
     UserDto createdUser = assembler.toDto(someUser);
 

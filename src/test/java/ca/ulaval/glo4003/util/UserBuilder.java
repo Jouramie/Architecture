@@ -26,13 +26,4 @@ public class UserBuilder {
   public User build() {
     return new User(email, password, userRole);
   }
-
-  public User buildDefault() {
-    return new User(DEFAULT_EMAIL, DEFAULT_PASSWORD, DEFAULT_USER_ROLE);
-  }
-
-  // TODO: A déplacer ou enlever éventuellement
-  public ApiUserDto UserDtobuildDefault() {
-    return new ApiUserDto(DEFAULT_EMAIL, DEFAULT_USER_ROLE);
-  }
 }

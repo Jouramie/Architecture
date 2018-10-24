@@ -15,15 +15,13 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public interface StockCategoryResource {
 
-
   @GET
   @Operation(
-      summary = "Categories.",
+      summary = "Get stock categories.",
       description = "Return the available categories.",
       responses = {
           @ApiResponse(
               responseCode = "200",
-              description = "Category.",
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(

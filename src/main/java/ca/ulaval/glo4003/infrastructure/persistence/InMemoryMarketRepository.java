@@ -13,12 +13,12 @@ public class InMemoryMarketRepository implements MarketRepository {
   private final Map<MarketId, Market> markets = new HashMap<>();
 
   @Override
-  public List<Market> getAll() {
+  public List<Market> findAll() {
     return markets.values().stream().collect(Collectors.toList());
   }
 
   @Override
-  public Market getById(MarketId id) throws MarketNotFoundException {
+  public Market findById(MarketId id) throws MarketNotFoundException {
     Market result = markets.get(id);
     if (result == null) {
       throw new MarketNotFoundException("Cannot find market with id " + id.getValue());

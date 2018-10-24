@@ -5,6 +5,7 @@ import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
@@ -23,6 +24,7 @@ public class CheckoutService {
   private final NotificationSender notificationSender;
   private final NotificationFactory notificationFactory;
   private final TransactionAssembler transactionAssembler;
+  private final StockRepository stockRepository;
 
   @Inject
   public CheckoutService(PaymentProcessor paymentProcessor,
@@ -31,7 +33,8 @@ public class CheckoutService {
                          TransactionLedger transactionLedger,
                          NotificationSender notificationSender,
                          NotificationFactory notificationFactory,
-                         TransactionAssembler transactionAssembler) {
+                         TransactionAssembler transactionAssembler,
+                         StockRepository stockRepository) {
 
     this.paymentProcessor = paymentProcessor;
     this.currentUserSession = currentUserSession;
@@ -40,9 +43,10 @@ public class CheckoutService {
     this.notificationSender = notificationSender;
     this.notificationFactory = notificationFactory;
     this.transactionAssembler = transactionAssembler;
+    this.stockRepository = stockRepository;
   }
 
-  public TransactionDto checkoutCart() {
+  public TransactionDto checkoutCart() throws InvalidStockTitleException {
     User currentUser = currentUserSession.getCurrentUser();
     Cart cart = currentUser.getCart();
     checkIfCartIsEmpty(cart);
@@ -50,6 +54,7 @@ public class CheckoutService {
     Transaction transaction = createTransaction(cart);
     processTransaction(transaction);
     sendTransactionNotification(transaction, currentUser);
+    addStocksToUserPortfolio(currentUser, cart);
     cart.empty();
     return transactionAssembler.toDto(transaction);
   }
@@ -71,6 +76,12 @@ public class CheckoutService {
   private void sendTransactionNotification(Transaction transaction, User currentUser) {
     Notification notification = notificationFactory.create(transaction);
     notificationSender.sendNotification(notification, currentUser);
+  }
+
+  private void addStocksToUserPortfolio(User currentUser, Cart cart) throws InvalidStockTitleException {
+    for (String title : cart.getStocks().getTitles()) {
+      currentUser.addStockToPortfolio(title, cart.getQuantity(title), stockRepository);
+    }
   }
 
   private void processTransaction(Transaction transaction) {
