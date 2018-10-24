@@ -33,7 +33,7 @@ public interface CartResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = CartItemResponseDto.class
+                          implementation = ApiCartItemResponseDto.class
                       )
                   )
               )
@@ -59,7 +59,7 @@ public interface CartResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = CartItemResponseDto.class
+                          implementation = ApiCartItemResponseDto.class
                       )
                   )
               )
@@ -91,7 +91,7 @@ public interface CartResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = CartItemResponseDto.class
+                          implementation = ApiCartItemResponseDto.class
                       )
                   )
               )
@@ -123,7 +123,7 @@ public interface CartResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = CartItemResponseDto.class
+                          implementation = ApiCartItemResponseDto.class
                       )
                   )
               )
@@ -169,7 +169,7 @@ public interface CartResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = TransactionDto.class
+                          implementation = ApiTransactionDto.class
                       )
                   )
               )

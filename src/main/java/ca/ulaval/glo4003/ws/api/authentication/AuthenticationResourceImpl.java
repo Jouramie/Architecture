@@ -27,11 +27,11 @@ public class AuthenticationResourceImpl implements AuthenticationResource {
   }
 
   @Override
-  public Response authenticate(AuthenticationRequestDto authenticationRequest) {
+  public Response authenticate(ApiAuthenticationRequestDto authenticationRequest) {
     requestValidator.validate(authenticationRequest);
-    ApiAuthenticationResponseDto apiAuthenticationResponse
-        = authenticationService.authenticate(authenticationRequest);
-    return Response.status(ACCEPTED).entity(authenticationResponse).build();
+    AuthenticationResponseDto authenticationResponse = authenticationService.authenticate(authenticationRequest);
+    ApiAuthenticationResponseDto apiAuthenticationResponseDto = apiAuthenticationResponseAssembler.toDto(authenticationResponse);
+    return Response.status(ACCEPTED).entity(apiAuthenticationResponseDto).build();
   }
 
   @Override

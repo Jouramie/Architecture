@@ -9,7 +9,7 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.any;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
+import ca.ulaval.glo4003.ws.api.authentication.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
@@ -27,17 +27,17 @@ public class AuthenticationIT {
   private static final UserCreationDto A_CREATION_REQUEST =
       new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
 
-  private static final AuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
+  private static final ApiAuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
+      new ApiAuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
 
-  private static final AuthenticationRequestDto WRONG_PASSWORD_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD + "wrong");
+  private static final ApiAuthenticationRequestDto WRONG_PASSWORD_AUTHENTICATION_REQUEST =
+      new ApiAuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD + "wrong");
 
-  private static final AuthenticationRequestDto WRONG_USER_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto("zero janvier", SOME_PASSWORD);
+  private static final ApiAuthenticationRequestDto WRONG_USER_AUTHENTICATION_REQUEST =
+      new ApiAuthenticationRequestDto("zero janvier", SOME_PASSWORD);
 
-  private static final AuthenticationRequestDto AN_INVALID_AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(null, null);
+  private static final ApiAuthenticationRequestDto AN_INVALID_AUTHENTICATION_REQUEST
+      = new ApiAuthenticationRequestDto(null, null);
 
   private static final String USERS_ROUTE = "/api/users";
 

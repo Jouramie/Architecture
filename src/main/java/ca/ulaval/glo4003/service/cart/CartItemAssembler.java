@@ -7,9 +7,6 @@ import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.service.Component;
-import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
-import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 

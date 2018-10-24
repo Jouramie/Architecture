@@ -16,7 +16,6 @@ import ca.ulaval.glo4003.service.stock.max.StockMaxResponseAssembler;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueRetriever;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
 import ca.ulaval.glo4003.util.TestStockBuilder;
-import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import com.google.common.collect.Lists;
 import java.util.Collections;
@@ -68,7 +67,7 @@ public class StockServiceTest {
   @Test
   public void whenGetStockByTitle_thenWeHaveCorrespondingDto() throws StockNotFoundException {
     Stock givenStock = new TestStockBuilder().build();
-    StockDto expectedDto = new TestStockBuilder().buildDto();
+    StockDto expectedDto = new TestStockBuilder().buildServiceDto();
     given(stockRepository.findByTitle(any())).willReturn(givenStock);
     given(stockAssembler.toDto(givenStock)).willReturn(expectedDto);
 
@@ -99,7 +98,7 @@ public class StockServiceTest {
   @Test
   public void whenQueryStocks_thenWeHaveCorrespondingDto() {
     List<Stock> givenStocks = Collections.singletonList(new TestStockBuilder().build());
-    List<StockDto> expectedDtos = Collections.singletonList(new TestStockBuilder().buildDto());
+    List<StockDto> expectedDtos = Collections.singletonList(new TestStockBuilder().buildServiceDto());
     given(stockRepository.queryStocks(any(), any())).willReturn(givenStocks);
     given(stockAssembler.toDtoList(givenStocks)).willReturn(expectedDtos);
 

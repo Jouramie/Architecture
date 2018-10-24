@@ -28,7 +28,7 @@ public interface AuthenticationResource {
               description = "Successfully authenticated.",
               content = @Content(
                   schema = @Schema(
-                      implementation = AuthenticationResponseDto.class
+                      implementation = ApiAuthenticationResponseDto.class
                   )
               )
           ),
@@ -38,7 +38,7 @@ public interface AuthenticationResource {
           )
       }
   )
-  Response authenticate(AuthenticationRequestDto authenticationRequest);
+  Response authenticate(ApiAuthenticationRequestDto authenticationRequest);
 
   @POST()
   @Path("/logout")

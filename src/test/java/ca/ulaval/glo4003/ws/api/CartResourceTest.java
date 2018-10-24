@@ -15,9 +15,8 @@ import ca.ulaval.glo4003.ws.api.cart.ApiCartItemAssembler;
 import ca.ulaval.glo4003.ws.api.cart.ApiCartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.ApiTransactionAssembler;
 import ca.ulaval.glo4003.ws.api.cart.ApiTransactionDto;
-import ca.ulaval.glo4003.ws.api.cart.CartResource;
+import ca.ulaval.glo4003.ws.api.cart.CartResourceImpl;
 import ca.ulaval.glo4003.ws.api.cart.CartStockRequest;
-import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +34,7 @@ public class CartResourceTest {
 
 
   @Mock
-  private CartItemDto serviceDto; //= new CartItemDto(SOME_TITLE, "market", "name", "category", new BigDecimal(0.825), 1);
+  private CartItemDto serviceDto;
   @Mock
   private ApiCartItemResponseDto expectedDto;
   @Mock
@@ -52,7 +51,7 @@ public class CartResourceTest {
   private ApiCartItemAssembler apiCartItemAssembler;
 
   @InjectMocks
-  private CartResource cartResource;
+  private CartResourceImpl cartResource;
 
   @Before
   public void setup() {

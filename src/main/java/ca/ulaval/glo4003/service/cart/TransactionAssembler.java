@@ -4,8 +4,6 @@ import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.service.Component;
-import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
-import ca.ulaval.glo4003.ws.api.cart.TransactionItemDto;
 import java.util.List;
 import javax.inject.Inject;
 

@@ -23,17 +23,17 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationResourceTest {
 
-  private static final AuthenticationRequestDto SOME_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto("email", "password");
+  private static final ApiAuthenticationRequestDto SOME_AUTHENTICATION_REQUEST =
+      new ApiAuthenticationRequestDto("email", "password");
 
   private static final AuthenticationResponseDto SOME_AUTHENTICATION_RESPONSE
       = new AuthenticationResponseDto("TOKEN");
 
-  private static final AuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_EMAIL =
-      new AuthenticationRequestDto(null, "password");
+  private static final ApiAuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_EMAIL =
+      new ApiAuthenticationRequestDto(null, "password");
 
-  private static final AuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_PASSWORD =
-      new AuthenticationRequestDto("email", null);
+  private static final ApiAuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_PASSWORD =
+      new ApiAuthenticationRequestDto("email", null);
 
   @Mock
   private AuthenticationService authenticationService;

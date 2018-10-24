@@ -16,7 +16,6 @@ import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
-import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert;

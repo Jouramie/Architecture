@@ -12,9 +12,6 @@ import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.util.TestStockBuilder;
-import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import ca.ulaval.glo4003.util.StockBuilder;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +76,7 @@ public class CartItemAssemblerTest {
     StockCollection stockCollection = new StockCollection()
         .add(SOME_TITLE, SOME_QUANTITY, stockRepository)
         .add(SOME_OTHER_TITLE, SOME_QUANTITY, stockRepository);
-    List<CartItemeDto> dtos = assembler.toDtoList(stockCollection);
+    List<CartItemDto> dtos = assembler.toDtoList(stockCollection);
 
     assertThat(dtos).hasSize(2);
   }

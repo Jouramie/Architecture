@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.util.TestStockBuilder;
-import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import com.google.common.collect.Lists;
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,9 +39,9 @@ public class StockAssemblerTest {
         .withMarketId(new MarketId(SOME_MARKET_ID))
         .build();
 
-    StockDto resultStockDto = stockAssembler.toDto(someStock);
+    StockDto resultApiStockDto = stockAssembler.toDto(someStock);
 
-    assertThat(resultStockDto).isEqualToComparingFieldByField(
+    assertThat(resultApiStockDto).isEqualToComparingFieldByField(
         new TestStockBuilder()
             .withTitle(SOME_TITLE)
             .withName(SOME_NAME)
@@ -75,13 +74,13 @@ public class StockAssemblerTest {
             .withName(SOME_NAME)
             .withCategory(SOME_CATEGORY)
             .withMarketId(new MarketId(SOME_MARKET_ID))
-            .buildDto(),
+            .buildServiceDto(),
         new TestStockBuilder()
             .withTitle(SOME_OTHER_TITLE)
             .withName(SOME_OTHER_NAME)
             .withCategory(SOME_OTHER_CATEGORY)
             .withMarketId(new MarketId(SOME_OTHER_MARKET_ID))
-            .buildDto());
+            .buildServiceDto());
   }
 
   @Test
@@ -95,9 +94,9 @@ public class StockAssemblerTest {
         .withCloseValue(someNotUsdCloseValue)
         .build();
 
-    StockDto resultingStockDto = stockAssembler.toDto(someNotUsdStock);
+    StockDto resultingApiStockDto = stockAssembler.toDto(someNotUsdStock);
 
-    assertThat(resultingStockDto).isEqualToComparingFieldByField(
+    assertThat(resultingApiStockDto).isEqualToComparingFieldByField(
         new TestStockBuilder()
             .withOpenValue(someNotUsdOpenValue)
             .withCloseValue(someNotUsdCloseValue)

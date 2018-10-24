@@ -12,7 +12,7 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import javax.inject.Inject;
 
 @Component

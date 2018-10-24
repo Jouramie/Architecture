@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Schema(
     name = "Authentication request"
 )
-public class AuthenticationRequestDto {
+public class ApiAuthenticationRequestDto {
 
   @NotNull
   @NotBlank
@@ -21,7 +21,7 @@ public class AuthenticationRequestDto {
   public final String password;
 
   @JsonCreator
-  public AuthenticationRequestDto(
+  public ApiAuthenticationRequestDto(
       @JsonProperty("email") String email,
       @JsonProperty("password") String password) {
     this.email = email;

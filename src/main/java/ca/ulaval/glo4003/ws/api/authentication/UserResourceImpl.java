@@ -31,7 +31,7 @@ public class UserResourceImpl implements UserResource {
   public Response createUser(UserCreationDto userCreationDto) {
     requestValidator.validate(userCreationDto);
     UserDto createdUser = userCreationService.createInvestorUser(userCreationDto);
-    ApiUserDto apiCreatedUser = apiUserAssembler.toDto(userDto);
+    ApiUserDto apiCreatedUser = apiUserAssembler.toDto(createdUser);
     return Response.status(CREATED).entity(apiCreatedUser).build();
   }
 }

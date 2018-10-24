@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.service.stock.StockDto;
 import ca.ulaval.glo4003.service.stock.StockService;
 import java.util.List;
 import org.junit.Test;
@@ -24,9 +25,15 @@ public class StockResourceTest {
   @Mock
   private StockService stockService;
   @Mock
-  private StockDto expectedDto;
+  private ApiStockAssembler apiStockAssembler;
   @Mock
-  private List<StockDto> expectedDtos;
+  private StockDto serviceDto;
+  @Mock
+  private ApiStockDto expectedDto;
+  @Mock
+  private List<ApiStockDto> expectedDtos;
+  @Mock
+  private List<StockDto> serviceDtos;
 
   @InjectMocks
   private StockResourceImpl stockResource;
@@ -34,9 +41,9 @@ public class StockResourceTest {
 
   @Test
   public void whenGetStockByTitle_thenReturningDto() {
-    given(stockService.getStockByTitle(SOME_TITLE)).willReturn(expectedDto);
-
-    StockDto resultingDto = stockResource.getStockByTitle(SOME_TITLE);
+    given(stockService.getStockByTitle(SOME_TITLE)).willReturn(serviceDto);
+    given(apiStockAssembler.toDto(serviceDto)).willReturn(expectedDto);
+    ApiStockDto resultingDto = stockResource.getStockByTitle(SOME_TITLE);
 
     assertThat(resultingDto).isSameAs(expectedDto);
   }
@@ -50,9 +57,9 @@ public class StockResourceTest {
 
   @Test
   public void whenGetStocks_thenReturnStocks() {
-    given(stockService.queryStocks(any(), any())).willReturn(expectedDtos);
-
-    List<StockDto> resultingDtos = stockResource.getStocks(SOME_NAME, SOME_CATEGORY, DEFAULT_PAGE,
+    given(stockService.queryStocks(any(), any())).willReturn(serviceDtos);
+    given(apiStockAssembler.toDtoList(serviceDtos)).willReturn(expectedDtos);
+    List<ApiStockDto> resultingDtos = stockResource.getStocks(SOME_NAME, SOME_CATEGORY, DEFAULT_PAGE,
         DEFAULT_PER_PAGE);
 
     assertThat(resultingDtos).isSameAs(expectedDtos);
