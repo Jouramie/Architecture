@@ -52,7 +52,7 @@ public class StockMaxResponseDtoAssemblerTest {
   }
 
   @Test
-  public void givenStockMaxValueSummary_whenToDto_thenConvertToDtoWithUsdMaxValue() {
+  public void givenStockMaxValueSummary_whenToDto_thenConvertToDtoWithMatchingDates() {
     HistoricalStockValue lastFive = new HistoricalStockValue(SOME_DATE, SOME_VALUE);
     StockMaxValueSummary summary = new StockMaxValueSummary(
         new HistoricalStockValue(LAST_FIVE_DAYS_DATE, SOME_VALUE),

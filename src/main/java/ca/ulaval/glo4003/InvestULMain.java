@@ -26,7 +26,6 @@ public class InvestULMain {
     context.configureApplication(apiUrl.toString() + "api");
     server.setHandler(context.createJettyContextHandlers());
 
-
     try {
       server.start();
       server.join();

@@ -14,9 +14,9 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueHistory;
+import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import ca.ulaval.glo4003.service.stock.max.dto.StockMaxValueSummary;
-import ca.ulaval.glo4003.service.time.HistoricalDateService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.Before;
@@ -39,7 +39,7 @@ public class StockMaxValueServiceTest {
   @Mock
   StockRepository stockRepository;
   @Mock
-  HistoricalDateService historicalDateService;
+  DateService dateService;
   @Mock
   Clock clock;
   @Mock
@@ -51,7 +51,7 @@ public class StockMaxValueServiceTest {
 
   @Before
   public void setupStockMaxValueService() {
-    stockMaxValueService = new StockMaxValueService(stockRepository, historicalDateService, clock);
+    stockMaxValueService = new StockMaxValueService(stockRepository, dateService, clock);
   }
 
   @Test
@@ -60,12 +60,12 @@ public class StockMaxValueServiceTest {
     given(stockRepository.findByTitle(SOME_TITLE)).willReturn(givenStock);
     given(clock.getCurrentTime()).willReturn(CURRENT_TIME);
 
-    given(historicalDateService.getFiveDaysAgo()).willReturn(FIVE_DAYS_AGO);
-    given(historicalDateService.getStartOfCurrentMonth()).willReturn(START_OF_MONTH);
-    given(historicalDateService.getThirtyDaysAgo()).willReturn(THIRTY_DAYS_AGO);
-    given(historicalDateService.getOneYearAgo()).willReturn(ONE_YEAR_AGO);
-    given(historicalDateService.getFiveYearsAgo()).willReturn(FIVE_YEARS_AGO);
-    given(historicalDateService.getTenYearsAgo()).willReturn(TEN_YEARS_AGO);
+    given(dateService.getFiveDaysAgo()).willReturn(FIVE_DAYS_AGO);
+    given(dateService.getStartOfCurrentMonth()).willReturn(START_OF_MONTH);
+    given(dateService.getThirtyDaysAgo()).willReturn(THIRTY_DAYS_AGO);
+    given(dateService.getOneYearAgo()).willReturn(ONE_YEAR_AGO);
+    given(dateService.getFiveYearsAgo()).willReturn(FIVE_YEARS_AGO);
+    given(dateService.getTenYearsAgo()).willReturn(TEN_YEARS_AGO);
 
     given(givenStock.getValueHistory()).willReturn(givenStockValueHistory);
     HistoricalStockValue lastFiveDaysValue = mock(HistoricalStockValue.class);

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.time;
+package ca.ulaval.glo4003.service.date;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.service.Component;
@@ -6,12 +6,12 @@ import java.time.LocalDate;
 import javax.inject.Inject;
 
 @Component
-public class HistoricalDateService {
+public class DateService {
 
   private final Clock clock;
 
   @Inject
-  public HistoricalDateService(Clock clock) {
+  public DateService(Clock clock) {
     this.clock = clock;
   }
 
