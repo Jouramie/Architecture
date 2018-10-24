@@ -10,7 +10,7 @@ import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.service.time.HistoricalDatetimeService;
+import ca.ulaval.glo4003.service.time.HistoricalDateService;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -29,13 +29,13 @@ public class StockVariationTrendServiceTest {
   private StockRepository stockRepositoryMock;
   @Mock
   private StockVariationCalculator stockVariationCalculatorMock;
-  private HistoricalDatetimeService historicalDatetimeService;
+  private HistoricalDateService historicalDateService;
   private StockVariationTrendService stockVariationTrendService;
 
   @Before
   public void initialize() {
-    historicalDatetimeService = new HistoricalDatetimeService(clock);
-    stockVariationTrendService = new StockVariationTrendService(stockRepositoryMock, historicalDatetimeService, stockVariationCalculatorMock);
+    historicalDateService = new HistoricalDateService(clock);
+    stockVariationTrendService = new StockVariationTrendService(stockRepositoryMock, historicalDateService, stockVariationCalculatorMock);
   }
 
   @Test
@@ -45,8 +45,8 @@ public class StockVariationTrendServiceTest {
     stockVariationTrendService.getStockVariationSummary(STOCK_TITLE);
 
     verify(stockRepositoryMock).findByTitle(STOCK_TITLE);
-    verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(historicalDatetimeService.getFiveDaysAgo().toLocalDate()));
-    verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(historicalDatetimeService.getThirtyDaysAgo().toLocalDate()));
-    verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(historicalDatetimeService.getOneYearAgo().toLocalDate()));
+    verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(historicalDateService.getFiveDaysAgo()));
+    verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(historicalDateService.getThirtyDaysAgo()));
+    verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(historicalDateService.getOneYearAgo()));
   }
 }
