@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
 import ca.ulaval.glo4003.domain.stock.StockValue;
-import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;

@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.domain.stock.StockValueHistory;
 import ca.ulaval.glo4003.service.stock.StockDto;
-import ca.ulaval.glo4003.ws.api.stock.ApiStockDto;
 import java.time.LocalDate;
 
 public class TestStockBuilder {
@@ -60,11 +59,6 @@ public class TestStockBuilder {
     StockValueHistory history = new StockValueHistory();
     history.addValue(LocalDate.now(), new StockValue(openValue, closeValue, closeValue));
     return new Stock(title, name, category, marketId, history);
-  }
-
-  public ApiStockDto buildDto() {
-    return new ApiStockDto(title, name, category, marketId.getValue(), openValue.toUsd(),
-        closeValue.toUsd(), closeValue.toUsd());
   }
 
   public StockDto buildServiceDto() {

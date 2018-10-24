@@ -47,7 +47,7 @@ public class StockAssemblerTest {
             .withName(SOME_NAME)
             .withCategory(SOME_CATEGORY)
             .withMarketId(new MarketId(SOME_MARKET_ID))
-            .buildDto());
+            .buildServiceDto());
   }
 
   @Test
@@ -100,6 +100,6 @@ public class StockAssemblerTest {
         new TestStockBuilder()
             .withOpenValue(someNotUsdOpenValue)
             .withCloseValue(someNotUsdCloseValue)
-            .buildDto());
+            .buildServiceDto());
   }
 }

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.service.stock.StockService;
+import ca.ulaval.glo4003.service.stock.max.StockMaxResponseDto;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
 import javax.ws.rs.BadRequestException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -22,16 +23,21 @@ public class StockMaxResourceTest {
   @Mock
   private StockService stockService;
   @Mock
-  private StockMaxResponseDto expectedMaxResponseDto;
+  private ApiStockMaxResponseDto expectedMaxResponseDto;
+  @Mock
+  private StockMaxResponseDto serviceMaxResponseDto;
+  @Mock
+  private ApiStockMaxResponseAssembler apiStockMaxResponseAssembler;
 
   @InjectMocks
   private StockMaxResourceImpl stockResource;
 
   @Test
   public void whenGetStockMaxValue_thenReturningDto() {
-    given(stockService.getStockMaxValue(SOME_TITLE, SOME_RANGE)).willReturn(expectedMaxResponseDto);
+    given(stockService.getStockMaxValue(SOME_TITLE, SOME_RANGE)).willReturn(serviceMaxResponseDto);
+    given(apiStockMaxResponseAssembler.toDto(serviceMaxResponseDto)).willReturn(expectedMaxResponseDto);
 
-    StockMaxResponseDto resultingDto = stockResource.getStockMaxValue(SOME_TITLE, SOME_RANGE.toString());
+    ApiStockMaxResponseDto resultingDto = stockResource.getStockMaxValue(SOME_TITLE, SOME_RANGE.toString());
 
     assertThat(resultingDto).isEqualTo(expectedMaxResponseDto);
   }

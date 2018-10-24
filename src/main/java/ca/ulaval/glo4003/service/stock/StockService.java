@@ -8,9 +8,9 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.InternalErrorException;
 import ca.ulaval.glo4003.service.stock.max.StockMaxResponseAssembler;
+import ca.ulaval.glo4003.service.stock.max.StockMaxResponseDto;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueRetriever;
 import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
-import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import java.util.List;
 import javax.inject.Inject;
 

@@ -8,14 +8,14 @@ import java.time.LocalDate;
 @Schema(
     name = "Stock maximum"
 )
-public class StockMaxResponseDto {
+public class ApiStockMaxResponseDto {
   public final String title;
   public final BigDecimal maximumValue;
   @Schema(description = "Date on which the maximum value was reached.")
   @JsonFormat
   public final LocalDate maximumValueDate;
 
-  public StockMaxResponseDto(String title, BigDecimal maximumValue, LocalDate maximumValueDate) {
+  public ApiStockMaxResponseDto(String title, BigDecimal maximumValue, LocalDate maximumValueDate) {
     this.title = title;
     this.maximumValue = maximumValue;
     this.maximumValueDate = maximumValueDate;

@@ -28,7 +28,7 @@ public interface StockMaxResource {
               responseCode = "200",
               content = @Content(
                   schema = @Schema(
-                      implementation = StockMaxResponseDto.class
+                      implementation = ApiStockMaxResponseDto.class
                   )
               )
           ),
@@ -42,7 +42,7 @@ public interface StockMaxResource {
           )
       }
   )
-  StockMaxResponseDto getStockMaxValue(
+  ApiStockMaxResponseDto getStockMaxValue(
       @PathParam("title")
           String title,
       @QueryParam("since")
