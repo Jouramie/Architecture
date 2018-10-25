@@ -6,9 +6,9 @@ import static org.mockito.BDDMockito.given;
 import ca.ulaval.glo4003.domain.stock.StockTrend;
 import ca.ulaval.glo4003.service.stock.trend.StockVariationTrendService;
 import ca.ulaval.glo4003.service.stock.trend.dto.StockVariationSummary;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -22,8 +22,12 @@ public class StockTrendResourceTest {
   @Mock
   private StockVariationTrendService stockVariationTrendService;
 
-  @InjectMocks
   private StockTrendResourceImpl resource;
+
+  @Before
+  public void setupStockTrendResource() {
+    resource = new StockTrendResourceImpl(stockVariationTrendService);
+  }
 
   @Test
   public void whenGettingStockVariationTrend_thenReturnGeneratedSummary() {

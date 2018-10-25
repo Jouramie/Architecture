@@ -10,13 +10,11 @@ import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimulatedStockValueRetrieverTest {
-
   private static final double DEFAULT_VARIATION = 0.0;
   private static final double SOME_VARIATION = 0.2;
 
@@ -25,8 +23,12 @@ public class SimulatedStockValueRetrieverTest {
   @Mock
   private StockSimulator stockSimulator;
 
-  @InjectMocks
   private SimulatedStockValueRetriever stockValueRetriever;
+
+  @Before
+  public void setupSimulatedStockValueRetriever() {
+    stockValueRetriever = new SimulatedStockValueRetriever(stockSimulator);
+  }
 
   @Before
   public void setupStockSimulator() {
