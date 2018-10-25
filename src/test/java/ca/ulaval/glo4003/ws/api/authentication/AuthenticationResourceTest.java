@@ -29,6 +29,8 @@ public class AuthenticationResourceTest {
   private static final AuthenticationResponseDto SOME_AUTHENTICATION_RESPONSE
       = new AuthenticationResponseDto("TOKEN");
 
+  private static final ApiAuthenticationResponseDto SOME_AUTHENTICATION_API_RESPONSE = new ApiAuthenticationResponseDto("TOKEN");
+
   private static final ApiAuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_EMAIL =
       new ApiAuthenticationRequestDto(null, "password");
 
@@ -71,12 +73,10 @@ public class AuthenticationResourceTest {
   @Test
   public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenTokenIsReturned() {
     given(authenticationService.authenticate(SOME_AUTHENTICATION_REQUEST)).willReturn(SOME_AUTHENTICATION_RESPONSE);
-
+    given(apiAuthenticationResponseAssembler.toDto(SOME_AUTHENTICATION_RESPONSE)).willReturn(SOME_AUTHENTICATION_API_RESPONSE);
     Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
-    ApiAuthenticationResponseDto apiResponse = apiAuthenticationResponseAssembler.toDto(SOME_AUTHENTICATION_RESPONSE);
-
-    assertThat(response.getEntity()).isEqualTo(apiResponse);
+    assertThat(response.getEntity()).isEqualTo(SOME_AUTHENTICATION_API_RESPONSE);
   }
 
   @Test

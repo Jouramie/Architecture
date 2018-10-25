@@ -49,7 +49,7 @@ public class StockServiceTest {
   @Test
   public void whenGetStockByTitle_thenWeHaveCorrespondingDto() throws StockNotFoundException {
     Stock givenStock = new TestStockBuilder().build();
-    StockDto expectedDto = new TestStockBuilder().buildServiceDto();
+    StockDto expectedDto = new TestStockBuilder().buildDto();
     given(stockRepository.findByTitle(any())).willReturn(givenStock);
     given(stockAssembler.toDto(givenStock)).willReturn(expectedDto);
 
@@ -80,7 +80,7 @@ public class StockServiceTest {
   @Test
   public void whenQueryStocks_thenWeHaveCorrespondingDto() {
     List<Stock> givenStocks = Collections.singletonList(new TestStockBuilder().build());
-    List<StockDto> expectedDtos = Collections.singletonList(new TestStockBuilder().buildServiceDto());
+    List<StockDto> expectedDtos = Collections.singletonList(new TestStockBuilder().buildDto());
     given(stockRepository.queryStocks(any(), any())).willReturn(givenStocks);
     given(stockAssembler.toDtoList(givenStocks)).willReturn(expectedDtos);
 

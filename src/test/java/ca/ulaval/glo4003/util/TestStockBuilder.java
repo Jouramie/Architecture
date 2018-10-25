@@ -61,7 +61,7 @@ public class TestStockBuilder {
     return new Stock(title, name, category, marketId, history);
   }
 
-  public StockDto buildServiceDto() {
+  public StockDto buildDto() {
     return new StockDto(title, name, category, marketId.getValue(), openValue.toUsd(),
         closeValue.toUsd(), closeValue.toUsd());
   }

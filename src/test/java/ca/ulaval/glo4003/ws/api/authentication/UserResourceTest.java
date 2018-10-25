@@ -2,12 +2,16 @@ package ca.ulaval.glo4003.ws.api.authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.authentication.UserCreationService;
+import ca.ulaval.glo4003.service.authentication.UserDto;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.regex.Pattern;
+import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +33,8 @@ public class UserResourceTest {
       new UserCreationDto("email", "passord");
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
+  private static final UserDto USER_DTO = new UserDto("email", UserRole.INVESTOR);
+  private static final ApiUserDto API_USER_DTO = new ApiUserDto("email", UserRole.INVESTOR);
 
   @Mock
   private UserCreationService userCreationService;
@@ -51,6 +57,15 @@ public class UserResourceTest {
     userResource.createUser(SOME_CREATION_REQUEST);
 
     verify(userCreationService).createInvestorUser(SOME_CREATION_REQUEST.email, SOME_CREATION_REQUEST.password);
+  }
+
+  @Test
+  public void whenCreatingUser_thenReturned() {
+    given(userCreationService.createInvestorUser(SOME_CREATION_REQUEST.email, SOME_CREATION_REQUEST.password)).willReturn(USER_DTO);
+    given(apiUserAssembler.toDto(USER_DTO)).willReturn(API_USER_DTO);
+
+    Response response = userResource.createUser(SOME_CREATION_REQUEST);
+    assertThat(response.getEntity()).isEqualTo(API_USER_DTO);
   }
 
   @Test

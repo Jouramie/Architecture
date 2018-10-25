@@ -23,7 +23,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -50,7 +49,6 @@ public class CartResourceTest {
   @Mock
   private ApiCartItemAssembler apiCartItemAssembler;
 
-  @InjectMocks
   private CartResourceImpl cartResource;
 
   @Before
@@ -58,6 +56,8 @@ public class CartResourceTest {
     given(cartService.getCartContent()).willReturn(Collections.singletonList(serviceDto));
     given(apiCartItemAssembler.toDtoList(Collections.singletonList(serviceDto)))
         .willReturn(Collections.singletonList(expectedDto));
+    cartResource = new CartResourceImpl(cartService, checkoutService,
+        apiTransactionAssembler, apiCartItemAssembler);
   }
 
   @Test

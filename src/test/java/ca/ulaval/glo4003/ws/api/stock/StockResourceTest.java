@@ -46,6 +46,7 @@ public class StockResourceTest {
   public void whenGetStockByTitle_thenReturningDto() {
     given(stockService.getStockByTitle(SOME_TITLE)).willReturn(serviceDto);
     given(apiStockAssembler.toDto(serviceDto)).willReturn(expectedDto);
+
     ApiStockDto resultingDto = stockResource.getStockByTitle(SOME_TITLE);
 
     assertThat(resultingDto).isSameAs(expectedDto);
@@ -62,6 +63,7 @@ public class StockResourceTest {
   public void whenGetStocks_thenReturnStocks() {
     given(stockService.queryStocks(any(), any())).willReturn(serviceDtos);
     given(apiStockAssembler.toDtoList(serviceDtos)).willReturn(expectedDtos);
+    
     List<ApiStockDto> resultingDtos = stockResource.getStocks(SOME_NAME, SOME_CATEGORY, DEFAULT_PAGE,
         DEFAULT_PER_PAGE);
 

@@ -39,15 +39,15 @@ public class StockAssemblerTest {
         .withMarketId(new MarketId(SOME_MARKET_ID))
         .build();
 
-    StockDto resultApiStockDto = stockAssembler.toDto(someStock);
+    StockDto resultStockDto = stockAssembler.toDto(someStock);
 
-    assertThat(resultApiStockDto).isEqualToComparingFieldByField(
+    assertThat(resultStockDto).isEqualToComparingFieldByField(
         new TestStockBuilder()
             .withTitle(SOME_TITLE)
             .withName(SOME_NAME)
             .withCategory(SOME_CATEGORY)
             .withMarketId(new MarketId(SOME_MARKET_ID))
-            .buildServiceDto());
+            .buildDto());
   }
 
   @Test
@@ -74,13 +74,13 @@ public class StockAssemblerTest {
             .withName(SOME_NAME)
             .withCategory(SOME_CATEGORY)
             .withMarketId(new MarketId(SOME_MARKET_ID))
-            .buildServiceDto(),
+            .buildDto(),
         new TestStockBuilder()
             .withTitle(SOME_OTHER_TITLE)
             .withName(SOME_OTHER_NAME)
             .withCategory(SOME_OTHER_CATEGORY)
             .withMarketId(new MarketId(SOME_OTHER_MARKET_ID))
-            .buildServiceDto());
+            .buildDto());
   }
 
   @Test
@@ -94,12 +94,12 @@ public class StockAssemblerTest {
         .withCloseValue(someNotUsdCloseValue)
         .build();
 
-    StockDto resultingApiStockDto = stockAssembler.toDto(someNotUsdStock);
+    StockDto resultingStockDto = stockAssembler.toDto(someNotUsdStock);
 
-    assertThat(resultingApiStockDto).isEqualToComparingFieldByField(
+    assertThat(resultingStockDto).isEqualToComparingFieldByField(
         new TestStockBuilder()
             .withOpenValue(someNotUsdOpenValue)
             .withCloseValue(someNotUsdCloseValue)
-            .buildServiceDto());
+            .buildDto());
   }
 }
