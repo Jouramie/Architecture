@@ -15,9 +15,9 @@ import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.util.UserBuilder;
 import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.authentication.UserDto;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -35,12 +35,16 @@ public class UserCreationServiceTest {
   @Mock
   private UserFactory userFactory;
   @Mock
-  private UserAssembler userAssembler;
-  @Mock
   private UserRepository userRepository;
+  @Mock
+  private UserAssembler userAssembler;
 
-  @InjectMocks
   private UserCreationService service;
+
+  @Before
+  public void setupUserCreationService() {
+    service = new UserCreationService(userFactory, userRepository, userAssembler);
+  }
 
   @Test
   public void whenCreatingUser_thenUserIsCreated() {

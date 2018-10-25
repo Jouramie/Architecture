@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.context;
 
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
@@ -35,6 +36,9 @@ import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.http.FilterRegistration;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
@@ -66,6 +70,15 @@ public abstract class AbstractContext {
   public AbstractContext(String webServicePackagePrefix, ServiceLocator serviceLocator) {
     this.webServicePackagePrefix = webServicePackagePrefix;
     this.serviceLocator = serviceLocator;
+  }
+
+  private static void setupJacksonJavaTimeModule(ResourceConfig resourceConfig) {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);
+    JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
+    provider.setMapper(mapper);
+    resourceConfig.register(provider);
   }
 
   public void configureApplication(String apiUrl) {
@@ -174,6 +187,7 @@ public abstract class AbstractContext {
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
+    setupJacksonJavaTimeModule(resourceConfig);
     resourceConfig.register(CORSResponseFilter.class);
     serviceLocator.getClassesForAnnotation(
         webServicePackagePrefix,
