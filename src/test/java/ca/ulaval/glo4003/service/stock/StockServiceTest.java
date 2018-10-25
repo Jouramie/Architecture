@@ -7,7 +7,6 @@ import static org.mockito.BDDMockito.verify;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 
-import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
@@ -32,12 +31,12 @@ public class StockServiceTest {
   private StockRepository stockRepository;
   @Mock
   private StockAssembler stockAssembler;
-  @Mock
+ /* @Mock
   private Stock givenStock;
   @Mock
   private HistoricalStockValue givenMaximumStockValue;
   @Mock
-  private StockMaxResponseDto expectedMaxResponseDto;
+  private StockMax expectedMaxResponseDto;*/
 
   private StockService stockService;
 

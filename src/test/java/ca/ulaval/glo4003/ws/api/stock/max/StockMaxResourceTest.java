@@ -22,11 +22,11 @@ public class StockMaxResourceTest {
   @Mock
   private StockMaxValueSummary expectedSummary;
   @Mock
-  private ApiStockMaxResponseDto expectedMaxResponseDto;
-  @Mock
+  private StockMaxResponseDto expectedMaxResponseDto;
+ /* @Mock
   private StockMaxResponseDto serviceMaxResponseDto;
   @Mock
-  private ApiStockMaxResponseAssembler apiStockMaxResponseAssembler;
+  private StockMaxResponseAssembler apiStockMaxResponseAssembler;*/
 
   private StockMaxResourceImpl stockMaxResource;
 
@@ -38,9 +38,9 @@ public class StockMaxResourceTest {
   @Test
   public void whenGetStockMaxValue_thenReturningDto() {
     given(stockMaxValueService.getStockMaxValue(SOME_TITLE)).willReturn(expectedSummary);
-    given(apiStockMaxResponseDtoAssembler.toDto(SOME_TITLE, expectedSummary)).willReturn(expectedMaxResponseDto);
+    given(stockMaxResponseDtoAssembler.toDto(SOME_TITLE, expectedSummary)).willReturn(expectedMaxResponseDto);
 
-    ApiStockMaxResponseDto resultingDto = stockMaxResource.getStockMaxValue(SOME_TITLE);
+    StockMaxResponseDto resultingDto = stockMaxResource.getStockMaxValue(SOME_TITLE);
 
     assertThat(resultingDto).isEqualTo(expectedMaxResponseDto);
   }

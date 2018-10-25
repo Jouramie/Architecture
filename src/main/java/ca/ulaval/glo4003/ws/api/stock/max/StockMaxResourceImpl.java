@@ -9,16 +9,16 @@ import javax.inject.Inject;
 public class StockMaxResourceImpl implements StockMaxResource {
 
   private final StockMaxValueService stockMaxValueService;
-  private final ApiStockMaxResponseDtoAssembler apiStockMaxResponseAssembler;
+  private final StockMaxResponseDtoAssembler assembler;
 
   @Inject
-  public StockMaxResourceImpl(StockMaxValueService stockMaxValueService, ApiStockMaxResponseDtoAssembler assembler) {
+  public StockMaxResourceImpl(StockMaxValueService stockMaxValueService, StockMaxResponseDtoAssembler assembler) {
     this.stockMaxValueService = stockMaxValueService;
-    this.apiStockMaxResponseAssembler = assembler;
+    this.assembler = assembler;
   }
 
   @Override
-  public ApiStockMaxResponseDto getStockMaxValue(String title) {
+  public StockMaxResponseDto getStockMaxValue(String title) {
     StockMaxValueSummary maxValueSummary = stockMaxValueService.getStockMaxValue(title);
     return assembler.toDto(title, maxValueSummary);
   }

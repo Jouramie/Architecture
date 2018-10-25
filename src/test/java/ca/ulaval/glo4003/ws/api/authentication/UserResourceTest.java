@@ -50,7 +50,7 @@ public class UserResourceTest {
   public void whenCreatingUser_thenUserIsCreated() {
     userResource.createUser(SOME_CREATION_REQUEST);
 
-    verify(userCreationService).createInvestorUser(SOME_CREATION_REQUEST);
+    verify(userCreationService).createInvestorUser(SOME_CREATION_REQUEST.email, SOME_CREATION_REQUEST.password);
   }
 
   @Test

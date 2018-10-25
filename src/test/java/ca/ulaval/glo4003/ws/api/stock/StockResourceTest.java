@@ -39,7 +39,7 @@ public class StockResourceTest {
 
   @Before
   public void setupStockResource() {
-    stockResource = new StockResourceImpl(stockService);
+    stockResource = new StockResourceImpl(stockService, apiStockAssembler);
   }
 
   @Test

@@ -118,9 +118,9 @@ public class CheckoutServiceTest {
     given(transactionAssembler.toDto(transaction))
         .willReturn(expectedDto);
 
-    TransactionDto apiTransactionDto = checkoutService.checkoutCart();
+    TransactionDto transactionDto = checkoutService.checkoutCart();
 
-    assertThat(apiTransactionDto).isEqualTo(expectedDto);
+    assertThat(transactionDto).isEqualTo(expectedDto);
   }
 
   @Test

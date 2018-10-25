@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(
     name = "Stock maximum"
 )
-public class ApiStockMaxResponseDto {
+public class StockMaxResponseDto {
   @Schema(description = "Stock title")
   public final String title;
   @Schema(description = "Maximum value during the last five days")
@@ -24,7 +24,7 @@ public class ApiStockMaxResponseDto {
   @Schema(description = "Maximum value of all the data available")
   public final StockMaxResponseValueDto allTime;
 
-  public ApiStockMaxResponseDto(String title,
+  public StockMaxResponseDto(String title,
                              StockMaxResponseValueDto lastFiveDays,
                              StockMaxResponseValueDto currentMonth,
                              StockMaxResponseValueDto lastMonth,
