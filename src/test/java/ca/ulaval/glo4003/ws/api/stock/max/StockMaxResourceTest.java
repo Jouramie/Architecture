@@ -23,10 +23,6 @@ public class StockMaxResourceTest {
   private StockMaxValueSummary expectedSummary;
   @Mock
   private StockMaxResponseDto expectedMaxResponseDto;
- /* @Mock
-  private StockMaxResponseDto serviceMaxResponseDto;
-  @Mock
-  private StockMaxResponseAssembler apiStockMaxResponseAssembler;*/
 
   private StockMaxResourceImpl stockMaxResource;
 

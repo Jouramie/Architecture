@@ -31,12 +31,6 @@ public class StockServiceTest {
   private StockRepository stockRepository;
   @Mock
   private StockAssembler stockAssembler;
- /* @Mock
-  private Stock givenStock;
-  @Mock
-  private HistoricalStockValue givenMaximumStockValue;
-  @Mock
-  private StockMax expectedMaxResponseDto;*/
 
   private StockService stockService;
 
