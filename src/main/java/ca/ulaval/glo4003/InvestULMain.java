@@ -23,9 +23,8 @@ public class InvestULMain {
     URL serverUrl = server.getURI().toURL();
     URL apiUrl = new URL(serverUrl.getProtocol(), serverUrl.getHost(), port, serverUrl.getFile());
 
-    context.configureApplication(apiUrl.toString());
+    context.configureApplication(apiUrl.toString() + "api");
     server.setHandler(context.createJettyContextHandlers());
-
 
     try {
       server.start();

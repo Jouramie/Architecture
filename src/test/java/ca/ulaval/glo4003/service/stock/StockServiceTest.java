@@ -8,14 +8,9 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
-import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.service.stock.max.StockMaxResponseAssembler;
-import ca.ulaval.glo4003.service.stock.max.StockMaxResponseDto;
-import ca.ulaval.glo4003.service.stock.max.StockMaxValueRetriever;
-import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import com.google.common.collect.Lists;
 import java.util.Collections;
@@ -32,16 +27,11 @@ public class StockServiceTest {
   private static final String SOME_TITLE = TestStockBuilder.DEFAULT_TITLE;
   private static final String SOME_NAME = TestStockBuilder.DEFAULT_NAME;
   private static final String SOME_CATEGORY = TestStockBuilder.DEFAULT_CATEGORY;
-  private static final StockMaxValueSinceRange SOME_RANGE = StockMaxValueSinceRange.LAST_FIVE_DAYS;
 
   @Mock
   private StockRepository stockRepository;
   @Mock
   private StockAssembler stockAssembler;
-  @Mock
-  private StockMaxValueRetriever stockMaxValueRetriever;
-  @Mock
-  private StockMaxResponseAssembler stockMaxResponseAssembler;
   @Mock
   private Stock givenStock;
   @Mock
@@ -53,8 +43,7 @@ public class StockServiceTest {
 
   @Before
   public void setup() {
-    stockService = new StockService(stockRepository, stockAssembler, stockMaxValueRetriever,
-        stockMaxResponseAssembler);
+    stockService = new StockService(stockRepository, stockAssembler);
   }
 
   @Test
@@ -105,26 +94,6 @@ public class StockServiceTest {
     List<StockDto> resultingDtos = stockService.queryStocks(SOME_NAME, SOME_CATEGORY);
 
     assertThat(resultingDtos).isSameAs(expectedDtos);
-  }
-
-  @Test
-  public void whenGetStockMaxValue_thenWeHaveCorrespondingDto() throws StockNotFoundException, NoStockValueFitsCriteriaException {
-    given(stockRepository.findByTitle(SOME_TITLE)).willReturn(givenStock);
-    given(stockMaxValueRetriever.getStockMaxValue(givenStock, SOME_RANGE)).willReturn(givenMaximumStockValue);
-    given(stockMaxResponseAssembler.toDto(SOME_TITLE, givenMaximumStockValue)).willReturn(expectedMaxResponseDto);
-
-    StockMaxResponseDto resultingDto = stockService.getStockMaxValue(SOME_TITLE, SOME_RANGE);
-
-    assertThat(resultingDto).isEqualTo(expectedMaxResponseDto);
-  }
-
-  @Test
-  public void givenStockDoesNotExist_whenGetStockMaxValue_thenStockDoesNotExistExceptionIsThrown()
-      throws StockNotFoundException {
-    doThrow(StockNotFoundException.class).when(stockRepository).findByTitle(any());
-
-    assertThatThrownBy(() -> stockService.getStockMaxValue(SOME_TITLE, SOME_RANGE))
-        .isInstanceOf(StockDoesNotExistException.class);
   }
 
   @Test

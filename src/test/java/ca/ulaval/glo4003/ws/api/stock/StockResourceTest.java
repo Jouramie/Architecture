@@ -8,9 +8,9 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.service.stock.StockDto;
 import ca.ulaval.glo4003.service.stock.StockService;
 import java.util.List;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -35,9 +35,12 @@ public class StockResourceTest {
   @Mock
   private List<StockDto> serviceDtos;
 
-  @InjectMocks
   private StockResourceImpl stockResource;
 
+  @Before
+  public void setupStockResource() {
+    stockResource = new StockResourceImpl(stockService);
+  }
 
   @Test
   public void whenGetStockByTitle_thenReturningDto() {

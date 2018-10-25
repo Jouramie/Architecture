@@ -1,27 +1,26 @@
 package ca.ulaval.glo4003.ws.api.stock.max;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
-import ca.ulaval.glo4003.service.stock.StockService;
-import ca.ulaval.glo4003.service.stock.max.StockMaxResponseDto;
-import ca.ulaval.glo4003.service.stock.max.StockMaxValueSinceRange;
-import javax.ws.rs.BadRequestException;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import ca.ulaval.glo4003.service.stock.max.StockMaxValueService;
+import ca.ulaval.glo4003.service.stock.max.dto.StockMaxValueSummary;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StockMaxResourceTest {
   private static final String SOME_TITLE = "title";
-  private static final StockMaxValueSinceRange SOME_RANGE = StockMaxValueSinceRange.LAST_FIVE_DAYS;
 
   @Mock
-  private StockService stockService;
+  private StockMaxValueService stockMaxValueService;
+  @Mock
+  private StockMaxResponseDtoAssembler stockMaxResponseDtoAssembler;
+  @Mock
+  private StockMaxValueSummary expectedSummary;
   @Mock
   private ApiStockMaxResponseDto expectedMaxResponseDto;
   @Mock
@@ -29,25 +28,20 @@ public class StockMaxResourceTest {
   @Mock
   private ApiStockMaxResponseAssembler apiStockMaxResponseAssembler;
 
-  @InjectMocks
-  private StockMaxResourceImpl stockResource;
+  private StockMaxResourceImpl stockMaxResource;
 
-  @Test
-  public void whenGetStockMaxValue_thenReturningDto() {
-    given(stockService.getStockMaxValue(SOME_TITLE, SOME_RANGE)).willReturn(serviceMaxResponseDto);
-    given(apiStockMaxResponseAssembler.toDto(serviceMaxResponseDto)).willReturn(expectedMaxResponseDto);
-
-    ApiStockMaxResponseDto resultingDto = stockResource.getStockMaxValue(SOME_TITLE, SOME_RANGE.toString());
-
-    assertThat(resultingDto).isEqualTo(expectedMaxResponseDto);
+  @Before
+  public void setupStockMaxResourceImpl() {
+    stockMaxResource = new StockMaxResourceImpl(stockMaxValueService, stockMaxResponseDtoAssembler);
   }
 
   @Test
-  public void givenInvalidSinceParameter_whenGetStockMax_thenThrowBadRequest() {
-    String invalidSinceParameter = "invalid";
+  public void whenGetStockMaxValue_thenReturningDto() {
+    given(stockMaxValueService.getStockMaxValue(SOME_TITLE)).willReturn(expectedSummary);
+    given(apiStockMaxResponseDtoAssembler.toDto(SOME_TITLE, expectedSummary)).willReturn(expectedMaxResponseDto);
 
-    ThrowingCallable getStockMax = () -> stockResource.getStockMaxValue(SOME_TITLE, invalidSinceParameter);
+    ApiStockMaxResponseDto resultingDto = stockMaxResource.getStockMaxValue(SOME_TITLE);
 
-    assertThatThrownBy(getStockMax).isInstanceOf(BadRequestException.class);
+    assertThat(resultingDto).isEqualTo(expectedMaxResponseDto);
   }
 }
