@@ -13,7 +13,7 @@ public class ApiStockAssembler {
         stockDto.market, stockDto.openValue, stockDto.currentValue, stockDto.closeValue);
   }
 
-  public List<ApiStockDto> toDtoList(List<StockDto> stocks) {
-    return stocks.stream().map(this::toDto).collect(Collectors.toList());
+  public List<ApiStockDto> toDtoList(List<StockDto> stockDtos) {
+    return stockDtos.stream().map(this::toDto).collect(Collectors.toList());
   }
 }

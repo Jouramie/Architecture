@@ -61,7 +61,6 @@ public class CartResourceImpl implements CartResource {
   @Override
   public ApiTransactionDto checkoutCart() {
     TransactionDto transactionDto = checkoutService.checkoutCart();
-    ApiTransactionDto apiTransactionDto = apiTransactionAssembler.toDto(transactionDto);
-    return apiTransactionDto;
+    return apiTransactionAssembler.toDto(transactionDto);
   }
 }

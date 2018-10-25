@@ -22,7 +22,6 @@ public class StockResourceImpl implements StockResource {
   @Override
   public ApiStockDto getStockByTitle(String title) {
     StockDto stockDto = stockService.getStockByTitle(title);
-
     return apiStockAssembler.toDto(stockDto);
   }
 
