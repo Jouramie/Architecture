@@ -13,27 +13,32 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/ping")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public interface PingResource {
   @GET
   @Operation(
-      summary = "Ping the API for basic smoke-test",
+      summary = "Ping the API for basic smoke-test.",
       description = "Return the version and the current date of the server.",
       responses = {
           @ApiResponse(
-              description = "Ping value",
-              content = @Content(schema = @Schema(implementation = PingDto.class)),
-              responseCode = "200"
+              responseCode = "200",
+              description = "Pong",
+              content = @Content(
+                  schema = @Schema(
+                      implementation = PingDto.class
+                  )
+              )
           ),
           @ApiResponse(
-              responseCode = "400", description = "Missing echo query parameter"
+              responseCode = "400",
+              description = "Missing echo query parameter."
           )
       }
   )
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
   PingDto ping(
       @Parameter(
-          description = "Echo message to print back",
+          description = "Message to send back.",
           required = true
       )
       @QueryParam("echo") String echo

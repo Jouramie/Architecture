@@ -13,6 +13,8 @@ public class StockValueTest {
   private final MoneyAmount SOME_START_VALUE = new MoneyAmount(100.00, SOME_CURRENCY);
   private final MoneyAmount SOME_CLOSE_VALUE = new MoneyAmount(110.00, SOME_CURRENCY);
   private final MoneyAmount SOME_NEW_VALUE = new MoneyAmount(120.00, SOME_CURRENCY);
+  private final MoneyAmount SOME_BIGGER_VALUE = new MoneyAmount(300.00, SOME_CURRENCY);
+  private final MoneyAmount SOME_SMALLER_VALUE = new MoneyAmount(30.00, SOME_CURRENCY);
 
   private StockValue stockValue;
 
@@ -22,20 +24,22 @@ public class StockValueTest {
   }
 
   @Test
-  public void whenCreated_thenAllValuesAreStartValueAndStockIsClosed() {
+  public void whenCreated_thenAllValuesAreSetToStartValueAndStockIsOpen() {
     assertThat(stockValue.getOpenValue()).isEqualTo(SOME_START_VALUE);
     assertThat(stockValue.getCurrentValue()).isEqualTo(SOME_START_VALUE);
-    assertThat(stockValue.getCloseValue()).isEqualTo(SOME_START_VALUE);
-    assertThat(stockValue.isClosed()).isTrue();
+    assertThat(stockValue.getCloseValue()).isNull();
+    assertThat(stockValue.getMaximumValue()).isEqualTo(SOME_START_VALUE);
+    assertThat(stockValue.isClosed()).isFalse();
   }
 
   @Test
-  public void whenCreatedWithCloseValue_thenCurrentAndCloseValuesAreSetToCloseValue() {
-    StockValue newStockValue = new StockValue(SOME_START_VALUE, SOME_CLOSE_VALUE);
+  public void whenCreatedWithExplicitValues_thenCurrentAndCloseValuesAreSetToCloseValue() {
+    StockValue newStockValue = new StockValue(SOME_START_VALUE, SOME_CLOSE_VALUE, SOME_BIGGER_VALUE);
 
     assertThat(newStockValue.getOpenValue()).isEqualTo(SOME_START_VALUE);
     assertThat(newStockValue.getCurrentValue()).isEqualTo(SOME_CLOSE_VALUE);
     assertThat(newStockValue.getCloseValue()).isEqualTo(SOME_CLOSE_VALUE);
+    assertThat(newStockValue.getMaximumValue()).isEqualTo(SOME_BIGGER_VALUE);
     assertThat(newStockValue.isClosed()).isTrue();
   }
 
@@ -61,6 +65,31 @@ public class StockValueTest {
     assertThat(stockValue.getCurrentValue()).isEqualTo(SOME_NEW_VALUE);
     assertThat(stockValue.getCloseValue()).isNull();
     assertThat(stockValue.isClosed()).isFalse();
+  }
+
+  @Test
+  public void whenUpdateValue_thenStockValueIsIncrementedByTheAmount() {
+    stockValue.updateValue(new BigDecimal(10.00));
+
+    assertThat(stockValue.getCurrentValue()).isEqualTo(new MoneyAmount(110.00, SOME_CURRENCY));
+  }
+
+  @Test
+  public void givenOpenStockValue_whenSetValueWithBiggerValue_thenSetUpdateMaximumValue() {
+    stockValue.setValue(SOME_START_VALUE);
+
+    stockValue.setValue(SOME_BIGGER_VALUE);
+
+    assertThat(stockValue.getMaximumValue()).isEqualTo(SOME_BIGGER_VALUE);
+  }
+
+  @Test
+  public void givenOpenStockValue_whenSetValueWithSmallerValue_thenDontUpdateMaximumValue() {
+    stockValue.setValue(SOME_START_VALUE);
+
+    stockValue.setValue(SOME_SMALLER_VALUE);
+
+    assertThat(stockValue.getMaximumValue()).isEqualTo(SOME_START_VALUE);
   }
 
   @Test

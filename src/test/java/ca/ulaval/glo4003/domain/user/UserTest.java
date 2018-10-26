@@ -1,22 +1,35 @@
 package ca.ulaval.glo4003.domain.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
+import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.util.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class UserTest {
 
   private static final String SOME_EMAIL = "4email@email.com";
   private static final String SOME_PASSWORD = "a password";
   private static final String WRONG_PASSWORD = SOME_PASSWORD + "wrong";
+  private static final String SOME_STOCK_TITLE = "title";
+  private static final int SOME_STOCK_QUANTITY = 6;
+
+  @Mock
+  private StockRepository stockRepository;
 
   private User user;
 
   @Before
   public void initialize() {
     user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
+
+    given(stockRepository.doesStockExist(SOME_STOCK_TITLE)).willReturn(true);
   }
 
   @Test
@@ -32,5 +45,17 @@ public class UserTest {
   @Test
   public void whenCreatingUser_thenCartIsEmpty() {
     assertThat(user.getCart().isEmpty()).isTrue();
+  }
+
+  @Test
+  public void whenCreatingUser_thenUserDoesNotOwnStock() {
+    assertThat(user.getPortfolio().getStocks().isEmpty()).isTrue();
+  }
+
+  @Test
+  public void whenAddStockToPortfolio_thenStockCanBeRetrieved() {
+    user.addStockToPortfolio(SOME_STOCK_TITLE, SOME_STOCK_QUANTITY, stockRepository);
+
+    assertThat(user.getPortfolio().getStocks().getTitles()).contains(SOME_STOCK_TITLE);
   }
 }

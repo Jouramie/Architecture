@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.validation;
 
-import ca.ulaval.glo4003.infrastructure.injection.Component;
+import ca.ulaval.glo4003.service.Component;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

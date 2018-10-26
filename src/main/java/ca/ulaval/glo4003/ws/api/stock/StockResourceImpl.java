@@ -2,30 +2,32 @@ package ca.ulaval.glo4003.ws.api.stock;
 
 import ca.ulaval.glo4003.service.stock.StockDto;
 import ca.ulaval.glo4003.service.stock.StockService;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.ws.rs.BadRequestException;
 
 @Resource
 public class StockResourceImpl implements StockResource {
 
   private final StockService stockService;
+  private final ApiStockAssembler apiStockAssembler;
+
 
   @Inject
-  public StockResourceImpl(StockService stockService) {
+  public StockResourceImpl(StockService stockService, ApiStockAssembler apiStockAssembler) {
     this.stockService = stockService;
+    this.apiStockAssembler = apiStockAssembler;
   }
 
   @Override
-  public StockDto getStockByTitle(String title) {
-    return stockService.getStockByTitle(title);
+  public ApiStockDto getStockByTitle(String title) {
+    StockDto stockDto = stockService.getStockByTitle(title);
+    return apiStockAssembler.toDto(stockDto);
   }
 
   @Override
-  public StockDto getStockByName(String name) {
-    if (name == null || name.isEmpty()) {
-      throw new BadRequestException("Missing name query parameter");
-    }
-    return stockService.getStockByName(name);
+  public List<ApiStockDto> getStocks(String name, String category, int page, int perPage) {
+    List<StockDto> stockDtos = stockService.queryStocks(name, category);
+    return apiStockAssembler.toDtoList(stockDtos);
   }
 }

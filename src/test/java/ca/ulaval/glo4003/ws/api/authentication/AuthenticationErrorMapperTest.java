@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.ws.api.authentication;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static junit.framework.TestCase.assertEquals;
 
-import ca.ulaval.glo4003.domain.user.authentication.AuthenticationErrorException;
+import ca.ulaval.glo4003.service.authentication.AuthenticationErrorException;
 import javax.ws.rs.core.Response;
 import org.junit.Test;
 

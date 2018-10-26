@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "193bcf71-0cce-45ee-b7d4-c07649bade8e",
+		"_postman_id": "37c23b96-54b0-4814-bcfe-3a2d61b0876b",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -8,6 +8,68 @@
 		{
 			"name": "Stocks",
 			"item": [
+				{
+					"name": "Trend",
+					"item": [
+						{
+							"name": "GetStockValueVariationTrend",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/trend",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"trend"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "max",
+					"item": [
+						{
+							"name": "GetMaxValue",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/stocks/RBS.l/max",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"stocks",
+										"RBS.l",
+										"max"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
 				{
 					"name": "GetStockByTitle",
 					"request": {
@@ -60,6 +122,129 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GetStockByCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/stocks?category=Technologies",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stocks"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Technologies"
+								}
+							]
+						},
+						"description": "\t\t\t"
+					},
+					"response": []
+				},
+				{
+					"name": "GetStockByCategoryWithPagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/stocks?category=Technologies&page=1&per_page=3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stocks"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Technologies"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetStocksWithPagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/stocks?page=2&per_page=5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stocks"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "per_page",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/stock_categories",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stock_categories"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -78,7 +263,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\",\n\t\"role\": \"ADMINISTRATOR\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobarfoo\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/users",
@@ -106,7 +291,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobarfoo\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/authenticate",
@@ -137,14 +322,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8080/api/revoke-token",
+							"raw": "localhost:8080/api/logout",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"revoke-token"
+								"logout"
 							]
 						}
 					},
@@ -340,6 +525,68 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Portfolio",
+			"item": [
+				{
+					"name": "GetPortfolio",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/portfolio",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"portfolio"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/api/ping?echo=test",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ping"
+					],
+					"query": [
+						{
+							"key": "echo",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

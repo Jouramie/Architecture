@@ -2,14 +2,15 @@ package ca.ulaval.glo4003.service.authentication;
 
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.domain.user.authentication.AuthenticationErrorException;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenFactory;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
+import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
+import ca.ulaval.glo4003.service.Component;
+import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
+import ca.ulaval.glo4003.ws.api.authentication.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -36,8 +37,8 @@ public class AuthenticationService {
     this.currentUserSession = currentUserSession;
   }
 
-  public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest) {
-    User user = userRepository.find(authenticationRequest.email);
+  public AuthenticationResponseDto authenticate(ApiAuthenticationRequestDto authenticationRequest) {
+    User user = getUserByEmail(authenticationRequest.email);
     if (user.isThisYourPassword(authenticationRequest.password)) {
       AuthenticationToken token = tokenFactory.createToken(authenticationRequest.email);
       authenticationTokenRepository.add(token);
@@ -47,18 +48,30 @@ public class AuthenticationService {
   }
 
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {
-    AuthenticationToken savedToken =
-        authenticationTokenRepository.getByUUID(UUID.fromString(authenticationTokenDto.token));
-    if (savedToken.token.equals(authenticationTokenDto.token)) {
-      User currentUser = userRepository.find(savedToken.email);
+    try {
+      AuthenticationToken savedToken =
+          authenticationTokenRepository.findByUUID(UUID.fromString(authenticationTokenDto.token));
+      User currentUser = getUserByEmail(savedToken.email);
       currentUserSession.setCurrentUser(currentUser);
-      return;
+    } catch (TokenNotFoundException exception) {
+      throw new InvalidTokenException(exception);
     }
-    throw new InvalidTokenException();
+  }
+
+  private User getUserByEmail(String email) {
+    try {
+      return userRepository.find(email);
+    } catch (UserNotFoundException exception) {
+      throw new UserDoesNotExistException(exception);
+    }
   }
 
   public void revokeToken() {
-    User user = currentUserSession.getCurrentUser();
-    authenticationTokenRepository.remove(user.getEmail());
+    try {
+      User user = currentUserSession.getCurrentUser();
+      authenticationTokenRepository.remove(user.getEmail());
+    } catch (TokenNotFoundException exception) {
+      throw new InvalidTokenException(exception);
+    }
   }
 }

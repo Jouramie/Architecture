@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.verify;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.Market;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.market.MarketUpdater;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import org.junit.Before;
@@ -30,7 +31,7 @@ public class MarketUpdaterTest {
 
   @Before
   public void setupMarketsUpdater() {
-    given(someMarketRepository.getAll()).willReturn(Arrays.asList(someMarket, someOtherMarket));
+    given(someMarketRepository.findAll()).willReturn(Arrays.asList(someMarket, someOtherMarket));
 
     marketUpdater = new MarketUpdater(someClock, someMarketRepository);
   }

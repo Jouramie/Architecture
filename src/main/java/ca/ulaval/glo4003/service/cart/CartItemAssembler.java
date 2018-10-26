@@ -2,12 +2,11 @@ package ca.ulaval.glo4003.service.cart;
 
 import static java.util.stream.Collectors.toList;
 
-import ca.ulaval.glo4003.domain.cart.CartItem;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockCollection;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.infrastructure.injection.Component;
-import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
-import java.util.Collection;
+import ca.ulaval.glo4003.service.Component;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -20,15 +19,24 @@ public class CartItemAssembler {
     this.stockRepository = stockRepository;
   }
 
-  public CartItemResponseDto toDto(CartItem item) {
-    Stock stock = stockRepository.getByTitle(item.title);
-
-    return new CartItemResponseDto(stock.getTitle(), stock.getMarketId().getValue(),
-        stock.getName(), stock.getCategory(), stock.getValue().getCurrentValue().toUsd(),
-        item.quantity);
+  public List<CartItemDto> toDtoList(StockCollection items) {
+    return items.getTitles().stream()
+        .map((title) -> toDto(title, items.getQuantity(title)))
+        .collect(toList());
   }
 
-  public List<CartItemResponseDto> toDtoList(Collection<CartItem> items) {
-    return items.stream().map(this::toDto).collect(toList());
+  public CartItemDto toDto(String title, int quantity) {
+    Stock stock = getStock(title);
+
+    return new CartItemDto(stock.getTitle(), stock.getMarketId().getValue(),
+        stock.getName(), stock.getCategory(), stock.getValue().getCurrentValue().toUsd(), quantity);
+  }
+
+  private Stock getStock(String title) {
+    try {
+      return stockRepository.findByTitle(title);
+    } catch (StockNotFoundException exception) {
+      throw new InvalidStockTitleException(exception);
+    }
   }
 }

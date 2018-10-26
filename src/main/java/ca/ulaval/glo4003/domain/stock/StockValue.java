@@ -1,22 +1,26 @@
 package ca.ulaval.glo4003.domain.stock;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import java.math.BigDecimal;
 
 public class StockValue {
   private MoneyAmount currentValue;
   private MoneyAmount openValue;
   private MoneyAmount closeValue;
+  private MoneyAmount maximumValue;
 
-  StockValue(MoneyAmount startValue) {
+  public StockValue(MoneyAmount startValue) {
     currentValue = startValue;
     openValue = startValue;
-    closeValue = startValue;
+    maximumValue = startValue;
+    closeValue = null;
   }
 
-  StockValue(MoneyAmount openValue, MoneyAmount closeValue) {
+  public StockValue(MoneyAmount openValue, MoneyAmount closeValue, MoneyAmount maximumValue) {
     currentValue = closeValue;
     this.openValue = openValue;
     this.closeValue = closeValue;
+    this.maximumValue = maximumValue;
   }
 
   public MoneyAmount getCurrentValue() {
@@ -31,14 +35,26 @@ public class StockValue {
     return closeValue;
   }
 
+  public MoneyAmount getMaximumValue() {
+    return maximumValue;
+  }
+
   boolean isClosed() {
     return closeValue != null;
+  }
+
+  public void updateValue(BigDecimal variation) {
+    setValue(getCurrentValue().add(variation));
   }
 
   public void setValue(MoneyAmount currentValue) {
     if (isClosed()) {
       openValue = currentValue;
       closeValue = null;
+    }
+
+    if (currentValue.toUsd().compareTo(maximumValue.toUsd()) > 0) {
+      maximumValue = currentValue;
     }
 
     this.currentValue = currentValue;

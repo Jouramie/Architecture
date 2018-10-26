@@ -2,8 +2,8 @@ package ca.ulaval.glo4003.ws.api.authentication;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
-import ca.ulaval.glo4003.domain.user.authentication.AuthenticationErrorException;
-import ca.ulaval.glo4003.infrastructure.injection.ErrorMapper;
+import ca.ulaval.glo4003.service.authentication.AuthenticationErrorException;
+import ca.ulaval.glo4003.ws.api.ErrorMapper;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 

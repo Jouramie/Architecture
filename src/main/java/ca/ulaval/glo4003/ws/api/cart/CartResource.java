@@ -2,14 +2,11 @@ package ca.ulaval.glo4003.ws.api.cart;
 
 import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -29,18 +26,25 @@ public interface CartResource {
   @GET
   @Operation(
       summary = "Get the content of the cart.",
-      description = "Return the every stocks in the cart, with their details and quantity.",
+      description = "Return every stock in the cart, with their details and quantity.",
       responses = {
           @ApiResponse(
-              responseCode = "200", description = "cart content",
+              responseCode = "200",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
+                  array = @ArraySchema(
+                      schema = @Schema(
+                          implementation = ApiCartItemResponseDto.class
+                      )
+                  )
               )
           ),
-          @ApiResponse(responseCode = "401", description = "not logged in")
+          @ApiResponse(
+              responseCode = "401",
+              description = "User is not logged in."
+          )
       }
   )
-  List<CartItemResponseDto> getCartContent();
+  List<ApiCartItemResponseDto> getCartContent();
 
   @PUT
   @Path("/{title}")
@@ -48,24 +52,31 @@ public interface CartResource {
       summary = "Add a stock to the cart.",
       description = "Add quantity of a stock to the cart. "
           + "Return every stocks in the cart, with their details and quantity.",
-      requestBody = @RequestBody(
-          content = @Content(schema = @Schema(implementation = CartStockRequest.class))
-      ),
       responses = {
           @ApiResponse(
-              responseCode = "200", description = "cart content",
+              responseCode = "200",
+              description = "Stock successfully added to cart.",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
+                  array = @ArraySchema(
+                      schema = @Schema(
+                          implementation = ApiCartItemResponseDto.class
+                      )
+                  )
               )
           ),
-          @ApiResponse(responseCode = "400",
-              description = "stock does not exist or quantity is invalid"),
-          @ApiResponse(responseCode = "401", description = "not logged in")
+          @ApiResponse(
+              responseCode = "400",
+              description = "Stock does not exist or quantity is invalid."
+          ),
+          @ApiResponse(
+              responseCode = "401",
+              description = "User is not logged in."
+          )
       }
   )
-  List<CartItemResponseDto> addStockToCart(@Parameter(description = "Title", required = true)
-                                           @NotNull @PathParam("title") String title,
-                                           CartStockRequest cartStockRequest);
+  List<ApiCartItemResponseDto> addStockToCart(
+      @PathParam("title") String title,
+      CartStockRequest cartStockRequest);
 
   @PATCH
   @Path("/{title}")
@@ -73,24 +84,31 @@ public interface CartResource {
       summary = "Update a stock in the cart.",
       description = "Update the quantity of a stock. "
           + "Return every stocks in the cart, with their details and quantity.",
-      requestBody = @RequestBody(
-          content = @Content(schema = @Schema(implementation = CartStockRequest.class))
-      ),
       responses = {
           @ApiResponse(
-              responseCode = "200", description = "cart content",
+              responseCode = "200",
+              description = "Stock successfully updated.",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
+                  array = @ArraySchema(
+                      schema = @Schema(
+                          implementation = ApiCartItemResponseDto.class
+                      )
+                  )
               )
           ),
-          @ApiResponse(responseCode = "400",
-              description = "stock does not exist or quantity is invalid"),
-          @ApiResponse(responseCode = "401", description = "not logged in")
+          @ApiResponse(
+              responseCode = "400",
+              description = "Stock does not exist or quantity is invalid."
+          ),
+          @ApiResponse(
+              responseCode = "401",
+              description = "User is not logged in."
+          )
       }
   )
-  List<CartItemResponseDto> updateStockInCart(@Parameter(description = "Title", required = true)
-                                              @NotNull @PathParam("title") String title,
-                                              CartStockRequest cartStockRequest);
+  List<ApiCartItemResponseDto> updateStockInCart(
+      @PathParam("title") String title,
+      CartStockRequest cartStockRequest);
 
   @DELETE
   @Path("/{title}")
@@ -100,24 +118,38 @@ public interface CartResource {
           + "Return every stocks in the cart, with their details and quantity.",
       responses = {
           @ApiResponse(
-              responseCode = "200", description = "cart content",
+              responseCode = "200",
+              description = "Stock successfully deleted.",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
+                  array = @ArraySchema(
+                      schema = @Schema(
+                          implementation = ApiCartItemResponseDto.class
+                      )
+                  )
               )
           ),
-          @ApiResponse(responseCode = "401", description = "not logged in")
+          @ApiResponse(
+              responseCode = "401",
+              description = "User is not logged in."
+          )
       }
   )
-  List<CartItemResponseDto> deleteStockInCart(@Parameter(description = "Title", required = true)
-                                              @NotNull @PathParam("title") String title);
+  List<ApiCartItemResponseDto> deleteStockInCart(
+      @PathParam("title") String title);
 
   @DELETE
   @Operation(
       summary = "Empty the cart.",
       description = "Remove all stocks from the cart.",
       responses = {
-          @ApiResponse(responseCode = "204", description = "cart emptied"),
-          @ApiResponse(responseCode = "401", description = "not logged in")
+          @ApiResponse(
+              responseCode = "204",
+              description = "Cart successfully emptied."
+          ),
+          @ApiResponse(
+              responseCode = "401",
+              description = "User is not logged in."
+          )
       }
   )
   void emptyCart();
@@ -129,16 +161,28 @@ public interface CartResource {
       summary = "Check out the cart.",
       description = "Check out the current content of the cart. "
           + "Return the checked out stocks, with their details and quantity.",
+
       responses = {
           @ApiResponse(
-              responseCode = "200", description = "cart content",
+              responseCode = "200",
+              description = "Cart successfully checked out.",
               content = @Content(
-                  array = @ArraySchema(schema = @Schema(implementation = CartItemResponseDto.class))
+                  array = @ArraySchema(
+                      schema = @Schema(
+                          implementation = ApiTransactionDto.class
+                      )
+                  )
               )
           ),
-          @ApiResponse(responseCode = "400", description = "cannot checkout empty cart"),
-          @ApiResponse(responseCode = "401", description = "not logged in")
+          @ApiResponse(
+              responseCode = "400",
+              description = "Empty cart cannot be checked out."
+          ),
+          @ApiResponse(
+              responseCode = "401",
+              description = "User is not logged in."
+          )
       }
   )
-  List<CartItemResponseDto> checkoutCart();
+  ApiTransactionDto checkoutCart();
 }

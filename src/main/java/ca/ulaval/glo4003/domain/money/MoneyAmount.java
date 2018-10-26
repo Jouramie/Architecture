@@ -8,6 +8,10 @@ public class MoneyAmount {
   private final BigDecimal amount;
   private final Currency currency;
 
+  public MoneyAmount(double amount) {
+    this(amount, Currency.USD);
+  }
+
   public MoneyAmount(double amount, Currency currency) {
     this.amount = new BigDecimal(amount).setScale(2, RoundingMode.HALF_EVEN);
     this.currency = currency;
@@ -33,6 +37,11 @@ public class MoneyAmount {
   public MoneyAmount add(MoneyAmount otherAmount) {
     MoneyAmount convertedAmount = currency.convert(otherAmount);
     return new MoneyAmount(amount.add(convertedAmount.getAmount()), getCurrency());
+  }
+
+  public MoneyAmount add(BigDecimal variation) {
+    MoneyAmount variationMoneyAmount = new MoneyAmount(variation, getCurrency());
+    return add(variationMoneyAmount);
   }
 
   public MoneyAmount subtract(MoneyAmount otherAmount) {
@@ -65,5 +74,13 @@ public class MoneyAmount {
   @Override
   public int hashCode() {
     return getAmount().hashCode() ^ getCurrency().hashCode();
+  }
+
+  public boolean isGreaterThan(MoneyAmount other) {
+    return toUsd().compareTo(other.toUsd()) == 1;
+  }
+
+  public boolean isLessThan(MoneyAmount other) {
+    return toUsd().compareTo(other.toUsd()) == -1;
   }
 }

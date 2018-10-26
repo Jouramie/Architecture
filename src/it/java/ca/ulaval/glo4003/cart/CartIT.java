@@ -1,51 +1,44 @@
 package ca.ulaval.glo4003.cart;
 
+import static ca.ulaval.glo4003.util.TestUserHelper.givenUserAlreadyAuthenticated;
+import static ca.ulaval.glo4003.util.TestUserHelper.givenUserAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.emptyIterable;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.util.CartStockRequestBuilder;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
-import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
 import io.restassured.http.Header;
-import io.restassured.response.Response;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class CartIT {
   private static final String SOME_TITLE = "RBS.l";
+  private static final String SOME_TRANSACTION_TYPE = "PURCHASE";
 
   private static final String API_CART_ROUTE = "/api/cart/";
   private static final String API_CART_ROUTE_WITH_TITLE = API_CART_ROUTE + SOME_TITLE;
   private static final String API_CART_CHECKOUT_ROUTE = "/api/cart/checkout";
-  private static final String API_USERS_ROUTE = "/api/users";
-  private static final String API_AUTHENTICATION_ROUTE = "/api/authenticate";
 
   private static final String TITLE = "title";
-  private static final String NAME = "name";
   private static final String MARKET = "market";
   private static final String CATEGORY = "category";
   private static final String CURRENT_VALUE = "currentValue";
+
+  private static final String MONEY_AMOUNT = "moneyAmount";
+  private static final String CURRENCY = "currency";
   private static final String QUANTITY = "quantity";
 
-  private static final String SOME_EMAIL = "carticart";
-  private static final String SOME_PASSWORD = "stockistock";
-
-  private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD, UserRole.INVESTOR);
-
-  private static final AuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
 
   private final CartStockRequestBuilder cartStockRequestBuilder = new CartStockRequestBuilder();
 
@@ -138,6 +131,23 @@ public class CartIT {
   }
 
   @Test
+  public void givenNegativeQuantityCartStockRequest_whenAddStockToCart_thenBadRequest() {
+    givenUserAlreadyRegistered();
+    String token = givenUserAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .body(cartStockRequestBuilder.withQuantity(-1).build())
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
+        .put(API_CART_ROUTE_WITH_TITLE)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
   public void givenCartContainsDefaultStock_whenAddSameStockToCart_thenAddAmountOfStocks() {
     givenUserAlreadyRegistered();
     String token = givenUserAlreadyAuthenticated();
@@ -170,14 +180,32 @@ public class CartIT {
   }
 
   @Test
-  public void givenEmptyCart_whenUpdateStockToCart_thenReturn400() {
+  public void givenEmptyCart_whenUpdateStockToCart_thenBadRequest() {
     givenUserAlreadyRegistered();
     String token = givenUserAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
         .header(tokenHeader)
-        .body(cartStockRequestBuilder.build(2))
+        .body(cartStockRequestBuilder.build())
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
+        .patch(API_CART_ROUTE_WITH_TITLE)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenNegativeQuantityCartStockRequest_whenUpdateStockToCart_thenBadRequest() {
+    givenUserAlreadyRegistered();
+    String token = givenUserAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    givenCartContainsDefaultStock(tokenHeader);
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .body(cartStockRequestBuilder.withQuantity(-1).build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .patch(API_CART_ROUTE_WITH_TITLE)
@@ -275,12 +303,13 @@ public class CartIT {
         .post(API_CART_CHECKOUT_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
-        .body("$", is(iterableWithSize(1)))
-        .body("[0].title", is(SOME_TITLE))
-        .body("[0].quantity", is(CartStockRequestBuilder.DEFAULT_QUANTITY))
-        .body("[0]", hasKey(MARKET))
-        .body("[0]", hasKey(CATEGORY))
-        .body("[0]", hasKey(CURRENT_VALUE));
+        .body("type", equalTo(SOME_TRANSACTION_TYPE))
+        .body("items", is(iterableWithSize(1)))
+        .body("items[0]", hasKey(TITLE))
+        .body("items[0]", hasKey(QUANTITY))
+        .body("items[0]", hasKey(MONEY_AMOUNT))
+        .body("items[0]", hasKey(CURRENCY))
+        .body("timestamp", any(Object.class));
     //@formatter:on
   }
 
@@ -297,23 +326,6 @@ public class CartIT {
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
-  }
-
-
-  private void givenUserAlreadyRegistered() {
-    given().body(A_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON).post(API_USERS_ROUTE);
-  }
-
-  private String givenUserAlreadyAuthenticated() {
-    //@formatter:off
-    Response response = given()
-        .body(AN_AUTHENTICATION_REQUEST)
-        .contentType(MediaType.APPLICATION_JSON)
-    .when()
-        .post(API_AUTHENTICATION_ROUTE);
-    //@formatter:on
-
-    return response.jsonPath().getString("token");
   }
 
   private void givenCartContainsDefaultStock(Header tokenHeader) {

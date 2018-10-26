@@ -1,22 +1,24 @@
 package ca.ulaval.glo4003.domain.stock;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
+import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import java.math.BigDecimal;
 
 public class Stock {
   private final String title;
   private final String name;
   private final String category;
   private final MarketId marketId;
-  private final StockValue value;
+  private final StockValueHistory valueHistory;
 
   public Stock(String title, String name, String category, MarketId marketId,
-               MoneyAmount lastOpenValue, MoneyAmount lastCloseValue) {
+               StockValueHistory valueHistory) {
     this.title = title;
     this.name = name;
     this.category = category;
     this.marketId = marketId;
-    value = new StockValue(lastOpenValue, lastCloseValue);
+    this.valueHistory = valueHistory;
   }
 
   public String getTitle() {
@@ -35,21 +37,30 @@ public class Stock {
     return marketId;
   }
 
-  public synchronized void updateValue(double variation) {
-    MoneyAmount moneyVariation = new MoneyAmount(variation, value.getCurrentValue().getCurrency());
-    MoneyAmount newMoneyAmount = value.getCurrentValue().add(moneyVariation);
-    value.setValue(newMoneyAmount);
+  public StockValueHistory getValueHistory() {
+    return valueHistory;
+  }
+
+  public Currency getCurrency() {
+    return getValue().getCurrentValue().getCurrency();
+  }
+
+  public synchronized void updateValue(BigDecimal variation) {
+    getValue().updateValue(variation);
   }
 
   public synchronized StockValue getValue() {
-    return value;
+    return valueHistory.getLatestValue().value;
   }
 
   public synchronized void open() {
-    value.setValue(value.getCloseValue());
+    MoneyAmount startValue = getValue().getCloseValue();
+    StockValue newStockValue = new StockValue(startValue);
+
+    valueHistory.addNextValue(newStockValue);
   }
 
   public synchronized void close() {
-    value.close();
+    getValue().close();
   }
 }
