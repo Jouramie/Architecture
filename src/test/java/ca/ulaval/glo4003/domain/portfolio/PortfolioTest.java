@@ -23,7 +23,7 @@ public class PortfolioTest {
   private final String SOME_TITLE = "MSFT";
   private final int SOME_QUANTITY = 3;
   private final String SOME_CURRENCY_NAME = "CAD";
-  private final BigDecimal SOME_RATE_TO_USD = new BigDecimal(1);
+  private final BigDecimal SOME_RATE_TO_USD = new BigDecimal(12);
   private final Currency SOME_CURRENCY = new Currency(SOME_CURRENCY_NAME, SOME_RATE_TO_USD);
   private final MoneyAmount SOME_VALUE = new MoneyAmount(12.2, SOME_CURRENCY);
   private final StockValue SOME_STOCK_VALUE = new StockValue(SOME_VALUE, SOME_VALUE, SOME_VALUE);
@@ -64,7 +64,7 @@ public class PortfolioTest {
   public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues() throws InvalidStockInPortfolioException {
     portfolio.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
 
-    BigDecimal currentTotal = SOME_VALUE.getAmount().multiply(new BigDecimal(SOME_QUANTITY));
+    BigDecimal currentTotal = SOME_VALUE.toUsd().multiply(new BigDecimal(SOME_QUANTITY));
     assertThat(portfolio.getCurrentTotalValue(someStockRepository).getAmount()).isEqualTo(currentTotal);
   }
 

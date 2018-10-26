@@ -14,7 +14,7 @@ public class Pagination {
     if (pageFirstIndex > response.size()) {
       return new ArrayList<>();
     }
-    return response.subList(pageFirstIndex, pageLastIndex);
+    return response.subList(pageFirstIndex, pageLastIndex + 1);
   }
 
   private int getPageFirstIndex(int page, int perPage) {
@@ -23,7 +23,7 @@ public class Pagination {
 
   private int getPageLastIndex(int page, int perPage, int responseSize) {
     return (page * perPage < responseSize)
-        ? page * perPage
-        : responseSize;
+        ? (page * perPage) - 1
+        : responseSize - 1;
   }
 }
