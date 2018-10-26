@@ -3,7 +3,6 @@ package ca.ulaval.glo4003.domain.user;
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import java.util.List;
 
 public class User {
   private final String email;
@@ -44,7 +43,7 @@ public class User {
     portfolio.add(title, quantity, stockRepository);
   }
 
-  public List<String> getStocks() {
-    return portfolio.getStocks().getTitles();
+  public Portfolio getPortfolio() {
+    return portfolio;
   }
 }

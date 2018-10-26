@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.util;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
-import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockValue;
@@ -14,9 +13,8 @@ public class TestStockBuilder {
   public static final String DEFAULT_NAME = "Microsoft";
   public static final String DEFAULT_CATEGORY = "Tech";
   public static final MarketId DEFAULT_MARKET_ID = new MarketId("NASDAQ");
-  public static final Currency DEFAULT_CURRENCY = Currency.USD;
-  public static final MoneyAmount DEFAULT_OPEN_VALUE = new MoneyAmount(12.34, DEFAULT_CURRENCY);
-  public static final MoneyAmount DEFAULT_CLOSE_VALUE = new MoneyAmount(56.78, DEFAULT_CURRENCY);
+  public static final MoneyAmount DEFAULT_OPEN_VALUE = new MoneyAmount(12.34);
+  public static final MoneyAmount DEFAULT_CLOSE_VALUE = new MoneyAmount(56.78);
 
   private String title = DEFAULT_TITLE;
   private String name = DEFAULT_NAME;
