@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 @Schema(
     name = "Stock"
 )
-public class StockDto {
+public class ApiStockDto {
   public final String title;
   public final String market;
   @Schema(description = "Name of the company")
@@ -19,13 +19,13 @@ public class StockDto {
   @Schema(description = "Stock value at market close")
   public final BigDecimal closeValue;
 
-  public StockDto(String title,
-                  String name,
-                  String category,
-                  String market,
-                  BigDecimal openValue,
-                  BigDecimal currentValue,
-                  BigDecimal closeValue) {
+  public ApiStockDto(String title,
+                     String name,
+                     String category,
+                     String market,
+                     BigDecimal openValue,
+                     BigDecimal currentValue,
+                     BigDecimal closeValue) {
     this.title = title;
     this.market = market;
     this.name = name;

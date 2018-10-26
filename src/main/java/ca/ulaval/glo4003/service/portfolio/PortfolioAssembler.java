@@ -9,8 +9,6 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.cart.InvalidStockTitleException;
-import ca.ulaval.glo4003.ws.api.portfolio.PortfolioItemResponseDto;
-import ca.ulaval.glo4003.ws.api.portfolio.PortfolioResponseDto;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.inject.Inject;

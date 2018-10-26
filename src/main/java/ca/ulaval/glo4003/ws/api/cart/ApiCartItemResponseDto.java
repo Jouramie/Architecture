@@ -7,7 +7,7 @@ import java.math.BigDecimal;
     name = "Cart item",
     description = "Representation of a stock with the quantity of that stock in the cart."
 )
-public class CartItemResponseDto {
+public class ApiCartItemResponseDto {
   public final String title;
   public final String market;
   @Schema(description = "Name of the company")
@@ -16,8 +16,8 @@ public class CartItemResponseDto {
   public final BigDecimal currentValue;
   public final int quantity;
 
-  public CartItemResponseDto(String title, String market, String name, String category,
-                             BigDecimal currentValue, int quantity) {
+  public ApiCartItemResponseDto(String title, String market, String name, String category,
+                                BigDecimal currentValue, int quantity) {
     this.title = title;
     this.market = market;
     this.name = name;

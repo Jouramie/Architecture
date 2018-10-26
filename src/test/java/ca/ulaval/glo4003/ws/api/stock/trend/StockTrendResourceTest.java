@@ -33,7 +33,7 @@ public class StockTrendResourceTest {
   public void whenGettingStockVariationTrend_thenReturnGeneratedSummary() {
     given(stockVariationTrendService.getStockVariationSummary(STOCK_TITLE)).willReturn(STOCK_VARIATION_SUMMARY);
 
-    StockTrendDto stockTrend = resource.getStockTrend(STOCK_TITLE);
+    ApiStockTrendDto stockTrend = resource.getStockTrend(STOCK_TITLE);
 
     assertEquals(STOCK_TITLE, stockTrend.title);
     assertEquals(STOCK_VARIATION_SUMMARY.last5days, stockTrend.last5Days);

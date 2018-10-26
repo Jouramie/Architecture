@@ -31,7 +31,7 @@ public interface StockResource {
               responseCode = "200",
               content = @Content(
                   schema = @Schema(
-                      implementation = StockDto.class
+                      implementation = ApiStockDto.class
                   )
               )
           ),
@@ -41,7 +41,7 @@ public interface StockResource {
           )
       }
   )
-  StockDto getStockByTitle(@PathParam("title") String title);
+  ApiStockDto getStockByTitle(@PathParam("title") String title);
 
   @GET
   @PaginationBinding
@@ -60,14 +60,14 @@ public interface StockResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = StockDto.class
+                          implementation = ApiStockDto.class
                       )
                   )
               )
           )
       }
   )
-  List<StockDto> getStocks(
+  List<ApiStockDto> getStocks(
       @QueryParam("name")
       @Parameter(description = "Search stock by name.")
           String name,

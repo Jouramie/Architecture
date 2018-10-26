@@ -7,12 +7,12 @@ import java.util.List;
 @Schema(
     name = "Transaction"
 )
-public class TransactionDto {
+public class ApiTransactionDto {
   public final String type;
-  public final List<TransactionItemDto> items;
+  public final List<ApiTransactionItemDto> items;
   public final LocalDateTime timestamp;
 
-  public TransactionDto(String type, List<TransactionItemDto> items, LocalDateTime timestamp) {
+  public ApiTransactionDto(String type, List<ApiTransactionItemDto> items, LocalDateTime timestamp) {
     this.type = type;
     this.items = items;
     this.timestamp = timestamp;

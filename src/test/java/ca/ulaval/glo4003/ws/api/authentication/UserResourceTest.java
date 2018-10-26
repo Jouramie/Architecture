@@ -2,12 +2,16 @@ package ca.ulaval.glo4003.ws.api.authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.authentication.UserCreationService;
+import ca.ulaval.glo4003.service.authentication.UserDto;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.regex.Pattern;
+import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,25 +33,39 @@ public class UserResourceTest {
       new UserCreationDto("email", "passord");
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
+  private static final UserDto SOME_USER_RESPONSE = new UserDto("email", UserRole.INVESTOR);
+  private static final ApiUserDto SOME_API_USER_RESPONSE = new ApiUserDto("email", UserRole.INVESTOR);
 
   @Mock
   private UserCreationService userCreationService;
 
   private RequestValidator requestValidator;
 
+  @Mock
+  private ApiUserAssembler apiUserAssembler;
+
   private UserResourceImpl userResource;
 
   @Before
   public void setup() {
     requestValidator = new RequestValidator();
-    userResource = new UserResourceImpl(userCreationService, requestValidator);
+    userResource = new UserResourceImpl(userCreationService, requestValidator, apiUserAssembler);
   }
 
   @Test
   public void whenCreatingUser_thenUserIsCreated() {
     userResource.createUser(SOME_CREATION_REQUEST);
 
-    verify(userCreationService).createInvestorUser(SOME_CREATION_REQUEST);
+    verify(userCreationService).createInvestorUser(SOME_CREATION_REQUEST.email, SOME_CREATION_REQUEST.password);
+  }
+
+  @Test
+  public void whenCreatingUser_thenReturned() {
+    given(userCreationService.createInvestorUser(SOME_CREATION_REQUEST.email, SOME_CREATION_REQUEST.password)).willReturn(SOME_USER_RESPONSE);
+    given(apiUserAssembler.toDto(SOME_USER_RESPONSE)).willReturn(SOME_API_USER_RESPONSE);
+
+    Response response = userResource.createUser(SOME_CREATION_REQUEST);
+    assertThat(response.getEntity()).isEqualTo(SOME_API_USER_RESPONSE);
   }
 
   @Test

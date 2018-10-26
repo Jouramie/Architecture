@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
     name = "User",
     description = "Basic user information"
 )
-public class UserDto {
+public class ApiUserDto {
 
   @Schema(description = "Email")
   public final String email;
@@ -15,7 +15,7 @@ public class UserDto {
   @Schema(description = "User role")
   public final UserRole role;
 
-  public UserDto(String email, UserRole role) {
+  public ApiUserDto(String email, UserRole role) {
     this.email = email;
     this.role = role;
   }

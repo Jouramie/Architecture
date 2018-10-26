@@ -16,7 +16,6 @@ import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
-import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert;
@@ -43,7 +42,7 @@ public class CartServiceTest {
   @Mock
   private Cart cart;
   @Mock
-  private CartItemResponseDto cartItemDto;
+  private CartItemDto cartItemDto;
 
   private CartService cartService;
 
@@ -58,7 +57,7 @@ public class CartServiceTest {
 
   @Test
   public void whenGetCartContent_thenCartOfTheCurrentUserIsGot() {
-    List<CartItemResponseDto> content = cartService.getCartContent();
+    List<CartItemDto> content = cartService.getCartContent();
 
     assertThat(content).hasSize(0);
   }
@@ -66,11 +65,11 @@ public class CartServiceTest {
   @Test
   public void whenGetCartContent_thenWeHaveCorrespondingDtos() {
     StockCollection stockCollection = new StockCollection();
-    List<CartItemResponseDto> cartItemDtos = Collections.singletonList(cartItemDto);
+    List<CartItemDto> cartItemDtos = Collections.singletonList(cartItemDto);
     given(cart.getStocks()).willReturn(stockCollection);
     given(cartItemAssembler.toDtoList(stockCollection)).willReturn(cartItemDtos);
 
-    List<CartItemResponseDto> resultingDtos = cartService.getCartContent();
+    List<CartItemDto> resultingDtos = cartService.getCartContent();
 
     assertThat(resultingDtos.get(0)).isEqualTo(cartItemDto);
   }

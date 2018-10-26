@@ -7,13 +7,10 @@ import static org.mockito.BDDMockito.verify;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 
-import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.util.TestStockBuilder;
-import ca.ulaval.glo4003.ws.api.stock.StockDto;
-import ca.ulaval.glo4003.ws.api.stock.max.StockMaxResponseDto;
 import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
@@ -34,12 +31,6 @@ public class StockServiceTest {
   private StockRepository stockRepository;
   @Mock
   private StockAssembler stockAssembler;
-  @Mock
-  private Stock givenStock;
-  @Mock
-  private HistoricalStockValue givenMaximumStockValue;
-  @Mock
-  private StockMaxResponseDto expectedMaxResponseDto;
 
   private StockService stockService;
 

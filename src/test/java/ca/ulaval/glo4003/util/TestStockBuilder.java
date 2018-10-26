@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.domain.stock.StockValueHistory;
-import ca.ulaval.glo4003.ws.api.stock.StockDto;
+import ca.ulaval.glo4003.service.stock.StockDto;
 import java.time.LocalDate;
 
 public class TestStockBuilder {

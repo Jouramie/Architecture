@@ -10,8 +10,7 @@ import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepositor
 import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
+import ca.ulaval.glo4003.ws.api.authentication.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -38,7 +37,7 @@ public class AuthenticationService {
     this.currentUserSession = currentUserSession;
   }
 
-  public AuthenticationResponseDto authenticate(AuthenticationRequestDto authenticationRequest) {
+  public AuthenticationResponseDto authenticate(ApiAuthenticationRequestDto authenticationRequest) {
     User user = getUserByEmail(authenticationRequest.email);
     if (user.isThisYourPassword(authenticationRequest.password)) {
       AuthenticationToken token = tokenFactory.createToken(authenticationRequest.email);

@@ -26,7 +26,7 @@ public interface StockTrendResource {
               responseCode = "200",
               content = @Content(
                   schema = @Schema(
-                      implementation = StockTrendDto.class
+                      implementation = ApiStockTrendDto.class
                   )
               )
           ),
@@ -36,5 +36,5 @@ public interface StockTrendResource {
           )
       }
   )
-  StockTrendDto getStockTrend(@PathParam("title") String title);
+  ApiStockTrendDto getStockTrend(@PathParam("title") String title);
 }

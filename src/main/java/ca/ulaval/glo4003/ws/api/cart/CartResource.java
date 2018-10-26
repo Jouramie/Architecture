@@ -33,7 +33,7 @@ public interface CartResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = CartItemResponseDto.class
+                          implementation = ApiCartItemResponseDto.class
                       )
                   )
               )
@@ -44,7 +44,7 @@ public interface CartResource {
           )
       }
   )
-  List<CartItemResponseDto> getCartContent();
+  List<ApiCartItemResponseDto> getCartContent();
 
   @PUT
   @Path("/{title}")
@@ -59,7 +59,7 @@ public interface CartResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = CartItemResponseDto.class
+                          implementation = ApiCartItemResponseDto.class
                       )
                   )
               )
@@ -74,7 +74,7 @@ public interface CartResource {
           )
       }
   )
-  List<CartItemResponseDto> addStockToCart(
+  List<ApiCartItemResponseDto> addStockToCart(
       @PathParam("title") String title,
       CartStockRequest cartStockRequest);
 
@@ -91,7 +91,7 @@ public interface CartResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = CartItemResponseDto.class
+                          implementation = ApiCartItemResponseDto.class
                       )
                   )
               )
@@ -106,7 +106,7 @@ public interface CartResource {
           )
       }
   )
-  List<CartItemResponseDto> updateStockInCart(
+  List<ApiCartItemResponseDto> updateStockInCart(
       @PathParam("title") String title,
       CartStockRequest cartStockRequest);
 
@@ -123,7 +123,7 @@ public interface CartResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = CartItemResponseDto.class
+                          implementation = ApiCartItemResponseDto.class
                       )
                   )
               )
@@ -134,7 +134,7 @@ public interface CartResource {
           )
       }
   )
-  List<CartItemResponseDto> deleteStockInCart(
+  List<ApiCartItemResponseDto> deleteStockInCart(
       @PathParam("title") String title);
 
   @DELETE
@@ -169,7 +169,7 @@ public interface CartResource {
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(
-                          implementation = TransactionDto.class
+                          implementation = ApiTransactionDto.class
                       )
                   )
               )
@@ -184,5 +184,5 @@ public interface CartResource {
           )
       }
   )
-  TransactionDto checkoutCart();
+  ApiTransactionDto checkoutCart();
 }

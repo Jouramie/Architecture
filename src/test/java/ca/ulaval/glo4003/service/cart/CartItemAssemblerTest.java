@@ -12,7 +12,6 @@ import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.util.TestStockBuilder;
-import ca.ulaval.glo4003.ws.api.cart.CartItemResponseDto;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +48,7 @@ public class CartItemAssemblerTest {
   @Before
   public void setupCartItemAssembler() throws StockNotFoundException {
     assembler = new CartItemAssembler(stockRepository);
-    
+
     given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
     given(stockRepository.doesStockExist(SOME_OTHER_TITLE)).willReturn(true);
     given(stockRepository.findByTitle(SOME_TITLE)).willReturn(SOME_STOCK);
@@ -58,7 +57,7 @@ public class CartItemAssemblerTest {
 
   @Test
   public void whenToDto_thenFillDtoWithCurrentValue() {
-    CartItemResponseDto dto = assembler.toDto(SOME_TITLE, SOME_QUANTITY);
+    CartItemDto dto = assembler.toDto(SOME_TITLE, SOME_QUANTITY);
 
     assertThatDtoIsCorrectlyMapped(dto);
   }
@@ -77,12 +76,12 @@ public class CartItemAssemblerTest {
     StockCollection stockCollection = new StockCollection()
         .add(SOME_TITLE, SOME_QUANTITY, stockRepository)
         .add(SOME_OTHER_TITLE, SOME_QUANTITY, stockRepository);
-    List<CartItemResponseDto> dtos = assembler.toDtoList(stockCollection);
+    List<CartItemDto> dtos = assembler.toDtoList(stockCollection);
 
     assertThat(dtos).hasSize(2);
   }
 
-  private void assertThatDtoIsCorrectlyMapped(CartItemResponseDto dto) {
+  private void assertThatDtoIsCorrectlyMapped(CartItemDto dto) {
     assertThat(dto.title).isEqualTo(SOME_TITLE);
     assertThat(dto.quantity).isEqualTo(SOME_QUANTITY);
     assertThat(dto.name).isEqualTo(SOME_NAME);

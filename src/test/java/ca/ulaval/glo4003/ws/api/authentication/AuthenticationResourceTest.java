@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.service.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
@@ -22,22 +23,27 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationResourceTest {
 
-  private static final AuthenticationRequestDto SOME_AUTHENTICATION_REQUEST =
-      new AuthenticationRequestDto("email", "password");
+  private static final ApiAuthenticationRequestDto SOME_AUTHENTICATION_REQUEST =
+      new ApiAuthenticationRequestDto("email", "password");
 
   private static final AuthenticationResponseDto SOME_AUTHENTICATION_RESPONSE
       = new AuthenticationResponseDto("TOKEN");
 
-  private static final AuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_EMAIL =
-      new AuthenticationRequestDto(null, "password");
+  private static final ApiAuthenticationResponseDto SOME_AUTHENTICATION_API_RESPONSE = new ApiAuthenticationResponseDto("TOKEN");
 
-  private static final AuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_PASSWORD =
-      new AuthenticationRequestDto("email", null);
+  private static final ApiAuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_EMAIL =
+      new ApiAuthenticationRequestDto(null, "password");
+
+  private static final ApiAuthenticationRequestDto AUTHENTICATION_REQUEST_WITHOUT_PASSWORD =
+      new ApiAuthenticationRequestDto("email", null);
 
   @Mock
   private AuthenticationService authenticationService;
 
   private RequestValidator requestValidator;
+
+  @Mock
+  private ApiAuthenticationResponseAssembler apiAuthenticationResponseAssembler;
 
   private AuthenticationResourceImpl authenticationResource;
 
@@ -45,11 +51,12 @@ public class AuthenticationResourceTest {
   public void setup() {
     requestValidator = new RequestValidator();
     authenticationResource
-        = new AuthenticationResourceImpl(authenticationService, requestValidator);
+        = new AuthenticationResourceImpl(authenticationService, requestValidator, apiAuthenticationResponseAssembler);
   }
 
   @Test
   public void whenAuthenticatingUser_thenUserIsAuthenticated() {
+    given(authenticationService.authenticate(SOME_AUTHENTICATION_REQUEST)).willReturn(SOME_AUTHENTICATION_RESPONSE);
     authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
     verify(authenticationService).authenticate(SOME_AUTHENTICATION_REQUEST);
@@ -57,6 +64,7 @@ public class AuthenticationResourceTest {
 
   @Test
   public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenResponseStatusIsAccepted() {
+    given(authenticationService.authenticate(SOME_AUTHENTICATION_REQUEST)).willReturn(SOME_AUTHENTICATION_RESPONSE);
     Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
     assertThat(response.getStatus()).isEqualTo(ACCEPTED.getStatusCode());
@@ -64,12 +72,11 @@ public class AuthenticationResourceTest {
 
   @Test
   public void givenValidAuthenticationRequest_whenAuthenticatingUser_thenTokenIsReturned() {
-    given(authenticationService.authenticate(SOME_AUTHENTICATION_REQUEST))
-        .willReturn(SOME_AUTHENTICATION_RESPONSE);
-
+    given(authenticationService.authenticate(SOME_AUTHENTICATION_REQUEST)).willReturn(SOME_AUTHENTICATION_RESPONSE);
+    given(apiAuthenticationResponseAssembler.toDto(SOME_AUTHENTICATION_RESPONSE)).willReturn(SOME_AUTHENTICATION_API_RESPONSE);
     Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
-    assertThat(response.getEntity()).isEqualTo(SOME_AUTHENTICATION_RESPONSE);
+    assertThat(response.getEntity()).isEqualTo(SOME_AUTHENTICATION_API_RESPONSE);
   }
 
   @Test

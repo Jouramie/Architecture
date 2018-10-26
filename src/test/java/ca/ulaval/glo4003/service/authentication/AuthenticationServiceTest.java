@@ -17,8 +17,7 @@ import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepositor
 import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.util.UserBuilder;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationRequestDto;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationResponseDto;
+import ca.ulaval.glo4003.ws.api.authentication.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
 import java.util.UUID;
 import org.assertj.core.api.ThrowableAssert;
@@ -35,10 +34,10 @@ public class AuthenticationServiceTest {
   private static final String INVALID_TOKEN = "10110100-0000-0000-0000-000000000000";
   private static final String SOME_PASSWORD = UserBuilder.DEFAULT_PASSWORD;
   private static final String SOME_EMAIL = UserBuilder.DEFAULT_EMAIL;
-  private static final AuthenticationRequestDto AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
-  private static final AuthenticationRequestDto INVALID_AUTHENTICATION_REQUEST
-      = new AuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD + "wrong");
+  private static final ApiAuthenticationRequestDto AUTHENTICATION_REQUEST
+      = new ApiAuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
+  private static final ApiAuthenticationRequestDto INVALID_AUTHENTICATION_REQUEST
+      = new ApiAuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD + "wrong");
   private static final AuthenticationTokenDto AUTHENTICATION_TOKEN_DTO
       = new AuthenticationTokenDto(SOME_TOKEN);
   private static final AuthenticationTokenDto INVALID_AUTHENTICATION_TOKEN_DTO

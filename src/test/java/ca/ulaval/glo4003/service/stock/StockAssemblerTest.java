@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.util.TestStockBuilder;
-import ca.ulaval.glo4003.ws.api.stock.StockDto;
 import com.google.common.collect.Lists;
 import java.math.BigDecimal;
 import java.util.List;

@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.util;
 
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.ws.api.authentication.ApiUserDto;
 
 public class UserBuilder {
   public static final String DEFAULT_EMAIL = "email";

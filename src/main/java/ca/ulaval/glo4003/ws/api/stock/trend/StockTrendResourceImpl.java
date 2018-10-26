@@ -16,9 +16,9 @@ public class StockTrendResourceImpl implements StockTrendResource {
   }
 
   @Override
-  public StockTrendDto getStockTrend(String title) {
+  public ApiStockTrendDto getStockTrend(String title) {
     StockVariationSummary variationSummary = stockVariationTrendService.getStockVariationSummary(title);
-    return new StockTrendDto(title,
+    return new ApiStockTrendDto(title,
         variationSummary.last5days,
         variationSummary.last30days,
         variationSummary.lastYear);

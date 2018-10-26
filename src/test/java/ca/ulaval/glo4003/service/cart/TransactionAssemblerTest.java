@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
-import ca.ulaval.glo4003.ws.api.cart.TransactionDto;
-import ca.ulaval.glo4003.ws.api.cart.TransactionItemDto;
 import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;

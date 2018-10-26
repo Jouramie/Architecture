@@ -7,13 +7,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(
     name = "Authentication response"
 )
-public class AuthenticationResponseDto {
+public class ApiAuthenticationResponseDto {
 
   @Schema(description = "Authentication token")
   public final String token;
 
   @JsonCreator
-  public AuthenticationResponseDto(
+  public ApiAuthenticationResponseDto(
       @JsonProperty("token")
           String token) {
     this.token = token;

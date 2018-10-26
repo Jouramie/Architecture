@@ -7,11 +7,11 @@ import java.util.List;
 @Schema(
     name = "Portfolio"
 )
-public class PortfolioResponseDto {
-  public final List<PortfolioItemResponseDto> stocks;
+public class ApiPortfolioResponseDto {
+  public final List<ApiPortfolioItemResponseDto> stocks;
   public final BigDecimal currentTotalValue;
 
-  public PortfolioResponseDto(List<PortfolioItemResponseDto> stocks, BigDecimal currentTotalValue) {
+  public ApiPortfolioResponseDto(List<ApiPortfolioItemResponseDto> stocks, BigDecimal currentTotalValue) {
     this.stocks = stocks;
     this.currentTotalValue = currentTotalValue;
   }
