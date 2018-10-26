@@ -32,7 +32,7 @@ public class PortfolioServiceTest {
   }
 
   @Test
-  public void whenGetPortfolio_thenPortfolioOdCurrentUserIsGot() {
+  public void whenGetPortfolio_thenPortfolioOfCurrentUserIsGot() {
     portfolioService.getPortfolio();
 
     verify(someCurrentUser).getPortfolio();
