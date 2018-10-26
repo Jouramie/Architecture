@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d15959a3-e1a5-464a-8395-a7c6928fbff9",
+		"_postman_id": "37c23b96-54b0-4814-bcfe-3a2d61b0876b",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -52,7 +52,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "localhost:8080/api/stocks/RBS.l/max?since=LAST_FIVE_DAYS",
+									"raw": "localhost:8080/api/stocks/RBS.l/max",
 									"host": [
 										"localhost"
 									],
@@ -62,12 +62,6 @@
 										"stocks",
 										"RBS.l",
 										"max"
-									],
-									"query": [
-										{
-											"key": "since",
-											"value": "LAST_FIVE_DAYS"
-										}
 									]
 								}
 							},
@@ -139,7 +133,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8080/api/stocks?category=technology",
+							"raw": "localhost:8080/api/stocks?category=Technologies",
 							"host": [
 								"localhost"
 							],
@@ -151,7 +145,7 @@
 							"query": [
 								{
 									"key": "category",
-									"value": "technology"
+									"value": "Technologies"
 								}
 							]
 						},
@@ -169,7 +163,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8080/api/stocks?category=technology&page=2&per_page=5",
+							"raw": "localhost:8080/api/stocks?category=Technologies&page=1&per_page=3",
 							"host": [
 								"localhost"
 							],
@@ -181,15 +175,15 @@
 							"query": [
 								{
 									"key": "category",
-									"value": "technology"
+									"value": "Technologies"
 								},
 								{
 									"key": "page",
-									"value": "2"
+									"value": "1"
 								},
 								{
 									"key": "per_page",
-									"value": "5"
+									"value": "3"
 								}
 							]
 						}
@@ -269,7 +263,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobarfoo\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/users",
@@ -297,7 +291,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobar\"\n}"
+							"raw": "{\n\t\"email\": \"Atreides@atreides.com\",\n\t\"password\": \"foobarfoo\"\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/api/authenticate",
