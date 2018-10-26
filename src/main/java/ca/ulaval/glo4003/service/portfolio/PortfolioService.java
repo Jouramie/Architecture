@@ -24,7 +24,7 @@ public class PortfolioService {
       Portfolio portfolio = currentUserSession.getCurrentUser().getPortfolio();
       dto = portfolioAssembler.toDto(portfolio);
     } catch (InvalidStockInPortfolioException e) {
-      throw new InvalidPortfolioException("User portfolio is invalid.");
+      throw new InvalidPortfolioException();
     }
     return dto;
   }
