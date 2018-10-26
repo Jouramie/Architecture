@@ -33,8 +33,8 @@ public class UserResourceTest {
       new UserCreationDto("email", "passord");
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
-  private static final UserDto USER_DTO = new UserDto("email", UserRole.INVESTOR);
-  private static final ApiUserDto API_USER_DTO = new ApiUserDto("email", UserRole.INVESTOR);
+  private static final UserDto SOME_USER_RESPONSE = new UserDto("email", UserRole.INVESTOR);
+  private static final ApiUserDto SOME_API_USER_RESPONSE = new ApiUserDto("email", UserRole.INVESTOR);
 
   @Mock
   private UserCreationService userCreationService;
@@ -61,11 +61,11 @@ public class UserResourceTest {
 
   @Test
   public void whenCreatingUser_thenReturned() {
-    given(userCreationService.createInvestorUser(SOME_CREATION_REQUEST.email, SOME_CREATION_REQUEST.password)).willReturn(USER_DTO);
-    given(apiUserAssembler.toDto(USER_DTO)).willReturn(API_USER_DTO);
+    given(userCreationService.createInvestorUser(SOME_CREATION_REQUEST.email, SOME_CREATION_REQUEST.password)).willReturn(SOME_USER_RESPONSE);
+    given(apiUserAssembler.toDto(SOME_USER_RESPONSE)).willReturn(SOME_API_USER_RESPONSE);
 
     Response response = userResource.createUser(SOME_CREATION_REQUEST);
-    assertThat(response.getEntity()).isEqualTo(API_USER_DTO);
+    assertThat(response.getEntity()).isEqualTo(SOME_API_USER_RESPONSE);
   }
 
   @Test
