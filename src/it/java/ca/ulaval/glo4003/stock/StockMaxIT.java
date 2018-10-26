@@ -1,8 +1,6 @@
 package ca.ulaval.glo4003.stock;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.Matchers.any;
@@ -14,31 +12,46 @@ import org.junit.Test;
 
 public class StockMaxIT {
   private static final String API_STOCK_ROUTE = "/api/stocks/%s/max";
-  private static final String SINCE_PARAMETER = "since";
 
   private static final String TITLE = "title";
+  private static final String LAST_FIVE_DAYS = "lastFiveDays";
+  private static final String CURRENT_MONTH = "currentMonth";
+  private static final String LAST_MONTH = "lastMonth";
+  private static final String LAST_YEAR = "lastYear";
+  private static final String LAST_FIVE_YEARS = "lastFiveYears";
+  private static final String LAST_TEN_YEARS = "lastTenYears";
+  private static final String ALL_TIME = "allTime";
   private static final String MAX_VALUE = "maximumValue";
   private static final String MAX_VALUE_DATE = "maximumValueDate";
 
   private static final String SOME_TITLE = "RBS.l";
   private static final String WRONG_TITLE = "wrong";
-  private static final String SOME_SINCE_PARAMETER = "LAST_YEAR";
 
   @ClassRule
   public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 
   @Test
-  public void whenGettingMaxValueOfStock_thenReturnTitleWithMaxValueAndDate() {
+  public void whenGettingMaxValueOfStock_thenReturnTitleWithMaxValuesAndDates() {
     //@formatter:off
     given()
-        .param(SINCE_PARAMETER, SOME_SINCE_PARAMETER)
-    .when()
         .get(String.format(API_STOCK_ROUTE, SOME_TITLE))
     .then()
         .statusCode(OK.getStatusCode())
         .body(TITLE, equalTo(SOME_TITLE))
-        .body(MAX_VALUE, any(Float.class))
-        .body(MAX_VALUE_DATE, any(Object.class));
+        .body(LAST_FIVE_DAYS + "." + MAX_VALUE, any(Float.class))
+        .body(LAST_FIVE_DAYS + "." + MAX_VALUE_DATE, any(String.class))
+        .body(CURRENT_MONTH + "." + MAX_VALUE, any(Float.class))
+        .body(CURRENT_MONTH + "." + MAX_VALUE_DATE, any(String.class))
+        .body(LAST_MONTH + "." + MAX_VALUE, any(Float.class))
+        .body(LAST_MONTH + "." + MAX_VALUE_DATE, any(String.class))
+        .body(LAST_YEAR + "." + MAX_VALUE, any(Float.class))
+        .body(LAST_YEAR + "." + MAX_VALUE_DATE, any(String.class))
+        .body(LAST_FIVE_YEARS + "." + MAX_VALUE, any(Float.class))
+        .body(LAST_FIVE_YEARS + "." + MAX_VALUE_DATE, any(String.class))
+        .body(LAST_TEN_YEARS + "." + MAX_VALUE, any(Float.class))
+        .body(LAST_TEN_YEARS + "." + MAX_VALUE_DATE, any(String.class))
+        .body(ALL_TIME + "." + MAX_VALUE, any(Float.class))
+        .body(ALL_TIME + "." + MAX_VALUE_DATE, any(String.class));
     //@formatter:on
   }
 
@@ -46,33 +59,9 @@ public class StockMaxIT {
   public void whenGettingMaxValueOfNonExistentStock_thenReturn404() {
     //@formatter:off
     given()
-        .param(SINCE_PARAMETER, SOME_SINCE_PARAMETER)
-    .when()
         .get(String.format(API_STOCK_ROUTE, WRONG_TITLE))
     .then()
         .statusCode(NOT_FOUND.getStatusCode());
-    //@formatter:on
-  }
-
-  @Test
-  public void whenGettingMaxValueOfStockWithWrongSinceParameter_thenReturn400() {
-    //@formatter:off
-    given()
-        .param(SINCE_PARAMETER, "wrong")
-    .when()
-        .get(String.format(API_STOCK_ROUTE, SOME_TITLE))
-    .then()
-        .statusCode(BAD_REQUEST.getStatusCode());
-    //@formatter:on
-  }
-
-  @Test
-  public void whenGettingMaxValueOfStockWithoutSinceParameter_thenReturn400() {
-    //@formatter:off
-    when()
-        .get(String.format(API_STOCK_ROUTE, SOME_TITLE))
-    .then()
-        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 }

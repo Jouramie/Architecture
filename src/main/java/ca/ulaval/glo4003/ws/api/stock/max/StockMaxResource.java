@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.stock.trend;
+package ca.ulaval.glo4003.ws.api.stock.max;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -12,29 +12,28 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-@Path("/stocks/{title}/trend")
+@Path("/stocks/{title}/max")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
-public interface StockTrendResource {
+public interface StockMaxResource {
 
   @GET
-  @Operation(
-      summary = "Get the variation trend for a given stock title.",
-      description = "Return the variation trend for the last 5 days, last 30 days, last year.",
+  @Operation(summary = "Get the maximum value for a given stock title.",
+      description = "Return the stock maximum value in the requested time period.",
       responses = {
           @ApiResponse(
               responseCode = "200",
               content = @Content(
                   schema = @Schema(
-                      implementation = StockTrendDto.class
+                      implementation = StockMaxResponseDto.class
                   )
               )
           ),
           @ApiResponse(
               responseCode = "404",
-              description = "Stock does not exist"
+              description = "Stock does not exist."
           )
       }
   )
-  StockTrendDto getStockTrend(@PathParam("title") String title);
+  StockMaxResponseDto getStockMaxValue(@PathParam("title") String title);
 }

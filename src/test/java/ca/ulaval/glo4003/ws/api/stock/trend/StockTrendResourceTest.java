@@ -13,17 +13,19 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StockTrendResourceImplTest {
+public class StockTrendResourceTest {
 
   private static final String STOCK_TITLE = "RBS.l";
-  private static final StockVariationSummary STOCK_VARIATION_SUMMARY = new StockVariationSummary(StockTrend.INCREASING, StockTrend.INCREASING, StockTrend.INCREASING);
+  private static final StockVariationSummary STOCK_VARIATION_SUMMARY =
+      new StockVariationSummary(StockTrend.INCREASING, StockTrend.INCREASING, StockTrend.INCREASING);
+
   @Mock
   private StockVariationTrendService stockVariationTrendService;
 
   private StockTrendResourceImpl resource;
 
   @Before
-  public void initialize() {
+  public void setupStockTrendResource() {
     resource = new StockTrendResourceImpl(stockVariationTrendService);
   }
 

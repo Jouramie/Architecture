@@ -19,13 +19,20 @@ public interface PortfolioResource {
   @GET
   @Operation(
       summary = "Get the content of the portfolio and its value.",
-      description = "Return stocks and current total value of the user portfolio.",
+      description = "Return every stocks and current total value of the user's portfolio.",
       responses = {
           @ApiResponse(
-              responseCode = "200", description = "portfolio",
-              content = @Content(schema = @Schema(implementation = PortfolioResponseDto.class))
+              responseCode = "200",
+              content = @Content(
+                  schema = @Schema(
+                      implementation = PortfolioResponseDto.class
+                  )
+              )
           ),
-          @ApiResponse(responseCode = "401", description = "not logged in")
+          @ApiResponse(
+              responseCode = "401",
+              description = "User is not logged in."
+          )
       }
   )
   PortfolioResponseDto getPortfolio();

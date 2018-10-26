@@ -5,24 +5,24 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueHistory;
 import ca.ulaval.glo4003.service.Component;
+import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import ca.ulaval.glo4003.service.stock.trend.dto.StockVariationSummary;
-import ca.ulaval.glo4003.service.time.HistoricalDatetimeService;
 import javax.inject.Inject;
 
 @Component
 public class StockVariationTrendService {
 
   private final StockRepository stockRepository;
-  private final HistoricalDatetimeService historicalDatetimeService;
+  private final DateService dateService;
   private final StockVariationCalculator stockVariationCalculator;
 
   @Inject
   public StockVariationTrendService(StockRepository stockRepository,
-                                    HistoricalDatetimeService historicalDatetimeService,
+                                    DateService dateService,
                                     StockVariationCalculator stockVariationCalculator) {
     this.stockRepository = stockRepository;
-    this.historicalDatetimeService = historicalDatetimeService;
+    this.dateService = dateService;
     this.stockVariationCalculator = stockVariationCalculator;
   }
 
@@ -32,9 +32,9 @@ public class StockVariationTrendService {
       StockValueHistory valueHistory = stock.getValueHistory();
 
       return new StockVariationSummary(
-          stockVariationCalculator.getStockVariationTrendSinceDate(valueHistory, historicalDatetimeService.getFiveDaysAgo().toLocalDate()),
-          stockVariationCalculator.getStockVariationTrendSinceDate(valueHistory, historicalDatetimeService.getThirtyDaysAgo().toLocalDate()),
-          stockVariationCalculator.getStockVariationTrendSinceDate(valueHistory, historicalDatetimeService.getOneYearAgo().toLocalDate())
+          stockVariationCalculator.getStockVariationTrendSinceDate(valueHistory, dateService.getFiveDaysAgo()),
+          stockVariationCalculator.getStockVariationTrendSinceDate(valueHistory, dateService.getThirtyDaysAgo()),
+          stockVariationCalculator.getStockVariationTrendSinceDate(valueHistory, dateService.getOneYearAgo())
       );
     } catch (StockNotFoundException e) {
       throw new StockDoesNotExistException(e);

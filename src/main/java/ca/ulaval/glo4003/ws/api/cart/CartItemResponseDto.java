@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public class CartItemResponseDto {
   public final String title;
   public final String market;
+  @Schema(description = "Name of the company")
   public final String name;
   public final String category;
   public final BigDecimal currentValue;
