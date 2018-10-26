@@ -12,8 +12,6 @@ import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
-import ca.ulaval.glo4003.ws.api.portfolio.PortfolioItemResponseDto;
-import ca.ulaval.glo4003.ws.api.portfolio.PortfolioResponseDto;
 import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;

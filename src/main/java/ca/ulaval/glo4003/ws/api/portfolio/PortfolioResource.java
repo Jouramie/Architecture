@@ -25,7 +25,7 @@ public interface PortfolioResource {
               responseCode = "200",
               content = @Content(
                   schema = @Schema(
-                      implementation = PortfolioResponseDto.class
+                      implementation = ApiPortfolioResponseDto.class
                   )
               )
           ),
@@ -35,5 +35,5 @@ public interface PortfolioResource {
           )
       }
   )
-  PortfolioResponseDto getPortfolio();
+  ApiPortfolioResponseDto getPortfolio();
 }

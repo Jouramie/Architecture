@@ -13,12 +13,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class PortfolioResourceTest {
   @Mock
   private PortfolioService portfolioService;
-
+  @Mock
+  private ApiPortfolioAssembler apiPortfolioAssembler;
   private PortfolioResource portfolioResource;
 
   @Before
   public void setupPortfolioResource() {
-    portfolioResource = new PortfolioResourceImpl(portfolioService);
+    portfolioResource = new PortfolioResourceImpl(portfolioService, apiPortfolioAssembler);
   }
 
   @Test
