@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "37c23b96-54b0-4814-bcfe-3a2d61b0876b",
+		"_postman_id": "dea91701-13a0-4226-a6c3-4404d019749a",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -552,6 +552,144 @@
 							"path": [
 								"api",
 								"portfolio"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Limit",
+					"item": [
+						{
+							"name": "GetLimit",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "00000000-0000-0000-0000-000000000000",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/users/john.smith%40email.com/limit",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"john.smith%40email.com",
+										"limit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SetLimit",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "00000000-0000-0000-0000-000000000000",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"type\": \"MONTHLY\",\n\t\"begin\": 1541030400,\n\t\"end\": 1572566400\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/api/users/john.smith%40email.com/limit",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"john.smith%40email.com",
+										"limit"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GetUsers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUser",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/users/john.smith%40email.com",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"john.smith%40email.com"
 							]
 						}
 					},
