@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.authentication.dto;
+package ca.ulaval.glo4003.ws.api.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

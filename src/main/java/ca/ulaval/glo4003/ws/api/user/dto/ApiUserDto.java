@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.authentication.dto;
+package ca.ulaval.glo4003.ws.api.user.dto;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
 import io.swagger.v3.oas.annotations.media.Schema;

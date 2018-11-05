@@ -1,13 +1,14 @@
-package ca.ulaval.glo4003.ws.api.authentication;
+package ca.ulaval.glo4003.ws.api.user;
 
 import static javax.ws.rs.core.Response.Status.CREATED;
 
 import ca.ulaval.glo4003.service.authentication.UserCreationService;
 import ca.ulaval.glo4003.service.authentication.UserDto;
-import ca.ulaval.glo4003.ws.api.authentication.assemblers.ApiUserAssembler;
-import ca.ulaval.glo4003.ws.api.authentication.dto.ApiUserDto;
-import ca.ulaval.glo4003.ws.api.authentication.dto.UserCreationDto;
+import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
+import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
+import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
@@ -28,6 +29,16 @@ public class UserResourceImpl implements UserResource {
     this.userCreationService = userCreationService;
     this.requestValidator = requestValidator;
     this.apiUserAssembler = apiUserAssembler;
+  }
+
+  @Override
+  public List<ApiUserDto> getUsers() {
+    return null;
+  }
+
+  @Override
+  public ApiUserDto getStockByTitle(String email) {
+    return null;
   }
 
   @Override
