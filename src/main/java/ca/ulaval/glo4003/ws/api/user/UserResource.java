@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.ws.api.user;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
+import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -26,6 +27,7 @@ import javax.ws.rs.core.Response;
 public interface UserResource {
 
   @GET
+  @AuthenticationRequiredBinding
   @Operation(
       summary = "Get all users.",
       description = "Return all users, with their information.",
@@ -44,6 +46,10 @@ public interface UserResource {
                       )
                   )
               )
+          ),
+          @ApiResponse(
+              responseCode = "401",
+              description = "User is not logged in or not administrator."
           )
       }
   )
@@ -51,6 +57,7 @@ public interface UserResource {
 
   @GET
   @Path("/{email}")
+  @AuthenticationRequiredBinding
   @Operation(
       summary = "Get a user for a given email.",
       description = "Return the details of the user with the corresponding email.",
@@ -64,12 +71,16 @@ public interface UserResource {
               )
           ),
           @ApiResponse(
+              responseCode = "401",
+              description = "User is not logged in or not administrator."
+          ),
+          @ApiResponse(
               responseCode = "404",
               description = "User does not exist."
           )
       }
   )
-  ApiUserDto getStockByTitle(@PathParam("email") String email);
+  ApiUserDto getUserByEmail(@PathParam("email") String email);
 
   @POST
   @Operation(

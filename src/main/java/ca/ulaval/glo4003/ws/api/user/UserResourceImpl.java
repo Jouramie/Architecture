@@ -37,7 +37,7 @@ public class UserResourceImpl implements UserResource {
   }
 
   @Override
-  public ApiUserDto getStockByTitle(String email) {
+  public ApiUserDto getUserByEmail(String email) {
     return null;
   }
 
