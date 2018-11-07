@@ -37,7 +37,8 @@ public interface UserResource {
               headers = {
                   @Header(
                       name = "X-Total-Count",
-                      description = "The number of users.")
+                      description = "The number of users."
+                  )
               },
               content = @Content(
                   array = @ArraySchema(

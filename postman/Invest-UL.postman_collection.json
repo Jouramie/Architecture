@@ -566,37 +566,6 @@
 					"name": "Limit",
 					"item": [
 						{
-							"name": "GetLimit",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "token",
-										"value": "00000000-0000-0000-0000-000000000000",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "localhost:8080/api/users/john.smith%40email.com/limit",
-									"host": [
-										"localhost"
-									],
-									"port": "8080",
-									"path": [
-										"api",
-										"users",
-										"john.smith%40email.com",
-										"limit"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "SetLimit",
 							"request": {
 								"method": "PUT",
@@ -615,7 +584,32 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"type\": \"MONTHLY\",\n\t\"begin\": 1541030400,\n\t\"end\": 1572566400\n}"
+									"raw": "{\n\t\"applicationPeriod\": \"MONTHLY\",\n\t\"beginDate\": 1541030400,\n\t\"endDate\": 1572566400,\n\t\"maximalStockQuantity\": 5\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/api/users/john.smith%40email.com/limit",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"john.smith%40email.com",
+										"limit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RemoveLimit",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
 								},
 								"url": {
 									"raw": "localhost:8080/api/users/john.smith%40email.com/limit",

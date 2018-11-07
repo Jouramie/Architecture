@@ -15,8 +15,15 @@ public class ApiUserDto {
   @Schema(description = "User role")
   public final UserRole role;
 
-  public ApiUserDto(String email, UserRole role) {
+  @Schema(
+      description = "Trade limit of the user",
+      nullable = true
+  )
+  public final ApiUserLimitDto limit;
+
+  public ApiUserDto(String email, UserRole role, ApiUserLimitDto limit) {
     this.email = email;
     this.role = role;
+    this.limit = limit;
   }
 }

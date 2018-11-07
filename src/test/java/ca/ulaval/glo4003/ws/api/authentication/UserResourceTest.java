@@ -38,7 +38,7 @@ public class UserResourceTest {
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
   private static final UserDto SOME_USER_RESPONSE = new UserDto("email", UserRole.INVESTOR);
-  private static final ApiUserDto SOME_API_USER_RESPONSE = new ApiUserDto("email", UserRole.INVESTOR);
+  private static final ApiUserDto SOME_API_USER_RESPONSE = new ApiUserDto("email", UserRole.INVESTOR, null);
 
   @Mock
   private UserCreationService userCreationService;
