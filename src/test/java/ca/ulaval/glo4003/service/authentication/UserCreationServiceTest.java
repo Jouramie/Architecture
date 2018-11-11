@@ -8,10 +8,10 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.util.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,8 +26,6 @@ public class UserCreationServiceTest {
   private static final String SOME_PASSWORD = "password";
   private static final UserRole USER_ROLE = UserRole.INVESTOR;
   private static final UserDto USER_DTO = new UserDto(SOME_EMAIL, USER_ROLE);
-  private static final UserDto SOME_CREATION_REQUEST
-      = new UserDto(SOME_EMAIL, USER_ROLE);
   private static final User USER = new UserBuilder().build();
 
   @Mock
@@ -48,12 +46,12 @@ public class UserCreationServiceTest {
   public void whenCreatingUser_thenUserIsCreated() {
     service.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
-    verify(userFactory).create(SOME_EMAIL, SOME_PASSWORD, USER_ROLE);
+    verify(userFactory).createInvestor(SOME_EMAIL, SOME_PASSWORD);
   }
 
   @Test
   public void whenCreatingUser_thenUserIsAdded() throws UserAlreadyExistsException {
-    given(userFactory.create(SOME_EMAIL, SOME_PASSWORD, USER_ROLE)).willReturn(USER);
+    given(userFactory.createInvestor(SOME_EMAIL, SOME_PASSWORD)).willReturn(USER);
 
     service.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
     verify(userRepository).add(USER);

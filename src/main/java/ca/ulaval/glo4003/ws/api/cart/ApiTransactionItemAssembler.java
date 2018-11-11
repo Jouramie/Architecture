@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
 import ca.ulaval.glo4003.service.Component;
-import ca.ulaval.glo4003.service.cart.TransactionItemDto;
+import ca.ulaval.glo4003.service.cart.dto.TransactionItemDto;
 
 @Component
 public class ApiTransactionItemAssembler {

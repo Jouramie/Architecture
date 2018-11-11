@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.ws.api.cart;
 import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.service.Component;
-import ca.ulaval.glo4003.service.cart.CartItemDto;
+import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
 import java.util.List;
 
 @Component

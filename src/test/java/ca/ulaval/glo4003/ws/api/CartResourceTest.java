@@ -6,10 +6,10 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.service.cart.CartItemDto;
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
-import ca.ulaval.glo4003.service.cart.TransactionDto;
+import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
+import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.util.CartStockRequestBuilder;
 import ca.ulaval.glo4003.ws.api.cart.ApiCartItemAssembler;
 import ca.ulaval.glo4003.ws.api.cart.ApiCartItemResponseDto;

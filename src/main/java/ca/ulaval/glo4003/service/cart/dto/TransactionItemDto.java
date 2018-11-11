@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.cart;
+package ca.ulaval.glo4003.service.cart.dto;
 
 import java.math.BigDecimal;
 

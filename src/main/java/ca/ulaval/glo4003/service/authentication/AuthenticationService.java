@@ -2,12 +2,12 @@ package ca.ulaval.glo4003.service.authentication;
 
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenFactory;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
+import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.authentication.ApiAuthenticationRequestDto;

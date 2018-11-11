@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.ws.api.cart;
 
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
-import ca.ulaval.glo4003.service.cart.TransactionDto;
+import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.List;
 import javax.annotation.Resource;

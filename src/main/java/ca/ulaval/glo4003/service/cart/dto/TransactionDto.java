@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.cart;
+package ca.ulaval.glo4003.service.cart.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;

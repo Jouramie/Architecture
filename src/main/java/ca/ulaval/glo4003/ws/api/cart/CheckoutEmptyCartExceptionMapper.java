@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
-import ca.ulaval.glo4003.service.cart.EmptyCartException;
+import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

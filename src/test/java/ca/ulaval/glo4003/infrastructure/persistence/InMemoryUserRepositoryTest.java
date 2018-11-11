@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
-import ca.ulaval.glo4003.domain.user.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
+import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.util.UserBuilder;
 import org.junit.Test;
 

@@ -27,8 +27,7 @@ public class TransactionFactory {
     return new Transaction(clock.getCurrentTime(), transactionItems, TransactionType.PURCHASE);
   }
 
-  private List<TransactionItem> buildTransactionItems(StockCollection items)
-      throws StockNotFoundException {
+  private List<TransactionItem> buildTransactionItems(StockCollection items) throws StockNotFoundException {
     List<TransactionItem> transactionItems = new ArrayList<>();
     for (String title : items.getTitles()) {
       int quantity = items.getQuantity(title);
