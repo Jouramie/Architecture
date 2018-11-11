@@ -10,8 +10,8 @@ import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
-import ca.ulaval.glo4003.ws.api.authentication.ApiAuthenticationRequestDto;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
+import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
+import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
 import java.util.UUID;
 import javax.inject.Inject;
 

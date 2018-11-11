@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.cart;
+package ca.ulaval.glo4003.ws.api.cart.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;

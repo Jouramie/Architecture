@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.cart;
+package ca.ulaval.glo4003.ws.api.cart.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,13 +10,13 @@ import javax.validation.constraints.NotNull;
     name = "Cart stock",
     description = "Cart stock request containing the quantity of a stock."
 )
-public class CartStockRequest {
+public class CartStockRequestDto {
   @NotNull
   @Min(value = 0)
   public final Integer quantity;
 
   @JsonCreator
-  public CartStockRequest(@JsonProperty("quantity") Integer quantity) {
+  public CartStockRequestDto(@JsonProperty("quantity") Integer quantity) {
     this.quantity = quantity;
   }
 }

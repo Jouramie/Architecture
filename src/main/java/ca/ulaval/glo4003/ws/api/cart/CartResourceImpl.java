@@ -3,6 +3,11 @@ package ca.ulaval.glo4003.ws.api.cart;
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
+import ca.ulaval.glo4003.ws.api.cart.assemblers.ApiCartItemAssembler;
+import ca.ulaval.glo4003.ws.api.cart.assemblers.ApiTransactionAssembler;
+import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
+import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionDto;
+import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.List;
 import javax.annotation.Resource;
@@ -32,18 +37,18 @@ public class CartResourceImpl implements CartResource {
 
   @Override
   public List<ApiCartItemResponseDto> addStockToCart(String title,
-                                                     CartStockRequest cartStockRequest) {
-    requestValidator.validate(cartStockRequest);
-    cartService.addStockToCart(title, cartStockRequest.quantity);
+                                                     CartStockRequestDto cartStockRequestDto) {
+    requestValidator.validate(cartStockRequestDto);
+    cartService.addStockToCart(title, cartStockRequestDto.quantity);
 
     return apiCartItemAssembler.toDtoList(cartService.getCartContent());
   }
 
   @Override
   public List<ApiCartItemResponseDto> updateStockInCart(String title,
-                                                        CartStockRequest cartStockRequest) {
-    requestValidator.validate(cartStockRequest);
-    cartService.updateStockInCart(title, cartStockRequest.quantity);
+                                                        CartStockRequestDto cartStockRequestDto) {
+    requestValidator.validate(cartStockRequestDto);
+    cartService.updateStockInCart(title, cartStockRequestDto.quantity);
     return apiCartItemAssembler.toDtoList(cartService.getCartContent());
   }
 

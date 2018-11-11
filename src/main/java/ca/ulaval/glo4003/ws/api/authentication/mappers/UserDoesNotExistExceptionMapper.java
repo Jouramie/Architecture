@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.user;
+package ca.ulaval.glo4003.ws.api.authentication.mappers;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 

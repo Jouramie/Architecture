@@ -4,6 +4,9 @@ import static javax.ws.rs.core.Response.Status.CREATED;
 
 import ca.ulaval.glo4003.service.authentication.UserCreationService;
 import ca.ulaval.glo4003.service.authentication.UserDto;
+import ca.ulaval.glo4003.ws.api.authentication.assemblers.ApiUserAssembler;
+import ca.ulaval.glo4003.ws.api.authentication.dto.ApiUserDto;
+import ca.ulaval.glo4003.ws.api.authentication.dto.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import javax.annotation.Resource;
 import javax.inject.Inject;

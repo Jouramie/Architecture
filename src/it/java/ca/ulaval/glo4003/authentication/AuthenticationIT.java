@@ -9,8 +9,8 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.any;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.ws.api.authentication.ApiAuthenticationRequestDto;
-import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
+import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
+import ca.ulaval.glo4003.ws.api.authentication.dto.UserCreationDto;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import java.util.List;

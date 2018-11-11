@@ -11,12 +11,12 @@ import ca.ulaval.glo4003.service.cart.CheckoutService;
 import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.util.CartStockRequestBuilder;
-import ca.ulaval.glo4003.ws.api.cart.ApiCartItemAssembler;
-import ca.ulaval.glo4003.ws.api.cart.ApiCartItemResponseDto;
-import ca.ulaval.glo4003.ws.api.cart.ApiTransactionAssembler;
-import ca.ulaval.glo4003.ws.api.cart.ApiTransactionDto;
 import ca.ulaval.glo4003.ws.api.cart.CartResourceImpl;
-import ca.ulaval.glo4003.ws.api.cart.CartStockRequest;
+import ca.ulaval.glo4003.ws.api.cart.assemblers.ApiCartItemAssembler;
+import ca.ulaval.glo4003.ws.api.cart.assemblers.ApiTransactionAssembler;
+import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
+import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionDto;
+import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +29,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class CartResourceTest {
   private static final String SOME_TITLE = "title";
-  private static final CartStockRequest SOME_CART_STOCK_REQUEST = new CartStockRequestBuilder().build();
+  private static final CartStockRequestDto SOME_CART_STOCK_REQUEST = new CartStockRequestBuilder().build();
 
 
   @Mock
@@ -83,7 +83,7 @@ public class CartResourceTest {
 
   @Test
   public void givenNegativeQuantityStockRequest_whenAddStockToCart_thenInvalidInputExceptionShouldBeThrown() {
-    CartStockRequest negativeQuantityStockRequest = new CartStockRequest(-1);
+    CartStockRequestDto negativeQuantityStockRequest = new CartStockRequestDto(-1);
 
     Throwable thrown = catchThrowable(() -> cartResource.addStockToCart(SOME_TITLE, negativeQuantityStockRequest));
 
@@ -108,7 +108,7 @@ public class CartResourceTest {
 
   @Test
   public void givenNegativeQuantityStockRequest_whenUpdateStockToCart_thenInvalidInputExceptionShouldBeThrown() {
-    CartStockRequest negativeQuantityStockRequest = new CartStockRequest(-1);
+    CartStockRequestDto negativeQuantityStockRequest = new CartStockRequestDto(-1);
 
     Throwable thrown = catchThrowable(() -> cartResource.updateStockInCart(SOME_TITLE, negativeQuantityStockRequest));
 

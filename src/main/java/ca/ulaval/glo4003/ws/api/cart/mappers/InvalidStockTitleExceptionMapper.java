@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.cart;
+package ca.ulaval.glo4003.ws.api.cart.mappers;
 
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;

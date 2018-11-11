@@ -1,5 +1,8 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
+import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
+import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionDto;
+import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
 import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -76,7 +79,7 @@ public interface CartResource {
   )
   List<ApiCartItemResponseDto> addStockToCart(
       @PathParam("title") String title,
-      CartStockRequest cartStockRequest);
+      CartStockRequestDto cartStockRequestDto);
 
   @PATCH
   @Path("/{title}")
@@ -108,7 +111,7 @@ public interface CartResource {
   )
   List<ApiCartItemResponseDto> updateStockInCart(
       @PathParam("title") String title,
-      CartStockRequest cartStockRequest);
+      CartStockRequestDto cartStockRequestDto);
 
   @DELETE
   @Path("/{title}")

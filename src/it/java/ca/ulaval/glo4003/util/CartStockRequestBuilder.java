@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.util;
 
-import ca.ulaval.glo4003.ws.api.cart.CartStockRequest;
+import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
 
 public class CartStockRequestBuilder {
   public static final int DEFAULT_QUANTITY = 1;
@@ -12,7 +12,7 @@ public class CartStockRequestBuilder {
     return this;
   }
 
-  public CartStockRequest build() {
-    return new CartStockRequest(quantity);
+  public CartStockRequestDto build() {
+    return new CartStockRequestDto(quantity);
   }
 }

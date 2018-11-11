@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.authentication;
+package ca.ulaval.glo4003.ws.api.authentication.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,9 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Schema(
-    name = "User creation request"
+    name = "Authentication request"
 )
-public class UserCreationDto {
+public class ApiAuthenticationRequestDto {
 
   @NotNull
   @NotBlank
@@ -21,11 +21,9 @@ public class UserCreationDto {
   public final String password;
 
   @JsonCreator
-  public UserCreationDto(
-      @JsonProperty("email")
-          String email,
-      @JsonProperty("password")
-          String password) {
+  public ApiAuthenticationRequestDto(
+      @JsonProperty("email") String email,
+      @JsonProperty("password") String password) {
     this.email = email;
     this.password = password;
   }
