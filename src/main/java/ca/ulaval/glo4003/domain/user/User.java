@@ -6,6 +6,7 @@ import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
@@ -49,11 +50,12 @@ public class User {
   public Transaction checkoutCart(TransactionFactory transactionFactory,
                                   PaymentProcessor paymentProcessor,
                                   NotificationFactory notificationFactory,
-                                  NotificationSender notificationSender) throws StockNotFoundException, EmptyCartException {
+                                  NotificationSender notificationSender,
+                                  StockRepository stockRepository) throws StockNotFoundException, EmptyCartException {
     checkIfCartIsEmpty(cart);
 
     Transaction transaction = transactionFactory.createPurchase(cart);
-    processTransaction(transaction, paymentProcessor);
+    processTransaction(transaction, paymentProcessor, stockRepository);
     sendTransactionNotification(notificationFactory, notificationSender, transaction);
 
     cart.empty();
@@ -67,9 +69,11 @@ public class User {
     }
   }
 
-  private void processTransaction(Transaction transaction, PaymentProcessor paymentProcessor) {
+  private void processTransaction(Transaction transaction, PaymentProcessor paymentProcessor, StockRepository stockRepository) {
     paymentProcessor.payment(transaction);
-    // TODO: Add transaction to portfolio
+    transaction.items.forEach((item) -> {
+      portfolio.add(item.title, item.quantity, stockRepository);
+    });
   }
 
   private void sendTransactionNotification(NotificationFactory notificationFactory, NotificationSender notificationSender, Transaction transaction) {

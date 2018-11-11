@@ -7,6 +7,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.domain.money.Currency;
+import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
@@ -15,8 +17,12 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
+import ca.ulaval.glo4003.domain.transaction.TransactionItem;
+import ca.ulaval.glo4003.domain.transaction.TransactionType;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.util.UserBuilder;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +37,8 @@ public class UserTest {
   private static final String WRONG_PASSWORD = SOME_PASSWORD + "wrong";
   private static final String SOME_TITLE = "MSFT";
   private static final int SOME_QTY = 2;
+  private static final String SOME_OTHER_TITLE = "APPL";
+  private static final int SOME_OTHER_QTY = 3;
 
   @Mock
   private StockRepository stockRepository;
@@ -42,16 +50,24 @@ public class UserTest {
   private NotificationFactory notificationFactory;
   @Mock
   private NotificationSender notificationSender;
-  @Mock
+
   private Transaction transaction;
-  @Mock
   private Notification notification;
 
   private User user;
 
   @Before
   public void setup() throws StockNotFoundException {
+    transaction = new Transaction(
+        LocalDateTime.now(),
+        Arrays.asList(
+            new TransactionItem(SOME_TITLE, SOME_QTY, MoneyAmount.zero(Currency.USD)),
+            new TransactionItem(SOME_OTHER_TITLE, SOME_OTHER_QTY, MoneyAmount.zero(Currency.USD))),
+        TransactionType.PURCHASE);
+    notification = new Notification("title", "message");
+
     given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(stockRepository.doesStockExist(SOME_OTHER_TITLE)).willReturn(true);
     user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
     user.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
 
@@ -71,9 +87,16 @@ public class UserTest {
 
   @Test
   public void whenCreatingUser_thenCartIsEmpty() {
-    User user = new User(SOME_EMAIL, SOME_PASSWORD, UserRole.ADMINISTRATOR);
+    User newUser = new User(SOME_EMAIL, SOME_PASSWORD, UserRole.ADMINISTRATOR);
 
-    assertThat(user.getCart().isEmpty()).isTrue();
+    assertThat(newUser.getCart().isEmpty()).isTrue();
+  }
+
+  @Test
+  public void whenCheckoutCart_thenReturnCalculatedTransaction() throws StockNotFoundException, EmptyCartException {
+    Transaction result = user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
+
+    assertThat(result).isEqualTo(transaction);
   }
 
   @Test
@@ -83,30 +106,30 @@ public class UserTest {
 
   @Test
   public void whenCheckoutCart_thenPaymentIsProcessedWithTheCurrentTransaction() throws StockNotFoundException, EmptyCartException {
-    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender);
+    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     verify(paymentProcessor).payment(transaction);
   }
 
   @Test
   public void whenCheckoutCart_thenANotificationIsSent() throws StockNotFoundException, EmptyCartException {
-    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender);
+    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     verify(notificationSender).sendNotification(notification, user);
   }
 
-  /*@Test
-  public void whenCheckoutCart_thenPreviousCartContentIsReturned() throws StockNotFoundException, EmptyCartException {
-    /*Transaction transaction = user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender);
+  @Test
+  public void whenCheckoutCart_thenContentIsAddedToPortfolio() throws StockNotFoundException, EmptyCartException {
+    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
-    transaction.
-
-        assertThat(transactionDto).isEqualTo(expectedDto);
-  }*/
+    assertThat(user.getPortfolio().getStocks().getTitles()).containsExactlyInAnyOrder(SOME_TITLE, SOME_OTHER_TITLE);
+    assertThat(user.getPortfolio().getStocks().getQuantity(SOME_TITLE)).isEqualTo(SOME_QTY);
+    assertThat(user.getPortfolio().getStocks().getQuantity(SOME_OTHER_TITLE)).isEqualTo(SOME_OTHER_QTY);
+  }
 
   @Test
   public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException {
-    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender);
+    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(user.getCart().isEmpty());
   }
@@ -116,7 +139,7 @@ public class UserTest {
     user.getCart().empty();
 
     assertThatThrownBy(() ->
-        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender))
+        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository))
         .isInstanceOf(EmptyCartException.class);
 
     verify(paymentProcessor, never()).payment(any());

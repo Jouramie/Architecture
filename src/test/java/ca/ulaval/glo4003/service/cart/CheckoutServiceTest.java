@@ -8,6 +8,7 @@ import static org.mockito.Matchers.any;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
@@ -41,6 +42,8 @@ public class CheckoutServiceTest {
   @Mock
   private TransactionAssembler transactionAssembler;
   @Mock
+  private StockRepository stockRepository;
+  @Mock
   private User currentUser;
   @Mock
   private Transaction transaction;
@@ -60,12 +63,13 @@ public class CheckoutServiceTest {
         paymentProcessor,
         notificationFactory,
         notificationSender,
-        transactionAssembler);
+        transactionAssembler,
+        stockRepository);
   }
 
   @Test
   public void whenCheckoutCart_thenTransactionIsAssembledToDto() throws StockNotFoundException, EmptyCartException {
-    given(currentUser.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender)).willReturn(transaction);
+    given(currentUser.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository)).willReturn(transaction);
 
     TransactionDto transactionDto = checkoutService.checkoutCart();
 
@@ -74,14 +78,14 @@ public class CheckoutServiceTest {
 
   @Test
   public void whenCheckoutCartThrowingStockNotFound_thenExceptionIsTransformed() throws StockNotFoundException, EmptyCartException {
-    given(currentUser.checkoutCart(any(), any(), any(), any())).willThrow(new StockNotFoundException(SOME_TITLE));
+    given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new StockNotFoundException(SOME_TITLE));
 
     assertThatThrownBy(() -> checkoutService.checkoutCart()).isInstanceOf(InvalidStockTitleException.class);
   }
 
   @Test
   public void whenCheckoutCartThrowingEmptyCart_thenExceptionIsTransformed() throws StockNotFoundException, EmptyCartException {
-    given(currentUser.checkoutCart(any(), any(), any(), any())).willThrow(new EmptyCartException());
+    given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new EmptyCartException());
 
     assertThatThrownBy(() -> checkoutService.checkoutCart()).isInstanceOf(EmptyCartOnCheckoutException.class);
   }
