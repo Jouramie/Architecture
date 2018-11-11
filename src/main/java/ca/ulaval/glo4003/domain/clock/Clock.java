@@ -16,6 +16,10 @@ public class Clock extends ClockObservable {
     return currentTime;
   }
 
+  public void setCurrentTime(LocalDateTime newCurrentTime) {
+    this.currentTime = newCurrentTime;
+  }
+
   public void tick() {
     currentTime = currentTime.plus(tickStep);
     notifyObservers(currentTime);

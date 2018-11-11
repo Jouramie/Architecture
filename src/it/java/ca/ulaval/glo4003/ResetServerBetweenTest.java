@@ -1,15 +1,24 @@
 package ca.ulaval.glo4003;
 
+import ca.ulaval.glo4003.context.AbstractContext;
+import ca.ulaval.glo4003.context.ProductionContext;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 public class ResetServerBetweenTest implements TestRule {
-
   private static final Integer TEN_MILLIS = 10;
-
+  private final AbstractContext context;
   private Thread thread;
+
+  public ResetServerBetweenTest() {
+    context = new ProductionContext();
+  }
+
+  public ResetServerBetweenTest(AbstractContext context) {
+    this.context = context;
+  }
 
   @Override
   public Statement apply(Statement statement, Description description) {
@@ -35,7 +44,7 @@ public class ResetServerBetweenTest implements TestRule {
   private void executeMain() {
     try {
       ServiceLocator.INSTANCE.reset();
-      InvestULMain.main(new String[] {});
+      InvestULMain.startServer(context);
     } catch (Exception e) {
       e.printStackTrace();
     }

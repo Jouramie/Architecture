@@ -11,6 +11,7 @@ import org.junit.Test;
 
 public class ClockTest {
   private final LocalDateTime SOME_START_TIME = LocalDateTime.of(2018, 9, 22, 8, 0, 0);
+  private final LocalDateTime SOME_NEW_TIME = LocalDateTime.of(2018, 11, 8, 12, 0, 0);
   private final Duration SOME_TICK_STEP = Duration.ofMinutes(30);
 
   private Clock clock;
@@ -25,6 +26,13 @@ public class ClockTest {
     LocalDateTime currentTime = clock.getCurrentTime();
 
     assertThat(currentTime).isEqualTo(SOME_START_TIME);
+  }
+
+  @Test
+  public void whenSetCurrentTime_thenClockCurrentTimeIsSet() {
+    clock.setCurrentTime(SOME_NEW_TIME);
+
+    assertThat(clock.getCurrentTime()).isEqualTo(SOME_NEW_TIME);
   }
 
   @Test

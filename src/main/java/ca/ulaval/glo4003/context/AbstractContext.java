@@ -64,12 +64,12 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public abstract class AbstractContext {
 
-  protected final String webServicePackagePrefix;
+  private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
   protected final ServiceLocator serviceLocator;
+  protected final String DEFAULT_ADMIN_EMAIL = "Archi.test.42@gmail.com";
 
-  public AbstractContext(String webServicePackagePrefix, ServiceLocator serviceLocator) {
-    this.webServicePackagePrefix = webServicePackagePrefix;
-    this.serviceLocator = serviceLocator;
+  public AbstractContext() {
+    serviceLocator = ServiceLocator.INSTANCE;
   }
 
   private static void setupJacksonJavaTimeModule(ResourceConfig resourceConfig) {
@@ -89,7 +89,7 @@ public abstract class AbstractContext {
   }
 
   protected void initializeServiceLocator() {
-    serviceLocator.discoverPackage(webServicePackagePrefix, Resource.class, ErrorMapper.class,
+    serviceLocator.discoverPackage(WEB_SERVICE_PACKAGE_PREFIX, Resource.class, ErrorMapper.class,
         Component.class, FilterRegistration.class);
     serviceLocator.registerInstance(OpenApiResource.class, new OpenApiResource());
     serviceLocator.registerInstance(StockSimulator.class, new StockSimulator());
@@ -106,7 +106,7 @@ public abstract class AbstractContext {
 
   protected Set<Object> createRegisteredComponentInstances() {
     List<Class<?>> registeredClasses = Stream.of(Resource.class, ErrorMapper.class, Component.class)
-        .map(annotation -> serviceLocator.getClassesForAnnotation(webServicePackagePrefix, annotation))
+        .map(annotation -> serviceLocator.getClassesForAnnotation(WEB_SERVICE_PACKAGE_PREFIX, annotation))
         .flatMap(Collection::stream).collect(toList());
     registeredClasses.add(OpenApiResource.class);
 
@@ -125,7 +125,7 @@ public abstract class AbstractContext {
   }
 
   private void createAdministrator() {
-    String testEmail = "Archi.test.42@gmail.com";
+    String testEmail = DEFAULT_ADMIN_EMAIL;
     try {
       serviceLocator.get(UserRepository.class)
           .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
@@ -190,7 +190,7 @@ public abstract class AbstractContext {
     setupJacksonJavaTimeModule(resourceConfig);
     resourceConfig.register(CORSResponseFilter.class);
     serviceLocator.getClassesForAnnotation(
-        webServicePackagePrefix,
+        WEB_SERVICE_PACKAGE_PREFIX,
         FilterRegistration.class)
         .forEach(resourceConfig::register);
 
