@@ -5,10 +5,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
 
 @Schema(
-    name = "User transaction limit",
-    description = "Representation of a transaction limit. Might apply on the amount the user can"
-        + " spend or the number of stock the user can purchase. In either case, the other field "
-        + " will not have a value."
+    name = "User limit",
+    description = "Representation of a transaction limit. Might apply on the money amount the user "
+        + "can spend or the number of stock the user can purchase. In either case, the other field "
+        + "will not have a value."
 )
 public class ApiUserLimitDto {
   public final ApplicationPeriod applicationPeriod;
@@ -22,13 +22,12 @@ public class ApiUserLimitDto {
   public final Date endDate;
 
   @Schema(
-      description = "The maximal money the user can spend over the limit application period.",
+      description = "The maximal money amount the user can spend in a single transaction.",
       nullable = true
   )
   public final Double maximalMoneySpent;
   @Schema(
-      description = "The maximal quantity of stock the user can buy over the limit application "
-          + "period.",
+      description = "The maximal quantity of stock the user can buy in a single transaction.",
       nullable = true
   )
   public final Integer maximalStockQuantity;
