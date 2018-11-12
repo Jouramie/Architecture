@@ -16,7 +16,6 @@ public class StockVariationCalculator {
       HistoricalStockValue latestValue = valueHistory.getLatestValue();
       StockValue valueOnDay = valueHistory.getValueOnDay(date);
 
-      // TODO Mettre ça dans StockHistory, pi enlever la classe
       if (valueOnDay.getCurrentValue().isGreaterThan(latestValue.value.getCurrentValue())) {
         return StockTrend.DECREASING;
       } else if (valueOnDay.getCurrentValue().isLessThan(latestValue.value.getCurrentValue())) {

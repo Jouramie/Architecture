@@ -25,7 +25,7 @@ public class StockHistoryTest {
   private StockHistory history;
 
   @Before
-  public void setupStockValueHistory() {
+  public void setup() {
     history = new StockHistory();
   }
 

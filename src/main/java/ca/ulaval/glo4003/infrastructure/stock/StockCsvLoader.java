@@ -41,14 +41,14 @@ public class StockCsvLoader {
       String category = record.get("category");
       MarketId marketId = new MarketId(record.get("market"));
 
-      Stock stock = new Stock(title, name, category, marketId, getValueHistory(title, marketId));
+      Stock stock = new Stock(title, name, category, marketId, getStockHistory(title, marketId));
       stockRepository.add(stock);
     }
 
     file.close();
   }
 
-  private StockHistory getValueHistory(String title, MarketId marketId) throws IOException, MarketNotFoundException {
+  private StockHistory getStockHistory(String title, MarketId marketId) throws IOException, MarketNotFoundException {
     StockHistory history = new StockHistory();
     Currency currency = marketRepository.findById(marketId).getCurrency();
 
