@@ -13,12 +13,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/users/{email}/limit")
 @AuthenticationRequiredBinding
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface UserLimitResource {
+
   @PUT
   @Operation(
       summary = "Set a limit to a user.",
@@ -41,7 +43,7 @@ public interface UserLimitResource {
           )
       }
   )
-  public void setUserLimit(
+  public ApiUserLimitDto setUserLimit(
       @PathParam("email") String email,
       @Valid UserLimitCreationDto userLimitCreationDto);
 
@@ -62,5 +64,5 @@ public interface UserLimitResource {
           )
       }
   )
-  public void removeUserLimit(@PathParam("email") String email);
+  public Response removeUserLimit(@PathParam("email") String email);
 }
