@@ -1,13 +1,16 @@
 package ca.ulaval.glo4003.service.stock.trend;
 
-import static ca.ulaval.glo4003.domain.stock.StockTrend.*;
+import static ca.ulaval.glo4003.domain.stock.StockTrend.DECREASING;
+import static ca.ulaval.glo4003.domain.stock.StockTrend.INCREASING;
+import static ca.ulaval.glo4003.domain.stock.StockTrend.NO_DATA;
+import static ca.ulaval.glo4003.domain.stock.StockTrend.STABLE;
 import static org.junit.Assert.assertEquals;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import ca.ulaval.glo4003.domain.stock.StockHistory;
 import ca.ulaval.glo4003.domain.stock.StockTrend;
 import ca.ulaval.glo4003.domain.stock.StockValue;
-import ca.ulaval.glo4003.domain.stock.StockValueHistory;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
@@ -24,7 +27,7 @@ public class StockVariationCalculatorTest {
 
   @Test
   public void givenAPastValueGreaterThanPresentValue_whenGettingTrend_thenReturnDecreasing() {
-    StockValueHistory decreasingStock = new StockValueHistory();
+    StockHistory decreasingStock = new StockHistory();
     decreasingStock.addValue(PAST_DATE, HIGH_VALUE);
     decreasingStock.addValue(CURRENT_DATE, LOW_VALUE);
 
@@ -35,7 +38,7 @@ public class StockVariationCalculatorTest {
 
   @Test
   public void givenAPastValueLessThanPresentValue_whenGettingTrend_thenReturnIncreasing() {
-    StockValueHistory increasingStock = new StockValueHistory();
+    StockHistory increasingStock = new StockHistory();
     increasingStock.addValue(PAST_DATE, LOW_VALUE);
     increasingStock.addValue(CURRENT_DATE, HIGH_VALUE);
 
@@ -46,7 +49,7 @@ public class StockVariationCalculatorTest {
 
   @Test
   public void givenAPastValueEqualToThePresentValue_whenGettingTrend_thenReturnStable() {
-    StockValueHistory stableStock = new StockValueHistory();
+    StockHistory stableStock = new StockHistory();
     stableStock.addValue(PAST_DATE, HIGH_VALUE);
     stableStock.addValue(CURRENT_DATE, HIGH_VALUE);
 
@@ -57,7 +60,7 @@ public class StockVariationCalculatorTest {
 
   @Test
   public void givenAMissingPastValue_whenGettingTrend_thenReturnNoData() {
-    StockValueHistory stockWithADarkPast = new StockValueHistory();
+    StockHistory stockWithADarkPast = new StockHistory();
     stockWithADarkPast.addValue(CURRENT_DATE, LOW_VALUE);
 
     StockTrend trend = calculator.getStockVariationTrendSinceDate(stockWithADarkPast, PAST_DATE);

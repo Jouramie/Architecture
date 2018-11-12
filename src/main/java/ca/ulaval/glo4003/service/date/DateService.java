@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.service.date;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
-import ca.ulaval.glo4003.service.Component;
 import java.time.LocalDate;
 import javax.inject.Inject;
 

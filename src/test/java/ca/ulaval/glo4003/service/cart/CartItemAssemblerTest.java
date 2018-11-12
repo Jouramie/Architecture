@@ -49,8 +49,8 @@ public class CartItemAssemblerTest {
   public void setupCartItemAssembler() throws StockNotFoundException {
     assembler = new CartItemAssembler(stockRepository);
 
-    given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
-    given(stockRepository.doesStockExist(SOME_OTHER_TITLE)).willReturn(true);
+    given(stockRepository.exists(SOME_TITLE)).willReturn(true);
+    given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
     given(stockRepository.findByTitle(SOME_TITLE)).willReturn(SOME_STOCK);
     given(stockRepository.findByTitle(SOME_OTHER_TITLE)).willReturn(SOME_OTHER_STOCK);
   }

@@ -2,10 +2,10 @@ package ca.ulaval.glo4003.domain.notification;
 
 import static java.util.stream.Collectors.toList;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionItem;
-import ca.ulaval.glo4003.service.Component;
 import java.util.List;
 
 @Component

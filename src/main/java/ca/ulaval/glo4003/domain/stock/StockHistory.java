@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
-public class StockValueHistory {
+public class StockHistory {
   private final TreeMap<LocalDate, StockValue> values = new TreeMap<>();
 
   public void addValue(LocalDate date, StockValue value) {

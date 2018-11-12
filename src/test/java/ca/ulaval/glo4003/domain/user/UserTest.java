@@ -29,7 +29,7 @@ public class UserTest {
   public void initialize() {
     user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
 
-    given(stockRepository.doesStockExist(SOME_STOCK_TITLE)).willReturn(true);
+    given(stockRepository.exists(SOME_STOCK_TITLE)).willReturn(true);
   }
 
   @Test

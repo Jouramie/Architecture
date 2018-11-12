@@ -10,10 +10,10 @@ public class Stock {
   private final String name;
   private final String category;
   private final MarketId marketId;
-  private final StockValueHistory valueHistory;
+  private final StockHistory valueHistory;
 
   public Stock(String title, String name, String category, MarketId marketId,
-               StockValueHistory valueHistory) {
+               StockHistory valueHistory) {
     this.title = title;
     this.name = name;
     this.category = category;
@@ -37,7 +37,7 @@ public class Stock {
     return marketId;
   }
 
-  public StockValueHistory getValueHistory() {
+  public StockHistory getValueHistory() {
     return valueHistory;
   }
 

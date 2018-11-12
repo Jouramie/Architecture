@@ -1,12 +1,12 @@
 package ca.ulaval.glo4003.domain.transaction;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.service.Component;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;

@@ -6,9 +6,9 @@ import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockHistory;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
-import ca.ulaval.glo4003.domain.stock.StockValueHistory;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,15 +41,15 @@ public class StockCsvLoader {
       String category = record.get("category");
       MarketId marketId = new MarketId(record.get("market"));
 
-      Stock stock = new Stock(title, name, category, marketId, getValueHistory(title, marketId));
+      Stock stock = new Stock(title, name, category, marketId, getStockHistory(title, marketId));
       stockRepository.add(stock);
     }
 
     file.close();
   }
 
-  private StockValueHistory getValueHistory(String title, MarketId marketId) throws IOException, MarketNotFoundException {
-    StockValueHistory history = new StockValueHistory();
+  private StockHistory getStockHistory(String title, MarketId marketId) throws IOException, MarketNotFoundException {
+    StockHistory history = new StockHistory();
     Currency currency = marketRepository.findById(marketId).getCurrency();
 
     ZipFile zipFile = new ZipFile(STOCKS_DATA_ZIP_PATH);

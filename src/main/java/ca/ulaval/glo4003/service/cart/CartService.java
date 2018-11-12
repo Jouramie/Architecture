@@ -1,11 +1,11 @@
 package ca.ulaval.glo4003.service.cart;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import java.util.List;
 import javax.inject.Inject;
@@ -76,7 +76,7 @@ public class CartService {
   }
 
   private void checkIfStockExists(String title) {
-    if (!stockRepository.doesStockExist(title)) {
+    if (!stockRepository.exists(title)) {
       throw new InvalidStockTitleException(title);
     }
   }

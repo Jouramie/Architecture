@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.stock.max;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
-import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.stock.max.dto.StockMaxValueSummary;
 
 @Component

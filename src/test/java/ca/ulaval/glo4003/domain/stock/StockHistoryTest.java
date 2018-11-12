@@ -10,7 +10,7 @@ import java.time.Month;
 import org.junit.Before;
 import org.junit.Test;
 
-public class StockValueHistoryTest {
+public class StockHistoryTest {
   private final Currency SOME_CURRENCY = Currency.USD;
   private final double SOME_AMOUNT = 12.34;
   private final double SOME_OTHER_AMOUNT = 45.67;
@@ -22,11 +22,11 @@ public class StockValueHistoryTest {
   private final LocalDate END_DATE = LocalDate.of(2018, 10, 12);
   private final LocalDate MIDDLE_DATE = LocalDate.of(2018, 10, 1);
 
-  private StockValueHistory history;
+  private StockHistory history;
 
   @Before
-  public void setupStockValueHistory() {
-    history = new StockValueHistory();
+  public void setup() {
+    history = new StockHistory();
   }
 
   @Test

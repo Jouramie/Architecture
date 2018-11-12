@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
-import ca.ulaval.glo4003.service.Component;
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.service.cart.TransactionItemDto;
 
 @Component

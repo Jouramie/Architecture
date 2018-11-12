@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.domain.user;
 
-import ca.ulaval.glo4003.service.Component;
+import ca.ulaval.glo4003.domain.Component;
 
 @Component
 public class UserFactory {
