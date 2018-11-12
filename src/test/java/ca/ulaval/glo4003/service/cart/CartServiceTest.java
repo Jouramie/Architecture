@@ -50,7 +50,7 @@ public class CartServiceTest {
   public void setup() {
     given(currentUserSession.getCurrentUser()).willReturn(currentUser);
     given(currentUser.getCart()).willReturn(cart);
-    given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(stockRepository.exists(SOME_TITLE)).willReturn(true);
 
     cartService = new CartService(stockRepository, currentUserSession, userRepository, cartItemAssembler);
   }
@@ -127,7 +127,7 @@ public class CartServiceTest {
     String notInCartTitle = "stock not in cart";
     doThrow(new IllegalArgumentException())
         .when(cart).update(notInCartTitle, SOME_QUANTITY);
-    given(stockRepository.doesStockExist(notInCartTitle)).willReturn(true);
+    given(stockRepository.exists(notInCartTitle)).willReturn(true);
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.updateStockInCart(notInCartTitle, SOME_QUANTITY);

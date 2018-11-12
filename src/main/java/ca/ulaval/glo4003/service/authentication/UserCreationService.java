@@ -1,11 +1,11 @@
 package ca.ulaval.glo4003.service.authentication;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
-import ca.ulaval.glo4003.service.Component;
 import javax.inject.Inject;
 
 @Component

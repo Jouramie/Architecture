@@ -12,7 +12,7 @@ public interface StockRepository {
 
   void add(Stock stock);
 
-  boolean doesStockExist(String title);
+  boolean exists(String title);
 
   List<String> findAllCategories();
 

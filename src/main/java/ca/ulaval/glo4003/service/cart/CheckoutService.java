@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.service.cart;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
@@ -12,7 +13,6 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.service.Component;
 import javax.inject.Inject;
 
 @Component
