@@ -5,9 +5,11 @@ import static org.mockito.BDDMockito.verify;
 
 import ca.ulaval.glo4003.domain.market.MarketState;
 import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
+import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +21,8 @@ public class OpenMarketStateTest {
   private final Market market = new TestingMarketBuilder().build();
   @Mock
   private StockValueRetriever stockValueRetriever;
+  @Mock
+  private Stock stockMock;
   private OpenMarketState state;
 
   @Before
@@ -37,12 +41,23 @@ public class OpenMarketStateTest {
   }
 
   @Test
-  public void whenTimeClosesTheMarket_thenUpdateAndCloseAllStockAndChangeStateToClose() {
+  public void whenTimeClosesTheMarket_thenUpdateAllStockAndChangeStateToClose() {
     LocalDateTime someClosedTime = LocalDateTime.of(LocalDate.now(), market.closingTime.plusMinutes(1));
+    Market market = new TestingMarketBuilder().withStocks(Collections.singletonList(stockMock)).build();
 
     MarketState newState = state.update(market, someClosedTime, stockValueRetriever);
 
     verify(stockValueRetriever).updateStockValue(market.stocks.get(0));
     assertThat(newState).isInstanceOf(ClosedMarketState.class);
+  }
+
+  @Test
+  public void whenTimeClosesTheMarket_thenClosingPricesAreSaved() {
+    LocalDateTime someClosedTime = LocalDateTime.of(LocalDate.now(), market.closingTime.plusMinutes(1));
+    Market market = new TestingMarketBuilder().withStocks(Collections.singletonList(stockMock)).build();
+
+    state.update(market, someClosedTime, stockValueRetriever);
+
+    verify(stockMock).saveClosingPrice();
   }
 }

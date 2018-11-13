@@ -11,6 +11,7 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,8 @@ public class ClosedMarketStateTest {
   private final Market market = new TestingMarketBuilder().build();
   @Mock
   private StockValueRetriever stockValueRetriever;
+  @Mock
+  private Stock stockMock;
   private ClosedMarketState state;
 
   @Before
@@ -40,11 +43,14 @@ public class ClosedMarketStateTest {
   }
 
   @Test
-  public void whenTimeClosesTheMarket_thenMarketOpens() {
+  public void whenTimeClosesTheMarket_thenMarketOpensAndOpeningPriceIsSaved() {
     LocalDateTime someOpenedTime = LocalDateTime.of(LocalDate.now(), market.openingTime.plusMinutes(1));
+    Market market = new TestingMarketBuilder().withStocks(Collections.singletonList(stockMock)).build();
 
     MarketState newState = state.update(market, someOpenedTime, stockValueRetriever);
 
+    verify(stockMock).saveOpeningPrice()
+    ;
     assertThat(newState).isInstanceOf(OpenMarketState.class);
   }
 }
