@@ -3,8 +3,8 @@ package ca.ulaval.glo4003.util;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockHistory;
 import ca.ulaval.glo4003.domain.stock.StockValue;
-import ca.ulaval.glo4003.domain.stock.StockValueHistory;
 import ca.ulaval.glo4003.service.stock.StockDto;
 import java.time.LocalDate;
 
@@ -54,7 +54,7 @@ public class TestStockBuilder {
   }
 
   public Stock build() {
-    StockValueHistory history = new StockValueHistory();
+    StockHistory history = new StockHistory();
     history.addValue(LocalDate.now(), new StockValue(openValue, closeValue, closeValue));
     return new Stock(title, name, category, marketId, history);
   }

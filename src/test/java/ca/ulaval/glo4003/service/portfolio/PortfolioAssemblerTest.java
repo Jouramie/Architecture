@@ -43,7 +43,7 @@ public class PortfolioAssemblerTest {
   public void setupPortfolioAssembler() throws StockNotFoundException, InvalidStockInPortfolioException {
     portfolioAssembler = new PortfolioAssembler(someStockRepository);
 
-    given(someStockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     StockCollection stockCollection = new StockCollection().add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
     given(somePortfolio.getStocks()).willReturn(stockCollection);
     given(somePortfolio.getQuantity(SOME_TITLE)).willReturn(SOME_QUANTITY);

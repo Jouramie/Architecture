@@ -26,9 +26,9 @@ public class StockCollectionTest {
 
   @Before
   public void setupStockCollection() {
-    given(someStockRepository.doesStockExist(INCLUDED_STOCK_TITLE)).willReturn(true);
-    given(someStockRepository.doesStockExist(MISSING_STOCK_TITLE)).willReturn(true);
-    given(someStockRepository.doesStockExist(INVALID_TITLE)).willReturn(false);
+    given(someStockRepository.exists(INCLUDED_STOCK_TITLE)).willReturn(true);
+    given(someStockRepository.exists(MISSING_STOCK_TITLE)).willReturn(true);
+    given(someStockRepository.exists(INVALID_TITLE)).willReturn(false);
 
     stockCollection = new StockCollection()
         .add(INCLUDED_STOCK_TITLE, INCLUDED_STOCK_QUANTITY, someStockRepository);

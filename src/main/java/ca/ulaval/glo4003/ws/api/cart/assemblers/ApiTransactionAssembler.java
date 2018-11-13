@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.ws.api.cart.assemblers;
 
 import static java.util.stream.Collectors.toList;
 
-import ca.ulaval.glo4003.service.Component;
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionItemDto;

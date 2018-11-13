@@ -44,7 +44,7 @@ public class PortfolioTest {
     given(someStock.getCurrency()).willReturn(SOME_CURRENCY);
     given(someStock.getTitle()).willReturn(SOME_TITLE);
 
-    given(someStockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(someStock);
   }
 
@@ -78,7 +78,7 @@ public class PortfolioTest {
   public void givenPortfolioContainsInvalidStock_whenGetCurrentTotalValue_thenAnExceptionIsThrown()
       throws StockNotFoundException {
     String invalidTitle = "invalid";
-    given(someStockRepository.doesStockExist(invalidTitle)).willReturn(true);
+    given(someStockRepository.exists(invalidTitle)).willReturn(true);
     given(someStockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
     portfolio.add(invalidTitle, SOME_QUANTITY, someStockRepository);
 

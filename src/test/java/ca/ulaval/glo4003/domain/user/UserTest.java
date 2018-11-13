@@ -66,8 +66,8 @@ public class UserTest {
         TransactionType.PURCHASE);
     notification = new Notification("title", "message");
 
-    given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
-    given(stockRepository.doesStockExist(SOME_OTHER_TITLE)).willReturn(true);
+    given(stockRepository.exists(SOME_TITLE)).willReturn(true);
+    given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
     user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
     user.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
 

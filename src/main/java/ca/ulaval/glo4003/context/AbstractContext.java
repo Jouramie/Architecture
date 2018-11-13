@@ -4,6 +4,7 @@ import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
@@ -32,7 +33,6 @@ import ca.ulaval.glo4003.infrastructure.persistence.InMemoryUserRepository;
 import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.investul.live_stock_emulator.StockSimulator;
-import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.http.FilterRegistration;

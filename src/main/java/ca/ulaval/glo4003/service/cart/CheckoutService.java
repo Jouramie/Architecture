@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.service.cart;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -10,7 +11,6 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
-import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.cart.exceptions.EmptyCartOnCheckoutException;

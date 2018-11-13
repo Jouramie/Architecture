@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.authentication.assemblers;
 
-import ca.ulaval.glo4003.service.Component;
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.service.authentication.UserDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiUserDto;
 
