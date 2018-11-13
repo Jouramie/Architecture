@@ -5,7 +5,7 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
+import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
 import java.util.Optional;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;

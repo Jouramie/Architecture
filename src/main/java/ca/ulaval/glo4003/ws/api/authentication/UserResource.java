@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
+import ca.ulaval.glo4003.ws.api.authentication.dto.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

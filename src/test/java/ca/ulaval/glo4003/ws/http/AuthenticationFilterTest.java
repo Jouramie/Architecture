@@ -10,7 +10,7 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
-import ca.ulaval.glo4003.ws.api.authentication.AuthenticationTokenDto;
+import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;

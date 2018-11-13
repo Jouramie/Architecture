@@ -3,6 +3,10 @@ package ca.ulaval.glo4003.service.cart;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
+import ca.ulaval.glo4003.service.cart.assemblers.TransactionItemAssembler;
+import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
+import ca.ulaval.glo4003.service.cart.dto.TransactionItemDto;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.util.Collections;
@@ -23,7 +27,7 @@ public class TransactionAssemblerTest {
 
   @Test
   public void whenToDto_thenTransactionCorrectlyMapped() {
-    Transaction transaction = new TransactionBuilder().build();
+    Transaction transaction = new TransactionBuilder().withDefaultItems().build();
 
     TransactionDto resultingDto = assembler.toDto(transaction);
 
@@ -33,7 +37,7 @@ public class TransactionAssemblerTest {
   }
 
   private TransactionItemDto buildExpectedItemDto() {
-    return new TransactionItemDto(TransactionItemBuilder.DEFAULT_STOCK_ID,
+    return new TransactionItemDto(TransactionItemBuilder.DEFAULT_TITLE,
         TransactionItemBuilder.DEFAULT_QUANTITY,
         TransactionItemBuilder.DEFAULT_AMOUNT.getAmount(),
         TransactionItemBuilder.DEFAULT_CURRENCY.getName());

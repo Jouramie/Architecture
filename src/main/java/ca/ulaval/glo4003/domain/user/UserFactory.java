@@ -4,7 +4,11 @@ import ca.ulaval.glo4003.domain.Component;
 
 @Component
 public class UserFactory {
-  public User create(String email, String password, UserRole role) {
-    return new User(email, password, role);
+  public User createInvestor(String email, String password) {
+    return new User(email, password, UserRole.INVESTOR);
+  }
+
+  public User createAdministrator(String email, String password) {
+    return new User(email, password, UserRole.ADMINISTRATOR);
   }
 }

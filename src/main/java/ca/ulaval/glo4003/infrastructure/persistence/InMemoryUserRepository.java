@@ -1,9 +1,9 @@
 package ca.ulaval.glo4003.infrastructure.persistence;
 
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
-import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
+import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
+import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
