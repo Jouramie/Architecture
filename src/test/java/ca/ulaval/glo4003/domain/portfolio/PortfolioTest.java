@@ -10,6 +10,9 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
+import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.util.TransactionBuilder;
+import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import org.junit.Before;
@@ -50,7 +53,11 @@ public class PortfolioTest {
 
   @Test
   public void whenAddStockToPortfolio_thenItCanBeRetrieved() {
-    portfolio.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
+    Transaction transaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
+        .build();
+
+    portfolio.add(transaction, someStockRepository);
 
     assertThat(portfolio.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY);
   }
@@ -62,7 +69,10 @@ public class PortfolioTest {
 
   @Test
   public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues() throws InvalidStockInPortfolioException {
-    portfolio.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
+    Transaction transaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
+        .build();
+    portfolio.add(transaction, someStockRepository);
 
     BigDecimal currentTotal = SOME_VALUE.toUsd().multiply(new BigDecimal(SOME_QUANTITY));
     assertThat(portfolio.getCurrentTotalValue(someStockRepository).getAmount()).isEqualTo(currentTotal);
@@ -80,7 +90,10 @@ public class PortfolioTest {
     String invalidTitle = "invalid";
     given(someStockRepository.exists(invalidTitle)).willReturn(true);
     given(someStockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
-    portfolio.add(invalidTitle, SOME_QUANTITY, someStockRepository);
+    Transaction transaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(invalidTitle).withQuantity(SOME_QUANTITY).build())
+        .build();
+    portfolio.add(transaction, someStockRepository);
 
     assertThatExceptionOfType(InvalidStockInPortfolioException.class).isThrownBy(() -> portfolio.getCurrentTotalValue(someStockRepository));
   }

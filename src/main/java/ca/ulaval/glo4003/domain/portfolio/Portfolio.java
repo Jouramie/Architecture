@@ -6,18 +6,27 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.domain.transaction.TransactionHistory;
+import ca.ulaval.glo4003.domain.transaction.TransactionItem;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Portfolio {
+  private final TransactionHistory transactionHistory;
   private StockCollection stocks;
 
   public Portfolio() {
+    transactionHistory = new TransactionHistory();
     stocks = new StockCollection();
   }
 
-  public void add(String title, int quantity, StockRepository stockRepository) {
-    stocks = stocks.add(title, quantity, stockRepository);
+  public void add(Transaction transaction, StockRepository stockRepository) {
+    transactionHistory.save(transaction);
+
+    for (TransactionItem item : transaction.items) {
+      stocks = stocks.add(item.title, item.quantity, stockRepository);
+    }
   }
 
   public int getQuantity(String title) {

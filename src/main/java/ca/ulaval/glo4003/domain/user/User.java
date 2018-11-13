@@ -72,9 +72,7 @@ public class User {
 
   private void processPurchase(Transaction transaction, PaymentProcessor paymentProcessor, StockRepository stockRepository) {
     paymentProcessor.payment(transaction);
-    transaction.items.forEach((item) -> {
-      portfolio.add(item.title, item.quantity, stockRepository);
-    });
+    portfolio.add(transaction, stockRepository);
   }
 
   private void sendTransactionNotification(NotificationFactory notificationFactory, NotificationSender notificationSender, Transaction transaction) {

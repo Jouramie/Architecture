@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -23,8 +24,9 @@ public class TransactionTest {
       = Arrays.asList(AN_ITEM, ANOTHER_ITEM);
   private static final TransactionType SOME_TYPE = TransactionType.PURCHASE;
   private static final LocalDateTime SOME_TIME = LocalDateTime.now();
+  private static final Transaction formerTransaction = new TransactionBuilder().withTime(LocalDateTime.now()).build();
+  private static final Transaction latterTransaction = new TransactionBuilder().withTime(LocalDateTime.now().plusDays(2)).build();
   private static Transaction transaction;
-
   @Mock
   private Clock someClock;
 
@@ -40,5 +42,20 @@ public class TransactionTest {
 
     MoneyAmount expectedTotal = AN_ITEM.amount.add(ANOTHER_ITEM.amount);
     assertThat(totalAmount.toUsd()).isEqualTo(expectedTotal.toUsd());
+  }
+
+  @Test
+  public void whenCompareToMoreRecentTransaction_thenReturnLessThan0() {
+    assertThat(formerTransaction.compareTo(latterTransaction)).isLessThan(0);
+  }
+
+  @Test
+  public void whenCompareToOlderTransaction_thenReturnGreaterThan0() {
+    assertThat(latterTransaction.compareTo(formerTransaction)).isGreaterThan(0);
+  }
+
+  @Test
+  public void whenCompareToTransactionWithSameDate_thenReturnZero() {
+    assertThat(formerTransaction.compareTo(formerTransaction)).isEqualTo(0);
   }
 }

@@ -14,7 +14,6 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.domain.transaction.NullPaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
-import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
@@ -28,7 +27,6 @@ import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryAuthenticationTokenRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
-import ca.ulaval.glo4003.infrastructure.persistence.InMemoryTransactionLedger;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryUserRepository;
 import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
@@ -99,7 +97,6 @@ public abstract class AbstractContext {
     serviceLocator.registerSingleton(StockRepository.class, InMemoryStockRepository.class);
     serviceLocator.registerSingleton(MarketRepository.class, InMemoryMarketRepository.class);
     serviceLocator.registerSingleton(StockValueRetriever.class, SimulatedStockValueRetriever.class);
-    serviceLocator.registerSingleton(TransactionLedger.class, InMemoryTransactionLedger.class);
     serviceLocator.registerSingleton(PaymentProcessor.class, NullPaymentProcessor.class);
     serviceLocator.registerSingleton(CurrentUserSession.class, CurrentUserSession.class);
   }

@@ -4,7 +4,7 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Transaction {
+public class Transaction implements Comparable<Transaction> {
   public final TransactionType type;
   public final List<TransactionItem> items;
   public final LocalDateTime timestamp;
@@ -19,5 +19,10 @@ public class Transaction {
     return items.stream()
         .map(TransactionItem::calculateTotal)
         .reduce(MoneyAmount.zero(items.get(0).amount.getCurrency()), MoneyAmount::add);
+  }
+
+  @Override
+  public int compareTo(Transaction other) {
+    return timestamp.compareTo(other.timestamp);
   }
 }
