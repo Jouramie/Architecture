@@ -47,8 +47,4 @@ public class Market {
   public void update(LocalDateTime currentTime, StockValueRetriever stockValueRetriever) {
     currentState = currentState.update(this, currentTime, stockValueRetriever);
   }
-
-  void updateStockValues() {
-
-  }
 }
