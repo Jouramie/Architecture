@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.domain.user;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.notification.Notification;
+import ca.ulaval.glo4003.domain.notification.NotificationCoordinates;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
@@ -54,13 +55,13 @@ public class User {
                                   StockRepository stockRepository) throws StockNotFoundException, EmptyCartException {
     checkIfCartIsEmpty(cart);
 
-    Transaction transaction = transactionFactory.createPurchase(cart);
-    processTransaction(transaction, paymentProcessor, stockRepository);
-    sendTransactionNotification(notificationFactory, notificationSender, transaction);
+    Transaction purchase = transactionFactory.createPurchase(cart);
+    processPurchase(purchase, paymentProcessor, stockRepository);
+    sendTransactionNotification(notificationFactory, notificationSender, purchase);
 
     cart.empty();
 
-    return transaction;
+    return purchase;
   }
 
   private void checkIfCartIsEmpty(Cart cart) throws EmptyCartException {
@@ -69,7 +70,7 @@ public class User {
     }
   }
 
-  private void processTransaction(Transaction transaction, PaymentProcessor paymentProcessor, StockRepository stockRepository) {
+  private void processPurchase(Transaction transaction, PaymentProcessor paymentProcessor, StockRepository stockRepository) {
     paymentProcessor.payment(transaction);
     transaction.items.forEach((item) -> {
       portfolio.add(item.title, item.quantity, stockRepository);
@@ -78,6 +79,6 @@ public class User {
 
   private void sendTransactionNotification(NotificationFactory notificationFactory, NotificationSender notificationSender, Transaction transaction) {
     Notification notification = notificationFactory.create(transaction);
-    notificationSender.sendNotification(notification, this);
+    notificationSender.sendNotification(notification, new NotificationCoordinates(email));
   }
 }

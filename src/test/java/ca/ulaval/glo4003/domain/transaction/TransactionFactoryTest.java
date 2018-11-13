@@ -39,6 +39,8 @@ public class TransactionFactoryTest {
   private Stock stock;
   @Mock
   private StockValue stockValue;
+
+
   private Cart cart;
 
   @Before
@@ -73,7 +75,7 @@ public class TransactionFactoryTest {
   @Test
   public void whenCreate_thenTransactionItemsIsSetToTransaction() throws StockNotFoundException {
     Transaction transaction = factory.createPurchase(cart);
-    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
+    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).withDefaultItems().build();
 
     assertThat(transaction.items).first().isEqualToComparingOnlyGivenFields(expected.items.get(0), "title", "quantity");
     assertThat(transaction.items.get(0).amount.getAmount()).isEqualTo(expected.items.get(0).amount.getAmount());

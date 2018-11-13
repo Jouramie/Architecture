@@ -27,7 +27,7 @@ public class TransactionAssemblerTest {
 
   @Test
   public void whenToDto_thenTransactionCorrectlyMapped() {
-    Transaction transaction = new TransactionBuilder().build();
+    Transaction transaction = new TransactionBuilder().withDefaultItems().build();
 
     TransactionDto resultingDto = assembler.toDto(transaction);
 
@@ -37,7 +37,7 @@ public class TransactionAssemblerTest {
   }
 
   private TransactionItemDto buildExpectedItemDto() {
-    return new TransactionItemDto(TransactionItemBuilder.DEFAULT_STOCK_ID,
+    return new TransactionItemDto(TransactionItemBuilder.DEFAULT_TITLE,
         TransactionItemBuilder.DEFAULT_QUANTITY,
         TransactionItemBuilder.DEFAULT_AMOUNT.getAmount(),
         TransactionItemBuilder.DEFAULT_CURRENCY.getName());

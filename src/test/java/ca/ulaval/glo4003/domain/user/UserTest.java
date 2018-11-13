@@ -4,11 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.domain.money.Currency;
-import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
@@ -17,12 +16,10 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
-import ca.ulaval.glo4003.domain.transaction.TransactionItem;
-import ca.ulaval.glo4003.domain.transaction.TransactionType;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
+import ca.ulaval.glo4003.util.TransactionBuilder;
+import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import ca.ulaval.glo4003.util.UserBuilder;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,18 +55,17 @@ public class UserTest {
 
   @Before
   public void setup() throws StockNotFoundException {
-    transaction = new Transaction(
-        LocalDateTime.now(),
-        Arrays.asList(
-            new TransactionItem(SOME_TITLE, SOME_QTY, MoneyAmount.zero(Currency.USD)),
-            new TransactionItem(SOME_OTHER_TITLE, SOME_OTHER_QTY, MoneyAmount.zero(Currency.USD))),
-        TransactionType.PURCHASE);
+    transaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QTY).build())
+        .withItem(new TransactionItemBuilder().withTitle(SOME_OTHER_TITLE).withQuantity(SOME_OTHER_QTY).build())
+        .build();
     notification = new Notification("title", "message");
 
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
     user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
     user.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
+    user.getCart().add(SOME_OTHER_TITLE, SOME_OTHER_QTY, stockRepository);
 
     given(transactionFactory.createPurchase(user.getCart())).willReturn(transaction);
     given(notificationFactory.create(transaction)).willReturn(notification);
@@ -115,7 +111,7 @@ public class UserTest {
   public void whenCheckoutCart_thenANotificationIsSent() throws StockNotFoundException, EmptyCartException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
-    verify(notificationSender).sendNotification(notification, user);
+    verify(notificationSender).sendNotification(eq(notification), any());
   }
 
   @Test
