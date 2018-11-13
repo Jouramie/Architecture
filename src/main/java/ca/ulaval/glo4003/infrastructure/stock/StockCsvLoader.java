@@ -62,8 +62,8 @@ public class StockCsvLoader {
     for (CSVRecord record : records) {
       LocalDate date = LocalDate.parse(record.get("timestamp"));
 
-      double openValue = Double.parseDouble(record.get("open"));
-      double closeValue = Double.parseDouble(record.get("close"));
+      double openValue = Double.parseDouble(record.get("saveOpeningPrice"));
+      double closeValue = Double.parseDouble(record.get("saveClosingPrice"));
       double maximumValue = Double.parseDouble(record.get("high"));
       StockValue value = new StockValue(new MoneyAmount(openValue, currency),
           new MoneyAmount(closeValue, currency), new MoneyAmount(maximumValue, currency));

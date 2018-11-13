@@ -1,9 +1,11 @@
 package ca.ulaval.glo4003.infrastructure.market;
 
-import ca.ulaval.glo4003.domain.market.Market;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.market.states.ClosedMarketState;
+import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.money.Currency;
+import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import java.io.FileReader;
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -40,12 +43,12 @@ public class MarketCsvLoader {
     Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(file);
     for (CSVRecord record : records) {
       MarketId marketId = new MarketId(record.get("market"));
-      LocalTime open = parseTime(record.get("open"));
-      LocalTime close = parseTime(record.get("close"));
+      LocalTime open = parseTime(record.get("saveOpeningPrice"));
+      LocalTime close = parseTime(record.get("saveClosingPrice"));
       boolean halt = Boolean.parseBoolean(record.get("tradinghalt"));
+      List<Stock> stocks = stockRepository.findByMarket(marketId);
 
-      Market market = new Market(marketId, open, close, currency.get(marketId), stockRepository,
-          stockValueRetriever);
+      Market market = new Market(marketId, open, close, currency.get(marketId), stocks, new ClosedMarketState());
       if (halt) {
         market.halt();
       }

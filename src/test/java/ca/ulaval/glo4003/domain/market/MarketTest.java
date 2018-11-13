@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.verify;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 
+import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.market.states.OpenMarketState;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.stock.Stock;
@@ -86,47 +87,12 @@ public class MarketTest {
   }
 
   @Test
-  public void givenNonHaltedMarket_whenIsHalted_thenReturnFalse() {
-    boolean isHalted = openMarket.isHalted();
-
-    assertThat(isHalted).isFalse();
-  }
-
-  @Test
-  public void givenHaltedMarket_whenIsHalted_thenReturnTrue() {
-    boolean isHalted = haltedMarket.isHalted();
-
-    assertThat(isHalted).isTrue();
-  }
-
-  @Test
-  public void givenNonHaltedOpenMarket_whenIsOpen_thenReturnTrue() {
-    boolean isOpened = openMarket.isOpen();
-
-    assertThat(isOpened).isTrue();
-  }
-
-  @Test
-  public void givenNonHaltedClosedMarket_whenIsOpen_thenReturnFalse() {
-    boolean isOpened = closeMarket.isOpen();
-
-    assertThat(isOpened).isFalse();
-  }
-
-  @Test
-  public void givenHaltedOpenMarket_whenIsOpen_thenReturnFalse() {
-    boolean isOpened = haltedMarket.isOpen();
-
-    assertThat(isOpened).isFalse();
-  }
-
-  @Test
   public void whenUpdate_thenUpdateCurrentState() {
     openMarket.setState(state);
 
     openMarket.update(SOME_TIME);
 
-    verify(state).update(openMarket, SOME_TIME);
+    verify(state).update(openMarket, SOME_TIME, );
   }
 
   @Test
@@ -142,15 +108,15 @@ public class MarketTest {
   public void whenOpenAllStock_thenOpenAllStocks() {
     openMarket.openAllStocks();
 
-    verify(someStock).open();
-    verify(someOtherStock).open();
+    verify(someStock).saveOpeningPrice();
+    verify(someOtherStock).saveOpeningPrice();
   }
 
   @Test
   public void whenCloseAllStocks_thenCloseAllStocks() {
     openMarket.closeAllStocks();
 
-    verify(someStock).close();
-    verify(someOtherStock).close();
+    verify(someStock).saveClosingPrice();
+    verify(someOtherStock).saveClosingPrice();
   }
 }

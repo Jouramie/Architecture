@@ -1,11 +1,8 @@
 package ca.ulaval.glo4003.domain.market.states;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.never;
-import static org.mockito.BDDMockito.verify;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Matchers.any;
 
-import ca.ulaval.glo4003.domain.market.Market;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import org.junit.Before;
@@ -36,7 +33,7 @@ public class ClosedMarketStateTest {
 
   @Test
   public void whenTimeDoesNotOpenTheMarket_thenDoNothing() {
-    state.update(market, SOME_CLOSED_TIME);
+    state.update(market, SOME_CLOSED_TIME, );
 
     verify(market, never()).updateAllStockValues();
     verify(market, never()).setState(any());
@@ -44,7 +41,7 @@ public class ClosedMarketStateTest {
 
   @Test
   public void whenTimeOpensTheMarket_thenOpenAllStockAndChangeStateToOpen() {
-    state.update(market, SOME_OPEN_TIME);
+    state.update(market, SOME_OPEN_TIME, );
 
     verify(market).openAllStocks();
     verify(market).setState(any(OpenMarketState.class));

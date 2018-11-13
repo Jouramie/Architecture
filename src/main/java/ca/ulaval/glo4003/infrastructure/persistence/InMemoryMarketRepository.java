@@ -1,9 +1,9 @@
 package ca.ulaval.glo4003.infrastructure.persistence;
 
-import ca.ulaval.glo4003.domain.market.Market;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.market.states.Market;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
