@@ -45,7 +45,6 @@ public class ClosedMarketStateTest {
 
     MarketState newState = state.update(market, someOpenedTime, stockValueRetriever);
 
-    market.
     assertThat(newState).isInstanceOf(OpenMarketState.class);
   }
 }
