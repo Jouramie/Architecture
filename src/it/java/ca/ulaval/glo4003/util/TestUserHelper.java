@@ -2,8 +2,8 @@ package ca.ulaval.glo4003.util;
 
 import static io.restassured.RestAssured.given;
 
-import ca.ulaval.glo4003.ws.api.authentication.ApiAuthenticationRequestDto;
-import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
+import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
+import ca.ulaval.glo4003.ws.api.authentication.dto.UserCreationDto;
 import io.restassured.response.Response;
 import javax.ws.rs.core.MediaType;
 

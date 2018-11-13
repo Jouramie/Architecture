@@ -22,7 +22,7 @@ public class StockCollection {
   }
 
   public StockCollection add(String title, int addedQuantity, StockRepository stockRepository) {
-    if (!stockRepository.doesStockExist(title) || addedQuantity < 0) {
+    if (!stockRepository.exists(title) || addedQuantity < 0) {
       throw new IllegalArgumentException();
     }
 

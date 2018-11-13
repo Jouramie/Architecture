@@ -39,12 +39,14 @@ public class TransactionFactoryTest {
   private Stock stock;
   @Mock
   private StockValue stockValue;
+
+
   private Cart cart;
 
   @Before
   public void setup() throws StockNotFoundException {
     given(clock.getCurrentTime()).willReturn(SOME_TIME);
-    given(someStockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(stock);
     given(someStockRepository.findByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
     given(someStockRepository.findByTitle(SOME_TITLE).getValue().getCurrentValue()).willReturn(DEFAULT_AMOUNT);
@@ -73,7 +75,7 @@ public class TransactionFactoryTest {
   @Test
   public void whenCreate_thenTransactionItemsIsSetToTransaction() throws StockNotFoundException {
     Transaction transaction = factory.createPurchase(cart);
-    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
+    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).withDefaultItems().build();
 
     assertThat(transaction.items).first().isEqualToComparingOnlyGivenFields(expected.items.get(0), "title", "quantity");
     assertThat(transaction.items.get(0).amount.getAmount()).isEqualTo(expected.items.get(0).amount.getAmount());

@@ -1,9 +1,9 @@
 package ca.ulaval.glo4003.service.portfolio;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.service.Component;
 import javax.inject.Inject;
 
 @Component

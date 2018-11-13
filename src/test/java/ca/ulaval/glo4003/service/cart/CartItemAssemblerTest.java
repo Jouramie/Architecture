@@ -11,6 +11,9 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.service.cart.assemblers.CartItemAssembler;
+import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
+import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.util.List;
 import org.junit.Before;
@@ -49,8 +52,8 @@ public class CartItemAssemblerTest {
   public void setupCartItemAssembler() throws StockNotFoundException {
     assembler = new CartItemAssembler(stockRepository);
 
-    given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
-    given(stockRepository.doesStockExist(SOME_OTHER_TITLE)).willReturn(true);
+    given(stockRepository.exists(SOME_TITLE)).willReturn(true);
+    given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
     given(stockRepository.findByTitle(SOME_TITLE)).willReturn(SOME_STOCK);
     given(stockRepository.findByTitle(SOME_OTHER_TITLE)).willReturn(SOME_OTHER_STOCK);
   }

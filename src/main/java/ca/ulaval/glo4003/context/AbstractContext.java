@@ -4,6 +4,7 @@ import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
@@ -16,11 +17,11 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
+import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.infrastructure.config.SimulationSettings;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
@@ -32,7 +33,6 @@ import ca.ulaval.glo4003.infrastructure.persistence.InMemoryUserRepository;
 import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.investul.live_stock_emulator.StockSimulator;
-import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.http.FilterRegistration;
