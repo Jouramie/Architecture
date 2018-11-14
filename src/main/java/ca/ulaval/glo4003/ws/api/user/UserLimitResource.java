@@ -52,7 +52,7 @@ public interface UserLimitResource {
       @Valid UserStockLimitCreationDto userStockLimitCreationDto);
 
   @PUT
-  @Path("/stock")
+  @Path("/money_amount")
   @Operation(
       summary = "Set a money amount per transaction limit to a user.",
       responses = {
@@ -74,7 +74,7 @@ public interface UserLimitResource {
           )
       }
   )
-  public ApiUserLimitDto setUserAmountLimit(
+  public ApiUserLimitDto setUserMoneyAmountLimit(
       @PathParam("email") String email,
       @Valid UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto);
 
