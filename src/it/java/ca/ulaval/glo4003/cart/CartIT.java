@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.cart;
 
-import static ca.ulaval.glo4003.util.TestUserHelper.givenUserAlreadyAuthenticated;
-import static ca.ulaval.glo4003.util.TestUserHelper.givenUserAlreadyRegistered;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenUserAlreadyAuthenticated;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenUserAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -16,7 +16,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.util.CartStockRequestBuilder;
 import io.restassured.http.Header;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;

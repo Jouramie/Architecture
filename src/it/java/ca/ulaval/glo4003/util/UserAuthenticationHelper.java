@@ -7,22 +7,22 @@ import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import io.restassured.response.Response;
 import javax.ws.rs.core.MediaType;
 
-public class TestUserHelper {
+public class UserAuthenticationHelper {
   private static final String API_USERS_ROUTE = "/api/users";
   private static final String API_AUTHENTICATION_ROUTE = "/api/authenticate";
 
-  private static final String SOME_EMAIL = "carticart";
+  private static final String SOME_EMAIL = "carticart@investul.ca";
   private static final String SOME_PASSWORD = "stockistock";
 
-  private static final UserCreationDto A_CREATION_REQUEST =
+  private static final UserCreationDto SOME_USER_CREATION_REQUEST =
       new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
-  private static final ApiAuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
+  private static final ApiAuthenticationRequestDto SOME_USER_AUTHENTICATION_REQUEST =
       new ApiAuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
 
   public static String givenUserAlreadyAuthenticated() {
     //@formatter:off
     Response response = given()
-        .body(AN_AUTHENTICATION_REQUEST)
+        .body(SOME_USER_AUTHENTICATION_REQUEST)
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .post(API_AUTHENTICATION_ROUTE);
@@ -32,6 +32,6 @@ public class TestUserHelper {
   }
 
   public static void givenUserAlreadyRegistered() {
-    given().body(A_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON).post(API_USERS_ROUTE);
+    given().body(SOME_USER_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON).post(API_USERS_ROUTE);
   }
 }
