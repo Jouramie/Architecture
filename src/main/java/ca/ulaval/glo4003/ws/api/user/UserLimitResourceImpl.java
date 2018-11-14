@@ -19,6 +19,7 @@ public class UserLimitResourceImpl implements UserLimitResource {
   @Override
   public ApiUserLimitDto setUserMoneyAmountLimit(String email,
                                                  UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
+
     return null;
   }
 

@@ -566,28 +566,28 @@
 					"name": "Limit",
 					"item": [
 						{
-							"name": "SetLimit",
+							"name": "SetMoneyAmountLimit",
 							"request": {
 								"method": "PUT",
 								"header": [
 									{
 										"key": "token",
-										"value": "00000000-0000-0000-0000-000000000000",
-										"type": "text"
+										"type": "text",
+										"value": "00000000-0000-0000-0000-000000000000"
 									},
 									{
 										"key": "Content-Type",
 										"name": "Content-Type",
-										"value": "application/json",
-										"type": "text"
+										"type": "text",
+										"value": "application/json"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"applicationPeriod\": \"MONTHLY\",\n\t\"beginDate\": 1541030400,\n\t\"endDate\": 1572566400,\n\t\"maximalStockQuantity\": 5\n}"
+									"raw": "{\n\t\"applicationPeriod\": \"DAILY\",\n\t\"maximalMoneyAmountSpent\": 5\n}"
 								},
 								"url": {
-									"raw": "localhost:8080/api/users/john.smith%40email.com/limit",
+									"raw": "localhost:8080/api/users/john.smith%40email.com/limit/money_amount",
 									"host": [
 										"localhost"
 									],
@@ -596,7 +596,46 @@
 										"api",
 										"users",
 										"john.smith%40email.com",
-										"limit"
+										"limit",
+										"money_amount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SetStockLimit",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"type": "text",
+										"value": "00000000-0000-0000-0000-000000000000"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"applicationPeriod\": \"MONTHLY\",\n\t\"maximalStockQuantity\": 5\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/api/users/john.smith%40email.com/limit/stock",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"john.smith%40email.com",
+										"limit",
+										"stock"
 									]
 								}
 							},
@@ -690,35 +729,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Ping",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "localhost:8080/api/ping?echo=test",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"ping"
-					],
-					"query": [
-						{
-							"key": "echo",
-							"value": "test"
-						}
-					]
-				}
-			},
-			"response": []
 		}
 	]
 }
