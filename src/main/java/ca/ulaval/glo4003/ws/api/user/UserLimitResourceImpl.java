@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.ws.api.user;
 
+import ca.ulaval.glo4003.ws.api.user.dto.ApiUserLimitDto;
+import ca.ulaval.glo4003.ws.api.user.dto.UserLimitCreationDto;
 import javax.annotation.Resource;
 import javax.ws.rs.core.Response;
 

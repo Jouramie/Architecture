@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.ws.api.user;
 
+import ca.ulaval.glo4003.ws.api.user.dto.ApiUserLimitDto;
+import ca.ulaval.glo4003.ws.api.user.dto.UserLimitCreationDto;
 import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

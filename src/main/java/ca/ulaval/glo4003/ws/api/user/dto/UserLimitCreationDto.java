@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.user;
+package ca.ulaval.glo4003.ws.api.user.dto;
 
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import com.fasterxml.jackson.annotation.JsonCreator;
