@@ -4,11 +4,11 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import org.joda.time.DateTime;
 
 public class LimitFactory {
-  public Limit create(DateTime start, ApplicationPeriod applicationPeriod, int stockQuantity) {
+  public StockQuantityLimit createStockQuantityLimit(DateTime start, ApplicationPeriod applicationPeriod, int stockQuantity) {
     return new StockQuantityLimit(start, calculateEnd(start, applicationPeriod), stockQuantity);
   }
 
-  public Limit create(DateTime start, ApplicationPeriod applicationPeriod, MoneyAmount amount) {
+  public MoneyAmountLimit createMoneyAmountLimit(DateTime start, ApplicationPeriod applicationPeriod, MoneyAmount amount) {
     return new MoneyAmountLimit(start, calculateEnd(start, applicationPeriod), amount);
   }
 

@@ -13,14 +13,14 @@ public class LimitFactoryTest {
 
   @Test
   public void whenCreatingLimit_thenStartDateIsTheGivenOne() {
-    Limit result = limitFactory.create(start, ApplicationPeriod.WEEKLY, 0);
+    Limit result = limitFactory.createStockQuantityLimit(start, ApplicationPeriod.WEEKLY, 0);
 
     assertThat(result.start).isEqualTo(start);
   }
 
   @Test
   public void givenDailyLimit_whenCreatingLimit_thenEndIsOneDayLater() {
-    Limit result = limitFactory.create(start, ApplicationPeriod.DAILY, 0);
+    Limit result = limitFactory.createStockQuantityLimit(start, ApplicationPeriod.DAILY, 0);
 
     int resultDuration = Days.daysBetween(result.start.toLocalDate(), result.end.toLocalDate()).getDays();
     assertThat(resultDuration).isEqualTo(1);
@@ -28,7 +28,7 @@ public class LimitFactoryTest {
 
   @Test
   public void givenWeeklyLimit_whenCreatingLimit_thenEndIsSevenDaysLater() {
-    Limit result = limitFactory.create(start, ApplicationPeriod.WEEKLY, 0);
+    Limit result = limitFactory.createStockQuantityLimit(start, ApplicationPeriod.WEEKLY, 0);
 
     int resultDuration = Days.daysBetween(result.start.toLocalDate(), result.end.toLocalDate()).getDays();
     assertThat(resultDuration).isEqualTo(7);
@@ -36,7 +36,7 @@ public class LimitFactoryTest {
 
   @Test
   public void givenMonthlyLimit_whenCreatingLimit_thenEndIsThirtyDaysLater() {
-    Limit result = limitFactory.create(start, ApplicationPeriod.MONTHLY, 0);
+    Limit result = limitFactory.createStockQuantityLimit(start, ApplicationPeriod.MONTHLY, 0);
 
     int resultDuration = Days.daysBetween(result.start.toLocalDate(), result.end.toLocalDate()).getDays();
     assertThat(resultDuration).isEqualTo(30);
