@@ -6,7 +6,10 @@ import ca.ulaval.glo4003.service.authentication.UserCreationService;
 import ca.ulaval.glo4003.service.authentication.UserDto;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
+import ca.ulaval.glo4003.ws.api.user.dto.ApiUserLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.UserStockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.List;
 import javax.annotation.Resource;
@@ -47,5 +50,25 @@ public class UserResourceImpl implements UserResource {
     UserDto createdUser = userCreationService.createInvestorUser(userCreationDto.email, userCreationDto.password);
     ApiUserDto apiCreatedUser = apiUserAssembler.toDto(createdUser);
     return Response.status(CREATED).entity(apiCreatedUser).build();
+  }
+
+  @Override
+  public ApiUserLimitDto setUserStockLimit(String email,
+                                           UserStockLimitCreationDto userStockLimitCreationDto) {
+
+    return null;
+  }
+
+  @Override
+  public ApiUserLimitDto setUserMoneyAmountLimit(String email,
+                                                 UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
+
+    return null;
+  }
+
+  @Override
+  public Response removeUserLimit(String email) {
+
+    return Response.noContent().build();
   }
 }
