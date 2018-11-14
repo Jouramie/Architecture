@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.cart;
 
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenUserAlreadyAuthenticated;
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenUserAlreadyRegistered;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -56,8 +56,8 @@ public class CartIT {
 
   @Test
   public void givenInvestorLoggedIn_whenGetCart_thenReturnEmptyList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -85,8 +85,8 @@ public class CartIT {
 
   @Test
   public void whenAddStockToCart_thenReturnStockInList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -108,8 +108,8 @@ public class CartIT {
 
   @Test
   public void givenEmptyCart_whenAddStockToCart_thenReturnStockInList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -131,8 +131,8 @@ public class CartIT {
 
   @Test
   public void givenNegativeQuantityCartStockRequest_whenAddStockToCart_thenBadRequest() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -148,8 +148,8 @@ public class CartIT {
 
   @Test
   public void givenCartContainsDefaultStock_whenAddSameStockToCart_thenAddAmountOfStocks() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
@@ -166,7 +166,7 @@ public class CartIT {
   }
 
   @Test
-  public void givenUserNotLoggedIn_whenUpdateStockToCart_thenReturnUnauthorized() {
+  public void givenUserNotLoggedIn_whenUpdateStockToCart_thenUnauthorized() {
     //@formatter:off
     given()
         .body(cartStockRequestBuilder.build())
@@ -180,8 +180,8 @@ public class CartIT {
 
   @Test
   public void givenEmptyCart_whenUpdateStockToCart_thenBadRequest() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -197,8 +197,8 @@ public class CartIT {
 
   @Test
   public void givenNegativeQuantityCartStockRequest_whenUpdateStockToCart_thenBadRequest() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
@@ -228,8 +228,8 @@ public class CartIT {
 
   @Test
   public void givenCartContainsDefaultStock_whenRemoveStockFromCart_thenReturnStockInList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
@@ -257,8 +257,8 @@ public class CartIT {
 
   @Test
   public void givenCartContainsDefaultStock_whenEmptyCart_thenEmptyTheCart() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
@@ -291,8 +291,8 @@ public class CartIT {
 
   @Test
   public void givenCartContainsDefaultStock_whenCheckout_thenReturnStockInList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
@@ -314,8 +314,8 @@ public class CartIT {
 
   @Test
   public void givenEmptyCart_whenCheckout_thenReturnBadRequest() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()

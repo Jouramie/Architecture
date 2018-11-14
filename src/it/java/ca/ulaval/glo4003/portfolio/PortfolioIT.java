@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.portfolio;
 
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenUserAlreadyAuthenticated;
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenUserAlreadyRegistered;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -40,8 +40,8 @@ public class PortfolioIT {
 
   @Test
   public void givenPortfolioContainsDefaultStocks_whenGetPortfolio_thenReturnStocksInPortfolio() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenPortfolioContainsDefaultStocks(tokenHeader);
     //@formatter:off
@@ -60,8 +60,8 @@ public class PortfolioIT {
 
   @Test
   public void givenPortfolioContainsDefaultStocks_whenGetPortfolio_thenReturnCurrentTotalValueGreaterThanZero() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenPortfolioContainsDefaultStocks(tokenHeader);
     //@formatter:off
@@ -77,8 +77,8 @@ public class PortfolioIT {
 
   @Test
   public void givenEmptyPortfolio_whenGetPortfolio_thenReturnEmptyList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -93,8 +93,8 @@ public class PortfolioIT {
 
   @Test
   public void givenEmptyPortfolio_whenGetPortfolio_thenReturnCurrentTotalValueOfZero() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()

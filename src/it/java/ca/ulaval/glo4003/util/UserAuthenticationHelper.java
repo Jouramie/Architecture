@@ -19,7 +19,9 @@ public class UserAuthenticationHelper {
   private static final ApiAuthenticationRequestDto SOME_USER_AUTHENTICATION_REQUEST =
       new ApiAuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
 
-  public static String givenUserAlreadyAuthenticated() {
+  private static final String PREDEFINED_ADMINISTRATOR_TOKEN = "00000000-0000-0000-0000-000000000000";
+
+  public static String givenInvestorAlreadyAuthenticated() {
     //@formatter:off
     Response response = given()
         .body(SOME_USER_AUTHENTICATION_REQUEST)
@@ -31,7 +33,11 @@ public class UserAuthenticationHelper {
     return response.jsonPath().getString("token");
   }
 
-  public static void givenUserAlreadyRegistered() {
+  public static void givenInvestorAlreadyRegistered() {
     given().body(SOME_USER_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON).post(API_USERS_ROUTE);
+  }
+
+  public static String givenAdministratorAlreadyAuthenticated() {
+    return PREDEFINED_ADMINISTRATOR_TOKEN;
   }
 }

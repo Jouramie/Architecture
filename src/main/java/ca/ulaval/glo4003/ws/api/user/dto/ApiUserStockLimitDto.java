@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.ws.api.user.dto;
 
-import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
 
@@ -14,8 +13,8 @@ public class ApiUserStockLimitDto extends ApiUserLimitDto {
   )
   public final int maximalStockQuantity;
 
-  public ApiUserStockLimitDto(int maximalStockQuantity, ApplicationPeriod applicationPeriod, Date beginDate, Date endDate) {
-    super(applicationPeriod, beginDate, endDate);
+  public ApiUserStockLimitDto(int maximalStockQuantity, Date beginDate, Date endDate) {
+    super(beginDate, endDate);
     this.maximalStockQuantity = maximalStockQuantity;
   }
 }

@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.ws.api.user.dto;
 
-import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
 
@@ -9,7 +8,6 @@ import java.util.Date;
     description = "Partial representation of a transaction limit."
 )
 public abstract class ApiUserLimitDto {
-  public final ApplicationPeriod applicationPeriod;
   @Schema(
       description = "The date when then limit start applying."
   )
@@ -19,8 +17,7 @@ public abstract class ApiUserLimitDto {
   )
   public final Date endDate;
 
-  public ApiUserLimitDto(ApplicationPeriod applicationPeriod, Date beginDate, Date endDate) {
-    this.applicationPeriod = applicationPeriod;
+  public ApiUserLimitDto(Date beginDate, Date endDate) {
     this.beginDate = beginDate;
     this.endDate = endDate;
   }
