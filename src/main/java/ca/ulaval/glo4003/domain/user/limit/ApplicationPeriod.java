@@ -3,17 +3,17 @@ package ca.ulaval.glo4003.domain.user.limit;
 import java.time.Duration;
 
 public enum ApplicationPeriod {
-    DAILY(Duration.ofHours(24)),
-    WEEKLY(Duration.ofDays(7)),
-    MONTHLY(Duration.ofDays(30));
+  DAILY(Duration.ofHours(24)),
+  WEEKLY(Duration.ofDays(7)),
+  MONTHLY(Duration.ofDays(30));
 
-    private Duration duration;
+  private final Duration duration;
 
-    ApplicationPeriod(Duration duration) {
-        this.duration = duration;
-    }
+  ApplicationPeriod(Duration duration) {
+    this.duration = duration;
+  }
 
-    public Duration getDuration() {
-        return duration;
-    }
+  public Duration getDuration() {
+    return duration;
+  }
 }
