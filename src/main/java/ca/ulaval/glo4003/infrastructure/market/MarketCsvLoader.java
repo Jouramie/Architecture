@@ -43,8 +43,8 @@ public class MarketCsvLoader {
     Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(file);
     for (CSVRecord record : records) {
       MarketId marketId = new MarketId(record.get("market"));
-      LocalTime open = parseTime(record.get("saveOpeningPrice"));
-      LocalTime close = parseTime(record.get("saveClosingPrice"));
+      LocalTime open = parseTime(record.get("open"));
+      LocalTime close = parseTime(record.get("close"));
       boolean halt = Boolean.parseBoolean(record.get("tradinghalt"));
       List<Stock> stocks = stockRepository.findByMarket(marketId);
 
