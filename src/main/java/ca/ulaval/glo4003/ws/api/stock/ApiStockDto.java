@@ -16,7 +16,7 @@ public class ApiStockDto {
   public final BigDecimal openValue;
   @Schema(description = "Current stock value")
   public final BigDecimal currentValue;
-  @Schema(description = "Stock value at market saveClosingPrice")
+  @Schema(description = "Stock value at market close")
   public final BigDecimal closeValue;
 
   public ApiStockDto(String title,
