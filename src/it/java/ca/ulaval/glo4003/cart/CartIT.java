@@ -30,7 +30,7 @@ public class CartIT {
   private static final String SOME_TRANSACTION_TYPE = "PURCHASE";
 
   private static final String API_CART_ROUTE = "/api/cart/";
-  private static final String API_CART_STOCK_ROUTE = "/api/cart/%s";
+  private static final String API_CART_STOCK_ROUTE = "/api/cart/{title}";
   private static final String API_CART_CHECKOUT_ROUTE = "/api/cart/checkout";
 
   private static final String TITLE = "title";

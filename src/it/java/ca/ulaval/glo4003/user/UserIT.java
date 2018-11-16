@@ -36,10 +36,10 @@ public class UserIT {
   private static final UserCreationDto SOME_USER_CREATION_REQUEST = new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
 
   private static final String API_USERS_ROUTE = "/api/users";
-  private static final String API_USERS_EMAIL_ROUTE = "/api/users/%s";
-  private static final String API_USERS_EMAIL_LIMIT_ROUTE = "/api/users/%s/limit";
-  private static final String API_USERS_EMAIL_LIMIT_STOCK_ROUTE = "/api/users/%s/limit/stock";
-  private static final String API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE = "/api/users/%s/limit/money_amount";
+  private static final String API_USERS_EMAIL_ROUTE = "/api/users/{email}";
+  private static final String API_USERS_EMAIL_LIMIT_ROUTE = "/api/users/{email}/limit";
+  private static final String API_USERS_EMAIL_LIMIT_STOCK_ROUTE = "/api/users/{email}/limit/stock";
+  private static final String API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE = "/api/users/{email}/limit/money_amount";
 
   private static final String EMAIL = "email";
   private static final String ROLE = "role";
