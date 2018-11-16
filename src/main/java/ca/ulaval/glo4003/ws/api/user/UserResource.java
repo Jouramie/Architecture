@@ -122,7 +122,7 @@ public interface UserResource {
       summary = "Set a stock per transaction limit to a user.",
       responses = {
           @ApiResponse(
-              responseCode = "202",
+              responseCode = "201",
               content = @Content(
                   schema = @Schema(
                       implementation = ApiUserLimitDto.class
@@ -150,7 +150,7 @@ public interface UserResource {
       summary = "Set a money amount per transaction limit to a user.",
       responses = {
           @ApiResponse(
-              responseCode = "202",
+              responseCode = "201",
               content = @Content(
                   schema = @Schema(
                       implementation = ApiUserLimitDto.class

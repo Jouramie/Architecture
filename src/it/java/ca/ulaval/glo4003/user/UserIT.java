@@ -8,6 +8,7 @@ import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.CREATED;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.any;
@@ -36,6 +37,7 @@ public class UserIT {
 
   private static final String API_USERS_ROUTE = "/api/users";
   private static final String API_USERS_EMAIL_ROUTE = "/api/users/%s";
+  private static final String API_USERS_EMAIL_LIMIT_ROUTE = "/api/users/%s/limit";
   private static final String API_USERS_EMAIL_LIMIT_STOCK_ROUTE = "/api/users/%s/limit/stock";
   private static final String API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE = "/api/users/%s/limit/money_amount";
 
@@ -353,6 +355,50 @@ public class UserIT {
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .put(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
+    .then()
+        .statusCode(UNAUTHORIZED.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenSomeLimitAddedToSomeUser_whenDeleteTheUserLimit_thenNoContent() {
+    givenSomeUserCreated();
+    String token = givenAdministratorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+
+    givenSomeLimitAddedToSomeUser(token, new MoneyAmountLimitCreationRequestBuilder().build());
+
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+    .when()
+        .delete(API_USERS_EMAIL_LIMIT_ROUTE, SOME_EMAIL)
+    .then()
+        .statusCode(NO_CONTENT.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenAdministratorNotLoggedIn_whenDeleteSomeUserLimit_thenUnauthorized() {
+    //@formatter:off
+    when()
+        .delete(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
+    .then()
+        .statusCode(UNAUTHORIZED.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenInvestorLoggedIn_whenDeleteSomeUserLimit_thenUnauthorized() {
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+    .when()
+        .delete(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
