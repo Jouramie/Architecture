@@ -1,6 +1,8 @@
 package ca.ulaval.glo4003.user;
 
 import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -10,8 +12,11 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.domain.user.UserRole;
@@ -144,6 +149,68 @@ public class UserIT {
     //@formatter:off
     when()
         .get(API_USERS_EMAIL_ROUTE, SOME_EMAIL)
+    .then()
+        .statusCode(UNAUTHORIZED.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenInvestorLoggedIn_whenGetUser_thenUnauthorized() {
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+    .when()
+        .get(API_USERS_EMAIL_ROUTE, SOME_EMAIL)
+    .then()
+        .statusCode(UNAUTHORIZED.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenSomeUserCreated_whenGetAllUsers_thenReturnTheUser() {
+    givenSomeUserCreated();
+    String token = givenAdministratorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+    .when()
+        .get(API_USERS_ROUTE)
+    .then()
+        .statusCode(OK.getStatusCode())
+        .header("X-Total-Count", is(notNullValue()))
+        .body("$", everyItem(hasKey(EMAIL)))
+        .body("$", everyItem(hasKey(ROLE)));
+    //@formatter:on
+  }
+
+  @Test
+  public void givenAdministratorNotLoggedIn_whenGetAllUsers_thenUnauthorized() {
+    //@formatter:off
+    when()
+        .get(API_USERS_ROUTE)
+    .then()
+        .statusCode(UNAUTHORIZED.getStatusCode());
+    //@formatter:on
+  }
+
+
+  @Test
+  public void givenInvestorLoggedIn_whenGetAllUsers_thenUnauthorized() {
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+    .when()
+        .get(API_USERS_ROUTE)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
