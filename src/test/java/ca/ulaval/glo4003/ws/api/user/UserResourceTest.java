@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.authentication;
+package ca.ulaval.glo4003.ws.api.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -8,7 +8,6 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.authentication.UserCreationService;
 import ca.ulaval.glo4003.service.authentication.UserDto;
-import ca.ulaval.glo4003.ws.api.user.UserResourceImpl;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
@@ -32,9 +31,6 @@ public class UserResourceTest {
 
   private static final UserCreationDto CREATION_REQUEST_WITH_INVALID_PASSWORD =
       new UserCreationDto("email", "");
-
-  private static final UserCreationDto CREATION_REQUEST_WITHOUT_ROLE =
-      new UserCreationDto("email", "passord");
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
   private static final UserDto SOME_USER_RESPONSE = new UserDto("email", UserRole.INVESTOR);
