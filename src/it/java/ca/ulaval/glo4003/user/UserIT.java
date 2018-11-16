@@ -382,7 +382,7 @@ public class UserIT {
   public void givenAdministratorNotLoggedIn_whenDeleteSomeUserLimit_thenUnauthorized() {
     //@formatter:off
     when()
-        .delete(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
+        .delete(API_USERS_EMAIL_LIMIT_ROUTE, SOME_EMAIL)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
@@ -398,9 +398,43 @@ public class UserIT {
     given()
         .header(tokenHeader)
     .when()
-        .delete(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
+        .delete(API_USERS_EMAIL_LIMIT_ROUTE, SOME_EMAIL)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenNegativeMoneyAmount_whenPutLimitSomeUser_thenBadRequest() {
+    givenSomeUserCreated();
+    String token = givenAdministratorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .body(new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(-1).build())
+    .when()
+        .put(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenNegativeStockQuantity_whenPutLimitSomeUser_thenBadRequest() {
+    givenSomeUserCreated();
+    String token = givenAdministratorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .body(new StockLimitCreationRequestBuilder().withStockQuantity(-1).build())
+    .when()
+        .put(API_USERS_EMAIL_LIMIT_STOCK_ROUTE, SOME_EMAIL)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 }

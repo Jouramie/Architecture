@@ -130,6 +130,10 @@ public interface UserResource {
               )
           ),
           @ApiResponse(
+              responseCode = "400",
+              description = "Invalid limit."
+          ),
+          @ApiResponse(
               responseCode = "401",
               description = "User is not logged in or not administrator."
           ),
@@ -156,6 +160,10 @@ public interface UserResource {
                       implementation = ApiUserLimitDto.class
                   )
               )
+          ),
+          @ApiResponse(
+              responseCode = "400",
+              description = "Invalid limit."
           ),
           @ApiResponse(
               responseCode = "401",

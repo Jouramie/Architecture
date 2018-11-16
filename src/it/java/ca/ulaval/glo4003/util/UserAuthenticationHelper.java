@@ -8,11 +8,12 @@ import io.restassured.response.Response;
 import javax.ws.rs.core.MediaType;
 
 public class UserAuthenticationHelper {
-  public static final ApiAuthenticationRequestDto SOME_ADMINISTRATOR_AUTHENTICATION_REQUEST =
+  public static final String SOME_EMAIL = "carticart@investul.ca";
+
+  private static final ApiAuthenticationRequestDto SOME_ADMINISTRATOR_AUTHENTICATION_REQUEST =
       new ApiAuthenticationRequestDto("Archi.test.42@gmail.com", "asdf");
   private static final String API_USERS_ROUTE = "/api/users";
   private static final String API_AUTHENTICATION_ROUTE = "/api/authenticate";
-  private static final String SOME_EMAIL = "carticart@investul.ca";
   private static final String SOME_PASSWORD = "stockistock";
   private static final UserCreationDto SOME_USER_CREATION_REQUEST =
       new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
