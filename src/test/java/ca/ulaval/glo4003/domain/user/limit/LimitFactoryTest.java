@@ -2,13 +2,13 @@ package ca.ulaval.glo4003.domain.user.limit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import org.junit.Test;
 
 public class LimitFactoryTest {
 
-  private final DateTime start = new DateTime();
+  private final LocalDateTime start = LocalDateTime.of(2018, 11, 16, 12, 4);
   private final LimitFactory limitFactory = new LimitFactory();
 
   @Test
@@ -19,26 +19,26 @@ public class LimitFactoryTest {
   }
 
   @Test
-  public void givenDailyLimit_whenCreatingLimit_thenEndIsOneDayLater() {
+  public void givenDailyLimit_whenCreatingLimit_thenEndIs24HoursLater() {
     Limit result = limitFactory.createStockQuantityLimit(start, ApplicationPeriod.DAILY, 0);
 
-    int resultDuration = Days.daysBetween(result.start.toLocalDate(), result.end.toLocalDate()).getDays();
-    assertThat(resultDuration).isEqualTo(1);
+    Duration resultDuration = Duration.between(result.start, result.end);
+    assertThat(resultDuration.toHours()).isEqualTo(24);
   }
 
   @Test
   public void givenWeeklyLimit_whenCreatingLimit_thenEndIsSevenDaysLater() {
     Limit result = limitFactory.createStockQuantityLimit(start, ApplicationPeriod.WEEKLY, 0);
 
-    int resultDuration = Days.daysBetween(result.start.toLocalDate(), result.end.toLocalDate()).getDays();
-    assertThat(resultDuration).isEqualTo(7);
+    Duration resultDuration = Duration.between(result.start, result.end);
+    assertThat(resultDuration.toDays()).isEqualTo(7);
   }
 
   @Test
   public void givenMonthlyLimit_whenCreatingLimit_thenEndIsThirtyDaysLater() {
     Limit result = limitFactory.createStockQuantityLimit(start, ApplicationPeriod.MONTHLY, 0);
 
-    int resultDuration = Days.daysBetween(result.start.toLocalDate(), result.end.toLocalDate()).getDays();
-    assertThat(resultDuration).isEqualTo(30);
+    Duration resultDuration = Duration.between(result.start, result.end);
+    assertThat(resultDuration.toDays()).isEqualTo(30);
   }
 }
