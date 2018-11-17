@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.SortedSet;
+import java.util.TreeSet;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,30 +20,28 @@ public class TransactionHistoryTest {
 
   @Test
   public void whenSaveTransaction_thenTransactionIsSaved() {
-    Transaction aTransaction = new TransactionBuilder().withTime(LocalDateTime.now()).build();
+    LocalDateTime datetime = LocalDateTime.now();
+    Transaction aTransaction = new TransactionBuilder().withTime(datetime).build();
 
     transactionHistory.save(aTransaction);
 
-    assertThat(transactionHistory.getTransactions(LocalDate.MIN, LocalDate.MAX)).contains(aTransaction);
+    assertThat(transactionHistory.getTransactions(datetime.toLocalDate())).contains(aTransaction);
   }
 
   @Test
   public void givenTransactions_whenGet_thenReturnTransactionsWithinRange() {
-    LocalDate start = LocalDate.of(2018, 11, 3);
-    LocalDate end = LocalDate.of(2018, 11, 13);
-    Transaction beforeRangeTransaction = new TransactionBuilder().withTime(start.minusDays(1).atStartOfDay()).build();
-    Transaction atStartTransaction = new TransactionBuilder().withTime(start.atStartOfDay()).build();
-    Transaction inRangeTransaction = new TransactionBuilder().withTime(LocalDate.of(2018, 11, 11).atStartOfDay()).build();
-    Transaction atEndTransaction = new TransactionBuilder().withTime(end.atStartOfDay()).build();
-    Transaction afterRangeTransaction = new TransactionBuilder().withTime(end.plusDays(1).atStartOfDay()).build();
-    transactionHistory.save(beforeRangeTransaction);
-    transactionHistory.save(atStartTransaction);
-    transactionHistory.save(inRangeTransaction);
-    transactionHistory.save(atEndTransaction);
-    transactionHistory.save(afterRangeTransaction);
+    LocalDate date = LocalDate.of(2018, 11, 3);
+    Transaction beforeTransaction = new TransactionBuilder().withTime(date.minusDays(1).atStartOfDay()).build();
+    Transaction firstTransaction = new TransactionBuilder().withTime(date.atStartOfDay()).build();
+    Transaction secondTransaction = new TransactionBuilder().withTime(date.atTime(12, 0, 0)).build();
+    Transaction afterTransaction = new TransactionBuilder().withTime(date.plusDays(1).atStartOfDay()).build();
+    transactionHistory.save(beforeTransaction);
+    transactionHistory.save(firstTransaction);
+    transactionHistory.save(secondTransaction);
+    transactionHistory.save(afterTransaction);
 
-    SortedSet<Transaction> transactions = transactionHistory.getTransactions(start, end);
+    TreeSet<Transaction> transactions = transactionHistory.getTransactions(date);
 
-    assertThat(transactions).containsExactly(atStartTransaction, inRangeTransaction, atEndTransaction);
+    assertThat(transactions).containsExactly(firstTransaction, secondTransaction);
   }
 }
