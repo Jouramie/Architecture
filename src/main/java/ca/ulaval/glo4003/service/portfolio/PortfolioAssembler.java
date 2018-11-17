@@ -41,7 +41,7 @@ public class PortfolioAssembler {
   public PortfolioHistoryDto toDto(TreeSet<HistoricPortfolio> portfolios) throws StockNotFoundException, NoStockValueFitsCriteriaException {
     List<HistoricalPortfolioDto> portfoliosDto = new ArrayList<>();
     for (HistoricPortfolio portfolio : portfolios) {
-      HistoricalPortfolioDto toDto = toDto(portfolio);
+      HistoricalPortfolioDto toDto = historicalPortfolioToDto(portfolio);
       portfoliosDto.add(toDto);
     }
     return new PortfolioHistoryDto(portfoliosDto);
@@ -59,7 +59,7 @@ public class PortfolioAssembler {
     return new PortfolioItemDto(title, currentValue, quantity);
   }
 
-  private HistoricalPortfolioDto toDto(HistoricPortfolio historicPortfolio) throws StockNotFoundException, NoStockValueFitsCriteriaException {
+  private HistoricalPortfolioDto historicalPortfolioToDto(HistoricPortfolio historicPortfolio) throws StockNotFoundException, NoStockValueFitsCriteriaException {
     List<PortfolioItemDto> items = historicalStockCollectionToDto(historicPortfolio.date, historicPortfolio.stocks);
     BigDecimal currentTotalValue = historicPortfolio.getTotal(stockRepository).toUsd();
     return new HistoricalPortfolioDto(historicPortfolio.date, items, currentTotalValue);
