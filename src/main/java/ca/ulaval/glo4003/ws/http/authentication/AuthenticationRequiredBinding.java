@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.http;
+package ca.ulaval.glo4003.ws.http.authentication;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
 import java.lang.annotation.Retention;

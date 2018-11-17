@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.portfolio;
 
-import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
+import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

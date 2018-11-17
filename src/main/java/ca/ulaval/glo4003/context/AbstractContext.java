@@ -34,8 +34,7 @@ import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.investul.live_stock_emulator.StockSimulator;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
-import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
-import ca.ulaval.glo4003.ws.http.FilterRegistration;
+import ca.ulaval.glo4003.ws.http.authentication.FilterRegistration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -188,7 +187,6 @@ public abstract class AbstractContext {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     setupJacksonJavaTimeModule(resourceConfig);
-    resourceConfig.register(CORSResponseFilter.class);
     serviceLocator.getClassesForAnnotation(
         webServicePackagePrefix,
         FilterRegistration.class)
