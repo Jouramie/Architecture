@@ -13,6 +13,7 @@ import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
+import java.util.List;
 import java.util.UUID;
 import javax.inject.Inject;
 
@@ -48,13 +49,13 @@ public class AuthenticationService {
     throw new AuthenticationErrorException();
   }
 
-  public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto, UserRole requiredRole) {
+  public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto, List<UserRole> acceptedRoles) {
     try {
       AuthenticationToken savedToken =
           authenticationTokenRepository.findByUUID(UUID.fromString(authenticationTokenDto.token));
       User currentUser = getUserByEmail(savedToken.email);
 
-      if (!currentUser.hasRole(requiredRole)) {
+      if (!currentUser.hasRoleIn(acceptedRoles)) {
         throw new InvalidTokenException();
       }
 

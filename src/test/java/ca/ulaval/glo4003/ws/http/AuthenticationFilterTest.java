@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.http;
 
+import static java.util.Collections.singletonList;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -13,8 +14,9 @@ import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
+import ca.ulaval.glo4003.ws.http.authentication.AcceptedRoleReflexionExtractor;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationFilter;
-import ca.ulaval.glo4003.ws.http.authentication.RequiredRoleReflexionExtractor;
+import java.util.List;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
@@ -38,12 +40,12 @@ public class AuthenticationFilterTest {
   @Mock
   private AuthenticationService authenticationService;
   @Mock
-  private RequiredRoleReflexionExtractor requiredRoleReflexionExtractor;
+  private AcceptedRoleReflexionExtractor acceptedRoleReflexionExtractor;
 
   @Before
   public void setup() {
     ServiceLocator.INSTANCE.registerInstance(AuthenticationService.class, authenticationService);
-    ServiceLocator.INSTANCE.registerInstance(RequiredRoleReflexionExtractor.class, requiredRoleReflexionExtractor);
+    ServiceLocator.INSTANCE.registerInstance(AcceptedRoleReflexionExtractor.class, acceptedRoleReflexionExtractor);
 
     authenticationFilter = new AuthenticationFilter();
   }
@@ -57,13 +59,13 @@ public class AuthenticationFilterTest {
 
   @Test
   public void whenFiltering_thenRequiredRoleIsExtracted() {
-    UserRole aRole = UserRole.INVESTOR;
-    given(requiredRoleReflexionExtractor.extractRequiredRole(any())).willReturn(aRole);
+    List<UserRole> someRoles = singletonList(UserRole.INVESTOR);
+    given(acceptedRoleReflexionExtractor.extractAcceptedRoles(any())).willReturn(someRoles);
 
     authenticationFilter.filter(requestContext);
 
-    verify(requiredRoleReflexionExtractor).extractRequiredRole(any());
-    verify(authenticationService).validateAuthentication(any(), eq(aRole));
+    verify(acceptedRoleReflexionExtractor).extractAcceptedRoles(any());
+    verify(authenticationService).validateAuthentication(any(), eq(someRoles));
   }
 
   @Test

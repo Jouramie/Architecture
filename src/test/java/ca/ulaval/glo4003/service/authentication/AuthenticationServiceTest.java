@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.service.authentication;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -20,6 +21,7 @@ import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.util.UserBuilder;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
+import java.util.List;
 import java.util.UUID;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
@@ -35,7 +37,7 @@ public class AuthenticationServiceTest {
   private static final String SOME_TOKEN = "00000000-0000-0000-0000-000000000000";
   private static final String SOME_PASSWORD = UserBuilder.DEFAULT_PASSWORD;
   private static final String SOME_EMAIL = UserBuilder.DEFAULT_EMAIL;
-  private static final UserRole SOME_USER_ROLE = UserRole.INVESTOR;
+  private static final List<UserRole> SOME_USER_ROLES = singletonList(UserRole.INVESTOR);
 
   private static final ApiAuthenticationRequestDto AUTHENTICATION_REQUEST
       = new ApiAuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
@@ -119,7 +121,7 @@ public class AuthenticationServiceTest {
 
   @Test
   public void whenValidatingAuthentication_thenTokenOfUserIsRetrievedFromRepository() throws TokenNotFoundException {
-    authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLE);
+    authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLES);
 
     verify(tokenRepository).findByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token));
   }
@@ -130,7 +132,7 @@ public class AuthenticationServiceTest {
     doThrow(UserNotFoundException.class).when(userRepository).find(any());
 
     ThrowingCallable authenticateUser = () -> authenticationService
-        .validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLE);
+        .validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLES);
 
     assertThatThrownBy(authenticateUser).isInstanceOf(UserDoesNotExistException.class);
   }
@@ -141,7 +143,7 @@ public class AuthenticationServiceTest {
     doThrow(TokenNotFoundException.class).when(tokenRepository).findByUUID(any());
 
     ThrowingCallable validateToken = () -> authenticationService.
-        validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLE);
+        validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLES);
 
     assertThatThrownBy(validateToken).isInstanceOf(InvalidTokenException.class);
   }
@@ -151,7 +153,7 @@ public class AuthenticationServiceTest {
     AuthenticationTokenDto invalidUUIDToken = new AuthenticationTokenDto("10110100-0000-0000-0000-000000000000worng");
 
     ThrowingCallable validateToken = () -> authenticationService
-        .validateAuthentication(invalidUUIDToken, SOME_USER_ROLE);
+        .validateAuthentication(invalidUUIDToken, SOME_USER_ROLES);
 
     assertThatThrownBy(validateToken).isInstanceOf(NumberFormatException.class);
   }
@@ -161,7 +163,7 @@ public class AuthenticationServiceTest {
     AuthenticationTokenDto invalidUUIDToken = new AuthenticationTokenDto("wrong");
 
     ThrowingCallable validateToken = () -> authenticationService
-        .validateAuthentication(invalidUUIDToken, SOME_USER_ROLE);
+        .validateAuthentication(invalidUUIDToken, SOME_USER_ROLES);
 
     assertThatThrownBy(validateToken).isInstanceOf(IllegalArgumentException.class);
   }
@@ -173,14 +175,14 @@ public class AuthenticationServiceTest {
     given(userRepository.find(any())).willReturn(currentUser);
 
     ThrowingCallable validateToken = () -> authenticationService
-        .validateAuthentication(AUTHENTICATION_TOKEN_DTO, UserRole.ADMINISTRATOR);
+        .validateAuthentication(AUTHENTICATION_TOKEN_DTO, singletonList(UserRole.ADMINISTRATOR));
 
     assertThatThrownBy(validateToken).isInstanceOf(InvalidTokenException.class);
   }
 
   @Test
   public void whenValidatingToken_thenCurrentUserSet() {
-    authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLE);
+    authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLES);
 
     verify(currentUserSession).setCurrentUser(SOME_USER);
   }

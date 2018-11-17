@@ -2,7 +2,6 @@ package ca.ulaval.glo4003.ws.api.user;
 
 import static javax.ws.rs.core.Response.Status.CREATED;
 
-import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.authentication.UserCreationService;
 import ca.ulaval.glo4003.service.authentication.UserDto;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
@@ -12,7 +11,6 @@ import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserStockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
-import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -37,13 +35,11 @@ public class UserResourceImpl implements UserResource {
   }
 
   @Override
-  @AuthenticationRequiredBinding(requiredRole = UserRole.ADMINISTRATOR)
   public List<ApiUserDto> getUsers() {
     return null;
   }
 
   @Override
-  @AuthenticationRequiredBinding(requiredRole = UserRole.ADMINISTRATOR)
   public ApiUserDto getUserByEmail(String email) {
     return null;
   }
@@ -57,7 +53,6 @@ public class UserResourceImpl implements UserResource {
   }
 
   @Override
-  @AuthenticationRequiredBinding(requiredRole = UserRole.ADMINISTRATOR)
   public ApiUserLimitDto setUserStockLimit(String email,
                                            UserStockLimitCreationDto userStockLimitCreationDto) {
 
@@ -65,7 +60,6 @@ public class UserResourceImpl implements UserResource {
   }
 
   @Override
-  @AuthenticationRequiredBinding(requiredRole = UserRole.ADMINISTRATOR)
   public ApiUserLimitDto setUserMoneyAmountLimit(String email,
                                                  UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
 
@@ -73,7 +67,6 @@ public class UserResourceImpl implements UserResource {
   }
 
   @Override
-  @AuthenticationRequiredBinding(requiredRole = UserRole.ADMINISTRATOR)
   public Response removeUserLimit(String email) {
 
     return Response.noContent().build();

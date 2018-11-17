@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
+import java.util.List;
 import java.util.Optional;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -23,23 +24,23 @@ import javax.ws.rs.core.Response;
 public class AuthenticationFilter implements ContainerRequestFilter {
 
   private final AuthenticationService authenticationService;
-  private final RequiredRoleReflexionExtractor requiredRoleReflexionExtractor;
+  private final AcceptedRoleReflexionExtractor acceptedRolesReflexionExtractor;
 
   @Context
   private ResourceInfo resourceInfo;
 
   public AuthenticationFilter() {
     authenticationService = ServiceLocator.INSTANCE.get(AuthenticationService.class);
-    requiredRoleReflexionExtractor = ServiceLocator.INSTANCE.get(RequiredRoleReflexionExtractor.class);
+    acceptedRolesReflexionExtractor = ServiceLocator.INSTANCE.get(AcceptedRoleReflexionExtractor.class);
   }
 
   @Override
   public void filter(ContainerRequestContext containerRequestContext) {
     try {
       AuthenticationTokenDto authenticationTokenDto = extractAuthenticationInfo(containerRequestContext.getHeaders());
-      UserRole requiredRole = requiredRoleReflexionExtractor.extractRequiredRole(resourceInfo);
+      List<UserRole> acceptedRoles = acceptedRolesReflexionExtractor.extractAcceptedRoles(resourceInfo);
 
-      authenticationService.validateAuthentication(authenticationTokenDto, requiredRole);
+      authenticationService.validateAuthentication(authenticationTokenDto, acceptedRoles);
     } catch (InvalidTokenException | IllegalArgumentException exception) {
       containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
     }

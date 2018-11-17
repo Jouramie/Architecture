@@ -12,6 +12,7 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
+import java.util.List;
 
 public class User {
   private final String email;
@@ -40,8 +41,8 @@ public class User {
     return this.password.equals(password);
   }
 
-  public boolean hasRole(UserRole requiredRole) {
-    return role == requiredRole;
+  public boolean hasRoleIn(List<UserRole> roles) {
+    return roles.contains(role);
   }
 
   public Cart getCart() {
