@@ -26,8 +26,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class AuthenticationFilterTest {
 
   private static final String SOME_EMAIL = "a email";
-
   private static final String SOME_TOKEN = "a-token";
+
   private ArgumentCaptor<Response> responseCaptor;
   private ArgumentCaptor<AuthenticationTokenDto> tokenDtoCaptor;
   private MultivaluedMap<String, String> headers;
@@ -62,13 +62,13 @@ public class AuthenticationFilterTest {
     authenticationFilter.filter(requestContext);
 
     AuthenticationTokenDto expectedTokenDto = new AuthenticationTokenDto(SOME_TOKEN);
-    verify(authenticationService).validateAuthentication(tokenDtoCaptor.capture());
+    verify(authenticationService).validateAuthentication(tokenDtoCaptor.capture(), any());
     assertThat(tokenDtoCaptor.getValue()).isEqualToComparingFieldByField(expectedTokenDto);
   }
 
   @Test
   public void givenInvalidToken_whenFiltering_thenRequestIsAborted() {
-    doThrow(InvalidTokenException.class).when(authenticationService).validateAuthentication(any());
+    doThrow(InvalidTokenException.class).when(authenticationService).validateAuthentication(any(), any());
 
     authenticationFilter.filter(requestContext);
 
@@ -78,7 +78,7 @@ public class AuthenticationFilterTest {
 
   @Test
   public void givenInvalidUUID_whenFiltering_thenRequestIsAborted() {
-    doThrow(IllegalArgumentException.class).when(authenticationService).validateAuthentication(any());
+    doThrow(IllegalArgumentException.class).when(authenticationService).validateAuthentication(any(), any());
 
     authenticationFilter.filter(requestContext);
 

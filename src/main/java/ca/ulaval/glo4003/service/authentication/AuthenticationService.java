@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
+import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenFactory;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
@@ -47,11 +48,16 @@ public class AuthenticationService {
     throw new AuthenticationErrorException();
   }
 
-  public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {
+  public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto, UserRole requiredRole) {
     try {
       AuthenticationToken savedToken =
           authenticationTokenRepository.findByUUID(UUID.fromString(authenticationTokenDto.token));
       User currentUser = getUserByEmail(savedToken.email);
+
+      if (!currentUser.hasRole(requiredRole)) {
+        throw new InvalidTokenException();
+      }
+
       currentUserSession.setCurrentUser(currentUser);
     } catch (TokenNotFoundException exception) {
       throw new InvalidTokenException(exception);

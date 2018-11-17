@@ -6,7 +6,6 @@ import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserStockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
-import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -32,7 +31,6 @@ import javax.ws.rs.core.Response;
 public interface UserResource {
 
   @GET
-  @AuthenticationRequiredBinding
   @Operation(
       summary = "Get all users.",
       description = "Return all users, with their information.",
@@ -63,7 +61,6 @@ public interface UserResource {
 
   @GET
   @Path("/{email}")
-  @AuthenticationRequiredBinding
   @Operation(
       summary = "Get a user for a given email.",
       description = "Return the details of the user with the corresponding email.",
@@ -117,7 +114,6 @@ public interface UserResource {
 
   @PUT
   @Path("/{email}/limit/stock")
-  @AuthenticationRequiredBinding
   @Operation(
       summary = "Set a stock per transaction limit to a user.",
       responses = {
@@ -149,7 +145,6 @@ public interface UserResource {
 
   @PUT
   @Path("/{email}/limit/money_amount")
-  @AuthenticationRequiredBinding
   @Operation(
       summary = "Set a money amount per transaction limit to a user.",
       responses = {
@@ -181,7 +176,6 @@ public interface UserResource {
 
   @DELETE
   @Path("/{email}/limit")
-  @AuthenticationRequiredBinding
   @Operation(
       summary = "Remove a limit from a user.",
       responses = {
