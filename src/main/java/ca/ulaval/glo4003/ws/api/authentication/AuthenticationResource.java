@@ -44,6 +44,7 @@ public interface AuthenticationResource {
 
   @POST()
   @Path("/logout")
+  @AuthenticationRequiredBinding
   @Operation(
       summary = "Revoke the current user's authentication token.",
       responses = {
@@ -57,6 +58,5 @@ public interface AuthenticationResource {
           )
       }
   )
-  @AuthenticationRequiredBinding
   Response logout();
 }

@@ -2,8 +2,8 @@ package ca.ulaval.glo4003.ws.api.user;
 
 import static javax.ws.rs.core.Response.Status.CREATED;
 
-import ca.ulaval.glo4003.service.authentication.UserCreationService;
 import ca.ulaval.glo4003.service.authentication.UserDto;
+import ca.ulaval.glo4003.service.authentication.UserService;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserLimitDto;
@@ -19,17 +19,17 @@ import javax.ws.rs.core.Response;
 @Resource
 public class UserResourceImpl implements UserResource {
 
-  private final UserCreationService userCreationService;
+  private final UserService userService;
 
   private final RequestValidator requestValidator;
 
   private final ApiUserAssembler apiUserAssembler;
 
   @Inject
-  public UserResourceImpl(UserCreationService userCreationService,
+  public UserResourceImpl(UserService userService,
                           RequestValidator requestValidator,
                           ApiUserAssembler apiUserAssembler) {
-    this.userCreationService = userCreationService;
+    this.userService = userService;
     this.requestValidator = requestValidator;
     this.apiUserAssembler = apiUserAssembler;
   }
@@ -41,13 +41,14 @@ public class UserResourceImpl implements UserResource {
 
   @Override
   public ApiUserDto getUserByEmail(String email) {
-    return null;
+    UserDto user = userService.getUser(email);
+    return apiUserAssembler.toDto(user);
   }
 
   @Override
   public Response createUser(UserCreationDto userCreationDto) {
     requestValidator.validate(userCreationDto);
-    UserDto createdUser = userCreationService.createInvestorUser(userCreationDto.email, userCreationDto.password);
+    UserDto createdUser = userService.createInvestorUser(userCreationDto.email, userCreationDto.password);
     ApiUserDto apiCreatedUser = apiUserAssembler.toDto(createdUser);
     return Response.status(CREATED).entity(apiCreatedUser).build();
   }

@@ -1,8 +1,10 @@
-package ca.ulaval.glo4003.service.authentication;
+package ca.ulaval.glo4003.service.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.service.authentication.UserAssembler;
+import ca.ulaval.glo4003.service.authentication.UserDto;
 import ca.ulaval.glo4003.util.UserBuilder;
 import org.junit.Test;
 

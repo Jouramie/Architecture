@@ -9,7 +9,6 @@ import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenFactory;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
-import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
 import java.util.UUID;
@@ -62,7 +61,7 @@ public class AuthenticationService {
     try {
       return userRepository.find(email);
     } catch (UserNotFoundException exception) {
-      throw new UserDoesNotExistException(exception);
+      throw new AuthenticationErrorException(exception);
     }
   }
 

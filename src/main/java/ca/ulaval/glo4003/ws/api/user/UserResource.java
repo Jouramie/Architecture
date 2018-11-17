@@ -63,7 +63,7 @@ public interface UserResource {
 
   @GET
   @Path("/{email}")
-  @AuthenticationRequiredBinding
+  // @AuthenticationRequiredBinding
   @Operation(
       summary = "Get a user for a given email.",
       description = "Return the details of the user with the corresponding email.",
