@@ -32,7 +32,7 @@ import javax.ws.rs.core.Response;
 public interface UserResource {
 
   @GET
-  @AuthenticationRequiredBinding
+  // @AuthenticationRequiredBinding
   @Operation(
       summary = "Get all users.",
       description = "Return all users, with their information.",

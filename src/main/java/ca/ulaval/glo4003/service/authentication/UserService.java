@@ -52,6 +52,7 @@ public class UserService {
   }
 
   public List<UserDto> getUsers() {
-    return null;
+    List<User> users = userRepository.findAll();
+    return userAssembler.toDto(users);
   }
 }

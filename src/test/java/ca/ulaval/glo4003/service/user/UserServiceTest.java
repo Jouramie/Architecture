@@ -1,11 +1,11 @@
 package ca.ulaval.glo4003.service.user;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.user.User;
@@ -19,6 +19,7 @@ import ca.ulaval.glo4003.service.authentication.UserAssembler;
 import ca.ulaval.glo4003.service.authentication.UserDto;
 import ca.ulaval.glo4003.service.authentication.UserService;
 import ca.ulaval.glo4003.util.UserBuilder;
+import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,91 +32,105 @@ public class UserServiceTest {
 
   private static final String SOME_EMAIL = "email";
   private static final String SOME_PASSWORD = "password";
-  private static final UserRole USER_ROLE = UserRole.INVESTOR;
-  private static final UserDto USER_DTO = new UserDto(SOME_EMAIL, USER_ROLE);
-  private static final User USER = new UserBuilder().build();
+  private static final UserRole SOME_USER_ROLE = UserRole.INVESTOR;
+  private static final User SOME_USER = new UserBuilder().build();
 
   @Mock
   private UserFactory userFactory;
   @Mock
   private UserRepository userRepository;
-  @Mock
-  private UserAssembler userAssembler;
 
-  private UserService service;
+  private UserService userService;
 
   @Before
-  public void setupUserCreationService() {
-    service = new UserService(userFactory, userRepository, userAssembler);
+  public void setup() {
+    userService = new UserService(userFactory, userRepository, new UserAssembler());
   }
 
   @Test
   public void whenCreatingUser_thenUserIsCreated() {
-    service.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
+    given(userFactory.createInvestor(any(), any())).willReturn(SOME_USER);
+
+    userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
     verify(userFactory).createInvestor(SOME_EMAIL, SOME_PASSWORD);
   }
 
   @Test
   public void whenCreatingUser_thenUserIsAddedToRepository() throws UserAlreadyExistsException {
-    given(userFactory.createInvestor(SOME_EMAIL, SOME_PASSWORD)).willReturn(USER);
+    given(userFactory.createInvestor(any(), any())).willReturn(SOME_USER);
 
-    service.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
+    userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
-    verify(userRepository).add(USER);
+    verify(userRepository).add(SOME_USER);
   }
 
   @Test
-  public void whenCreatingUser_thenReturnsUserDto() {
-    given(userAssembler.toDto(any())).willReturn(USER_DTO);
+  public void whenCreatingUser_thenReturnsConvertedUser() {
+    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    given(userFactory.createInvestor(any(), any())).willReturn(user);
 
-    UserDto createdUser = service.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
+    UserDto resultingUser = userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
-    assertThat(createdUser).isEqualTo(USER_DTO);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    assertThat(resultingUser).isEqualToComparingFieldByField(expectedUser);
   }
 
   @Test
   public void givenUserAlreadyExist_whenCreatingUser_thenExceptionIsThrown() throws UserAlreadyExistsException {
     doThrow(UserAlreadyExistsException.class).when(userRepository).add(any());
 
-    ThrowingCallable createUser = () -> service.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
+    ThrowingCallable createUser = () -> userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
     assertThatThrownBy(createUser).isInstanceOf(InvalidUserEmailException.class);
   }
 
   @Test
   public void whenGetUser_thenGetUserFromRepository() throws UserNotFoundException {
-    service.getUser(SOME_EMAIL);
+    given(userRepository.find(any())).willReturn(SOME_USER);
+
+    userService.getUser(SOME_EMAIL);
 
     verify(userRepository).find(SOME_EMAIL);
   }
 
   @Test
-  public void whenGetUser_thenConvertUserToDto() throws UserNotFoundException {
-    User user = new UserBuilder().build();
+  public void whenGetUser_thenReturnConvertedUser() throws UserNotFoundException {
+    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
     given(userRepository.find(any())).willReturn(user);
 
-    service.getUser(SOME_EMAIL);
+    UserDto resultingUser = userService.getUser(SOME_EMAIL);
 
-    verify(userAssembler).toDto(user);
-  }
-
-  @Test
-  public void whenGetUser_thenUserDtoIsReturned() {
-    UserDto userDto = mock(UserDto.class);
-    given(userAssembler.toDto(any())).willReturn(userDto);
-
-    UserDto returnedUserDto = service.getUser(SOME_EMAIL);
-
-    assertThat(returnedUserDto).isEqualTo(userDto);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    assertThat(resultingUser).isEqualToComparingFieldByField(expectedUser);
   }
 
   @Test
   public void givenUserNotFound_whenGetUser_thenExceptionIsThrown() throws UserNotFoundException {
     doThrow(UserNotFoundException.class).when(userRepository).find(any());
 
-    ThrowingCallable getUser = () -> service.getUser(SOME_EMAIL);
+    ThrowingCallable getUser = () -> userService.getUser(SOME_EMAIL);
 
     assertThatThrownBy(getUser).isInstanceOf(UserDoesNotExistException.class);
+  }
+
+  @Test
+  public void whenGetUsers_thenGetUsersFromRepository() {
+    userService.getUsers();
+
+    verify(userRepository).findAll();
+  }
+
+  @Test
+  public void whenGetUsers_thenReturnConvertedUsers() {
+    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    List<User> users = singletonList(user);
+    given(userRepository.findAll()).willReturn(users);
+
+    List<UserDto> resultingUsers = userService.getUsers();
+
+    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    List<UserDto> expectedUsers = singletonList(expectedUser);
+    assertThat(resultingUsers).usingFieldByFieldElementComparator().containsExactlyElementsOf(expectedUsers);
   }
 }

@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
@@ -39,6 +38,7 @@ public class UserResourceTest {
 
   private static final String SOME_EMAIL = "email";
   private static final UserRole SOME_ROLE = UserRole.INVESTOR;
+  private static final UserDto SOME_USER_DTO = new UserDto(SOME_EMAIL, SOME_ROLE);
 
   @Mock
   private UserService userService;
@@ -52,7 +52,7 @@ public class UserResourceTest {
 
   @Test
   public void whenCreatingUser_thenUserIsCreated() {
-    given(userService.createInvestorUser(any(), any())).willReturn(mock(UserDto.class));
+    given(userService.createInvestorUser(any(), any())).willReturn(SOME_USER_DTO);
 
     userResource.createUser(SOME_CREATION_REQUEST);
 
@@ -61,8 +61,8 @@ public class UserResourceTest {
 
   @Test
   public void whenCreatingUser_thenReturnConvertedUser() {
-    UserDto someUser = new UserDto(SOME_EMAIL, SOME_ROLE);
-    given(userService.createInvestorUser(any(), any())).willReturn(someUser);
+    UserDto user = new UserDto(SOME_EMAIL, SOME_ROLE);
+    given(userService.createInvestorUser(any(), any())).willReturn(user);
 
     Response response = userResource.createUser(SOME_CREATION_REQUEST);
 
@@ -88,7 +88,7 @@ public class UserResourceTest {
 
   @Test
   public void whenGetUser_thenGetUserFromService() {
-    given(userService.getUser(any())).willReturn(mock(UserDto.class));
+    given(userService.getUser(any())).willReturn(SOME_USER_DTO);
 
     userResource.getUserByEmail(SOME_EMAIL);
 
@@ -97,8 +97,8 @@ public class UserResourceTest {
 
   @Test
   public void whenGetUser_thenReturnConvertedUser() {
-    UserDto someUser = new UserDto(SOME_EMAIL, SOME_ROLE);
-    given(userService.getUser(any())).willReturn(someUser);
+    UserDto user = new UserDto(SOME_EMAIL, SOME_ROLE);
+    given(userService.getUser(any())).willReturn(user);
 
     ApiUserDto resultingUser = userResource.getUserByEmail(SOME_EMAIL);
 
@@ -108,7 +108,7 @@ public class UserResourceTest {
 
   @Test
   public void whenGetUsers_thenGetUsersFromService() {
-    given(userService.getUsers()).willReturn(singletonList(mock(UserDto.class)));
+    given(userService.getUsers()).willReturn(singletonList(SOME_USER_DTO));
 
     userResource.getUsers();
 
@@ -117,8 +117,8 @@ public class UserResourceTest {
 
   @Test
   public void whenGetUsers_thenReturnConvertedUsers() {
-    List<UserDto> someUsers = singletonList(new UserDto(SOME_EMAIL, SOME_ROLE));
-    given(userService.getUsers()).willReturn(someUsers);
+    List<UserDto> users = singletonList(new UserDto(SOME_EMAIL, SOME_ROLE));
+    given(userService.getUsers()).willReturn(users);
 
     List<ApiUserDto> resultingUsers = userResource.getUsers();
 
