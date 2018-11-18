@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.ws.api.user.assemblers;
 
+import static java.util.stream.Collectors.toList;
+
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.service.authentication.UserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
@@ -12,6 +14,6 @@ public class ApiUserAssembler {
   }
 
   public List<ApiUserDto> toDto(List<UserDto> users) {
-    return null;
+    return users.stream().map(this::toDto).collect(toList());
   }
 }
