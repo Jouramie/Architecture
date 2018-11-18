@@ -140,8 +140,7 @@ public abstract class AbstractContext {
   private void loadCsvData() throws IOException, MarketNotFoundException {
     MarketCsvLoader marketLoader = new MarketCsvLoader(
         serviceLocator.get(MarketRepository.class),
-        serviceLocator.get(StockRepository.class),
-        serviceLocator.get(StockValueRetriever.class));
+        serviceLocator.get(StockRepository.class));
     marketLoader.load();
 
     StockCsvLoader stockLoader = new StockCsvLoader(

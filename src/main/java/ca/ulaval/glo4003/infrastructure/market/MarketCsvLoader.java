@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -27,13 +26,10 @@ public class MarketCsvLoader {
 
   private final MarketRepository marketRepository;
   private final StockRepository stockRepository;
-  private final StockValueRetriever stockValueRetriever;
 
-  public MarketCsvLoader(MarketRepository marketRepository, StockRepository stockRepository,
-                         StockValueRetriever stockValueRetriever) {
+  public MarketCsvLoader(MarketRepository marketRepository, StockRepository stockRepository) {
     this.marketRepository = marketRepository;
     this.stockRepository = stockRepository;
-    this.stockValueRetriever = stockValueRetriever;
   }
 
   public void load() throws IOException {

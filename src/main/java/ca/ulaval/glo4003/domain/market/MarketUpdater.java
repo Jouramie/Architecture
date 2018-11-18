@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.domain.market;
 
-import ca.ulaval.glo4003.domain.clock.ClockObservable;
 import ca.ulaval.glo4003.domain.clock.ClockObserver;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import java.time.LocalDateTime;
@@ -11,10 +10,8 @@ public class MarketUpdater implements ClockObserver {
   private final StockValueRetriever stockValueRetriever;
 
   @Inject
-  public MarketUpdater(ClockObservable clockObservable,
-                       MarketRepository marketRepository,
+  public MarketUpdater(MarketRepository marketRepository,
                        StockValueRetriever stockValueRetriever) {
-    clockObservable.register(this);
     this.stockValueRetriever = stockValueRetriever;
     this.marketRepository = marketRepository;
   }

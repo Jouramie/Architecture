@@ -3,7 +3,6 @@ package ca.ulaval.glo4003.infrastructure.market;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
 
-import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.market.MarketUpdater;
 import ca.ulaval.glo4003.domain.market.states.Market;
@@ -20,8 +19,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class MarketUpdaterTest {
   private static final LocalDateTime SOME_TIME = LocalDateTime.now();
   @Mock
-  private Clock someClock;
-  @Mock
   private MarketRepository someMarketRepository;
   @Mock
   private Market someMarket;
@@ -36,14 +33,7 @@ public class MarketUpdaterTest {
   public void setupMarketsUpdater() {
     given(someMarketRepository.findAll()).willReturn(Arrays.asList(someMarket, someOtherMarket));
 
-    marketUpdater = new MarketUpdater(someClock, someMarketRepository, stockValueRetriever);
-  }
-
-  @Test
-  public void whenConstructorIsCalled_thenMarketsUpdaterRegisterItselfToTheClock() {
-    MarketUpdater newMarketUpdater = new MarketUpdater(someClock, someMarketRepository, stockValueRetriever);
-
-    verify(someClock).register(newMarketUpdater);
+    marketUpdater = new MarketUpdater(someMarketRepository, stockValueRetriever);
   }
 
   @Test

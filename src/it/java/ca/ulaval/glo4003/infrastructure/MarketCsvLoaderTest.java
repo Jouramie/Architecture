@@ -6,7 +6,6 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
 import org.junit.Before;
@@ -20,15 +19,13 @@ public class MarketCsvLoaderTest {
   private MarketRepository marketRepository;
   @Mock
   private StockRepository stockRepository;
-  @Mock
-  private StockValueRetriever stockValueRetriever;
 
   private MarketCsvLoader loader;
 
   @Before
   public void setupMarketCSVLoader() {
     marketRepository = new InMemoryMarketRepository();
-    loader = new MarketCsvLoader(marketRepository, stockRepository, stockValueRetriever);
+    loader = new MarketCsvLoader(marketRepository, stockRepository);
   }
 
 

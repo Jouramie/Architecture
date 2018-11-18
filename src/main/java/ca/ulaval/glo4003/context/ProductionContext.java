@@ -31,11 +31,11 @@ public class ProductionContext extends AbstractContext {
     clockDriver = new ClockDriver(
         serviceLocator.get(Clock.class),
         SimulationSettings.SIMULATION_UPDATE_FREQUENCY);
-    new MarketUpdater(
-        serviceLocator.get(Clock.class),
+    MarketUpdater marketUpdater = new MarketUpdater(
         serviceLocator.get(MarketRepository.class),
         serviceLocator.get(StockValueRetriever.class)
     );
+    serviceLocator.get(Clock.class).register(marketUpdater);
     clockDriver.start();
   }
 

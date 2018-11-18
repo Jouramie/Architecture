@@ -14,6 +14,12 @@ import java.util.List;
 
 public class TestingMarketBuilder {
 
+  private static final LocalTime DEFAULT_CLOSING_TIME = LocalTime.of(21, 0, 0);
+  private static final LocalTime DEFAULT_OPENING_TIME = LocalTime.of(14, 30, 0);
+  private static final String DEFAULT_STOCK_TITLE = "stock";
+  private static final String DEFAULT_STOCK_NAME = "name";
+  private static final String DEFAULT_STOCK_CATEGORY = "category";
+  private static final String DEFAULT_MARKET_NAME = "market";
   private MarketState initialState = new ClosedMarketState();
   private MarketId marketId = new MarketId("market");
   private List<Stock> stocks;
@@ -21,7 +27,8 @@ public class TestingMarketBuilder {
   public TestingMarketBuilder() {
     StockHistory valueHistory = new StockHistory();
     valueHistory.addValue(LocalDate.now(), new StockValue(new MoneyAmount(1)));
-    stocks = Collections.singletonList(new Stock("stock", "name", "category", new MarketId("market"), valueHistory));
+    stocks = Collections.singletonList(new Stock(DEFAULT_STOCK_TITLE,
+        DEFAULT_STOCK_NAME, DEFAULT_STOCK_CATEGORY, new MarketId(DEFAULT_MARKET_NAME), valueHistory));
   }
 
   public TestingMarketBuilder withId(MarketId id) {
@@ -42,8 +49,8 @@ public class TestingMarketBuilder {
   public Market build() {
     return new Market(
         marketId,
-        LocalTime.of(14, 30, 0),
-        LocalTime.of(21, 0, 0),
+        DEFAULT_OPENING_TIME,
+        DEFAULT_CLOSING_TIME,
         Currency.USD,
         stocks,
         initialState
