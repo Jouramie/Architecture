@@ -75,14 +75,12 @@ public class UserServiceTest {
   }
 
   @Test
-  public void givenUserAlreadyExist_whenCreatingUser_thenInvalidUserEmailExceptionIsThrown()
-      throws UserAlreadyExistsException {
+  public void givenUserAlreadyExist_whenCreatingUser_thenExceptionIsThrown() throws UserAlreadyExistsException {
     doThrow(UserAlreadyExistsException.class).when(userRepository).add(any());
 
     ThrowingCallable createUser = () -> service.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
-    assertThatThrownBy(createUser)
-        .isInstanceOf(InvalidUserEmailException.class);
+    assertThatThrownBy(createUser).isInstanceOf(InvalidUserEmailException.class);
   }
 
   @Test
@@ -113,7 +111,7 @@ public class UserServiceTest {
   }
 
   @Test
-  public void givenUserNotFound_whenGetUser_thenUserDoesNotExist() throws UserNotFoundException {
+  public void givenUserNotFound_whenGetUser_thenExceptionIsThrown() throws UserNotFoundException {
     doThrow(UserNotFoundException.class).when(userRepository).find(any());
 
     ThrowingCallable getUser = () -> service.getUser(SOME_EMAIL);

@@ -36,7 +36,8 @@ public class UserResourceImpl implements UserResource {
 
   @Override
   public List<ApiUserDto> getUsers() {
-    return null;
+    List<UserDto> users = userService.getUsers();
+    return apiUserAssembler.toDto(users);
   }
 
   @Override

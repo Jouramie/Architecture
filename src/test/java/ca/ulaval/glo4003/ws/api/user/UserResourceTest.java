@@ -1,7 +1,8 @@
 package ca.ulaval.glo4003.ws.api.user;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -14,11 +15,15 @@ import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
+import java.util.List;
 import java.util.regex.Pattern;
 import javax.ws.rs.core.Response;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -56,69 +61,92 @@ public class UserResourceTest {
 
   @Test
   public void whenCreatingUser_thenUserIsConvertedToApiDto() {
-    UserDto userDto = mock(UserDto.class);
-    given(userService.createInvestorUser(any(), any())).willReturn(userDto);
+    UserDto user = mock(UserDto.class);
+    given(userService.createInvestorUser(any(), any())).willReturn(user);
 
     userResource.createUser(SOME_CREATION_REQUEST);
 
-    verify(apiUserAssembler).toDto(userDto);
+    verify(apiUserAssembler).toDto(user);
   }
 
   @Test
   public void whenCreatingUser_thenUserIsReturned() {
-    ApiUserDto apiUserDto = mock(ApiUserDto.class);
-    given(apiUserAssembler.toDto(any())).willReturn(apiUserDto);
+    ApiUserDto expectedUser = mock(ApiUserDto.class);
+    given(apiUserAssembler.toDto(any(UserDto.class))).willReturn(expectedUser);
 
     Response response = userResource.createUser(SOME_CREATION_REQUEST);
 
-    assertThat(response.getEntity()).isEqualTo(apiUserDto);
+    assertThat(response.getEntity()).isEqualTo(expectedUser);
   }
 
   @Test
-  public void givenInvalidEmail_whenCreatingUser_thenInvalidInputExceptionShouldBeThrown() {
-    Throwable thrown =
-        catchThrowable(() -> userResource.createUser(CREATION_REQUEST_WITH_INVALID_EMAIL));
+  public void givenInvalidEmail_whenCreatingUser_thenExceptionIsThrown() {
+    ThrowingCallable createUser = () -> userResource.createUser(CREATION_REQUEST_WITH_INVALID_EMAIL);
 
-    assertThat(thrown).isInstanceOf(InvalidInputException.class);
-    InvalidInputException exception = (InvalidInputException) thrown;
+    InvalidInputException exception = catchThrowableOfType(createUser, InvalidInputException.class);
     assertThatExceptionContainsErrorFor(exception, "email");
   }
 
   @Test
   public void givenInvalidPassword_whenCreatingUser_thenInvalidInputExceptionShouldBeThrown() {
-    Throwable thrown =
-        catchThrowable(() -> userResource.createUser(CREATION_REQUEST_WITH_INVALID_PASSWORD));
+    ThrowingCallable createUser = () -> userResource.createUser(CREATION_REQUEST_WITH_INVALID_PASSWORD);
 
-    assertThat(thrown).isInstanceOf(InvalidInputException.class);
-    InvalidInputException exception = (InvalidInputException) thrown;
+    InvalidInputException exception = Assertions.catchThrowableOfType(createUser, InvalidInputException.class);
     assertThatExceptionContainsErrorFor(exception, "password");
   }
 
   @Test
-  public void givenSomeEmail_whenGetUser_thenGetUserFromService() {
+  public void whenGetUser_thenGetUserFromService() {
     userResource.getUserByEmail(SOME_EMAIL);
 
     verify(userService).getUser(SOME_EMAIL);
   }
 
   @Test
-  public void givenSomeEmail_whenGetUser_thenConvertUserToApiDto() {
-    UserDto userDto = mock(UserDto.class);
-    given(userService.getUser(any())).willReturn(userDto);
+  public void whenGetUser_thenConvertUserToApiDto() {
+    UserDto user = mock(UserDto.class);
+    given(userService.getUser(any())).willReturn(user);
 
     userResource.getUserByEmail(SOME_EMAIL);
 
-    verify(apiUserAssembler).toDto(userDto);
+    verify(apiUserAssembler).toDto(user);
   }
 
   @Test
-  public void givenSomeEmail_whenGetUser_thenReturnConvertedUser() {
-    ApiUserDto apiUserDto = mock(ApiUserDto.class);
-    given(apiUserAssembler.toDto(any())).willReturn(apiUserDto);
+  public void whenGetUser_thenReturnConvertedUser() {
+    ApiUserDto expectedUser = mock(ApiUserDto.class);
+    given(apiUserAssembler.toDto(any(UserDto.class))).willReturn(expectedUser);
 
-    ApiUserDto returnedApiUserDto = userResource.getUserByEmail(SOME_EMAIL);
+    ApiUserDto resultingUser = userResource.getUserByEmail(SOME_EMAIL);
 
-    assertThat(returnedApiUserDto).isEqualTo(apiUserDto);
+    assertThat(resultingUser).isEqualTo(expectedUser);
+  }
+
+  @Test
+  public void whenGetUsers_thenGetUsersFromService() {
+    userResource.getUsers();
+
+    verify(userService).getUsers();
+  }
+
+  @Test
+  public void whenGetUsers_thenConvertUsersToApiDto() {
+    List<UserDto> users = singletonList(mock(UserDto.class));
+    given(userService.getUsers()).willReturn(users);
+
+    userResource.getUsers();
+
+    verify(apiUserAssembler).toDto(users);
+  }
+
+  @Test
+  public void whenGetUsers_thenReturnConvertedUsers() {
+    List<ApiUserDto> expectedUsers = singletonList(mock(ApiUserDto.class));
+    given(apiUserAssembler.toDto(Matchers.<List<UserDto>>any())).willReturn(expectedUsers);
+
+    List<ApiUserDto> resultingUsers = userResource.getUsers();
+
+    assertThat(resultingUsers).isEqualTo(expectedUsers);
   }
 
   private void assertThatExceptionContainsErrorFor(InvalidInputException exception, String field) {

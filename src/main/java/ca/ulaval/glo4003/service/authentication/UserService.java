@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
+import java.util.List;
 import javax.inject.Inject;
 
 @Component
@@ -48,5 +49,9 @@ public class UserService {
     } catch (UserNotFoundException e) {
       throw new UserDoesNotExistException(e);
     }
+  }
+
+  public List<UserDto> getUsers() {
+    return null;
   }
 }
