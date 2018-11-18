@@ -55,7 +55,7 @@ public class AuthenticationService {
           authenticationTokenRepository.findByUUID(UUID.fromString(authenticationTokenDto.token));
       User currentUser = getUserByEmail(savedToken.email);
 
-      if (!currentUser.hasRoleIn(acceptedRoles)) {
+      if (!currentUser.haveRoleIn(acceptedRoles)) {
         throw new InvalidTokenException();
       }
 

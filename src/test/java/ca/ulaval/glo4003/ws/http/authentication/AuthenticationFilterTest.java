@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.http;
+package ca.ulaval.glo4003.ws.http.authentication;
 
 import static java.util.Collections.singletonList;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
@@ -14,8 +14,6 @@ import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
-import ca.ulaval.glo4003.ws.http.authentication.AcceptedRoleReflexionExtractor;
-import ca.ulaval.glo4003.ws.http.authentication.AuthenticationFilter;
 import java.util.List;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MultivaluedHashMap;

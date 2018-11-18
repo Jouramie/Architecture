@@ -41,7 +41,7 @@ public class User {
     return this.password.equals(password);
   }
 
-  public boolean hasRoleIn(List<UserRole> roles) {
+  public boolean haveRoleIn(List<UserRole> roles) {
     return roles.contains(role);
   }
 
@@ -75,14 +75,14 @@ public class User {
     }
   }
 
-  private void processPurchase(Transaction transaction, PaymentProcessor paymentProcessor,
-                               StockRepository stockRepository) {
+  private void processPurchase(Transaction transaction, PaymentProcessor paymentProcessor, StockRepository stockRepository) {
     paymentProcessor.payment(transaction);
-    transaction.items.forEach((item) -> portfolio.add(item.title, item.quantity, stockRepository));
+    transaction.items.forEach((item) -> {
+      portfolio.add(item.title, item.quantity, stockRepository);
+    });
   }
 
-  private void sendTransactionNotification(NotificationFactory notificationFactory,
-                                           NotificationSender notificationSender, Transaction transaction) {
+  private void sendTransactionNotification(NotificationFactory notificationFactory, NotificationSender notificationSender, Transaction transaction) {
     Notification notification = notificationFactory.create(transaction);
     notificationSender.sendNotification(notification, new NotificationCoordinates(email));
   }

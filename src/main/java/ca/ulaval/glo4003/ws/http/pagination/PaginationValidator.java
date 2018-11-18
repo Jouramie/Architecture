@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.ws.http.pagination;
 
 import static java.lang.Integer.parseInt;
 
-import ca.ulaval.glo4003.ws.http.authentication.FilterRegistration;
+import ca.ulaval.glo4003.ws.http.FilterRegistration;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.container.ContainerRequestContext;

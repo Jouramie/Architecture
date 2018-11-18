@@ -1,5 +1,9 @@
 package ca.ulaval.glo4003.domain.user;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -19,7 +23,7 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
-import ca.ulaval.glo4003.util.UserBuilder;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +35,7 @@ public class UserTest {
 
   private static final String SOME_EMAIL = "4email@email.com";
   private static final String SOME_PASSWORD = "a password";
+  private static final UserRole SOME_ROLE = UserRole.INVESTOR;
   private static final String WRONG_PASSWORD = SOME_PASSWORD + "wrong";
   private static final String SOME_TITLE = "MSFT";
   private static final int SOME_QTY = 2;
@@ -63,7 +68,7 @@ public class UserTest {
 
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
-    user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
+    user = new User(SOME_EMAIL, SOME_PASSWORD, SOME_ROLE);
     user.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
     user.getCart().add(SOME_OTHER_TITLE, SOME_OTHER_QTY, stockRepository);
 
@@ -127,7 +132,7 @@ public class UserTest {
   public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
-    assertThat(user.getCart().isEmpty());
+    assertTrue(user.getCart().isEmpty());
   }
 
   @Test
@@ -140,6 +145,24 @@ public class UserTest {
 
     verify(paymentProcessor, never()).payment(any());
     verify(notificationSender, never()).sendNotification(any(), any());
-    assertThat(user.getPortfolio().getStocks().isEmpty());
+    assertTrue(user.getPortfolio().getStocks().isEmpty());
+  }
+
+  @Test
+  public void givenListContainingUserRole_whenHaveRoleIn_thenTrue() {
+    List<UserRole> roles = asList(UserRole.INVESTOR, UserRole.ADMINISTRATOR);
+
+    boolean haveRoleIn = user.haveRoleIn(roles);
+
+    assertTrue(haveRoleIn);
+  }
+
+  @Test
+  public void givenListNotContainingUserRole_whenHaveRoleIn_thenFalse() {
+    List<UserRole> roles = emptyList();
+
+    boolean haveRoleIn = user.haveRoleIn(roles);
+
+    assertFalse(haveRoleIn);
   }
 }
