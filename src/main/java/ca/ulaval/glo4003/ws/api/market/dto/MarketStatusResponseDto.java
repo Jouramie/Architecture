@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.market.halt;
+package ca.ulaval.glo4003.ws.api.market.dto;
 
 public class MarketStatusResponseDto {
 

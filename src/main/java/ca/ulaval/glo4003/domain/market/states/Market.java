@@ -17,6 +17,7 @@ public class Market {
   private final Currency currency;
   private boolean isHalted = false;
   private MarketState currentState;
+  private String haltMessage;
 
   public Market(MarketId id, LocalTime openingTime, LocalTime closingTime, Currency currency,
                 List<Stock> stocks, MarketState initialState) {
@@ -36,8 +37,13 @@ public class Market {
     return currency;
   }
 
-  public void halt() {
+  public void halt(String message) {
     isHalted = true;
+    haltMessage = message;
+  }
+
+  public String getHaltMessage() {
+    return haltMessage;
   }
 
   public boolean isHalted() {
