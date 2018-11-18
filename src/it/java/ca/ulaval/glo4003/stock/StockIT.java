@@ -21,7 +21,7 @@ import org.junit.Test;
 
 public class StockIT {
   private static final String API_STOCK_ROUTE = "/api/stocks";
-  private static final String API_STOCK_ROUTE_TITLE = "/api/stocks/%s";
+  private static final String API_STOCK_ROUTE_TITLE = "/api/stocks/{title}";
 
   private static final String TITLE = "title";
   private static final String NAME = "name";
@@ -43,7 +43,7 @@ public class StockIT {
   public void whenGettingByTitle_thenReturnStockInformation() {
     //@formatter:off
     when()
-        .get(String.format(API_STOCK_ROUTE_TITLE, SOME_TITLE))
+        .get(API_STOCK_ROUTE_TITLE, SOME_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
         .body(TITLE, equalTo(SOME_TITLE))
@@ -60,7 +60,7 @@ public class StockIT {
   public void givenWrongValue_whenGettingByTitle_thenStockIsNotFound() {
     //@formatter:off
     when()
-        .get(String.format(API_STOCK_ROUTE_TITLE, "wrong"))
+        .get(API_STOCK_ROUTE_TITLE, "wrong")
     .then()
         .statusCode(NOT_FOUND.getStatusCode());
     //@formatter:on

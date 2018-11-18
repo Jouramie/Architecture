@@ -2,8 +2,7 @@ package ca.ulaval.glo4003.market.halt;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static javax.ws.rs.core.Response.Status.ACCEPTED;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.*;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -49,7 +48,19 @@ public class MarketResumeIT {
     when()
         .post(String.format("/markets/%s/resume", INEXISTENT_MARKET))
     .then()
-        .statusCode(NOT_FOUND.getStatusCode());
+        .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenNonAdministratorUser_whenResumingMarketTrading_thenReturn401Unauthorized() {
+    //@formatter:off
+    given()
+        .queryParam("message", "foobar").when()
+    .when()
+        .post(String.format("/markets/%s/resume", MARKET))
+    .then()
+        .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
   }
 

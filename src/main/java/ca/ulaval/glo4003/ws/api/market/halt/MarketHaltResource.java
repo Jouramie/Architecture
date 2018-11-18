@@ -30,6 +30,10 @@ public interface MarketHaltResource {
           @ApiResponse(
               responseCode = "404",
               description = "Market does not exist."
+          ),
+          @ApiResponse(
+              responseCode = "401",
+              description = "The authenticated user is not an administrator."
           )
       }
   )
