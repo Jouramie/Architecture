@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.ws.api.user.assemblers;
 import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.domain.Component;
-import ca.ulaval.glo4003.service.authentication.UserDto;
+import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import java.util.List;
 

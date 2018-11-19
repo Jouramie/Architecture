@@ -2,8 +2,8 @@ package ca.ulaval.glo4003.ws.api.user;
 
 import static javax.ws.rs.core.Response.Status.CREATED;
 
-import ca.ulaval.glo4003.service.authentication.UserDto;
-import ca.ulaval.glo4003.service.authentication.UserService;
+import ca.ulaval.glo4003.service.user.UserDto;
+import ca.ulaval.glo4003.service.user.UserService;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserLimitDto;
