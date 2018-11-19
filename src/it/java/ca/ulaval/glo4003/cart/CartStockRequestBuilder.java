@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.util;
+package ca.ulaval.glo4003.cart;
 
 import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
 

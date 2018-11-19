@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.authentication.mappers;
+package ca.ulaval.glo4003.ws.api.user.mappers;
 
 import ca.ulaval.glo4003.service.authentication.InvalidUserEmailException;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
