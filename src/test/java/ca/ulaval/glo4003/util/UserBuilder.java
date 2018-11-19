@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.util;
 
+import ca.ulaval.glo4003.domain.cart.Cart;
+import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRole;
 
@@ -23,6 +25,6 @@ public class UserBuilder {
   }
 
   public User build() {
-    return new User(email, password, userRole);
+    return new User(email, password, userRole, new Cart(), new Portfolio(), null);
   }
 }

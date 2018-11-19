@@ -2,6 +2,8 @@ package ca.ulaval.glo4003.domain.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ca.ulaval.glo4003.domain.cart.Cart;
+import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import org.junit.Test;
 
 public class UserFactoryTest {
@@ -12,7 +14,7 @@ public class UserFactoryTest {
 
   @Test
   public void whenCreatingInvestor_thenReturnInvestorUser() {
-    User expectedUser = new User(EMAIL, PASSWORD, UserRole.INVESTOR);
+    User expectedUser = new User(EMAIL, PASSWORD, UserRole.INVESTOR, new Cart(), new Portfolio(), null);
 
     User createdUser = factory.createInvestor(EMAIL, PASSWORD);
 
@@ -21,7 +23,7 @@ public class UserFactoryTest {
 
   @Test
   public void whenCreatingAdministrator_thenReturnAdministratorUser() {
-    User expectedUser = new User(EMAIL, PASSWORD, UserRole.ADMINISTRATOR);
+    User expectedUser = new User(EMAIL, PASSWORD, UserRole.ADMINISTRATOR, new Cart(), new Portfolio(), null);
 
     User createdUser = factory.createAdministrator(EMAIL, PASSWORD);
 

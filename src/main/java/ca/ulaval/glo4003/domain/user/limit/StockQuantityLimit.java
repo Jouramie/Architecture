@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.domain.user.limit;
 
+import ca.ulaval.glo4003.domain.transaction.Transaction;
 import java.time.LocalDateTime;
 
 public class StockQuantityLimit extends Limit {
@@ -8,5 +9,11 @@ public class StockQuantityLimit extends Limit {
   public StockQuantityLimit(LocalDateTime start, LocalDateTime end, int stockQuantity) {
     super(start, end);
     this.stockQuantity = stockQuantity;
+  }
+
+  @Override
+  public boolean canProcessTransaction(Transaction transaction) {
+    return isTransactionOutsideLimitTimeSpan(transaction)
+        || transaction.getTotalQuantity() <= stockQuantity;
   }
 }

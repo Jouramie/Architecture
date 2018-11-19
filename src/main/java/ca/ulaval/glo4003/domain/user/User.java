@@ -20,15 +20,15 @@ public class User {
   private final UserRole role;
   private final Cart cart;
   private final Portfolio portfolio;
-  private Limit limit;
+  private final Limit limit;
 
-  public User(String email, String password, UserRole role) {
+  public User(String email, String password, UserRole role, Cart cart, Portfolio portfolio, Limit limit) {
     this.email = email;
     this.password = password;
     this.role = role;
-    cart = new Cart();
-    portfolio = new Portfolio();
-    limit = null;
+    this.cart = cart;
+    this.portfolio = portfolio;
+    this.limit = limit;
   }
 
   public String getEmail() {

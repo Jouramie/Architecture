@@ -8,9 +8,11 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
@@ -83,7 +85,7 @@ public class UserTest {
 
   @Test
   public void whenCreatingUser_thenCartIsEmpty() {
-    User newUser = new User(SOME_EMAIL, SOME_PASSWORD, UserRole.ADMINISTRATOR);
+    User newUser = new User(SOME_EMAIL, SOME_PASSWORD, UserRole.ADMINISTRATOR, new Cart(), new Portfolio(), null);
 
     assertThat(newUser.getCart().isEmpty()).isTrue();
   }
