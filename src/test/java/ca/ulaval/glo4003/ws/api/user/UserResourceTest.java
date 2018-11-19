@@ -79,7 +79,7 @@ public class UserResourceTest {
   }
 
   @Test
-  public void givenInvalidPassword_whenCreatingUser_thenInvalidInputExceptionShouldBeThrown() {
+  public void givenInvalidPassword_whenCreatingUser_thenExceptionIsThrown() {
     ThrowingCallable createUser = () -> userResource.createUser(CREATION_REQUEST_WITH_INVALID_PASSWORD);
 
     InvalidInputException exception = Assertions.catchThrowableOfType(createUser, InvalidInputException.class);
