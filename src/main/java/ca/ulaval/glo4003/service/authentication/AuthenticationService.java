@@ -43,7 +43,7 @@ public class AuthenticationService {
       authenticationTokenRepository.add(token);
       return responseAssembler.toDto(token);
     }
-    throw new AuthenticationErrorException();
+    throw new AuthenticationFailedException();
   }
 
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto) {
@@ -61,7 +61,7 @@ public class AuthenticationService {
     try {
       return userRepository.find(email);
     } catch (UserNotFoundException exception) {
-      throw new AuthenticationErrorException(exception);
+      throw new AuthenticationFailedException(exception);
     }
   }
 

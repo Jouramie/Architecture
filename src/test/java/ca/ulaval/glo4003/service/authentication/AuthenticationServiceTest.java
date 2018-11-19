@@ -105,7 +105,7 @@ public class AuthenticationServiceTest {
     ThrowableAssert.ThrowingCallable authenticateUser
         = () -> authenticationService.authenticate(INVALID_AUTHENTICATION_REQUEST);
 
-    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationErrorException.class);
+    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationFailedException.class);
   }
 
   @Test
@@ -116,7 +116,7 @@ public class AuthenticationServiceTest {
     ThrowableAssert.ThrowingCallable authenticateUser
         = () -> authenticationService.authenticate(INVALID_AUTHENTICATION_REQUEST);
 
-    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationErrorException.class);
+    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationFailedException.class);
   }
 
   @Test
@@ -135,7 +135,7 @@ public class AuthenticationServiceTest {
     ThrowableAssert.ThrowingCallable authenticateUser
         = () -> authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationErrorException.class);
+    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationFailedException.class);
   }
 
   @Test
