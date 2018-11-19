@@ -17,7 +17,6 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.domain.user.UserRole;
@@ -196,7 +195,6 @@ public class UserIT {
         .get(API_USERS_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
-        .header("X-Total-Count", is(notNullValue()))
         .body("$", everyItem(hasKey(EMAIL)))
         .body("$", everyItem(hasKey(ROLE)));
     //@formatter:on
