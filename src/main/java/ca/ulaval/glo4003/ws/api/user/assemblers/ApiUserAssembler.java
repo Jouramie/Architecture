@@ -13,7 +13,7 @@ public class ApiUserAssembler {
     return new ApiUserDto(userDto.email, userDto.role, null);
   }
 
-  public List<ApiUserDto> toDto(List<UserDto> users) {
+  public List<ApiUserDto> toDtoList(List<UserDto> users) {
     return users.stream().map(this::toDto).collect(toList());
   }
 }

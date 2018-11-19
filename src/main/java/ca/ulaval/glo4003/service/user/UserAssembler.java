@@ -13,7 +13,7 @@ public class UserAssembler {
     return new UserDto(user.getEmail(), user.getRole());
   }
 
-  public List<UserDto> toDto(List<User> users) {
+  public List<UserDto> toDtoList(List<User> users) {
     return users.stream().map(this::toDto).collect(toList());
   }
 }

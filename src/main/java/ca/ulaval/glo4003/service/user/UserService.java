@@ -52,6 +52,6 @@ public class UserService {
 
   public List<UserDto> getUsers() {
     List<User> users = userRepository.findAll();
-    return userAssembler.toDto(users);
+    return userAssembler.toDtoList(users);
   }
 }
