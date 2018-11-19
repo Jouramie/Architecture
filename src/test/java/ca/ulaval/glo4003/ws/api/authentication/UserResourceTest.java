@@ -8,9 +8,10 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.authentication.UserCreationService;
 import ca.ulaval.glo4003.service.authentication.UserDto;
-import ca.ulaval.glo4003.ws.api.authentication.assemblers.ApiUserAssembler;
-import ca.ulaval.glo4003.ws.api.authentication.dto.ApiUserDto;
-import ca.ulaval.glo4003.ws.api.authentication.dto.UserCreationDto;
+import ca.ulaval.glo4003.ws.api.user.UserResourceImpl;
+import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
+import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
+import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.regex.Pattern;
@@ -37,7 +38,7 @@ public class UserResourceTest {
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
   private static final UserDto SOME_USER_RESPONSE = new UserDto("email", UserRole.INVESTOR);
-  private static final ApiUserDto SOME_API_USER_RESPONSE = new ApiUserDto("email", UserRole.INVESTOR);
+  private static final ApiUserDto SOME_API_USER_RESPONSE = new ApiUserDto("email", UserRole.INVESTOR, null);
 
   @Mock
   private UserCreationService userCreationService;
