@@ -29,30 +29,30 @@ public class StockQuantityLimitTest {
   }
 
   @Test
-  public void givenStockOverLimit_whenCanProcessTransaction_thenNo() {
+  public void givenStockOverLimit_whenVerified_thenTransactionExceedLimit() {
     transaction = generateTransaction(SOME_INSIDE_DATE, MORE_STOCK_QUANTITY);
 
-    boolean result = limit.canProcessTransaction(transaction);
+    boolean result = limit.doesTransactionExceedLimit(transaction);
+
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  public void givenStockUnderLimit_whenVerified_thenTransactionDoesNotExceedLimit() {
+    transaction = generateTransaction(SOME_INSIDE_DATE, LESS_STOCK_QUANTITY);
+
+    boolean result = limit.doesTransactionExceedLimit(transaction);
 
     assertThat(result).isFalse();
   }
 
   @Test
-  public void givenStockUnderLimit_whenCanProcessTransaction_thenYes() {
-    transaction = generateTransaction(SOME_INSIDE_DATE, LESS_STOCK_QUANTITY);
-
-    boolean result = limit.canProcessTransaction(transaction);
-
-    assertThat(result).isTrue();
-  }
-
-  @Test
-  public void givenTransactionOutsideLimitDuration_whenCanProcessTransaction_thenYes() {
+  public void givenTransactionOutsideLimitTimeSpan_whenVerified_thenTransactionDoesNotExceedLimit() {
     transaction = generateTransaction(SOME_OUTSIDE_DATE, MORE_STOCK_QUANTITY);
 
-    boolean result = limit.canProcessTransaction(transaction);
+    boolean result = limit.doesTransactionExceedLimit(transaction);
 
-    assertThat(result).isTrue();
+    assertThat(result).isFalse();
   }
 
   private Transaction generateTransaction(LocalDateTime date, int quantity) {

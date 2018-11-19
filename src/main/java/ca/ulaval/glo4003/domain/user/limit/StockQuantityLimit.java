@@ -12,8 +12,8 @@ public class StockQuantityLimit extends Limit {
   }
 
   @Override
-  public boolean canProcessTransaction(Transaction transaction) {
-    return isTransactionOutsideLimitTimeSpan(transaction)
-        || transaction.getTotalQuantity() <= stockQuantity;
+  public boolean doesTransactionExceedLimit(Transaction transaction) {
+    return isTransactionInsideLimitTimeSpan(transaction)
+        && transaction.getTotalQuantity() > stockQuantity;
   }
 }

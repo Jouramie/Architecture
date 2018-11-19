@@ -15,10 +15,12 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
+import ca.ulaval.glo4003.domain.user.limit.TransactionExceedLimitException;
 import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.cart.exceptions.EmptyCartOnCheckoutException;
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
+import ca.ulaval.glo4003.service.cart.exceptions.PurchaseExceedUserLimitException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,8 +70,10 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenTransactionIsAssembledToDto() throws StockNotFoundException, EmptyCartException {
-    given(currentUser.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository)).willReturn(transaction);
+  public void whenCheckoutCart_thenTransactionIsAssembledToDto()
+      throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
+    given(currentUser.checkoutCart(transactionFactory, paymentProcessor,
+        notificationFactory, notificationSender, stockRepository)).willReturn(transaction);
 
     TransactionDto transactionDto = checkoutService.checkoutCart();
 
@@ -77,16 +81,26 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void whenCheckoutCartThrowingStockNotFound_thenExceptionIsTransformed() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCartThrowingStockNotFound_thenExceptionIsTransformed()
+      throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
     given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new StockNotFoundException(SOME_TITLE));
 
     assertThatThrownBy(() -> checkoutService.checkoutCart()).isInstanceOf(InvalidStockTitleException.class);
   }
 
   @Test
-  public void whenCheckoutCartThrowingEmptyCart_thenExceptionIsTransformed() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCartThrowingEmptyCart_thenExceptionIsTransformed()
+      throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
     given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new EmptyCartException());
 
     assertThatThrownBy(() -> checkoutService.checkoutCart()).isInstanceOf(EmptyCartOnCheckoutException.class);
+  }
+
+  @Test
+  public void whenCheckoutCartThrowingExceedLimit_thenExceptionIsTransformed()
+      throws EmptyCartException, TransactionExceedLimitException, StockNotFoundException {
+    given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new TransactionExceedLimitException());
+
+    assertThatThrownBy(() -> checkoutService.checkoutCart()).isInstanceOf(PurchaseExceedUserLimitException.class);
   }
 }

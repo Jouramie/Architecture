@@ -13,8 +13,8 @@ public class MoneyAmountLimit extends Limit {
   }
 
   @Override
-  public boolean canProcessTransaction(Transaction transaction) {
-    return isTransactionOutsideLimitTimeSpan(transaction)
-        || transaction.calculateTotal().isLessThanOrEqual(amount);
+  public boolean doesTransactionExceedLimit(Transaction transaction) {
+    return isTransactionInsideLimitTimeSpan(transaction)
+        && transaction.calculateTotal().isGreaterThan(amount);
   }
 }

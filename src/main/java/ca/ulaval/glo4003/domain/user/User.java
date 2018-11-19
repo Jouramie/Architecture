@@ -13,6 +13,7 @@ import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
+import ca.ulaval.glo4003.domain.user.limit.TransactionExceedLimitException;
 
 public class User {
   private final String email;
@@ -55,10 +56,14 @@ public class User {
                                   PaymentProcessor paymentProcessor,
                                   NotificationFactory notificationFactory,
                                   NotificationSender notificationSender,
-                                  StockRepository stockRepository) throws StockNotFoundException, EmptyCartException {
+                                  StockRepository stockRepository)
+      throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
+
     checkIfCartIsEmpty(cart);
 
     Transaction purchase = transactionFactory.createPurchase(cart);
+    checkIfPurchaseExceedLimit(purchase);
+
     processPurchase(purchase, paymentProcessor, stockRepository);
     sendTransactionNotification(notificationFactory, notificationSender, purchase);
 
@@ -73,12 +78,22 @@ public class User {
     }
   }
 
-  private void processPurchase(Transaction transaction, PaymentProcessor paymentProcessor, StockRepository stockRepository) {
+  private void checkIfPurchaseExceedLimit(Transaction purchase) throws TransactionExceedLimitException {
+    if (limit.doesTransactionExceedLimit(purchase)) {
+      throw new TransactionExceedLimitException();
+    }
+  }
+
+  private void processPurchase(Transaction transaction,
+                               PaymentProcessor paymentProcessor,
+                               StockRepository stockRepository) {
     paymentProcessor.payment(transaction);
     transaction.items.forEach((item) -> portfolio.add(item.title, item.quantity, stockRepository));
   }
 
-  private void sendTransactionNotification(NotificationFactory notificationFactory, NotificationSender notificationSender, Transaction transaction) {
+  private void sendTransactionNotification(NotificationFactory notificationFactory,
+                                           NotificationSender notificationSender,
+                                           Transaction transaction) {
     Notification notification = notificationFactory.create(transaction);
     notificationSender.sendNotification(notification, new NotificationCoordinates(email));
   }

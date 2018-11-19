@@ -12,10 +12,10 @@ public abstract class Limit {
     this.end = end;
   }
 
-  public abstract boolean canProcessTransaction(Transaction transaction);
+  public abstract boolean doesTransactionExceedLimit(Transaction transaction);
 
-  boolean isTransactionOutsideLimitTimeSpan(Transaction transaction) {
-    return transaction.timestamp.isBefore(start)
-        || transaction.timestamp.isAfter(end);
+  boolean isTransactionInsideLimitTimeSpan(Transaction transaction) {
+    return transaction.timestamp.isAfter(start)
+        && transaction.timestamp.isBefore(end);
   }
 }

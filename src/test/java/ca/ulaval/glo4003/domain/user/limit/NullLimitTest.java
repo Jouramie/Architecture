@@ -9,11 +9,11 @@ public class NullLimitTest {
   private NullLimit limit;
 
   @Test
-  public void whenCanProcessTransaction_thenAlwaysYes() {
-    limit = new NullLimit(null, null);
+  public void whenVerified_thenTransactionNeverExceedLimit() {
+    limit = new NullLimit();
 
-    boolean result = limit.canProcessTransaction(null);
+    boolean result = limit.doesTransactionExceedLimit(null);
 
-    assertThat(result).isTrue();
+    assertThat(result).isFalse();
   }
 }

@@ -83,8 +83,4 @@ public class MoneyAmount {
   public boolean isLessThan(MoneyAmount other) {
     return toUsd().compareTo(other.toUsd()) < 0;
   }
-
-  public boolean isLessThanOrEqual(MoneyAmount other) {
-    return toUsd().compareTo(other.toUsd()) <= 0;
-  }
 }
