@@ -12,6 +12,7 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
+import ca.ulaval.glo4003.domain.user.limit.Limit;
 import java.util.List;
 
 public class User {
@@ -20,6 +21,7 @@ public class User {
   private final UserRole role;
   private final Cart cart;
   private final Portfolio portfolio;
+  private Limit limit;
 
   public User(String email, String password, UserRole role) {
     this.email = email;
@@ -27,6 +29,7 @@ public class User {
     this.role = role;
     cart = new Cart();
     portfolio = new Portfolio();
+    limit = null;
   }
 
   public String getEmail() {
@@ -77,9 +80,7 @@ public class User {
 
   private void processPurchase(Transaction transaction, PaymentProcessor paymentProcessor, StockRepository stockRepository) {
     paymentProcessor.payment(transaction);
-    transaction.items.forEach((item) -> {
-      portfolio.add(item.title, item.quantity, stockRepository);
-    });
+    transaction.items.forEach((item) -> portfolio.add(item.title, item.quantity, stockRepository));
   }
 
   private void sendTransactionNotification(NotificationFactory notificationFactory, NotificationSender notificationSender, Transaction transaction) {

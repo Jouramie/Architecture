@@ -26,7 +26,7 @@ public class ClockDriverTest {
   }
 
   @Test
-  public void whenUpdaterIsStarted_thenLiveStockSimulatorIsCalledAtSpecfiedFrequency() throws InterruptedException {
+  public void whenUpdaterIsStarted_thenLiveStockSimulatorIsCalledAtSpecifiedFrequency() throws InterruptedException {
     driver.start();
     sleep(3 * STOCK_UPDATE_FREQ.toMillis());
     driver.stop();
