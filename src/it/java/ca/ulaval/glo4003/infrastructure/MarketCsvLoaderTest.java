@@ -29,7 +29,6 @@ public class MarketCsvLoaderTest {
   }
 
 
-  // TODO Le test échoue si on change les CSV de markets. Il faudrait un CSV de test seulement pour ce test.
   @Test
   public void whenLoad_thenLoadTheValuesFromTheCsvFile() throws Exception {
     loader.load();
