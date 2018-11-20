@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public class UserAssembler {
   public UserDto toDto(User user) {
-    return new UserDto(user.getEmail(), user.getRole());
+    return new UserDto(user.getEmail(), user.getRole(), null);
   }
 
   public List<UserDto> toDtoList(List<User> users) {

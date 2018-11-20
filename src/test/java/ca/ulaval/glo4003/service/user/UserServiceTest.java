@@ -68,7 +68,7 @@ public class UserServiceTest {
 
     UserDto resultingUser = userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE, null);
     assertThat(resultingUser).isEqualToComparingFieldByField(expectedUser);
   }
 
@@ -97,7 +97,7 @@ public class UserServiceTest {
 
     UserDto resultingUser = userService.getUser(SOME_EMAIL);
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE, null);
     assertThat(resultingUser).isEqualToComparingFieldByField(expectedUser);
   }
 
@@ -125,7 +125,7 @@ public class UserServiceTest {
 
     List<UserDto> resultingUsers = userService.getUsers();
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE, null);
     List<UserDto> expectedUsers = singletonList(expectedUser);
     assertThat(resultingUsers).usingFieldByFieldElementComparator().containsExactlyElementsOf(expectedUsers);
   }

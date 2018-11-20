@@ -11,11 +11,16 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.service.user.UserService;
+import ca.ulaval.glo4003.service.user.limit.LimitDto;
+import ca.ulaval.glo4003.service.user.limit.StockLimitDto;
+import ca.ulaval.glo4003.ws.api.user.assemblers.ApiLimitAssembler;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
+import ca.ulaval.glo4003.ws.api.user.dto.ApiStockLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.ws.rs.core.Response;
 import org.assertj.core.api.Assertions;
@@ -38,7 +43,10 @@ public class UserResourceTest {
 
   private static final String SOME_EMAIL = "email";
   private static final UserRole SOME_ROLE = UserRole.INVESTOR;
-  private static final UserDto SOME_USER_DTO = new UserDto(SOME_EMAIL, SOME_ROLE);
+  private static final LocalDateTime SOME_DATE = LocalDateTime.now();
+  private static final int SOME_STOCK_QUANTITY = 12;
+  private static final LimitDto SOME_LIMIT = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+  private static final UserDto SOME_USER_DTO = new UserDto(SOME_EMAIL, SOME_ROLE, SOME_LIMIT);
 
   @Mock
   private UserService userService;
@@ -47,7 +55,8 @@ public class UserResourceTest {
 
   @Before
   public void setup() {
-    userResource = new UserResourceImpl(userService, new RequestValidator(), new ApiUserAssembler());
+    userResource = new UserResourceImpl(userService, new RequestValidator(),
+        new ApiUserAssembler(new ApiLimitAssembler()));
   }
 
   @Test
@@ -61,7 +70,7 @@ public class UserResourceTest {
 
   @Test
   public void whenCreatingUser_thenReturnConvertedUser() {
-    UserDto user = new UserDto(SOME_EMAIL, SOME_ROLE);
+    UserDto user = new UserDto(SOME_EMAIL, SOME_ROLE, null);
     given(userService.createInvestorUser(any(), any())).willReturn(user);
 
     Response response = userResource.createUser(SOME_CREATION_REQUEST);
@@ -97,13 +106,15 @@ public class UserResourceTest {
 
   @Test
   public void whenGetUser_thenReturnConvertedUser() {
-    UserDto user = new UserDto(SOME_EMAIL, SOME_ROLE);
+    StockLimitDto limit = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    UserDto user = new UserDto(SOME_EMAIL, SOME_ROLE, limit);
     given(userService.getUser(any())).willReturn(user);
 
     ApiUserDto resultingUser = userResource.getUserByEmail(SOME_EMAIL);
 
-    ApiUserDto expectedUser = new ApiUserDto(SOME_EMAIL, SOME_ROLE, null);
-    assertThat(resultingUser).isEqualToComparingFieldByField(expectedUser);
+    ApiStockLimitDto expectedLimit = new ApiStockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    ApiUserDto expectedUser = new ApiUserDto(SOME_EMAIL, SOME_ROLE, expectedLimit);
+    assertThat(resultingUser).isEqualToComparingFieldByFieldRecursively(expectedUser);
   }
 
   @Test
@@ -117,12 +128,14 @@ public class UserResourceTest {
 
   @Test
   public void whenGetUsers_thenReturnConvertedUsers() {
-    List<UserDto> users = singletonList(new UserDto(SOME_EMAIL, SOME_ROLE));
+    LimitDto limit = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    List<UserDto> users = singletonList(new UserDto(SOME_EMAIL, SOME_ROLE, limit));
     given(userService.getUsers()).willReturn(users);
 
     List<ApiUserDto> resultingUsers = userResource.getUsers();
 
-    List<ApiUserDto> expectedUsers = singletonList(new ApiUserDto(SOME_EMAIL, SOME_ROLE, null));
-    assertThat(resultingUsers).usingFieldByFieldElementComparator().containsExactlyElementsOf(expectedUsers);
+    ApiStockLimitDto expectedLimit = new ApiStockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    List<ApiUserDto> expectedUsers = singletonList(new ApiUserDto(SOME_EMAIL, SOME_ROLE, expectedLimit));
+    assertThat(resultingUsers).usingRecursiveFieldByFieldElementComparator().containsExactlyElementsOf(expectedUsers);
   }
 }

@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.user;
 
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
-import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 
 public class MoneyAmountLimitCreationRequestBuilder {
   public static final ApplicationPeriod DEFAULT_APPLICATION_PERIOD = ApplicationPeriod.DAILY;
@@ -20,7 +20,7 @@ public class MoneyAmountLimitCreationRequestBuilder {
     return this;
   }
 
-  public UserMoneyAmountLimitCreationDto build() {
-    return new UserMoneyAmountLimitCreationDto(applicationPeriod, moneyAmount);
+  public MoneyAmountLimitCreationDto build() {
+    return new MoneyAmountLimitCreationDto(applicationPeriod, moneyAmount);
   }
 }

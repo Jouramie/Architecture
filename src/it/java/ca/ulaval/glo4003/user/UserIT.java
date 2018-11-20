@@ -20,8 +20,8 @@ import static org.hamcrest.Matchers.not;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
 import io.restassured.http.Header;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
@@ -45,8 +45,8 @@ public class UserIT {
   private static final String LIMIT = "limit";
   private static final String INPUT_ERRORS = "inputErrors";
   private static final String MAXIMAL_STOCK_QUANTITY = "maximalStockQuantity";
-  private static final String BEGIN_DATE = "beginDate";
-  private static final String END_DATE = "endDate";
+  private static final String BEGIN_DATE = "from";
+  private static final String END_DATE = "to";
 
   private static final String INVESTOR_USER_ROLE = UserRole.INVESTOR.toString();
 
@@ -57,7 +57,7 @@ public class UserIT {
     given().body(SOME_USER_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON).post(API_USERS_ROUTE);
   }
 
-  private static void givenSomeLimitAddedToSomeUser(String token, UserMoneyAmountLimitCreationDto request) {
+  private static void givenSomeLimitAddedToSomeUser(String token, MoneyAmountLimitCreationDto request) {
     Header tokenHeader = new Header("token", token);
     given().header(tokenHeader).body(request).contentType(MediaType.APPLICATION_JSON).when()
         .put(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL);
@@ -243,8 +243,8 @@ public class UserIT {
         .put(API_USERS_EMAIL_LIMIT_STOCK_ROUTE, SOME_EMAIL)
     .then()
         .statusCode(CREATED.getStatusCode())
-        .body("$", hasKey("beginDate"))
-        .body("$", hasKey("endDate"))
+        .body("$", hasKey("from"))
+        .body("$", hasKey("to"))
         .body(MAXIMAL_STOCK_QUANTITY, is(5));
     //@formatter:on
   }

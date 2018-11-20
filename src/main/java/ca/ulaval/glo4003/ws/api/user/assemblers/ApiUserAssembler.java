@@ -9,8 +9,15 @@ import java.util.List;
 
 @Component
 public class ApiUserAssembler {
+
+  private final ApiLimitAssembler limitAssembler;
+
+  public ApiUserAssembler(ApiLimitAssembler limitAssembler) {
+    this.limitAssembler = limitAssembler;
+  }
+
   public ApiUserDto toDto(UserDto userDto) {
-    return new ApiUserDto(userDto.email, userDto.role, null);
+    return new ApiUserDto(userDto.email, userDto.role, limitAssembler.toDto(userDto.limit));
   }
 
   public List<ApiUserDto> toDtoList(List<UserDto> users) {

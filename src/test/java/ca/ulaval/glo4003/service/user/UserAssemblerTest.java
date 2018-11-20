@@ -20,7 +20,7 @@ public class UserAssemblerTest {
 
     UserDto createdUser = assembler.toDto(user);
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_ROLE);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_ROLE, null);
     assertThat(createdUser).isEqualToComparingFieldByField(expectedUser);
   }
 }
