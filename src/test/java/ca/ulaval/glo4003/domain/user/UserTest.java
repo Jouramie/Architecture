@@ -158,4 +158,14 @@ public class UserTest {
         .isThrownBy(() ->
             user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository));
   }
+
+  @Test
+  public void givenNoMarketForAStock_whenCheckoutCart_thenExceptionIsPropagated()
+      throws MarketNotFoundForStockException, HaltedMarketException, StockNotFoundException {
+    given(transactionFactory.createPurchase(any(Cart.class))).willThrow(new MarketNotFoundForStockException(SOME_TITLE));
+
+    assertThatExceptionOfType(MarketNotFoundForStockException.class)
+        .isThrownBy(() ->
+            user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository));
+  }
 }

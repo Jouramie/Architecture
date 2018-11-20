@@ -105,4 +105,12 @@ public class CheckoutServiceTest {
 
     assertThatExceptionOfType(HaltedMarketOnCheckoutException.class).isThrownBy(() -> checkoutService.checkoutCart());
   }
+
+  @Test
+  public void givenNoMarketForAStock_whenCheckout_thenExceptionIsTransformed()
+      throws MarketNotFoundForStockException, HaltedMarketException, StockNotFoundException, EmptyCartException {
+    given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new MarketNotFoundForStockException(SOME_TITLE));
+
+    assertThatExceptionOfType(InvalidStockTitleException.class).isThrownBy(() -> checkoutService.checkoutCart());
+  }
 }
