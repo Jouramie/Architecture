@@ -29,7 +29,7 @@ public class TransactionHistoryTest {
   }
 
   @Test
-  public void givenTransactions_whenGet_thenReturnTransactionsWithinRange() {
+  public void whenGettingTransactions_thenReturnTransactionsWithinRange() {
     LocalDate date = LocalDate.of(2018, 11, 3);
     Transaction beforeTransaction = new TransactionBuilder().withTime(date.minusDays(1).atStartOfDay()).build();
     Transaction firstTransaction = new TransactionBuilder().withTime(date.atStartOfDay()).build();

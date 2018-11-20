@@ -96,6 +96,19 @@ public class HistoricalPortfolioAssemblerTest {
   }
 
   @Test
+  public void givenHistoricalPortfolioWithStocks_whenToDto_thenTitleAndQuantityIsReported() throws StockNotFoundException, NoStockValueFitsCriteriaException {
+    TreeSet<HistoricalPortfolio> portfolios = new TreeSet<>();
+    portfolios.add(someFirstPortfolio);
+
+    PortfolioHistoryDto dto = assembler.toDto(portfolios);
+
+    HistoricalPortfolioDto portfolioDto = dto.historicalPortfolios.get(0);
+    PortfolioItemDto portfolioItemDto = portfolioDto.stocks.get(0);
+    assertThat(portfolioItemDto.title).isEqualTo(SOME_TITLE);
+    assertThat(portfolioItemDto.quantity).isEqualTo(SOME_QUANTITY);
+  }
+
+  @Test
   public void givenHistoricalPortfolioWithStocks_whenToDto_thenTotalValueIsCalculated() throws StockNotFoundException, NoStockValueFitsCriteriaException {
     TreeSet<HistoricalPortfolio> portfolios = new TreeSet<>();
     portfolios.add(someFirstPortfolio);
@@ -115,8 +128,6 @@ public class HistoricalPortfolioAssemblerTest {
 
     HistoricalPortfolioDto portfolioDto = dto.historicalPortfolios.get(0);
     PortfolioItemDto portfolioItemDto = portfolioDto.stocks.get(0);
-    assertThat(portfolioItemDto.title).isEqualTo(SOME_TITLE);
-    assertThat(portfolioItemDto.quantity).isEqualTo(SOME_QUANTITY);
     assertThat(portfolioItemDto.currentValue).isEqualTo(SOME_FIRST_HISTORICAL_MONEY_AMOUNT.toUsd());
   }
 }

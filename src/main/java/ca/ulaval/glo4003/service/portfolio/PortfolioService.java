@@ -49,9 +49,7 @@ public class PortfolioService {
       User user = currentUserSession.getCurrentUser();
       TreeSet<HistoricalPortfolio> portfolios = user.getPortfolio().getHistory(from, clock.getCurrentTime().toLocalDate());
       return historicalPortfolioAssembler.toDto(portfolios);
-    } catch (StockNotFoundException e) {
-      throw new InvalidPortfolioException();
-    } catch (NoStockValueFitsCriteriaException e) {
+    } catch (StockNotFoundException | NoStockValueFitsCriteriaException e) {
       throw new InvalidPortfolioException();
     }
   }
