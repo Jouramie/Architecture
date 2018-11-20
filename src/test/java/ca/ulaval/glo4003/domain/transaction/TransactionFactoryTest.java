@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.domain.transaction;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
@@ -15,6 +16,7 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
+import ca.ulaval.glo4003.service.cart.HaltedMarketOnCheckoutException;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -67,7 +69,8 @@ public class TransactionFactoryTest {
   }
 
   @Test
-  public void whenCreate_thenTypeIsSetToTransaction() throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
+  public void whenCreate_thenTypeIsSetToTransaction()
+      throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
     Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
@@ -75,7 +78,8 @@ public class TransactionFactoryTest {
   }
 
   @Test
-  public void whenCreate_thenLocalTimeSetToTransaction() throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
+  public void whenCreate_thenLocalTimeSetToTransaction()
+      throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
     Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
@@ -83,11 +87,19 @@ public class TransactionFactoryTest {
   }
 
   @Test
-  public void whenCreate_thenTransactionItemsIsSetToTransaction() throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
+  public void whenCreate_thenTransactionItemsIsSetToTransaction()
+      throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
     Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).withDefaultItems().build();
 
     assertThat(transaction.items).first().isEqualToComparingOnlyGivenFields(expected.items.get(0), "title", "quantity");
     assertThat(transaction.items.get(0).amount.getAmount()).isEqualTo(expected.items.get(0).amount.getAmount());
+  }
+
+  @Test
+  public void givenMarketHalted_whenCreate_thenExceptionIsThrown() {
+    given(market.isHalted()).willReturn(true);
+
+    assertThatExceptionOfType(HaltedMarketException.class).isThrownBy(() -> factory.createPurchase(cart));
   }
 }

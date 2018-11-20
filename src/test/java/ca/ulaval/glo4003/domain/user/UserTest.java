@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.domain.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -8,6 +9,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundForStockException;
 import ca.ulaval.glo4003.domain.notification.Notification;
@@ -38,6 +40,7 @@ public class UserTest {
   private static final int SOME_QTY = 2;
   private static final String SOME_OTHER_TITLE = "APPL";
   private static final int SOME_OTHER_QTY = 3;
+  private static final String SOME_HALTED_MESSAGE = "market halted";
 
   @Mock
   private StockRepository stockRepository;
@@ -126,7 +129,8 @@ public class UserTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
+  public void whenCheckoutCart_thenCartIsCleared()
+      throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(user.getCart().isEmpty());
@@ -143,5 +147,15 @@ public class UserTest {
     verify(paymentProcessor, never()).payment(any());
     verify(notificationSender, never()).sendNotification(any(), any());
     assertThat(user.getPortfolio().getStocks().isEmpty());
+  }
+
+  @Test
+  public void givenMarketHalted_whenCheckoutCart_thenExceptionIsPropagated()
+      throws MarketNotFoundForStockException, HaltedMarketException, StockNotFoundException {
+    given(transactionFactory.createPurchase(any(Cart.class))).willThrow(new HaltedMarketException(SOME_HALTED_MESSAGE));
+
+    assertThatExceptionOfType(HaltedMarketException.class)
+        .isThrownBy(() ->
+            user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository));
   }
 }
