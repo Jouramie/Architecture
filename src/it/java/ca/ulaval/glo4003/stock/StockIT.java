@@ -79,8 +79,7 @@ public class StockIT {
         .body("$", everyItem(hasKey(MARKET)))
         .body("$", everyItem(hasKey(CATEGORY)))
         .body("$", everyItem(hasKey(OPEN_VALUE)))
-        .body("$", everyItem(hasKey(CURRENT_VALUE)))
-        .body("$", everyItem(hasKey(CLOSE_VALUE)));
+        .body("$", everyItem(hasKey(CURRENT_VALUE)));
     //@formatter:on
   }
 
