@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.portfolio;
 
+import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,7 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/portfolio")
-@AuthenticationRequiredBinding
+@AuthenticationRequiredBinding(acceptedRoles = UserRole.INVESTOR)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface PortfolioResource {

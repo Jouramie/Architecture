@@ -38,12 +38,12 @@ public class AuthenticationFilterTest {
   @Mock
   private AuthenticationService authenticationService;
   @Mock
-  private AcceptedRoleReflexionExtractor acceptedRoleReflexionExtractor;
+  private AcceptedRoleReflectionExtractor acceptedRoleReflectionExtractor;
 
   @Before
   public void setup() {
     ServiceLocator.INSTANCE.registerInstance(AuthenticationService.class, authenticationService);
-    ServiceLocator.INSTANCE.registerInstance(AcceptedRoleReflexionExtractor.class, acceptedRoleReflexionExtractor);
+    ServiceLocator.INSTANCE.registerInstance(AcceptedRoleReflectionExtractor.class, acceptedRoleReflectionExtractor);
 
     authenticationFilter = new AuthenticationFilter();
   }
@@ -58,11 +58,11 @@ public class AuthenticationFilterTest {
   @Test
   public void whenFiltering_thenRequiredRoleIsExtracted() {
     List<UserRole> someRoles = singletonList(UserRole.INVESTOR);
-    given(acceptedRoleReflexionExtractor.extractAcceptedRoles(any())).willReturn(someRoles);
+    given(acceptedRoleReflectionExtractor.extractAcceptedRoles(any())).willReturn(someRoles);
 
     authenticationFilter.filter(requestContext);
 
-    verify(acceptedRoleReflexionExtractor).extractAcceptedRoles(any());
+    verify(acceptedRoleReflectionExtractor).extractAcceptedRoles(any());
     verify(authenticationService).validateAuthentication(any(), eq(someRoles));
   }
 

@@ -25,21 +25,21 @@ import javax.ws.rs.core.Response;
 public class AuthenticationFilter implements ContainerRequestFilter {
 
   private final AuthenticationService authenticationService;
-  private final AcceptedRoleReflexionExtractor acceptedRolesReflexionExtractor;
+  private final AcceptedRoleReflectionExtractor acceptedRolesReflectionExtractor;
 
   @Context
   private ResourceInfo resourceInfo;
 
   public AuthenticationFilter() {
     authenticationService = ServiceLocator.INSTANCE.get(AuthenticationService.class);
-    acceptedRolesReflexionExtractor = ServiceLocator.INSTANCE.get(AcceptedRoleReflexionExtractor.class);
+    acceptedRolesReflectionExtractor = ServiceLocator.INSTANCE.get(AcceptedRoleReflectionExtractor.class);
   }
 
   @Override
   public void filter(ContainerRequestContext containerRequestContext) {
     try {
       AuthenticationTokenDto authenticationTokenDto = extractAuthenticationInfo(containerRequestContext.getHeaders());
-      List<UserRole> acceptedRoles = acceptedRolesReflexionExtractor.extractAcceptedRoles(resourceInfo);
+      List<UserRole> acceptedRoles = acceptedRolesReflectionExtractor.extractAcceptedRoles(resourceInfo);
 
       authenticationService.validateAuthentication(authenticationTokenDto, acceptedRoles);
     } catch (InvalidTokenException | IllegalArgumentException exception) {

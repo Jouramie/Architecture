@@ -8,7 +8,7 @@ import java.util.List;
 import javax.ws.rs.container.ResourceInfo;
 
 @Component
-public class AcceptedRoleReflexionExtractor {
+public class AcceptedRoleReflectionExtractor {
 
   public List<UserRole> extractAcceptedRoles(ResourceInfo resourceInfo) {
     AuthenticationRequiredBinding binding;

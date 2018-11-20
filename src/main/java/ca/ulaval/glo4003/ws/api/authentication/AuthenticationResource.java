@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
-import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
@@ -45,10 +44,7 @@ public interface AuthenticationResource {
 
   @POST()
   @Path("/logout")
-  @AuthenticationRequiredBinding(acceptedRoles = {
-      UserRole.INVESTOR,
-      UserRole.ADMINISTRATOR
-  })
+  @AuthenticationRequiredBinding
   @Operation(
       summary = "Revoke the current user's authentication token.",
       responses = {

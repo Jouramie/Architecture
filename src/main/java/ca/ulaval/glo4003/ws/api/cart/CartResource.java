@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
+import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
@@ -22,7 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/cart")
-@AuthenticationRequiredBinding
+@AuthenticationRequiredBinding(acceptedRoles = UserRole.INVESTOR)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface CartResource {
