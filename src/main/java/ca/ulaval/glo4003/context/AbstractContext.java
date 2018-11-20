@@ -34,6 +34,7 @@ import ca.ulaval.glo4003.investul.live_stock_emulator.StockSimulator;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
 import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.http.FilterRegistration;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -74,6 +75,7 @@ public abstract class AbstractContext {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
     provider.setMapper(mapper);
     resourceConfig.register(provider);
