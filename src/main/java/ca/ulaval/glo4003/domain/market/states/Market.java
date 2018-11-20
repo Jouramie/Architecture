@@ -42,6 +42,11 @@ public class Market {
     haltMessage = message;
   }
 
+  public void resume() {
+    isHalted = false;
+    haltMessage = "";
+  }
+
   public String getHaltMessage() {
     return haltMessage;
   }

@@ -25,4 +25,13 @@ public class TradingHaltService {
       throw new MarketDoesNotExistException();
     }
   }
+
+  public void resumeMarket(MarketId marketId) throws MarketDoesNotExistException {
+    try {
+      Market market = marketRepository.findById(marketId);
+      market.resume();
+    } catch (MarketNotFoundException e) {
+      throw new MarketDoesNotExistException();
+    }
+  }
 }

@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.market.halt;
 
+import ca.ulaval.glo4003.service.market.MarketDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.market.dto.MarketStatusResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,5 +42,5 @@ public interface MarketResumeResource {
           )
       }
   )
-  MarketStatusResponseDto haltMarket(@PathParam("market") String market);
+  MarketStatusResponseDto haltMarket(@PathParam("market") String market) throws MarketDoesNotExistException;
 }
