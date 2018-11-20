@@ -5,7 +5,7 @@ import ca.ulaval.glo4003.domain.transaction.Transaction;
 import java.time.LocalDateTime;
 
 public class MoneyAmountLimit extends Limit {
-  private final MoneyAmount amount;
+  public final MoneyAmount amount;
 
   public MoneyAmountLimit(LocalDateTime start, LocalDateTime end, MoneyAmount amount) {
     super(start, end);

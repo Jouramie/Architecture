@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.math.BigDecimal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
@@ -21,12 +22,12 @@ public class MoneyAmountLimitCreationDto {
   @Schema(
       description = "The maximal money amount the user can spend in a single transaction."
   )
-  public final double maximalMoneyAmountSpent;
+  public final BigDecimal maximalMoneyAmountSpent;
 
   @JsonCreator
   public MoneyAmountLimitCreationDto(
       @JsonProperty("applicationPeriod") ApplicationPeriod applicationPeriod,
-      @JsonProperty("maximalMoneyAmountSpent") double maximalMoneyAmountSpent) {
+      @JsonProperty("maximalMoneyAmountSpent") BigDecimal maximalMoneyAmountSpent) {
     this.applicationPeriod = applicationPeriod;
     this.maximalMoneyAmountSpent = maximalMoneyAmountSpent;
   }

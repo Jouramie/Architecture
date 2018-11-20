@@ -9,6 +9,7 @@ import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiMoneyAmountLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiStockLimitDto;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class ApiLimitAssemblerTest {
 
   private static final LocalDateTime SOME_DATE = LocalDateTime.now();
   private static final int SOME_STOCK_QUANTITY = 4;
-  private static final double SOME_MONEY_AMOUNT = 6.45;
+  private static final BigDecimal SOME_MONEY_AMOUNT = BigDecimal.valueOf(6.45);
 
   private final ApiLimitAssembler apiLimitAssembler = new ApiLimitAssembler();
 

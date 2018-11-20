@@ -2,12 +2,13 @@ package ca.ulaval.glo4003.user;
 
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
+import java.math.BigDecimal;
 
 public class MoneyAmountLimitCreationRequestBuilder {
   public static final ApplicationPeriod DEFAULT_APPLICATION_PERIOD = ApplicationPeriod.DAILY;
-  public static final double DEFAULT_MONEY_AMOUNT = 5;
+  public static final BigDecimal DEFAULT_MONEY_AMOUNT = BigDecimal.valueOf(5);
 
-  private double moneyAmount = DEFAULT_MONEY_AMOUNT;
+  private BigDecimal moneyAmount = DEFAULT_MONEY_AMOUNT;
   private ApplicationPeriod applicationPeriod = DEFAULT_APPLICATION_PERIOD;
 
   public MoneyAmountLimitCreationRequestBuilder withApplicationPeriod(ApplicationPeriod applicationPeriod) {
@@ -15,7 +16,7 @@ public class MoneyAmountLimitCreationRequestBuilder {
     return this;
   }
 
-  public MoneyAmountLimitCreationRequestBuilder withMoneyAmount(double moneyAmount) {
+  public MoneyAmountLimitCreationRequestBuilder withMoneyAmount(BigDecimal moneyAmount) {
     this.moneyAmount = moneyAmount;
     return this;
   }

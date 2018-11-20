@@ -23,6 +23,7 @@ import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import io.restassured.http.Header;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
@@ -255,7 +256,7 @@ public class UserIT {
     String token = givenAdministratorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
 
-    double moneyAmountLimit = 99.99;
+    BigDecimal moneyAmountLimit = BigDecimal.valueOf(99.99);
 
     //@formatter:off
     given()
@@ -278,7 +279,7 @@ public class UserIT {
     String token = givenAdministratorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
 
-    double moneyAmountLimit = 12.34;
+    BigDecimal moneyAmountLimit = BigDecimal.valueOf(12.34);
     givenSomeLimitAddedToSomeUser(token,
         new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(moneyAmountLimit).build());
 
@@ -411,7 +412,7 @@ public class UserIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .body(new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(-1).build())
+        .body(new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(BigDecimal.valueOf(-1)).build())
     .when()
         .put(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
     .then()
