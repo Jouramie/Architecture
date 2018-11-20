@@ -48,6 +48,10 @@ public class User {
     return cart;
   }
 
+  public Limit getLimit() {
+    return limit;
+  }
+
   public Portfolio getPortfolio() {
     return portfolio;
   }

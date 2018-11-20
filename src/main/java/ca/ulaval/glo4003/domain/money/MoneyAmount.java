@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 
 public class MoneyAmount {
 
+  public static final MoneyAmount ZERO = zero(Currency.USD);
+
   private final BigDecimal amount;
   private final Currency currency;
 

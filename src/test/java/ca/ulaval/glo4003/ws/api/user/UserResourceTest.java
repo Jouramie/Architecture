@@ -12,7 +12,7 @@ import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.service.user.UserService;
 import ca.ulaval.glo4003.service.user.limit.LimitDto;
-import ca.ulaval.glo4003.service.user.limit.StockLimitDto;
+import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiLimitAssembler;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiStockLimitDto;
@@ -45,7 +45,7 @@ public class UserResourceTest {
   private static final UserRole SOME_ROLE = UserRole.INVESTOR;
   private static final LocalDateTime SOME_DATE = LocalDateTime.now();
   private static final int SOME_STOCK_QUANTITY = 12;
-  private static final LimitDto SOME_LIMIT = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+  private static final LimitDto SOME_LIMIT = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
   private static final UserDto SOME_USER_DTO = new UserDto(SOME_EMAIL, SOME_ROLE, SOME_LIMIT);
 
   @Mock
@@ -106,7 +106,7 @@ public class UserResourceTest {
 
   @Test
   public void whenGetUser_thenReturnConvertedUser() {
-    StockLimitDto limit = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    StockQuantityLimitDto limit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
     UserDto user = new UserDto(SOME_EMAIL, SOME_ROLE, limit);
     given(userService.getUser(any())).willReturn(user);
 
@@ -128,7 +128,7 @@ public class UserResourceTest {
 
   @Test
   public void whenGetUsers_thenReturnConvertedUsers() {
-    LimitDto limit = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    LimitDto limit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
     List<UserDto> users = singletonList(new UserDto(SOME_EMAIL, SOME_ROLE, limit));
     given(userService.getUsers()).willReturn(users);
 
