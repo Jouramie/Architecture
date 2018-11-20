@@ -8,6 +8,8 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundForStockException;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
@@ -54,7 +56,7 @@ public class UserTest {
   private User user;
 
   @Before
-  public void setup() throws StockNotFoundException {
+  public void setup() throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
     transaction = new TransactionBuilder()
         .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QTY).build())
         .withItem(new TransactionItemBuilder().withTitle(SOME_OTHER_TITLE).withQuantity(SOME_OTHER_QTY).build())
@@ -89,7 +91,7 @@ public class UserTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenReturnCalculatedTransaction() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenReturnCalculatedTransaction() throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
     Transaction result = user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(result).isEqualTo(transaction);
@@ -101,21 +103,21 @@ public class UserTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenPaymentIsProcessedWithTheCurrentTransaction() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenPaymentIsProcessedWithTheCurrentTransaction() throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     verify(paymentProcessor).payment(transaction);
   }
 
   @Test
-  public void whenCheckoutCart_thenANotificationIsSent() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenANotificationIsSent() throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     verify(notificationSender).sendNotification(eq(notification), any());
   }
 
   @Test
-  public void whenCheckoutCart_thenContentIsAddedToPortfolio() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenContentIsAddedToPortfolio() throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(user.getPortfolio().getStocks().getTitles()).containsExactlyInAnyOrder(SOME_TITLE, SOME_OTHER_TITLE);
@@ -124,7 +126,7 @@ public class UserTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(user.getCart().isEmpty());

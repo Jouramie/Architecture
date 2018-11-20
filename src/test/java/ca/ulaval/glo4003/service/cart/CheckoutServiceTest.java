@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
+import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundForStockException;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -68,7 +70,7 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenTransactionIsAssembledToDto() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenTransactionIsAssembledToDto() throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
     given(currentUser.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository)).willReturn(transaction);
 
     TransactionDto transactionDto = checkoutService.checkoutCart();
@@ -77,14 +79,14 @@ public class CheckoutServiceTest {
   }
 
   @Test
-  public void whenCheckoutCartThrowingStockNotFound_thenExceptionIsTransformed() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCartThrowingStockNotFound_thenExceptionIsTransformed() throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
     given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new StockNotFoundException(SOME_TITLE));
 
     assertThatThrownBy(() -> checkoutService.checkoutCart()).isInstanceOf(InvalidStockTitleException.class);
   }
 
   @Test
-  public void whenCheckoutCartThrowingEmptyCart_thenExceptionIsTransformed() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCartThrowingEmptyCart_thenExceptionIsTransformed() throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
     given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new EmptyCartException());
 
     assertThatThrownBy(() -> checkoutService.checkoutCart()).isInstanceOf(EmptyCartOnCheckoutException.class);

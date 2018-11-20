@@ -1,6 +1,8 @@
 package ca.ulaval.glo4003.service.cart;
 
 import ca.ulaval.glo4003.domain.Component;
+import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundForStockException;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -52,8 +54,12 @@ public class CheckoutService {
       return transactionAssembler.toDto(transaction);
     } catch (StockNotFoundException e) {
       throw new InvalidStockTitleException(e.title);
+    } catch (MarketNotFoundForStockException e) {
+      throw new InvalidStockTitleException(e.title);
     } catch (EmptyCartException e) {
       throw new EmptyCartOnCheckoutException();
+    } catch (HaltedMarketException e) {
+      throw new HaltedMarketOnCheckoutException(e.message);
     }
   }
 }

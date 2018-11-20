@@ -1,6 +1,8 @@
 package ca.ulaval.glo4003.domain.user;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
+import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundForStockException;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationCoordinates;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
@@ -52,7 +54,8 @@ public class User {
                                   PaymentProcessor paymentProcessor,
                                   NotificationFactory notificationFactory,
                                   NotificationSender notificationSender,
-                                  StockRepository stockRepository) throws StockNotFoundException, EmptyCartException {
+                                  StockRepository stockRepository)
+      throws StockNotFoundException, EmptyCartException, MarketNotFoundForStockException, HaltedMarketException {
     checkIfCartIsEmpty(cart);
 
     Transaction purchase = transactionFactory.createPurchase(cart);

@@ -53,4 +53,8 @@ public class Market {
   public void update(LocalDateTime currentTime, StockValueRetriever stockValueRetriever) {
     currentState = currentState.update(this, currentTime, stockValueRetriever);
   }
+
+  public boolean containsStock(String title) {
+    return stocks.stream().anyMatch(stock -> stock.getTitle().equals(title));
+  }
 }

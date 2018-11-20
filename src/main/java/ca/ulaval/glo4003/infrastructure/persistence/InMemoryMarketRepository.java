@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.infrastructure.persistence;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundForStockException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import java.util.ArrayList;
@@ -30,5 +31,13 @@ public class InMemoryMarketRepository implements MarketRepository {
   @Override
   public void add(Market stock) {
     markets.put(stock.getId(), stock);
+  }
+
+  @Override
+  public Market findMarketForStock(String stockTitle) throws MarketNotFoundForStockException {
+    return markets.values().stream()
+        .filter(market -> market.containsStock(stockTitle))
+        .findFirst()
+        .orElseThrow(() -> new MarketNotFoundForStockException(stockTitle));
   }
 }
