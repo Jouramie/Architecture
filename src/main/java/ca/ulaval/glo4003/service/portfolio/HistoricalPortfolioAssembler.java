@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.service.portfolio;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.TreeSet;
 import javax.inject.Inject;
 
+@Component
 public class HistoricalPortfolioAssembler {
   private final StockRepository stockRepository;
 
