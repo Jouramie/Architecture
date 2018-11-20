@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api;
+package ca.ulaval.glo4003.ws.api.cart;
 
 import static ca.ulaval.glo4003.util.InputValidationTestUtil.assertThatExceptionContainsErrorFor;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,7 +11,6 @@ import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
 import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
-import ca.ulaval.glo4003.ws.api.cart.CartResourceImpl;
 import ca.ulaval.glo4003.ws.api.cart.assemblers.ApiCartItemAssembler;
 import ca.ulaval.glo4003.ws.api.cart.assemblers.ApiTransactionAssembler;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;

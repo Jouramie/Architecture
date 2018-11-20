@@ -28,9 +28,11 @@ public class TradingHaltServiceTest {
   private MarketRepository marketRepositoryMock;
 
   @Before
-  public void setUp() {
+  public void setUp() throws MarketNotFoundException {
+
     service = new TradingHaltService(marketRepositoryMock);
     market = new TestingMarketBuilder().build();
+    when(marketRepositoryMock.findById(MARKET_ID)).thenReturn(market);
   }
 
   @Test
@@ -41,12 +43,26 @@ public class TradingHaltServiceTest {
   }
 
   @Test
-  public void whenHaltingMarket_thenUpdateMarketState() throws MarketNotFoundException, MarketDoesNotExistException {
-    when(marketRepositoryMock.findById(MARKET_ID)).thenReturn(market);
-
+  public void whenHaltingMarket_thenUpdateMarketState() throws MarketDoesNotExistException {
     service.haltMarket(MARKET_ID, MESSAGE);
 
     assertThat(market.isHalted()).isTrue();
     assertThat(market.getHaltMessage()).isEqualTo(MESSAGE);
+  }
+
+  @Test
+  public void whenResuming_thenUpdateMarketState() throws MarketDoesNotExistException {
+    market.halt("");
+
+    service.resumeMarket(MARKET_ID);
+
+    assertThat(market.isHalted()).isFalse();
+  }
+
+  @Test
+  public void givenInexistentMarket_whenResumingMarket_thenThrowException() throws MarketNotFoundException {
+    when(marketRepositoryMock.findById(MARKET_ID)).thenThrow(new MarketNotFoundException(""));
+
+    assertThatThrownBy(() -> service.resumeMarket(MARKET_ID));
   }
 }

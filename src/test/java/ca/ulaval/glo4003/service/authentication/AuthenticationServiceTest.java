@@ -15,7 +15,6 @@ import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenFactory;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
-import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.util.UserBuilder;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
@@ -106,18 +105,18 @@ public class AuthenticationServiceTest {
     ThrowableAssert.ThrowingCallable authenticateUser
         = () -> authenticationService.authenticate(INVALID_AUTHENTICATION_REQUEST);
 
-    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationErrorException.class);
+    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationFailedException.class);
   }
 
   @Test
-  public void givenUserDoesNotExist_whenAuthenticationUser_thenUserDoesNotExistExceptionIsThrown()
+  public void givenUserDoesNotExist_whenAuthenticationUser_thenExceptionIsThrown()
       throws UserNotFoundException {
     doThrow(UserNotFoundException.class).when(userRepository).find(any());
 
     ThrowableAssert.ThrowingCallable authenticateUser
         = () -> authenticationService.authenticate(INVALID_AUTHENTICATION_REQUEST);
 
-    assertThatThrownBy(authenticateUser).isInstanceOf(UserDoesNotExistException.class);
+    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationFailedException.class);
   }
 
   @Test
@@ -129,14 +128,14 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenUserDoesNotExist_whenValidatingAuthentication_thenUserDoesNotExistExceptionIsThrown()
+  public void givenUserDoesNotExist_whenValidatingAuthentication_thenExceptionIsThrown()
       throws UserNotFoundException {
     doThrow(UserNotFoundException.class).when(userRepository).find(any());
 
     ThrowableAssert.ThrowingCallable authenticateUser
         = () -> authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO);
 
-    assertThatThrownBy(authenticateUser).isInstanceOf(UserDoesNotExistException.class);
+    assertThatThrownBy(authenticateUser).isInstanceOf(AuthenticationFailedException.class);
   }
 
   @Test

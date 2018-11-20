@@ -33,10 +33,19 @@ public class MarketServiceTest {
   }
 
   @Test
-  public void whenGettingMarketStatus_thenFindsMarketAndMapsItsAttributes() throws MarketDoesNotExistException, MarketNotFoundException {
+  public void whenGettingMarketStatus_thenFindsMarket() throws MarketDoesNotExistException, MarketNotFoundException {
     MarketStatusDto marketStatus = service.getMarketStatus(MARKET_ID);
 
     verify(marketRepositoryMock).findById(MARKET_ID);
+    assertThat(marketStatus.isHalted).isEqualTo(A_MARKET.isHalted());
+    assertThat(marketStatus.haltMessage).isEqualTo(A_MARKET.getHaltMessage());
+    assertThat(marketStatus.marketId).isEqualTo(A_MARKET.getId());
+  }
+
+  @Test
+  public void whenGettingMarketStatus_thenMapsItsAttributes() throws MarketDoesNotExistException, MarketNotFoundException {
+    MarketStatusDto marketStatus = service.getMarketStatus(MARKET_ID);
+
     assertThat(marketStatus.isHalted).isEqualTo(A_MARKET.isHalted());
     assertThat(marketStatus.haltMessage).isEqualTo(A_MARKET.getHaltMessage());
     assertThat(marketStatus.marketId).isEqualTo(A_MARKET.getId());
