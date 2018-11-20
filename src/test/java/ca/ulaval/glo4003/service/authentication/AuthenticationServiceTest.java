@@ -150,7 +150,7 @@ public class AuthenticationServiceTest {
 
   @Test
   public void givenInvalidNumberFormatUUID_whenValidatingToken_thenNumberFormatExceptionIsThrown() {
-    AuthenticationTokenDto invalidUUIDToken = new AuthenticationTokenDto("10110100-0000-0000-0000-000000000000worng");
+    AuthenticationTokenDto invalidUUIDToken = new AuthenticationTokenDto("10110100-0000-0000-0000-000000000000wrong");
 
     ThrowingCallable validateToken = () -> authenticationService
         .validateAuthentication(invalidUUIDToken, SOME_USER_ROLES);
