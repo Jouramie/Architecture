@@ -109,7 +109,7 @@ public class PortfolioTest {
     LocalDate now = LocalDate.now();
     LocalDate from = now.minusDays(15);
 
-    TreeSet<HistoricPortfolio> portfolios = portfolio.getHistory(from, now);
+    TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(from, now);
 
     assertThat(portfolios).hasSize(16);
     List<LocalDate> expectedDates = new ArrayList<>();
@@ -129,7 +129,7 @@ public class PortfolioTest {
         .build();
     portfolio.add(transaction, someStockRepository);
 
-    TreeSet<HistoricPortfolio> portfolios = portfolio.getHistory(from, now);
+    TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(from, now);
 
     assertThat(portfolios.stream().map((p) -> p.stocks)).containsOnly(portfolio.getStocks());
   }
@@ -148,13 +148,13 @@ public class PortfolioTest {
         .build();
     portfolio.add(secondTransaction, someStockRepository);
 
-    TreeSet<HistoricPortfolio> portfolios = portfolio.getHistory(now.minusDays(2), now);
+    TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(now.minusDays(2), now);
 
     assertThat(portfolios).hasSize(3);
-    Iterator<HistoricPortfolio> it = portfolios.iterator();
-    HistoricPortfolio firstPortfolio = it.next();
-    HistoricPortfolio secondPortfolio = it.next();
-    HistoricPortfolio thirdPortfolio = it.next();
+    Iterator<HistoricalPortfolio> it = portfolios.iterator();
+    HistoricalPortfolio firstPortfolio = it.next();
+    HistoricalPortfolio secondPortfolio = it.next();
+    HistoricalPortfolio thirdPortfolio = it.next();
 
     assertThat(firstPortfolio.stocks.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY);
     assertThat(secondPortfolio.stocks.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY + SOME_OTHER_QUANTITY);
@@ -175,13 +175,13 @@ public class PortfolioTest {
         .build();
     portfolio.add(secondTransaction, someStockRepository);
 
-    TreeSet<HistoricPortfolio> portfolios = portfolio.getHistory(now.minusDays(2), now);
+    TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(now.minusDays(2), now);
 
     assertThat(portfolios).hasSize(3);
-    Iterator<HistoricPortfolio> it = portfolios.iterator();
-    HistoricPortfolio firstPortfolio = it.next();
-    HistoricPortfolio secondPortfolio = it.next();
-    HistoricPortfolio thirdPortfolio = it.next();
+    Iterator<HistoricalPortfolio> it = portfolios.iterator();
+    HistoricalPortfolio firstPortfolio = it.next();
+    HistoricalPortfolio secondPortfolio = it.next();
+    HistoricalPortfolio thirdPortfolio = it.next();
 
     assertThat(firstPortfolio.stocks.getQuantity(SOME_TITLE)).isEqualTo(0);
     assertThat(secondPortfolio.stocks.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY + SOME_OTHER_QUANTITY);

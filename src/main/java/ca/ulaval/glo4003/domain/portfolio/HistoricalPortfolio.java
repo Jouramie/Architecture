@@ -9,11 +9,11 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import java.time.LocalDate;
 
-public class HistoricPortfolio implements Comparable<HistoricPortfolio> {
+public class HistoricalPortfolio implements Comparable<HistoricalPortfolio> {
   public final LocalDate date;
   public final StockCollection stocks;
 
-  public HistoricPortfolio(LocalDate date, StockCollection stocks) {
+  public HistoricalPortfolio(LocalDate date, StockCollection stocks) {
     this.date = date;
     this.stocks = stocks;
   }
@@ -30,7 +30,7 @@ public class HistoricPortfolio implements Comparable<HistoricPortfolio> {
   }
 
   @Override
-  public int compareTo(HistoricPortfolio other) {
+  public int compareTo(HistoricalPortfolio other) {
     return date.compareTo(other.date);
   }
 }

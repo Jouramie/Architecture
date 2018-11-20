@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HistoricPortfolioTest {
+public class HistoricalPortfolioTest {
   private final static LocalDate SOME_DATE = LocalDate.of(2018, 11, 16);
   private final static String FIRST_TITLE = "MSFT";
   private final static int FIRST_QTY = 2;
@@ -27,8 +27,8 @@ public class HistoricPortfolioTest {
   private final static int SECOND_QTY = 3;
   private final MoneyAmount FIRST_HISTORICAL_VALUE = new MoneyAmount(33.33, Currency.USD);
   private final MoneyAmount SECOND_HISTORICAL_VALUE = new MoneyAmount(44.44, Currency.USD);
-  private final HistoricPortfolio formerPortfolio = new HistoricPortfolio(SOME_DATE.minusDays(1), new StockCollection());
-  private final HistoricPortfolio latterPortfolio = new HistoricPortfolio(SOME_DATE, new StockCollection());
+  private final HistoricalPortfolio formerPortfolio = new HistoricalPortfolio(SOME_DATE.minusDays(1), new StockCollection());
+  private final HistoricalPortfolio latterPortfolio = new HistoricalPortfolio(SOME_DATE, new StockCollection());
 
   @Mock
   private StockRepository stockRepository;
@@ -45,7 +45,7 @@ public class HistoricPortfolioTest {
 
   @Test
   public void givenEmptyPortfolio_whenGetTotal_thenReturn0() throws StockNotFoundException, NoStockValueFitsCriteriaException {
-    HistoricPortfolio emptyPortfolio = new HistoricPortfolio(SOME_DATE, new StockCollection());
+    HistoricalPortfolio emptyPortfolio = new HistoricalPortfolio(SOME_DATE, new StockCollection());
 
     MoneyAmount total = emptyPortfolio.getTotal(stockRepository);
 
@@ -57,9 +57,9 @@ public class HistoricPortfolioTest {
     StockCollection stockCollection = new StockCollection();
     stockCollection = stockCollection.add(FIRST_TITLE, FIRST_QTY, stockRepository);
     stockCollection = stockCollection.add(SECOND_TITLE, SECOND_QTY, stockRepository);
-    HistoricPortfolio historicPortfolio = new HistoricPortfolio(SOME_DATE, stockCollection);
+    HistoricalPortfolio historicalPortfolio = new HistoricalPortfolio(SOME_DATE, stockCollection);
 
-    MoneyAmount total = historicPortfolio.getTotal(stockRepository);
+    MoneyAmount total = historicalPortfolio.getTotal(stockRepository);
 
     assertThat(total).isEqualTo(FIRST_HISTORICAL_VALUE.multiply(FIRST_QTY).add(SECOND_HISTORICAL_VALUE.multiply(SECOND_QTY)));
   }

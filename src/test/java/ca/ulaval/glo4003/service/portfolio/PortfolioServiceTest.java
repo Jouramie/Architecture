@@ -6,6 +6,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
 import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
@@ -33,18 +34,24 @@ public class PortfolioServiceTest {
   @Mock
   private PortfolioAssembler somePortfolioAssembler;
   @Mock
+  private HistoricalPortfolioAssembler someHistoricalPortfolioAssembler;
+  @Mock
   private Clock clock;
   @Mock
   private Portfolio portfolio;
+  @Mock
+  private TreeSet<HistoricalPortfolio> somePortfolioHistory;
 
   private PortfolioService portfolioService;
 
   @Before
   public void setupPortfolioService() {
-    portfolioService = new PortfolioService(someCurrentUserSession, somePortfolioAssembler, clock);
+    portfolioService = new PortfolioService(someCurrentUserSession, somePortfolioAssembler,
+        someHistoricalPortfolioAssembler, clock);
 
     given(someCurrentUserSession.getCurrentUser()).willReturn(someCurrentUser);
     given(someCurrentUser.getPortfolio()).willReturn(portfolio);
+    given(portfolio.getHistory(SOME_FROM_DATE, SOME_CURRENT_DATETIME.toLocalDate())).willReturn(somePortfolioHistory);
     given(clock.getCurrentTime()).willReturn(SOME_CURRENT_DATETIME);
   }
 
@@ -80,19 +87,19 @@ public class PortfolioServiceTest {
   public void whenGetPortfolioHistory_thenHistoryIsConvertedUsingAssembler() throws StockNotFoundException, NoStockValueFitsCriteriaException {
     portfolioService.getPortfolioHistory(SOME_FROM_DATE);
 
-    verify(somePortfolioAssembler).toDto(any(TreeSet.class));
+    verify(someHistoricalPortfolioAssembler).toDto(somePortfolioHistory);
   }
 
   @Test
   public void givenPortfolioAssemblerThrowsStockNotFoundException_whenGetPortfolioHistory_thenConvertException() throws StockNotFoundException, NoStockValueFitsCriteriaException {
-    given(somePortfolioAssembler.toDto(any(TreeSet.class))).willThrow(StockNotFoundException.class);
+    given(someHistoricalPortfolioAssembler.toDto(somePortfolioHistory)).willThrow(StockNotFoundException.class);
 
     assertThatThrownBy(() -> portfolioService.getPortfolioHistory(SOME_FROM_DATE)).isInstanceOf(InvalidPortfolioException.class);
   }
 
   @Test
   public void givenPortfolioAssemblerThrowsCriteriaException_whenGetPortfolioHistory_thenConvertException() throws StockNotFoundException, NoStockValueFitsCriteriaException {
-    given(somePortfolioAssembler.toDto(any(TreeSet.class))).willThrow(NoStockValueFitsCriteriaException.class);
+    given(someHistoricalPortfolioAssembler.toDto(somePortfolioHistory)).willThrow(NoStockValueFitsCriteriaException.class);
 
     assertThatThrownBy(() -> portfolioService.getPortfolioHistory(SOME_FROM_DATE)).isInstanceOf(InvalidPortfolioException.class);
   }

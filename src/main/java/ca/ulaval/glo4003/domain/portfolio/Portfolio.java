@@ -24,14 +24,14 @@ public class Portfolio {
     stocks = new StockCollection();
   }
 
-  public TreeSet<HistoricPortfolio> getHistory(LocalDate from, LocalDate now) {
-    TreeSet<HistoricPortfolio> result = new TreeSet<>();
+  public TreeSet<HistoricalPortfolio> getHistory(LocalDate from, LocalDate now) {
+    TreeSet<HistoricalPortfolio> result = new TreeSet<>();
 
     LocalDate currentDate = now;
     StockCollection currentStockCollection = stocks;
 
     while (currentDate.isAfter(from) || currentDate.isEqual(from)) {
-      result.add(new HistoricPortfolio(currentDate, currentStockCollection));
+      result.add(new HistoricalPortfolio(currentDate, currentStockCollection));
       currentStockCollection = rollbackTransactionsForDay(currentDate, currentStockCollection);
       currentDate = currentDate.minusDays(1);
     }

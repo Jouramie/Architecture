@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.service.portfolio;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
-import ca.ulaval.glo4003.domain.portfolio.HistoricPortfolio;
+import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
 import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
@@ -19,12 +19,17 @@ import javax.inject.Inject;
 public class PortfolioService {
   private final CurrentUserSession currentUserSession;
   private final PortfolioAssembler portfolioAssembler;
+  private final HistoricalPortfolioAssembler historicalPortfolioAssembler;
   private final Clock clock;
 
   @Inject
-  public PortfolioService(CurrentUserSession currentUserSession, PortfolioAssembler portfolioAssembler, Clock clock) {
+  public PortfolioService(CurrentUserSession currentUserSession,
+                          PortfolioAssembler portfolioAssembler,
+                          HistoricalPortfolioAssembler historicalPortfolioAssembler,
+                          Clock clock) {
     this.currentUserSession = currentUserSession;
     this.portfolioAssembler = portfolioAssembler;
+    this.historicalPortfolioAssembler = historicalPortfolioAssembler;
     this.clock = clock;
   }
 
@@ -42,8 +47,8 @@ public class PortfolioService {
   public PortfolioHistoryDto getPortfolioHistory(LocalDate from) {
     try {
       User user = currentUserSession.getCurrentUser();
-      TreeSet<HistoricPortfolio> portfolios = user.getPortfolio().getHistory(from, clock.getCurrentTime().toLocalDate());
-      return portfolioAssembler.toDto(portfolios);
+      TreeSet<HistoricalPortfolio> portfolios = user.getPortfolio().getHistory(from, clock.getCurrentTime().toLocalDate());
+      return historicalPortfolioAssembler.toDto(portfolios);
     } catch (StockNotFoundException e) {
       throw new InvalidPortfolioException();
     } catch (NoStockValueFitsCriteriaException e) {
