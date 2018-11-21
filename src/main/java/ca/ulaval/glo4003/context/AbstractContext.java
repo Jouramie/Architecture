@@ -16,9 +16,8 @@ import ca.ulaval.glo4003.domain.transaction.NullPaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
@@ -65,8 +64,8 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public abstract class AbstractContext {
 
-  protected final String webServicePackagePrefix;
   protected final ServiceLocator serviceLocator;
+  protected final String webServicePackagePrefix;
 
   public AbstractContext(String webServicePackagePrefix, ServiceLocator serviceLocator) {
     this.webServicePackagePrefix = webServicePackagePrefix;
@@ -129,8 +128,9 @@ public abstract class AbstractContext {
   private void createAdministrator() {
     String testEmail = "Archi.test.42@gmail.com";
     try {
-      serviceLocator.get(UserRepository.class)
-          .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
+      UserRepository userRepository = serviceLocator.get(UserRepository.class);
+      UserFactory userFactory = serviceLocator.get(UserFactory.class);
+      userRepository.add(userFactory.createAdministrator(testEmail, "asdfasdf"));
     } catch (UserAlreadyExistsException exception) {
       System.out.println("Test user couldn't be added");
       exception.printStackTrace();

@@ -20,4 +20,8 @@ public class Transaction {
         .map(TransactionItem::calculateTotal)
         .reduce(MoneyAmount.zero(items.get(0).amount.getCurrency()), MoneyAmount::add);
   }
+
+  public int getTotalQuantity() {
+    return items.stream().mapToInt(item -> item.quantity).sum();
+  }
 }
