@@ -57,15 +57,15 @@ public class Stock {
   public synchronized StockValue getValueOnDay(LocalDate date) throws NoStockValueFitsCriteriaException {
     return getValueHistory().getValueOnDay(date);
   }
-
-  public synchronized void open() {
+  
+  public synchronized void saveOpeningPrice() {
     MoneyAmount startValue = getValue().getLatestValue();
     StockValue newStockValue = new StockValue(startValue);
 
     valueHistory.addNextValue(newStockValue);
   }
 
-  public synchronized void close() {
+  public synchronized void saveClosingPrice() {
     getValue().close();
   }
 }
