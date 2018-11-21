@@ -20,7 +20,7 @@ public class User {
   private final UserRole role;
   private final Cart cart;
   private final Portfolio portfolio;
-  private final Limit limit;
+  private Limit limit;
 
   public User(String email, String password, UserRole role) {
     this.email = email;
@@ -51,6 +51,13 @@ public class User {
     return portfolio;
   }
 
+  public void addLimit(Limit limit) {
+    this.limit = limit;
+  }
+
+  public void removeLimit() {
+    limit = null;
+  }
 
   public Transaction checkoutCart(TransactionFactory transactionFactory,
                                   PaymentProcessor paymentProcessor,
