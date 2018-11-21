@@ -42,5 +42,5 @@ public interface MarketResumeResource {
           )
       }
   )
-  MarketStatusResponseDto haltMarket(@PathParam("market") String market) throws MarketDoesNotExistException;
+  MarketStatusResponseDto resumeMarket(@PathParam("market") String market) throws MarketDoesNotExistException;
 }

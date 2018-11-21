@@ -7,8 +7,12 @@ import ca.ulaval.glo4003.service.market.MarketStatusDto;
 import ca.ulaval.glo4003.service.market.TradingHaltService;
 import ca.ulaval.glo4003.ws.api.market.ApiMarketStatusAssembler;
 import ca.ulaval.glo4003.ws.api.market.dto.MarketStatusResponseDto;
+import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
+@Resource
+@AuthenticationRequiredBinding
 public class MarketResumeResourceImpl implements MarketResumeResource {
 
   private final MarketService marketService;
@@ -23,7 +27,7 @@ public class MarketResumeResourceImpl implements MarketResumeResource {
   }
 
   @Override
-  public MarketStatusResponseDto haltMarket(String market) throws MarketDoesNotExistException {
+  public MarketStatusResponseDto resumeMarket(String market) throws MarketDoesNotExistException {
     MarketId marketId = new MarketId(market);
     tradingHaltService.resumeMarket(marketId);
     MarketStatusDto marketStatus = marketService.getMarketStatus(marketId);
