@@ -5,19 +5,19 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.time.LocalDateTime;
 
 public class LimitFactory {
-  private final LocalDateTime start;
+  private final Clock clock;
 
   public LimitFactory(Clock clock) {
-    start = clock.getCurrentTime();
+    this.clock = clock;
   }
 
   public StockQuantityLimit createStockQuantityLimit(ApplicationPeriod applicationPeriod, int stockQuantity) {
 
-    return new StockQuantityLimit(start, calculateEnd(start, applicationPeriod), stockQuantity);
+    return new StockQuantityLimit(clock.getCurrentTime(), calculateEnd(clock.getCurrentTime(), applicationPeriod), stockQuantity);
   }
 
   public MoneyAmountLimit createMoneyAmountLimit(ApplicationPeriod applicationPeriod, MoneyAmount amount) {
-    return new MoneyAmountLimit(start, calculateEnd(start, applicationPeriod), amount);
+    return new MoneyAmountLimit(clock.getCurrentTime(), calculateEnd(clock.getCurrentTime(), applicationPeriod), amount);
   }
 
   private LocalDateTime calculateEnd(LocalDateTime start, ApplicationPeriod period) {
