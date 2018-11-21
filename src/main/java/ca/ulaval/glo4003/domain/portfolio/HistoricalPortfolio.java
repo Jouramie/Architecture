@@ -22,7 +22,7 @@ public class HistoricalPortfolio implements Comparable<HistoricalPortfolio> {
     MoneyAmount currentTotal = MoneyAmount.zero(Currency.USD);
     for (String title : stocks.getTitles()) {
       Stock stock = stockRepository.findByTitle(title);
-      MoneyAmount stockValue = stock.getValueHistory().getValueOnDay(date).getCurrentValue();
+      MoneyAmount stockValue = stock.getValueOnDay(date).getLatestValue();
       currentTotal = currentTotal.add(stockValue.multiply(stocks.getQuantity(title)));
     }
 

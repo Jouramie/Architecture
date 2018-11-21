@@ -31,7 +31,7 @@ public class CartItemAssembler {
     Stock stock = getStock(title);
 
     return new CartItemDto(stock.getTitle(), stock.getMarketId().getValue(),
-        stock.getName(), stock.getCategory(), stock.getValue().getCurrentValue().toUsd(), quantity);
+        stock.getName(), stock.getCategory(), stock.getValue().getLatestValue().toUsd(), quantity);
   }
 
   private Stock getStock(String title) {

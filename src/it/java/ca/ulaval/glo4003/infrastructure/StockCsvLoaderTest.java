@@ -58,7 +58,7 @@ public class StockCsvLoaderTest {
     loader.load();
 
     Stock randomStock = stockRepository.findByTitle("MMM");
-    assertThat(randomStock.getValue().getCurrentValue().getCurrency()).isEqualTo(SOME_CURRENCY);
+    assertThat(randomStock.getValue().getLatestValue().getCurrency()).isEqualTo(SOME_CURRENCY);
   }
 
   @Test
@@ -68,7 +68,7 @@ public class StockCsvLoaderTest {
 
     Stock randomStock = stockRepository.findByTitle("MSFT");
     assertThat(randomStock.getValue().getOpenValue().getAmount().doubleValue()).isEqualTo(114.19);
-    assertThat(randomStock.getValue().getCloseValue().getAmount().doubleValue()).isEqualTo(114.37);
+    assertThat(randomStock.getValue().getLatestValue().getAmount().doubleValue()).isEqualTo(114.37);
     assertThat(randomStock.getValue().getMaximumValue().getAmount().doubleValue()).isEqualTo(114.57);
     assertThat(randomStock.getValueHistory().getAllStoredValues()).hasSize(5979);
   }
