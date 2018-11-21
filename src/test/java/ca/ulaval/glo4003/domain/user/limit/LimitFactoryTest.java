@@ -8,8 +8,11 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class LimitFactoryTest {
 
   private final LocalDateTime start = LocalDateTime.of(2018, 11, 16, 12, 4);
@@ -21,8 +24,8 @@ public class LimitFactoryTest {
 
   @Before
   public void setUp() {
-    limitFactory = new LimitFactory(clock);
     given(clock.getCurrentTime()).willReturn(start);
+    limitFactory = new LimitFactory(clock);
   }
 
   @Test
