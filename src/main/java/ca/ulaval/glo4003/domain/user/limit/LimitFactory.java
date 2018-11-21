@@ -1,14 +1,22 @@
 package ca.ulaval.glo4003.domain.user.limit;
 
+import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.time.LocalDateTime;
 
 public class LimitFactory {
-  public StockQuantityLimit createStockQuantityLimit(LocalDateTime start, ApplicationPeriod applicationPeriod, int stockQuantity) {
+  private final LocalDateTime start;
+
+  public LimitFactory(Clock clock) {
+    start = clock.getCurrentTime();
+  }
+
+  public StockQuantityLimit createStockQuantityLimit(ApplicationPeriod applicationPeriod, int stockQuantity) {
+
     return new StockQuantityLimit(start, calculateEnd(start, applicationPeriod), stockQuantity);
   }
 
-  public MoneyAmountLimit createMoneyAmountLimit(LocalDateTime start, ApplicationPeriod applicationPeriod, MoneyAmount amount) {
+  public MoneyAmountLimit createMoneyAmountLimit(ApplicationPeriod applicationPeriod, MoneyAmount amount) {
     return new MoneyAmountLimit(start, calculateEnd(start, applicationPeriod), amount);
   }
 
