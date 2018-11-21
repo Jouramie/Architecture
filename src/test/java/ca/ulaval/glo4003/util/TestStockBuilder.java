@@ -15,7 +15,7 @@ public class TestStockBuilder {
   public static final MarketId DEFAULT_MARKET_ID = new MarketId("NASDAQ");
   public static final MoneyAmount DEFAULT_OPEN_VALUE = new MoneyAmount(12.34);
   public static final MoneyAmount DEFAULT_CLOSE_VALUE = new MoneyAmount(56.78);
-
+  private final StockHistory history = new StockHistory();
   private String title = DEFAULT_TITLE;
   private String name = DEFAULT_NAME;
   private String category = DEFAULT_CATEGORY;
@@ -53,8 +53,12 @@ public class TestStockBuilder {
     return this;
   }
 
+  public TestStockBuilder withHistoricalValue(LocalDate date, StockValue value) {
+    history.addValue(date, value);
+    return this;
+  }
+
   public Stock build() {
-    StockHistory history = new StockHistory();
     history.addValue(LocalDate.now(), new StockValue(openValue, closeValue, closeValue));
     return new Stock(title, name, category, marketId, history);
   }

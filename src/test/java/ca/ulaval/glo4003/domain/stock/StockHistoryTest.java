@@ -139,7 +139,7 @@ public class StockHistoryTest {
 
     try {
       StockValue valueOnDay = history.getValueOnDay(SOME_DATE);
-      assertThat(valueOnDay.getCurrentValue().getAmount().doubleValue()).isEqualTo(SOME_AMOUNT);
+      assertThat(valueOnDay.getLatestValue().getAmount().doubleValue()).isEqualTo(SOME_AMOUNT);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
