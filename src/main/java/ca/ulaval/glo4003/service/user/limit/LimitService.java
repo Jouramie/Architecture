@@ -23,8 +23,8 @@ public class LimitService {
     this.userRepository = userRepository;
   }
 
-  public void createMoneyAmountLimit(String email, ApplicationPeriod applicationPeriod, MoneyAmount amount) {
-    Limit limit = limitFactory.createMoneyAmountLimit(applicationPeriod, amount);
+  public void createMoneyAmountLimit(String email, ApplicationPeriod applicationPeriod, double amount) {
+    Limit limit = limitFactory.createMoneyAmountLimit(applicationPeriod, new MoneyAmount(amount));
     User user;
     try {
       user = userRepository.find(email);

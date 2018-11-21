@@ -4,6 +4,7 @@ import static javax.ws.rs.core.Response.Status.CREATED;
 
 import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.service.user.UserService;
+import ca.ulaval.glo4003.service.user.limit.LimitService;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserLimitDto;
@@ -21,15 +22,19 @@ public class UserResourceImpl implements UserResource {
 
   private final UserService userService;
 
+  private final LimitService limitService;
+
   private final RequestValidator requestValidator;
 
   private final ApiUserAssembler apiUserAssembler;
 
   @Inject
   public UserResourceImpl(UserService userService,
+                          LimitService limitService,
                           RequestValidator requestValidator,
                           ApiUserAssembler apiUserAssembler) {
     this.userService = userService;
+    this.limitService = limitService;
     this.requestValidator = requestValidator;
     this.apiUserAssembler = apiUserAssembler;
   }
@@ -57,7 +62,6 @@ public class UserResourceImpl implements UserResource {
   @Override
   public ApiUserLimitDto setUserStockLimit(String email,
                                            UserStockLimitCreationDto userStockLimitCreationDto) {
-
     return null;
   }
 

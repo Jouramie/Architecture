@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.service.user.UserService;
+import ca.ulaval.glo4003.service.user.limit.LimitService;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
@@ -42,12 +43,13 @@ public class UserResourceTest {
 
   @Mock
   private UserService userService;
-
+  @Mock
+  private LimitService limitService;
   private UserResourceImpl userResource;
 
   @Before
   public void setup() {
-    userResource = new UserResourceImpl(userService, new RequestValidator(), new ApiUserAssembler());
+    userResource = new UserResourceImpl(userService, limitService, new RequestValidator(), new ApiUserAssembler());
   }
 
   @Test
