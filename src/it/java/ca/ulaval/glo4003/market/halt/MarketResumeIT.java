@@ -14,6 +14,7 @@ public class MarketResumeIT {
 
   private static final String INEXISTENT_MARKET = "market123";
   private static final String MARKET = "London";
+  private static final String API_RESUME_MARKET_ROUTE = "/api/markets/%s/resume";
 
   @Rule
   public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
@@ -23,7 +24,7 @@ public class MarketResumeIT {
     givenHaltedMarket();
     //@formatter:off
     when()
-        .post(String.format("/api/markets/%s/resume", MARKET))
+        .post(String.format(API_RESUME_MARKET_ROUTE, MARKET))
     .then()
         .statusCode(OK.getStatusCode())
         .body("market", equalTo(MARKET))
@@ -36,7 +37,7 @@ public class MarketResumeIT {
   public void givenInexistentMarket_whenResumingMarket_thenReturn404NotFound() {
     //@formatter:off
     when()
-        .post(String.format("/api/markets/%s/resume", INEXISTENT_MARKET))
+        .post(String.format(API_RESUME_MARKET_ROUTE, INEXISTENT_MARKET))
     .then()
         .statusCode(NOT_FOUND.getStatusCode());
     //@formatter:on
@@ -46,7 +47,7 @@ public class MarketResumeIT {
   public void givenActiveMarket_whenResumingMarketTrading_thenReturn400MarketAlreadyActive() {
     //@formatter:off
     when()
-        .post(String.format("/api/markets/%s/resume", MARKET))
+        .post(String.format(API_RESUME_MARKET_ROUTE, MARKET))
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
@@ -58,7 +59,7 @@ public class MarketResumeIT {
     given()
         .queryParam("message", "foobar").when()
     .when()
-        .post(String.format("/api/markets/%s/resume", MARKET))
+        .post(String.format(API_RESUME_MARKET_ROUTE, MARKET))
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
