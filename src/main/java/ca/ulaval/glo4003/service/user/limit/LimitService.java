@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.user;
+package ca.ulaval.glo4003.service.user.limit;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;

@@ -8,7 +8,7 @@ import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
-import ca.ulaval.glo4003.service.user.LimitService;
+import ca.ulaval.glo4003.service.user.limit.LimitService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
