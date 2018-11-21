@@ -9,7 +9,6 @@ import ca.ulaval.glo4003.ws.api.user.dto.UserStockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,12 +39,6 @@ public interface UserResource {
       responses = {
           @ApiResponse(
               responseCode = "200",
-              headers = {
-                  @Header(
-                      name = "X-Total-Count",
-                      description = "The number of users."
-                  )
-              },
               content = @Content(
                   array = @ArraySchema(
                       schema = @Schema(

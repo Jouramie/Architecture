@@ -53,14 +53,14 @@ public class Stock {
     return valueHistory.getLatestValue().value;
   }
 
-  public synchronized void open() {
+  public synchronized void saveOpeningPrice() {
     MoneyAmount startValue = getValue().getCloseValue();
     StockValue newStockValue = new StockValue(startValue);
 
     valueHistory.addNextValue(newStockValue);
   }
 
-  public synchronized void close() {
+  public synchronized void saveClosingPrice() {
     getValue().close();
   }
 }

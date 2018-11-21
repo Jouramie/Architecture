@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.time.LocalDate;
 import java.time.Month;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -112,25 +113,24 @@ public class StockHistoryTest {
   }
 
   @Test
-  public void givenEmptyHistory_whenGetMaxValue_thenThrowNoStockValueFitsCriteriaException() {
-    assertThatThrownBy(() -> {
-      history.getMaxValue(START_DATE, END_DATE);
-    }).isInstanceOf(NoStockValueFitsCriteriaException.class);
+  public void givenEmptyHistory_whenGetMaxValue_thenExceptionIsThrow() {
+    ThrowingCallable getMaxValue = () -> history.getMaxValue(START_DATE, END_DATE);
+
+    assertThatThrownBy(getMaxValue).isInstanceOf(NoStockValueFitsCriteriaException.class);
   }
 
   private StockValue buildStockValue(double value) {
     MoneyAmount amount = new MoneyAmount(value, SOME_CURRENCY);
-    StockValue result = new StockValue(amount);
-    return result;
+    return new StockValue(amount);
   }
 
   @Test
-  public void givenMissingDataOnRequestedDay_whenGettingValueOnASpecificDay_thenThrowNoStockValueFitsCriteriaException() {
+  public void givenMissingDataOnRequestedDay_whenGettingValueOnASpecificDay_thenExceptionIsThrow() {
     LocalDate missingDate = LocalDate.of(1970, Month.JANUARY, 1);
 
-    assertThatThrownBy(() -> {
-      history.getValueOnDay(missingDate);
-    });
+    ThrowingCallable getValue = () -> history.getValueOnDay(missingDate);
+
+    assertThatThrownBy(getValue);
   }
 
   @Test

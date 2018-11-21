@@ -17,7 +17,6 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.domain.user.UserRole;
@@ -49,7 +48,7 @@ public class UserIT {
   private static final String BEGIN_DATE = "beginDate";
   private static final String END_DATE = "endDate";
 
-  private static final UserRole INVESTOR_USER_ROLE = UserRole.INVESTOR;
+  private static final String INVESTOR_USER_ROLE = UserRole.INVESTOR.toString();
 
   @Rule
   public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
@@ -75,7 +74,7 @@ public class UserIT {
     .then()
         .statusCode(CREATED.getStatusCode())
         .body(EMAIL, equalTo(SOME_EMAIL))
-        .body(ROLE, equalTo(INVESTOR_USER_ROLE.toString()))
+        .body(ROLE, equalTo(INVESTOR_USER_ROLE))
         .body("$", not(hasKey(LIMIT)));
     //@formatter:on
   }
@@ -184,7 +183,7 @@ public class UserIT {
   }
 
   @Test
-  public void givenSomeUserCreated_whenGetAllUsers_thenReturnTheUser() {
+  public void givenSomeUserCreated_whenGetAllUsers_thenReturnUsers() {
     givenSomeUserCreated();
     String token = givenAdministratorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
@@ -196,7 +195,6 @@ public class UserIT {
         .get(API_USERS_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
-        .header("X-Total-Count", is(notNullValue()))
         .body("$", everyItem(hasKey(EMAIL)))
         .body("$", everyItem(hasKey(ROLE)));
     //@formatter:on

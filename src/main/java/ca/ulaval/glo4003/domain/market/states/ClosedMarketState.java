@@ -1,19 +1,24 @@
 package ca.ulaval.glo4003.domain.market.states;
 
-import ca.ulaval.glo4003.domain.market.Market;
 import ca.ulaval.glo4003.domain.market.MarketState;
+import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class ClosedMarketState implements MarketState {
   @Override
-  public void update(Market market, LocalDateTime currentTime) {
+  public MarketState update(Market market, LocalDateTime currentTime, StockValueRetriever stockValueRetriever) {
     LocalTime time = currentTime.toLocalTime();
-    LocalTime openingTime = market.getOpeningTime();
-    LocalTime closingTime = market.getClosingTime();
-    if ((time.equals(openingTime) || time.isAfter(openingTime)) && time.isBefore(closingTime)) {
-      market.openAllStocks();
-      market.setState(new OpenMarketState());
+    if (shouldOpen(market, time)) {
+      market.stocks.forEach(Stock::saveOpeningPrice);
+      return new OpenMarketState();
     }
+    return this;
+  }
+
+  private boolean shouldOpen(Market market, LocalTime time) {
+    return (time.equals(market.openingTime) || time.isAfter(market.openingTime))
+        && time.isBefore(market.closingTime);
   }
 }
