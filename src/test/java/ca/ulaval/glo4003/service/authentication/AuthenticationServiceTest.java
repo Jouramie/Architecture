@@ -9,7 +9,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
@@ -47,7 +47,7 @@ public class AuthenticationServiceTest {
   private static final AuthenticationToken AUTHENTICATION_TOKEN
       = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
 
-  private static final User SOME_USER = new UserBuilder().build();
+  private static final Investor SOME_USER = new UserBuilder().build();
 
   private final AuthenticationResponseAssembler responseAssembler = new AuthenticationResponseAssembler();
 
@@ -170,7 +170,7 @@ public class AuthenticationServiceTest {
   @Test
   public void givenCurrentUserDoesNotHaveRequiredRole_whenValidatingToken_thenThrowInvalidTokenException()
       throws UserNotFoundException {
-    User currentUser = new UserBuilder().withRole(UserRole.INVESTOR).build();
+    Investor currentUser = new UserBuilder().withRole(UserRole.INVESTOR).build();
     given(userRepository.find(any())).willReturn(currentUser);
 
     ThrowingCallable validateToken = () -> authenticationService

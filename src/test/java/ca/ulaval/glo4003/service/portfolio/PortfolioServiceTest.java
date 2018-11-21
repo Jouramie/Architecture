@@ -12,7 +12,7 @@ import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.TreeSet;
@@ -30,7 +30,7 @@ public class PortfolioServiceTest {
   @Mock
   private CurrentUserSession someCurrentUserSession;
   @Mock
-  private User someCurrentUser;
+  private Investor someCurrentInvestor;
   @Mock
   private PortfolioAssembler somePortfolioAssembler;
   @Mock
@@ -49,8 +49,8 @@ public class PortfolioServiceTest {
     portfolioService = new PortfolioService(someCurrentUserSession, somePortfolioAssembler,
         someHistoricalPortfolioAssembler, clock);
 
-    given(someCurrentUserSession.getCurrentUser()).willReturn(someCurrentUser);
-    given(someCurrentUser.getPortfolio()).willReturn(portfolio);
+    given(someCurrentUserSession.getCurrentUser()).willReturn(someCurrentInvestor);
+    given(someCurrentInvestor.getPortfolio()).willReturn(portfolio);
     given(portfolio.getHistory(SOME_FROM_DATE, SOME_CURRENT_DATETIME.toLocalDate())).willReturn(somePortfolioHistory);
     given(clock.getCurrentTime()).willReturn(SOME_CURRENT_DATETIME);
   }
@@ -59,7 +59,7 @@ public class PortfolioServiceTest {
   public void whenGetPortfolio_thenPortfolioOfCurrentUserIsRetrieved() {
     portfolioService.getPortfolio();
 
-    verify(someCurrentUser).getPortfolio();
+    verify(someCurrentInvestor).getPortfolio();
   }
 
   @Test
@@ -73,7 +73,7 @@ public class PortfolioServiceTest {
   public void whenGetPortfolioHistory_thenPortfolioOfCurrentUserIsRetrieved() {
     portfolioService.getPortfolioHistory(SOME_FROM_DATE);
 
-    verify(someCurrentUser).getPortfolio();
+    verify(someCurrentInvestor).getPortfolio();
   }
 
   @Test

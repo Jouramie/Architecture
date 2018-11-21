@@ -8,7 +8,7 @@ import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioHistoryDto;
 import java.time.LocalDate;
@@ -46,8 +46,8 @@ public class PortfolioService {
 
   public PortfolioHistoryDto getPortfolioHistory(LocalDate from) {
     try {
-      User user = currentUserSession.getCurrentUser();
-      TreeSet<HistoricalPortfolio> portfolios = user.getPortfolio().getHistory(from, clock.getCurrentTime().toLocalDate());
+      Investor investor = currentUserSession.getCurrentUser();
+      TreeSet<HistoricalPortfolio> portfolios = investor.getPortfolio().getHistory(from, clock.getCurrentTime().toLocalDate());
       return historicalPortfolioAssembler.toDto(portfolios);
     } catch (StockNotFoundException | NoStockValueFitsCriteriaException e) {
       throw new InvalidPortfolioException();

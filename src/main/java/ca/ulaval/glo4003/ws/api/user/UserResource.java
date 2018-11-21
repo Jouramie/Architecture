@@ -49,7 +49,7 @@ public interface UserResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in or not administrator."
+              description = "Investor is not logged in or not administrator."
           )
       }
   )
@@ -72,7 +72,7 @@ public interface UserResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in or not administrator."
+              description = "Investor is not logged in or not administrator."
           ),
           @ApiResponse(
               responseCode = "404",
@@ -89,7 +89,7 @@ public interface UserResource {
       responses = {
           @ApiResponse(
               responseCode = "201",
-              description = "User successfully created.",
+              description = "Investor successfully created.",
               content = @Content(
                   schema = @Schema(
                       implementation = UserCreationDto.class
@@ -129,11 +129,11 @@ public interface UserResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in or not administrator."
+              description = "Investor is not logged in or not administrator."
           ),
           @ApiResponse(
               responseCode = "404",
-              description = "User does not exist."
+              description = "Investor does not exist."
           )
       }
   )
@@ -161,11 +161,11 @@ public interface UserResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in or not administrator."
+              description = "Investor is not logged in or not administrator."
           ),
           @ApiResponse(
               responseCode = "404",
-              description = "User does not exist."
+              description = "Investor does not exist."
           )
       }
   )
@@ -184,11 +184,11 @@ public interface UserResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in or not administrator."
+              description = "Investor is not logged in or not administrator."
           ),
           @ApiResponse(
               responseCode = "404",
-              description = "User does not exist."
+              description = "Investor does not exist."
           )
       }
   )

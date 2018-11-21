@@ -2,13 +2,13 @@ package ca.ulaval.glo4003.domain.user;
 
 public class CurrentUserSession {
 
-  private final ThreadLocal<User> currentUser = new ThreadLocal<>();
+  private final ThreadLocal<Investor> currentUser = new ThreadLocal<>();
 
-  public User getCurrentUser() {
+  public Investor getCurrentUser() {
     return currentUser.get();
   }
 
-  public void setCurrentUser(User user) {
+  public void setCurrentUser(Investor user) {
     currentUser.set(user);
   }
 }

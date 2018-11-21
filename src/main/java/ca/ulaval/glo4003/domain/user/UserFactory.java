@@ -7,11 +7,11 @@ import ca.ulaval.glo4003.domain.user.limit.NullLimit;
 
 @Component
 public class UserFactory {
-  public User createInvestor(String email, String password) {
-    return new User(email, password, UserRole.INVESTOR, new Cart(), new Portfolio(), new NullLimit());
+  public Investor createInvestor(String email, String password) {
+    return new Investor(email, password, UserRole.INVESTOR, new Cart(), new Portfolio(), new NullLimit());
   }
 
-  public User createAdministrator(String email, String password) {
-    return new User(email, password, UserRole.ADMINISTRATOR, new Cart(), new Portfolio(), new NullLimit());
+  public Investor createAdministrator(String email, String password) {
+    return new Investor(email, password, UserRole.ADMINISTRATOR, new Cart(), new Portfolio(), new NullLimit());
   }
 }

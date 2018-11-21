@@ -13,7 +13,7 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
@@ -47,7 +47,7 @@ public class CheckoutServiceTest {
   @Mock
   private StockRepository stockRepository;
   @Mock
-  private User currentUser;
+  private Investor currentInvestor;
   @Mock
   private Transaction transaction;
   @Mock
@@ -57,7 +57,7 @@ public class CheckoutServiceTest {
 
   @Before
   public void setup() {
-    given(currentUserSession.getCurrentUser()).willReturn(currentUser);
+    given(currentUserSession.getCurrentUser()).willReturn(currentInvestor);
     given(transactionAssembler.toDto(transaction)).willReturn(expectedDto);
 
     checkoutService = new CheckoutService(
@@ -73,7 +73,7 @@ public class CheckoutServiceTest {
   @Test
   public void whenCheckoutCart_thenTransactionIsAssembledToDto()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
-    given(currentUser.checkoutCart(transactionFactory, paymentProcessor,
+    given(currentInvestor.checkoutCart(transactionFactory, paymentProcessor,
         notificationFactory, notificationSender, stockRepository)).willReturn(transaction);
 
     TransactionDto transactionDto = checkoutService.checkoutCart();
@@ -84,7 +84,7 @@ public class CheckoutServiceTest {
   @Test
   public void whenCheckoutCartThrowingStockNotFound_thenExceptionIsTransformed()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
-    given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new StockNotFoundException(SOME_TITLE));
+    given(currentInvestor.checkoutCart(any(), any(), any(), any(), any())).willThrow(new StockNotFoundException(SOME_TITLE));
 
     ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
 
@@ -94,7 +94,7 @@ public class CheckoutServiceTest {
   @Test
   public void whenCheckoutCartThrowingEmptyCart_thenExceptionIsTransformed()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
-    given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new EmptyCartException());
+    given(currentInvestor.checkoutCart(any(), any(), any(), any(), any())).willThrow(new EmptyCartException());
 
     ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
 
@@ -104,7 +104,7 @@ public class CheckoutServiceTest {
   @Test
   public void whenCheckoutCartThrowingExceedLimit_thenExceptionIsTransformed()
       throws EmptyCartException, TransactionLimitExceededExeption, StockNotFoundException {
-    given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new TransactionLimitExceededExeption());
+    given(currentInvestor.checkoutCart(any(), any(), any(), any(), any())).willThrow(new TransactionLimitExceededExeption());
 
     ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
 

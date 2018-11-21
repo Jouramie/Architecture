@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.service.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.util.UserBuilder;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class UserAssemblerTest {
 
   @Test
   public void whenAssemblingDto_thenKeepSameFieldValues() {
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_ROLE).build();
+    Investor user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_ROLE).build();
 
     UserDto createdUser = assembler.toDto(user);
 

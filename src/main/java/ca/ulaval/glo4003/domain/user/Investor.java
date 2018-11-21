@@ -16,15 +16,15 @@ import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import java.util.List;
 
-public class User {
+public class Investor {
   private final String email;
   private final String password;
   private final UserRole role;
   private final Cart cart;
   private final Portfolio portfolio;
-  private Limit limit;
+  private final Limit limit;
 
-  public User(String email, String password, UserRole role, Cart cart, Portfolio portfolio, Limit limit) {
+  public Investor(String email, String password, UserRole role, Cart cart, Portfolio portfolio, Limit limit) {
     this.email = email;
     this.password = password;
     this.role = role;

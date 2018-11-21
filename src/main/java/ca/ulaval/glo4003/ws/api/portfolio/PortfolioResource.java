@@ -32,7 +32,7 @@ public interface PortfolioResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in."
+              description = "Investor is not logged in."
           )
       }
   )

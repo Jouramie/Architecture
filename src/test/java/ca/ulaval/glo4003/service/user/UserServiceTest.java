@@ -8,7 +8,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
@@ -29,7 +29,7 @@ public class UserServiceTest {
   private static final String SOME_EMAIL = "email";
   private static final String SOME_PASSWORD = "password";
   private static final UserRole SOME_USER_ROLE = UserRole.INVESTOR;
-  private static final User SOME_USER = new UserBuilder().build();
+  private static final Investor SOME_USER = new UserBuilder().build();
 
   @Mock
   private UserFactory userFactory;
@@ -63,8 +63,8 @@ public class UserServiceTest {
 
   @Test
   public void whenCreatingUser_thenReturnsConvertedUser() {
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
-    given(userFactory.createInvestor(any(), any())).willReturn(user);
+    Investor investor = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    given(userFactory.createInvestor(any(), any())).willReturn(investor);
 
     UserDto resultingUser = userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
@@ -92,7 +92,7 @@ public class UserServiceTest {
 
   @Test
   public void whenGetUser_thenReturnConvertedUser() throws UserNotFoundException {
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    Investor user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
     given(userRepository.find(any())).willReturn(user);
 
     UserDto resultingUser = userService.getUser(SOME_EMAIL);
@@ -119,8 +119,8 @@ public class UserServiceTest {
 
   @Test
   public void whenGetUsers_thenReturnConvertedUsers() {
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
-    List<User> users = singletonList(user);
+    Investor user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    List<Investor> users = singletonList(user);
     given(userRepository.findAll()).willReturn(users);
 
     List<UserDto> resultingUsers = userService.getUsers();

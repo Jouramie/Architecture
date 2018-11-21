@@ -44,7 +44,7 @@ public interface CartResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in."
+              description = "Investor is not logged in."
           )
       }
   )
@@ -74,7 +74,7 @@ public interface CartResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in."
+              description = "Investor is not logged in."
           )
       }
   )
@@ -106,7 +106,7 @@ public interface CartResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in."
+              description = "Investor is not logged in."
           )
       }
   )
@@ -134,7 +134,7 @@ public interface CartResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in."
+              description = "Investor is not logged in."
           )
       }
   )
@@ -152,7 +152,7 @@ public interface CartResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in."
+              description = "Investor is not logged in."
           )
       }
   )
@@ -184,7 +184,7 @@ public interface CartResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in."
+              description = "Investor is not logged in."
           ),
           @ApiResponse(
               responseCode = "403",

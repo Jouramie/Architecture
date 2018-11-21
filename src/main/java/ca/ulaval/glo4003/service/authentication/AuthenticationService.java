@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.service.authentication;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
@@ -39,7 +39,7 @@ public class AuthenticationService {
   }
 
   public AuthenticationResponseDto authenticate(ApiAuthenticationRequestDto authenticationRequest) {
-    User user = getUserByEmail(authenticationRequest.email);
+    Investor user = getUserByEmail(authenticationRequest.email);
     if (user.isThisYourPassword(authenticationRequest.password)) {
       AuthenticationToken token = tokenFactory.createToken(authenticationRequest.email);
       authenticationTokenRepository.add(token);
@@ -52,7 +52,7 @@ public class AuthenticationService {
     try {
       AuthenticationToken savedToken =
           authenticationTokenRepository.findByUUID(UUID.fromString(authenticationTokenDto.token));
-      User currentUser = getUserByEmail(savedToken.email);
+      Investor currentUser = getUserByEmail(savedToken.email);
 
       if (!currentUser.haveRoleIn(acceptedRoles)) {
         throw new InvalidTokenException();
@@ -64,7 +64,7 @@ public class AuthenticationService {
     }
   }
 
-  private User getUserByEmail(String email) {
+  private Investor getUserByEmail(String email) {
     try {
       return userRepository.find(email);
     } catch (UserNotFoundException exception) {
@@ -74,7 +74,7 @@ public class AuthenticationService {
 
   public void revokeToken() {
     try {
-      User user = currentUserSession.getCurrentUser();
+      Investor user = currentUserSession.getCurrentUser();
       authenticationTokenRepository.remove(user.getEmail());
     } catch (TokenNotFoundException exception) {
       throw new InvalidTokenException(exception);

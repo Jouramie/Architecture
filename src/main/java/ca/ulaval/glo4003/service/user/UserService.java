@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.service.user;
 
 import ca.ulaval.glo4003.domain.Component;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
@@ -25,24 +25,24 @@ public class UserService {
   }
 
   public UserDto createInvestorUser(String email, String password) {
-    User user = userFactory.createInvestor(email, password);
-    tryAddUser(user);
-    return userAssembler.toDto(user);
+    Investor investor = userFactory.createInvestor(email, password);
+    tryAddUser(investor);
+    return userAssembler.toDto(investor);
   }
 
   public UserDto getUser(String email) {
     return userAssembler.toDto(tryFindUser(email));
   }
 
-  private void tryAddUser(User user) {
+  private void tryAddUser(Investor investor) {
     try {
-      userRepository.add(user);
+      userRepository.add(investor);
     } catch (UserAlreadyExistsException exception) {
       throw new InvalidUserEmailException(exception);
     }
   }
 
-  private User tryFindUser(String email) {
+  private Investor tryFindUser(String email) {
     try {
       return userRepository.find(email);
     } catch (UserNotFoundException e) {
@@ -51,7 +51,7 @@ public class UserService {
   }
 
   public List<UserDto> getUsers() {
-    List<User> users = userRepository.findAll();
+    List<Investor> users = userRepository.findAll();
     return userAssembler.toDtoList(users);
   }
 }
