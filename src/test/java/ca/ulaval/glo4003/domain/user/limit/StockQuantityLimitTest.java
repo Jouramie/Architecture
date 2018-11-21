@@ -1,12 +1,13 @@
 package ca.ulaval.glo4003.domain.user.limit;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionItem;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.time.LocalDateTime;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,30 +30,28 @@ public class StockQuantityLimitTest {
   }
 
   @Test
-  public void givenStockOverLimit_whenVerified_thenTransactionExceedLimit() {
+  public void givenStockOverLimit_whenCheckIfTransactionExceed_thenExceptionIsThrown() {
     transaction = generateTransaction(SOME_INSIDE_DATE, MORE_STOCK_QUANTITY);
 
-    boolean result = limit.doesTransactionExceedLimit(transaction);
+    ThrowableAssert.ThrowingCallable checkLimit = () -> limit.checkIfTransactionExceed(transaction);
 
-    assertThat(result).isTrue();
+    assertThatThrownBy(checkLimit).isInstanceOf(TransactionLimitExceededExeption.class);
   }
 
   @Test
-  public void givenStockUnderLimit_whenVerified_thenTransactionDoesNotExceedLimit() {
+  public void givenStockUnderLimit_whenCheckIfTransactionExceed_thenNoExceptionIsThrown()
+      throws TransactionLimitExceededExeption {
     transaction = generateTransaction(SOME_INSIDE_DATE, LESS_STOCK_QUANTITY);
 
-    boolean result = limit.doesTransactionExceedLimit(transaction);
-
-    assertThat(result).isFalse();
+    limit.checkIfTransactionExceed(transaction);
   }
 
   @Test
-  public void givenTransactionOutsideLimitTimeSpan_whenVerified_thenTransactionDoesNotExceedLimit() {
+  public void givenTransactionOutsideLimitTimeSpan_whenCheckIfTransactionExceed_thenNoExceptionIsThrown()
+      throws TransactionLimitExceededExeption {
     transaction = generateTransaction(SOME_OUTSIDE_DATE, MORE_STOCK_QUANTITY);
 
-    boolean result = limit.doesTransactionExceedLimit(transaction);
-
-    assertThat(result).isFalse();
+    limit.checkIfTransactionExceed(transaction);
   }
 
   private Transaction generateTransaction(LocalDateTime date, int quantity) {

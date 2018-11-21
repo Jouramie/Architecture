@@ -13,7 +13,7 @@ import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
-import ca.ulaval.glo4003.domain.user.limit.TransactionExceedLimitException;
+import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 
 public class User {
   private final String email;
@@ -61,7 +61,7 @@ public class User {
                                   NotificationFactory notificationFactory,
                                   NotificationSender notificationSender,
                                   StockRepository stockRepository)
-      throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
+      throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
 
     checkIfCartIsEmpty(cart);
 
@@ -82,10 +82,8 @@ public class User {
     }
   }
 
-  private void checkIfPurchaseExceedLimit(Transaction purchase) throws TransactionExceedLimitException {
-    if (limit.doesTransactionExceedLimit(purchase)) {
-      throw new TransactionExceedLimitException();
-    }
+  private void checkIfPurchaseExceedLimit(Transaction purchase) throws TransactionLimitExceededExeption {
+    limit.checkIfTransactionExceed(purchase);
   }
 
   private void processPurchase(Transaction transaction,

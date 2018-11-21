@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -19,7 +20,7 @@ import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
-import ca.ulaval.glo4003.domain.user.limit.TransactionExceedLimitException;
+import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import ca.ulaval.glo4003.util.UserBuilder;
@@ -61,93 +62,92 @@ public class UserTest {
 
   @Before
   public void setup() throws StockNotFoundException {
-    transaction = new TransactionBuilder()
+    this.transaction = new TransactionBuilder()
         .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QTY).build())
         .withItem(new TransactionItemBuilder().withTitle(SOME_OTHER_TITLE).withQuantity(SOME_OTHER_QTY).build())
         .build();
-    notification = new Notification("title", "message");
+    this.notification = new Notification("title", "message");
 
-    given(stockRepository.exists(SOME_TITLE)).willReturn(true);
-    given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
-    given(limit.doesTransactionExceedLimit(transaction)).willReturn(false);
-    user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withLimit(limit).build();
-    user.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
-    user.getCart().add(SOME_OTHER_TITLE, SOME_OTHER_QTY, stockRepository);
+    given(this.stockRepository.exists(SOME_TITLE)).willReturn(true);
+    given(this.stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
+    this.user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withLimit(this.limit).build();
+    this.user.getCart().add(SOME_TITLE, SOME_QTY, this.stockRepository);
+    this.user.getCart().add(SOME_OTHER_TITLE, SOME_OTHER_QTY, this.stockRepository);
 
-    given(transactionFactory.createPurchase(user.getCart())).willReturn(transaction);
-    given(notificationFactory.create(transaction)).willReturn(notification);
+    given(this.transactionFactory.createPurchase(this.user.getCart())).willReturn(this.transaction);
+    given(this.notificationFactory.create(this.transaction)).willReturn(this.notification);
   }
 
   @Test
   public void givenRightPassword_whenCheckingIfPasswordBelongsToUser_thenItDoes() {
-    assertThat(user.isThisYourPassword(SOME_PASSWORD)).isTrue();
+    assertThat(this.user.isThisYourPassword(SOME_PASSWORD)).isTrue();
   }
 
   @Test
   public void givenWrongPassword_whenCheckingIfPasswordBelongsToUser_thenItDoesNot() {
-    assertThat(user.isThisYourPassword(WRONG_PASSWORD)).isFalse();
+    assertThat(this.user.isThisYourPassword(WRONG_PASSWORD)).isFalse();
   }
 
   @Test
-  public void whenCheckoutCart_thenReturnCalculatedTransaction() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
-    Transaction result = user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
+  public void whenCheckoutCart_thenReturnCalculatedTransaction() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
+    Transaction result = this.user.checkoutCart(this.transactionFactory, this.paymentProcessor, this.notificationFactory, this.notificationSender, this.stockRepository);
 
-    assertThat(result).isEqualTo(transaction);
+    assertThat(result).isEqualTo(this.transaction);
   }
 
   @Test
-  public void whenCheckoutCart_thenPaymentIsProcessedWithTheCurrentTransaction() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
-    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
+  public void whenCheckoutCart_thenPaymentIsProcessedWithTheCurrentTransaction() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
+    this.user.checkoutCart(this.transactionFactory, this.paymentProcessor, this.notificationFactory, this.notificationSender, this.stockRepository);
 
-    verify(paymentProcessor).payment(transaction);
+    verify(this.paymentProcessor).payment(this.transaction);
   }
 
   @Test
-  public void whenCheckoutCart_thenANotificationIsSent() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
-    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
+  public void whenCheckoutCart_thenANotificationIsSent() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
+    this.user.checkoutCart(this.transactionFactory, this.paymentProcessor, this.notificationFactory, this.notificationSender, this.stockRepository);
 
-    verify(notificationSender).sendNotification(eq(notification), any());
+    verify(this.notificationSender).sendNotification(eq(this.notification), any());
   }
 
   @Test
-  public void whenCheckoutCart_thenContentIsAddedToPortfolio() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
-    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
+  public void whenCheckoutCart_thenContentIsAddedToPortfolio() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
+    this.user.checkoutCart(this.transactionFactory, this.paymentProcessor, this.notificationFactory, this.notificationSender, this.stockRepository);
 
-    assertThat(user.getPortfolio().getStocks().getTitles()).containsExactlyInAnyOrder(SOME_TITLE, SOME_OTHER_TITLE);
-    assertThat(user.getPortfolio().getStocks().getQuantity(SOME_TITLE)).isEqualTo(SOME_QTY);
-    assertThat(user.getPortfolio().getStocks().getQuantity(SOME_OTHER_TITLE)).isEqualTo(SOME_OTHER_QTY);
+    assertThat(this.user.getPortfolio().getStocks().getTitles()).containsExactlyInAnyOrder(SOME_TITLE, SOME_OTHER_TITLE);
+    assertThat(this.user.getPortfolio().getStocks().getQuantity(SOME_TITLE)).isEqualTo(SOME_QTY);
+    assertThat(this.user.getPortfolio().getStocks().getQuantity(SOME_OTHER_TITLE)).isEqualTo(SOME_OTHER_QTY);
   }
 
   @Test
-  public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
-    user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
+  public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
+    this.user.checkoutCart(this.transactionFactory, this.paymentProcessor, this.notificationFactory, this.notificationSender, this.stockRepository);
 
-    assertTrue(user.getCart().isEmpty());
+    assertTrue(this.user.getCart().isEmpty());
   }
 
   @Test
   public void givenEmptyCart_whenCheckoutCart_thenExceptionIsThrow() {
-    user.getCart().empty();
+    this.user.getCart().empty();
 
     ThrowableAssert.ThrowingCallable checkoutCart = () ->
-        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
+        this.user.checkoutCart(this.transactionFactory, this.paymentProcessor, this.notificationFactory, this.notificationSender, this.stockRepository);
 
     assertThatThrownBy(checkoutCart).isInstanceOf(EmptyCartException.class);
-    verify(paymentProcessor, never()).payment(any());
-    verify(notificationSender, never()).sendNotification(any(), any());
-    assertTrue(user.getPortfolio().getStocks().isEmpty());
+    verify(this.paymentProcessor, never()).payment(any());
+    verify(this.notificationSender, never()).sendNotification(any(), any());
+    assertTrue(this.user.getPortfolio().getStocks().isEmpty());
   }
 
   @Test
-  public void givenTransactionExceedLimit_whenCheckoutCart_thenExceptionIsThrow() {
-    given(limit.doesTransactionExceedLimit(transaction)).willReturn(true);
+  public void givenTransactionExceedLimit_whenCheckoutCart_thenExceptionIsThrow() throws TransactionLimitExceededExeption {
+    doThrow(TransactionLimitExceededExeption.class).when(this.limit).checkIfTransactionExceed(this.transaction);
 
     ThrowableAssert.ThrowingCallable checkoutCart = () ->
-        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
+        this.user.checkoutCart(this.transactionFactory, this.paymentProcessor, this.notificationFactory, this.notificationSender, this.stockRepository);
 
-    assertThatThrownBy(checkoutCart).isInstanceOf(TransactionExceedLimitException.class);
-    verify(paymentProcessor, never()).payment(any());
-    verify(notificationSender, never()).sendNotification(any(), any());
-    assertTrue(user.getPortfolio().getStocks().isEmpty());
+    assertThatThrownBy(checkoutCart).isInstanceOf(TransactionLimitExceededExeption.class);
+    verify(this.paymentProcessor, never()).payment(any());
+    verify(this.notificationSender, never()).sendNotification(any(), any());
+    assertTrue(this.user.getPortfolio().getStocks().isEmpty());
   }
 }

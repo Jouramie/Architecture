@@ -11,12 +11,12 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
-import ca.ulaval.glo4003.domain.user.limit.TransactionExceedLimitException;
+import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.cart.exceptions.EmptyCartOnCheckoutException;
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
-import ca.ulaval.glo4003.service.cart.exceptions.PurchaseExceedUserLimitException;
+import ca.ulaval.glo4003.service.cart.exceptions.PurchaseLimitExceededOnCheckoutException;
 import javax.inject.Inject;
 
 @Component
@@ -46,7 +46,7 @@ public class CheckoutService {
     this.stockRepository = stockRepository;
   }
 
-  public TransactionDto checkoutCart() throws InvalidStockTitleException, PurchaseExceedUserLimitException {
+  public TransactionDto checkoutCart() throws InvalidStockTitleException, PurchaseLimitExceededOnCheckoutException {
     User currentUser = currentUserSession.getCurrentUser();
     try {
       Transaction transaction = currentUser.checkoutCart(
@@ -56,8 +56,8 @@ public class CheckoutService {
       throw new InvalidStockTitleException(e.title);
     } catch (EmptyCartException e) {
       throw new EmptyCartOnCheckoutException();
-    } catch (TransactionExceedLimitException e) {
-      throw new PurchaseExceedUserLimitException();
+    } catch (TransactionLimitExceededExeption e) {
+      throw new PurchaseLimitExceededOnCheckoutException();
     }
   }
 }
