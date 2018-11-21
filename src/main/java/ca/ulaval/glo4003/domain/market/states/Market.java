@@ -37,6 +37,10 @@ public class Market {
     return currency;
   }
 
+  public void addStock(Stock stock) {
+    stocks.add(stock);
+  }
+
   public void halt(String message) {
     isHalted = true;
     haltMessage = message;

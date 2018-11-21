@@ -7,8 +7,10 @@ import ca.ulaval.glo4003.service.market.MarketStatusDto;
 import ca.ulaval.glo4003.service.market.TradingHaltService;
 import ca.ulaval.glo4003.ws.api.market.ApiMarketStatusAssembler;
 import ca.ulaval.glo4003.ws.api.market.dto.MarketStatusResponseDto;
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
+@Resource
 public class MarketResumeResourceImpl implements MarketResumeResource {
 
   private final MarketService marketService;

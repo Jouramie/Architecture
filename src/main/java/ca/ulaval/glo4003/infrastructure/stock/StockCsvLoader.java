@@ -42,6 +42,7 @@ public class StockCsvLoader {
       MarketId marketId = new MarketId(record.get("market"));
 
       Stock stock = new Stock(title, name, category, marketId, getStockHistory(title, marketId));
+      marketRepository.findById(marketId).addStock(stock);
       stockRepository.add(stock);
     }
 

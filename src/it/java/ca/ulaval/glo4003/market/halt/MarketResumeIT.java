@@ -23,9 +23,9 @@ public class MarketResumeIT {
     givenHaltedMarket();
     //@formatter:off
     when()
-        .post(String.format("/markets/%s/resume", MARKET))
+        .post(String.format("/api/markets/%s/resume", MARKET))
     .then()
-        .statusCode(ACCEPTED.getStatusCode())
+        .statusCode(OK.getStatusCode())
         .body("market", equalTo(MARKET))
         .body("status", any(String.class));
     //@formatter:on
@@ -36,7 +36,7 @@ public class MarketResumeIT {
   public void givenInexistentMarket_whenResumingMarket_thenReturn404NotFound() {
     //@formatter:off
     when()
-        .post(String.format("/markets/%s/resume", INEXISTENT_MARKET))
+        .post(String.format("/api/markets/%s/resume", INEXISTENT_MARKET))
     .then()
         .statusCode(NOT_FOUND.getStatusCode());
     //@formatter:on
@@ -46,7 +46,7 @@ public class MarketResumeIT {
   public void givenActiveMarket_whenResumingMarketTrading_thenReturn400MarketAlreadyActive() {
     //@formatter:off
     when()
-        .post(String.format("/markets/%s/resume", INEXISTENT_MARKET))
+        .post(String.format("/api/markets/%s/resume", MARKET))
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
@@ -58,13 +58,13 @@ public class MarketResumeIT {
     given()
         .queryParam("message", "foobar").when()
     .when()
-        .post(String.format("/markets/%s/resume", MARKET))
+        .post(String.format("/api/markets/%s/resume", MARKET))
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
   }
 
   private void givenHaltedMarket() {
-    given().queryParam("message", "foobar").when().post(String.format("/markets/%s/halt", MARKET));
+    given().queryParam("message", "foobar").when().post(String.format(MarketHaltIT.API_HALT_MARKET_ROUTE, MARKET));
   }
 }
