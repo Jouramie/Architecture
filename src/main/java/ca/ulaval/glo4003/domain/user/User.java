@@ -21,7 +21,7 @@ public class User {
   private final UserRole role;
   private final Cart cart;
   private final Portfolio portfolio;
-  private final Limit limit;
+  private Limit limit;
 
   public User(String email, String password, UserRole role, Cart cart, Portfolio portfolio, Limit limit) {
     this.email = email;
@@ -66,7 +66,7 @@ public class User {
     checkIfCartIsEmpty(cart);
 
     Transaction purchase = transactionFactory.createPurchase(cart);
-    checkIfPurchaseExceedLimit(purchase);
+    limit.checkIfTransactionExceed(purchase);
 
     processPurchase(purchase, paymentProcessor, stockRepository);
     sendTransactionNotification(notificationFactory, notificationSender, purchase);
@@ -80,10 +80,6 @@ public class User {
     if (cart.isEmpty()) {
       throw new EmptyCartException();
     }
-  }
-
-  private void checkIfPurchaseExceedLimit(Transaction purchase) throws TransactionLimitExceededExeption {
-    limit.checkIfTransactionExceed(purchase);
   }
 
   private void processPurchase(Transaction transaction,

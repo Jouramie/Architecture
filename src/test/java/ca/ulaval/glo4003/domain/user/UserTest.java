@@ -24,7 +24,7 @@ import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import ca.ulaval.glo4003.util.UserBuilder;
-import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -129,7 +129,7 @@ public class UserTest {
   public void givenEmptyCart_whenCheckoutCart_thenExceptionIsThrow() {
     user.getCart().empty();
 
-    ThrowableAssert.ThrowingCallable checkoutCart = () ->
+    ThrowingCallable checkoutCart = () ->
         user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThatThrownBy(checkoutCart).isInstanceOf(EmptyCartException.class);
@@ -142,7 +142,7 @@ public class UserTest {
   public void givenTransactionExceedLimit_whenCheckoutCart_thenExceptionIsThrow() throws TransactionLimitExceededExeption {
     doThrow(TransactionLimitExceededExeption.class).when(limit).checkIfTransactionExceed(transaction);
 
-    ThrowableAssert.ThrowingCallable checkoutCart = () ->
+    ThrowingCallable checkoutCart = () ->
         user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThatThrownBy(checkoutCart).isInstanceOf(TransactionLimitExceededExeption.class);

@@ -7,7 +7,7 @@ import ca.ulaval.glo4003.domain.transaction.TransactionItem;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.time.LocalDateTime;
-import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +33,7 @@ public class StockQuantityLimitTest {
   public void givenStockOverLimit_whenCheckIfTransactionExceed_thenExceptionIsThrown() {
     transaction = generateTransaction(SOME_INSIDE_DATE, MORE_STOCK_QUANTITY);
 
-    ThrowableAssert.ThrowingCallable checkLimit = () -> limit.checkIfTransactionExceed(transaction);
+    ThrowingCallable checkLimit = () -> limit.checkIfTransactionExceed(transaction);
 
     assertThatThrownBy(checkLimit).isInstanceOf(TransactionLimitExceededExeption.class);
   }

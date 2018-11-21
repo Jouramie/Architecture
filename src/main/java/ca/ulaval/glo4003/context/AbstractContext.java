@@ -65,7 +65,7 @@ import org.glassfish.jersey.servlet.ServletContainer;
 public abstract class AbstractContext {
 
   protected final ServiceLocator serviceLocator;
-  private final String webServicePackagePrefix;
+  protected final String webServicePackagePrefix;
 
   public AbstractContext(String webServicePackagePrefix, ServiceLocator serviceLocator) {
     this.webServicePackagePrefix = webServicePackagePrefix;
@@ -105,7 +105,7 @@ public abstract class AbstractContext {
     serviceLocator.registerSingleton(CurrentUserSession.class, CurrentUserSession.class);
   }
 
-  private Set<Object> createRegisteredComponentInstances() {
+  protected Set<Object> createRegisteredComponentInstances() {
     List<Class<?>> registeredClasses = Stream.of(Resource.class, ErrorMapper.class, Component.class)
         .map(annotation -> serviceLocator.getClassesForAnnotation(webServicePackagePrefix, annotation))
         .flatMap(Collection::stream).collect(toList());
@@ -116,7 +116,7 @@ public abstract class AbstractContext {
         .collect(toSet());
   }
 
-  private void loadData() {
+  protected void loadData() {
     try {
       loadCsvData();
       createAdministrator();

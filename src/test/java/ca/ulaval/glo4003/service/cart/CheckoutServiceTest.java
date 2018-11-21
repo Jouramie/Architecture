@@ -21,7 +21,7 @@ import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.cart.exceptions.EmptyCartOnCheckoutException;
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
 import ca.ulaval.glo4003.service.cart.exceptions.PurchaseLimitExceededOnCheckoutException;
-import org.assertj.core.api.ThrowableAssert;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,7 +86,7 @@ public class CheckoutServiceTest {
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new StockNotFoundException(SOME_TITLE));
 
-    ThrowableAssert.ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
+    ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
 
     assertThatThrownBy(checkoutCart).isInstanceOf(InvalidStockTitleException.class);
   }
@@ -96,7 +96,7 @@ public class CheckoutServiceTest {
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new EmptyCartException());
 
-    ThrowableAssert.ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
+    ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
 
     assertThatThrownBy(checkoutCart).isInstanceOf(EmptyCartOnCheckoutException.class);
   }
@@ -106,7 +106,7 @@ public class CheckoutServiceTest {
       throws EmptyCartException, TransactionLimitExceededExeption, StockNotFoundException {
     given(currentUser.checkoutCart(any(), any(), any(), any(), any())).willThrow(new TransactionLimitExceededExeption());
 
-    ThrowableAssert.ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
+    ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
 
     assertThatThrownBy(checkoutCart).isInstanceOf(PurchaseLimitExceededOnCheckoutException.class);
   }
