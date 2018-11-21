@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.service.authentication;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
@@ -9,6 +8,7 @@ import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
+import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
 import org.junit.Before;
@@ -60,14 +60,17 @@ public class LimitServiceTest {
   public void whenCreatedAmountMoneyLimit_thenLimitIsAddedToUser() throws UserNotFoundException {
     given(userRepository.find(SOME_EMAIL)).willReturn(user);
     service.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_MONEY_AMOUNT);
-    verify(user).addLimit(any()); //TODO: verifier la limit
+    Limit limit = limitFactory.createMoneyAmountLimit(SOME_PERIOD, SOME_MONEY_AMOUNT);
+
+    verify(user).addLimit(limit);
   }
 
   @Test
   public void whenCreateStockQuantityLimit_thenLimitIsAddedToUser() throws UserNotFoundException {
     given(userRepository.find(SOME_EMAIL)).willReturn(user);
     service.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);
-    verify(user).addLimit(any()); //TODO: verifier la limit
+    Limit limit = limitFactory.createStockQuantityLimit(SOME_PERIOD, SOME_STOCK_QUANTITY);
+    verify(user).addLimit(limit);
   }
 
   @Test
