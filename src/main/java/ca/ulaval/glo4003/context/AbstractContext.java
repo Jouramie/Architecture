@@ -87,7 +87,7 @@ public abstract class AbstractContext {
     createSwaggerApi(apiUrl);
   }
 
-  private void initializeServiceLocator() {
+  protected void initializeServiceLocator() {
     serviceLocator.discoverPackage(webServicePackagePrefix, Resource.class, ErrorMapper.class,
         Component.class, FilterRegistration.class);
     serviceLocator.registerInstance(OpenApiResource.class, new OpenApiResource());

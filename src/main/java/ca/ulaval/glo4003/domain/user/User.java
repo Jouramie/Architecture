@@ -36,12 +36,16 @@ public class User {
     return email;
   }
 
+  public boolean isThisYourPassword(String password) {
+    return this.password.equals(password);
+  }
+
   public UserRole getRole() {
     return role;
   }
 
-  public boolean isThisYourPassword(String password) {
-    return this.password.equals(password);
+  public Limit getLimit() {
+    return limit;
   }
 
   public Cart getCart() {

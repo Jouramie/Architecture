@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.domain.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -22,6 +23,7 @@ import ca.ulaval.glo4003.domain.user.limit.TransactionExceedLimitException;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import ca.ulaval.glo4003.util.UserBuilder;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -120,32 +122,32 @@ public class UserTest {
   public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
-    assertThat(user.getCart().isEmpty());
+    assertTrue(user.getCart().isEmpty());
   }
 
   @Test
-  public void givenEmptyCart_whenCheckoutCart_thenThrowException() {
+  public void givenEmptyCart_whenCheckoutCart_thenExceptionIsThrow() {
     user.getCart().empty();
 
-    assertThatThrownBy(() ->
-        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository))
-        .isInstanceOf(EmptyCartException.class);
+    ThrowableAssert.ThrowingCallable checkoutCart = () ->
+        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
+    assertThatThrownBy(checkoutCart).isInstanceOf(EmptyCartException.class);
     verify(paymentProcessor, never()).payment(any());
     verify(notificationSender, never()).sendNotification(any(), any());
-    assertThat(user.getPortfolio().getStocks().isEmpty());
+    assertTrue(user.getPortfolio().getStocks().isEmpty());
   }
 
   @Test
-  public void givenTransactionExceedLimit_whenCheckoutCart_thenThrowException() {
+  public void givenTransactionExceedLimit_whenCheckoutCart_thenExceptionIsThrow() {
     given(limit.doesTransactionExceedLimit(transaction)).willReturn(true);
 
-    assertThatThrownBy(() ->
-        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository))
-        .isInstanceOf(TransactionExceedLimitException.class);
+    ThrowableAssert.ThrowingCallable checkoutCart = () ->
+        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
+    assertThatThrownBy(checkoutCart).isInstanceOf(TransactionExceedLimitException.class);
     verify(paymentProcessor, never()).payment(any());
     verify(notificationSender, never()).sendNotification(any(), any());
-    assertThat(user.getPortfolio().getStocks().isEmpty());
+    assertTrue(user.getPortfolio().getStocks().isEmpty());
   }
 }
