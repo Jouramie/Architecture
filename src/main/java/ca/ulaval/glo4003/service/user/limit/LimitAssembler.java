@@ -10,11 +10,11 @@ import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 public class LimitAssembler {
   public LimitDto toDto(Limit limit) {
     if (limit instanceof StockQuantityLimit) {
-      return new StockQuantityLimitDto(limit.start, limit.end, ((StockQuantityLimit) limit).stockQuantity);
+      return toStockQuantityLimitDto((StockQuantityLimit) limit);
     }
 
     if (limit instanceof MoneyAmountLimit) {
-      return new MoneyAmountLimitDto(limit.start, limit.end, ((MoneyAmountLimit) limit).amount.toUsd());
+      return toMoneyAmountLimitDto((MoneyAmountLimit) limit);
     }
 
     if (limit instanceof NullLimit) {
@@ -22,5 +22,13 @@ public class LimitAssembler {
     }
 
     throw new UnsupportedOperationException("There is no conversion for this limit: " + limit);
+  }
+
+  private StockQuantityLimitDto toStockQuantityLimitDto(StockQuantityLimit limit) {
+    return new StockQuantityLimitDto(limit.start, limit.start, limit.stockQuantity);
+  }
+
+  private MoneyAmountLimitDto toMoneyAmountLimitDto(MoneyAmountLimit limit) {
+    return new MoneyAmountLimitDto(limit.start, limit.start, limit.amount.toUsd());
   }
 }

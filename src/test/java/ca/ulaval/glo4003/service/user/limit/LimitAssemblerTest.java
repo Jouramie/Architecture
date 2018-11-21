@@ -9,6 +9,7 @@ import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.MoneyAmountLimit;
 import ca.ulaval.glo4003.domain.user.limit.NullLimit;
 import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
+import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import java.time.LocalDateTime;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
@@ -52,10 +53,9 @@ public class LimitAssemblerTest {
 
   @Test
   public void givenAnotherTypeOfLimit_whenAssemblingDto_thenExceptionIsThrown() {
-    Limit limit = new Limit(SOME_DATE, SOME_DATE) {
+    Limit limit = new Limit() {
       @Override
-      public boolean doesTransactionExceedLimit(Transaction transaction) {
-        return false;
+      public void checkIfTransactionExceed(Transaction transaction) throws TransactionLimitExceededExeption {
       }
     };
 
