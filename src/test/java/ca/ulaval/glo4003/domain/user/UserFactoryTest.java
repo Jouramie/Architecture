@@ -44,7 +44,8 @@ public class UserFactoryTest {
 
   @Test
   public void whenCreatingAdministrator_thenReturnAdministratorUser() {
-    User expectedUser = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
+    User expectedUser = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD)
+        .withRole(UserRole.ADMINISTRATOR).build();
 
     User createdUser = factory.createAdministrator(SOME_EMAIL, SOME_PASSWORD);
 
