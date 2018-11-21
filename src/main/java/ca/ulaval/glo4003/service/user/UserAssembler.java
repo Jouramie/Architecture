@@ -6,11 +6,13 @@ import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.service.user.limit.LimitAssembler;
 import java.util.List;
+import javax.inject.Inject;
 
 @Component
 public class UserAssembler {
   private final LimitAssembler limitAssembler;
 
+  @Inject
   public UserAssembler(LimitAssembler limitAssembler) {
     this.limitAssembler = limitAssembler;
   }

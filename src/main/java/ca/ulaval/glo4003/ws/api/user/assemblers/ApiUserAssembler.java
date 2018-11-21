@@ -6,12 +6,14 @@ import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import java.util.List;
+import javax.inject.Inject;
 
 @Component
 public class ApiUserAssembler {
 
   private final ApiLimitAssembler limitAssembler;
 
+  @Inject
   public ApiUserAssembler(ApiLimitAssembler limitAssembler) {
     this.limitAssembler = limitAssembler;
   }
