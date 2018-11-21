@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.portfolio;
 
-import static ca.ulaval.glo4003.util.TestUserHelper.givenUserAlreadyAuthenticated;
-import static ca.ulaval.glo4003.util.TestUserHelper.givenUserAlreadyRegistered;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -93,8 +93,8 @@ public class PortfolioReportIT {
 
   @Test
   public void givenEmptyPortfolio_whenGetPortfolioReport_thenReturnEmptyHistory() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -110,8 +110,8 @@ public class PortfolioReportIT {
 
   @Test
   public void givenEmptyPortfolio_whenGetPortfolioReport_thenStocksWithGreatestVariationAreEmpty() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()

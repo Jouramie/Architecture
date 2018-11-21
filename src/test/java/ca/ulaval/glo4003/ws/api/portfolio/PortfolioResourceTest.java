@@ -19,7 +19,7 @@ public class PortfolioResourceTest {
 
   @Before
   public void setupPortfolioResource() {
-    portfolioResource = new PortfolioResourceImpl(portfolioService, apiPortfolioAssembler);
+    portfolioResource = new PortfolioResourceImpl(portfolioService, apiPortfolioAssembler, dateService);
   }
 
   @Test
