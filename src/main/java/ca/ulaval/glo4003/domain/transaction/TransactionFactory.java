@@ -38,7 +38,6 @@ public class TransactionFactory {
     List<TransactionItem> transactionItems = new ArrayList<>();
     for (String title : items.getTitles()) {
       validateMarketOfStockIsNotHalted(title);
-      marketRepository.findMarketForStock(title).isHalted();
       int quantity = items.getQuantity(title);
       transactionItems.add(buildTransactionItem(title, quantity));
     }
