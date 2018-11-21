@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "37c23b96-54b0-4814-bcfe-3a2d61b0876b",
+		"_postman_id": "dea91701-13a0-4226-a6c3-4404d019749a",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -560,33 +560,175 @@
 			]
 		},
 		{
-			"name": "Ping",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "localhost:8080/api/ping?echo=test",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"ping"
-					],
-					"query": [
+			"name": "Users",
+			"item": [
+				{
+					"name": "Limit",
+					"item": [
 						{
-							"key": "echo",
-							"value": "test"
+							"name": "SetMoneyAmountLimit",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"type": "text",
+										"value": "00000000-0000-0000-0000-000000000000"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"applicationPeriod\": \"DAILY\",\n\t\"maximalMoneyAmountSpent\": 5\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/api/users/john.smith%40email.com/limit/money_amount",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"john.smith%40email.com",
+										"limit",
+										"money_amount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SetStockLimit",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"type": "text",
+										"value": "00000000-0000-0000-0000-000000000000"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"applicationPeriod\": \"MONTHLY\",\n\t\"maximalStockQuantity\": 5\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/api/users/john.smith%40email.com/limit/stock",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"john.smith%40email.com",
+										"limit",
+										"stock"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "RemoveLimit",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "localhost:8080/api/users/john.smith%40email.com/limit",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"john.smith%40email.com",
+										"limit"
+									]
+								}
+							},
+							"response": []
 						}
-					]
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GetUsers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUser",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/users/john.smith%40email.com",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"john.smith%40email.com"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }

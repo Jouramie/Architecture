@@ -8,7 +8,7 @@ public class UserBuilder {
   public static final String DEFAULT_PASSWORD = "password";
   private static final UserRole DEFAULT_USER_ROLE = UserRole.INVESTOR;
 
-  private final UserRole userRole = DEFAULT_USER_ROLE;
+  private UserRole userRole = DEFAULT_USER_ROLE;
   private String email = DEFAULT_EMAIL;
   private String password = DEFAULT_PASSWORD;
 
@@ -19,6 +19,11 @@ public class UserBuilder {
 
   public UserBuilder withPassword(String password) {
     this.password = password;
+    return this;
+  }
+
+  public UserBuilder withRole(UserRole role) {
+    userRole = role;
     return this;
   }
 

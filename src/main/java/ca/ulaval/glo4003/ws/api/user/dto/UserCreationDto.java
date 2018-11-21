@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.authentication.dto;
+package ca.ulaval.glo4003.ws.api.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,10 +22,8 @@ public class UserCreationDto {
 
   @JsonCreator
   public UserCreationDto(
-      @JsonProperty("email")
-          String email,
-      @JsonProperty("password")
-          String password) {
+      @JsonProperty("email") String email,
+      @JsonProperty("password") String password) {
     this.email = email;
     this.password = password;
   }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Schema(
     name = "Authentication request"
@@ -17,7 +16,6 @@ public class ApiAuthenticationRequestDto {
   public final String email;
 
   @NotNull
-  @Size(min = 8)
   public final String password;
 
   @JsonCreator
