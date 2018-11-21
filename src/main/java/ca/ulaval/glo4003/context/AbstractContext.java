@@ -4,6 +4,7 @@ import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
@@ -13,29 +14,25 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.domain.transaction.NullPaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
-import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
+import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
+import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.infrastructure.config.SimulationSettings;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryAuthenticationTokenRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
-import ca.ulaval.glo4003.infrastructure.persistence.InMemoryTransactionLedger;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryUserRepository;
 import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.investul.live_stock_emulator.StockSimulator;
-import ca.ulaval.glo4003.service.Component;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
-import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.http.FilterRegistration;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -63,7 +60,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 public abstract class AbstractContext {
-
   private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
   protected final ServiceLocator serviceLocator;
   protected final String DEFAULT_ADMIN_EMAIL = "Archi.test.42@gmail.com";
@@ -76,6 +72,7 @@ public abstract class AbstractContext {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
     provider.setMapper(mapper);
     resourceConfig.register(provider);
@@ -99,7 +96,6 @@ public abstract class AbstractContext {
     serviceLocator.registerSingleton(StockRepository.class, InMemoryStockRepository.class);
     serviceLocator.registerSingleton(MarketRepository.class, InMemoryMarketRepository.class);
     serviceLocator.registerSingleton(StockValueRetriever.class, SimulatedStockValueRetriever.class);
-    serviceLocator.registerSingleton(TransactionLedger.class, InMemoryTransactionLedger.class);
     serviceLocator.registerSingleton(PaymentProcessor.class, NullPaymentProcessor.class);
     serviceLocator.registerSingleton(CurrentUserSession.class, CurrentUserSession.class);
   }
@@ -127,8 +123,9 @@ public abstract class AbstractContext {
   private void createAdministrator() {
     String testEmail = DEFAULT_ADMIN_EMAIL;
     try {
-      serviceLocator.get(UserRepository.class)
-          .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
+      UserRepository userRepository = serviceLocator.get(UserRepository.class);
+      UserFactory userFactory = serviceLocator.get(UserFactory.class);
+      userRepository.add(userFactory.createAdministrator(testEmail, "asdfasdf"));
     } catch (UserAlreadyExistsException exception) {
       System.out.println("Test user couldn't be added");
       exception.printStackTrace();
@@ -140,8 +137,7 @@ public abstract class AbstractContext {
   private void loadCsvData() throws IOException, MarketNotFoundException {
     MarketCsvLoader marketLoader = new MarketCsvLoader(
         serviceLocator.get(MarketRepository.class),
-        serviceLocator.get(StockRepository.class),
-        serviceLocator.get(StockValueRetriever.class));
+        serviceLocator.get(StockRepository.class));
     marketLoader.load();
 
     StockCsvLoader stockLoader = new StockCsvLoader(
@@ -188,7 +184,6 @@ public abstract class AbstractContext {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     setupJacksonJavaTimeModule(resourceConfig);
-    resourceConfig.register(CORSResponseFilter.class);
     serviceLocator.getClassesForAnnotation(
         WEB_SERVICE_PACKAGE_PREFIX,
         FilterRegistration.class)

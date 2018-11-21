@@ -13,8 +13,12 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
+import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.service.cart.assemblers.CartItemAssembler;
+import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
+import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
+import ca.ulaval.glo4003.service.cart.exceptions.StockNotInCartException;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import java.util.Collections;
 import java.util.List;
@@ -50,7 +54,7 @@ public class CartServiceTest {
   public void setup() {
     given(currentUserSession.getCurrentUser()).willReturn(currentUser);
     given(currentUser.getCart()).willReturn(cart);
-    given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(stockRepository.exists(SOME_TITLE)).willReturn(true);
 
     cartService = new CartService(stockRepository, currentUserSession, userRepository, cartItemAssembler);
   }
@@ -127,7 +131,7 @@ public class CartServiceTest {
     String notInCartTitle = "stock not in cart";
     doThrow(new IllegalArgumentException())
         .when(cart).update(notInCartTitle, SOME_QUANTITY);
-    given(stockRepository.doesStockExist(notInCartTitle)).willReturn(true);
+    given(stockRepository.exists(notInCartTitle)).willReturn(true);
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.updateStockInCart(notInCartTitle, SOME_QUANTITY);

@@ -1,10 +1,12 @@
 package ca.ulaval.glo4003.cart;
 
-import static ca.ulaval.glo4003.util.TestUserHelper.givenUserAlreadyAuthenticated;
-import static ca.ulaval.glo4003.util.TestUserHelper.givenUserAlreadyRegistered;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.FORBIDDEN;
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
@@ -16,7 +18,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.util.CartStockRequestBuilder;
+import ca.ulaval.glo4003.user.StockLimitCreationRequestBuilder;
+import ca.ulaval.glo4003.util.UserAuthenticationHelper;
 import io.restassured.http.Header;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
@@ -27,7 +30,7 @@ public class CartIT {
   private static final String SOME_TRANSACTION_TYPE = "PURCHASE";
 
   private static final String API_CART_ROUTE = "/api/cart/";
-  private static final String API_CART_ROUTE_WITH_TITLE = API_CART_ROUTE + SOME_TITLE;
+  private static final String API_CART_STOCK_ROUTE = "/api/cart/{title}";
   private static final String API_CART_CHECKOUT_ROUTE = "/api/cart/checkout";
 
   private static final String TITLE = "title";
@@ -57,8 +60,8 @@ public class CartIT {
 
   @Test
   public void givenInvestorLoggedIn_whenGetCart_thenReturnEmptyList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -78,7 +81,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .put(API_CART_ROUTE_WITH_TITLE)
+        .put(API_CART_STOCK_ROUTE, SOME_TITLE)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
@@ -86,8 +89,8 @@ public class CartIT {
 
   @Test
   public void whenAddStockToCart_thenReturnStockInList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -95,7 +98,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .put(API_CART_ROUTE_WITH_TITLE)
+        .put(API_CART_STOCK_ROUTE, SOME_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", is(iterableWithSize(1)))
@@ -109,8 +112,8 @@ public class CartIT {
 
   @Test
   public void givenEmptyCart_whenAddStockToCart_thenReturnStockInList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -118,7 +121,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .put(API_CART_ROUTE_WITH_TITLE)
+        .put(API_CART_STOCK_ROUTE, SOME_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", is(iterableWithSize(1)))
@@ -132,8 +135,8 @@ public class CartIT {
 
   @Test
   public void givenNegativeQuantityCartStockRequest_whenAddStockToCart_thenBadRequest() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -141,7 +144,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.withQuantity(-1).build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .put(API_CART_ROUTE_WITH_TITLE)
+        .put(API_CART_STOCK_ROUTE, SOME_TITLE)
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
@@ -149,8 +152,8 @@ public class CartIT {
 
   @Test
   public void givenCartContainsDefaultStock_whenAddSameStockToCart_thenAddAmountOfStocks() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
@@ -159,7 +162,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .put(API_CART_ROUTE_WITH_TITLE)
+        .put(API_CART_STOCK_ROUTE, SOME_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
         .body("[0].quantity", is(CartStockRequestBuilder.DEFAULT_QUANTITY * 2));
@@ -167,13 +170,13 @@ public class CartIT {
   }
 
   @Test
-  public void givenUserNotLoggedIn_whenUpdateStockToCart_thenReturnUnauthorized() {
+  public void givenUserNotLoggedIn_whenUpdateStockToCart_thenUnauthorized() {
     //@formatter:off
     given()
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .patch(API_CART_ROUTE_WITH_TITLE)
+        .patch(API_CART_STOCK_ROUTE, SOME_TITLE)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
@@ -181,8 +184,8 @@ public class CartIT {
 
   @Test
   public void givenEmptyCart_whenUpdateStockToCart_thenBadRequest() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -190,7 +193,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .patch(API_CART_ROUTE_WITH_TITLE)
+        .patch(API_CART_STOCK_ROUTE, SOME_TITLE)
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
@@ -198,8 +201,8 @@ public class CartIT {
 
   @Test
   public void givenNegativeQuantityCartStockRequest_whenUpdateStockToCart_thenBadRequest() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
@@ -208,7 +211,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.withQuantity(-1).build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .patch(API_CART_ROUTE_WITH_TITLE)
+        .patch(API_CART_STOCK_ROUTE, SOME_TITLE)
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
@@ -221,7 +224,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .delete(API_CART_ROUTE_WITH_TITLE)
+        .delete(API_CART_STOCK_ROUTE, SOME_TITLE)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
@@ -229,8 +232,8 @@ public class CartIT {
 
   @Test
   public void givenCartContainsDefaultStock_whenRemoveStockFromCart_thenReturnStockInList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
@@ -239,7 +242,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .delete(API_CART_ROUTE_WITH_TITLE)
+        .delete(API_CART_STOCK_ROUTE, SOME_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", is(emptyIterable()));
@@ -258,8 +261,8 @@ public class CartIT {
 
   @Test
   public void givenCartContainsDefaultStock_whenEmptyCart_thenEmptyTheCart() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
@@ -292,8 +295,8 @@ public class CartIT {
 
   @Test
   public void givenCartContainsDefaultStock_whenCheckout_thenReturnStockInList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenCartContainsDefaultStock(tokenHeader);
     //@formatter:off
@@ -315,8 +318,8 @@ public class CartIT {
 
   @Test
   public void givenEmptyCart_whenCheckout_thenReturnBadRequest() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -328,6 +331,37 @@ public class CartIT {
     //@formatter:on
   }
 
+  @Test
+  public void givenSomeLimitAppliedToSomeUser_whenSomeUserBuyStockExceedingTheLimit_thenForbidden() {
+    int maximalStockQuantity = 1;
+
+    givenInvestorAlreadyRegistered();
+    String administratorToken = givenAdministratorAlreadyAuthenticated();
+    Header administratorTokenHeader = new Header("token", administratorToken);
+    given().header(administratorTokenHeader).contentType(MediaType.APPLICATION_JSON)
+        .body(new StockLimitCreationRequestBuilder().withStockQuantity(maximalStockQuantity).build())
+        .when().put("/api/users/%s/limit/stock", UserAuthenticationHelper.SOME_EMAIL);
+
+    String investorToken = givenInvestorAlreadyAuthenticated();
+    Header investorTokenHeader = new Header("token", investorToken);
+
+    //@formatter:off
+    given()
+        .header(investorTokenHeader)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(new CartStockRequestBuilder().withQuantity(maximalStockQuantity + 1).build())
+    .when()
+        .put(API_CART_STOCK_ROUTE, SOME_TITLE);
+
+    given()
+        .header(investorTokenHeader)
+    .when()
+        .post(API_CART_CHECKOUT_ROUTE)
+    .then()
+        .statusCode(FORBIDDEN.getStatusCode());
+    //@formatter:on
+  }
+
   private void givenCartContainsDefaultStock(Header tokenHeader) {
     //@formatter:off
     given()
@@ -335,7 +369,7 @@ public class CartIT {
         .body(cartStockRequestBuilder.build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
-        .put(API_CART_ROUTE_WITH_TITLE);
+        .put(API_CART_STOCK_ROUTE, SOME_TITLE);
     //@formatter:on
   }
 }
