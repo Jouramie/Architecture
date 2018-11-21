@@ -14,6 +14,7 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
+import java.util.List;
 
 public class User {
   private final String email;
@@ -46,6 +47,10 @@ public class User {
 
   public Limit getLimit() {
     return limit;
+  }
+
+  public boolean haveRoleIn(List<UserRole> roles) {
+    return roles.contains(role);
   }
 
   public Cart getCart() {

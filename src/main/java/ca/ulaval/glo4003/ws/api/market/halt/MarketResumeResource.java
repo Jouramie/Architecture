@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.ws.api.market.halt;
 
+import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 public interface MarketResumeResource {
 
   @POST
+  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Resumes trading in a halted market.",
       responses = {
