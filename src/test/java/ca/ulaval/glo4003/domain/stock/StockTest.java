@@ -67,27 +67,27 @@ public class StockTest {
   public void whenStockIsCreated_thenStockValueIsFilledWithStartValue() {
     StockValue stockValue = stock.getValue();
 
-    assertThat(stockValue.getCurrentValue()).isEqualTo(SOME_START_AMOUNT);
+    assertThat(stockValue.getLatestValue()).isEqualTo(SOME_START_AMOUNT);
   }
 
   @Test
   public void whenUpdateValue_thenStockValueIsIncrementedByTheAmount() {
     stock.updateValue(new BigDecimal(10.00));
 
-    assertThat(stock.getValue().getCurrentValue()).isEqualTo(new MoneyAmount(60.00, SOME_CURRENCY));
+    assertThat(stock.getValue().getLatestValue()).isEqualTo(new MoneyAmount(60.00, SOME_CURRENCY));
   }
 
   @Test
-  public void whenOpen_thenCreateNewStockValueInHistoryWithLatestCloseValue() {
-    stock.open();
+  public void whenSavingOpeningPrice_thenCreateNewStockValueInHistoryWithLatestCloseValue() {
+    stock.saveOpeningPrice();
 
     assertThat(stock.getValue().getOpenValue()).isEqualTo(SOME_START_AMOUNT);
     assertThat(stock.getValueHistory().getAllStoredValues()).hasSize(2);
   }
 
   @Test
-  public void whenClose_thenCloseStockValue() {
-    stock.close();
+  public void whenSavingClosingPrice_thenCloseStockValue() {
+    stock.saveClosingPrice();
 
     assertThat(stock.getValue().isClosed()).isTrue();
   }

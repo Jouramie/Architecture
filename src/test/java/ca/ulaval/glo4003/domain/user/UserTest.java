@@ -1,10 +1,13 @@
 package ca.ulaval.glo4003.domain.user;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -18,10 +21,12 @@ import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
-import ca.ulaval.glo4003.domain.user.limit.TransactionExceedLimitException;
+import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import ca.ulaval.glo4003.util.UserBuilder;
+import java.util.List;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +38,7 @@ public class UserTest {
 
   private static final String SOME_EMAIL = "4email@email.com";
   private static final String SOME_PASSWORD = "a password";
+  private static final UserRole SOME_ROLE = UserRole.INVESTOR;
   private static final String WRONG_PASSWORD = SOME_PASSWORD + "wrong";
   private static final String SOME_TITLE = "MSFT";
   private static final int SOME_QTY = 2;
@@ -67,8 +73,7 @@ public class UserTest {
 
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
-    given(limit.doesTransactionExceedLimit(transaction)).willReturn(false);
-    user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withLimit(limit).build();
+    user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withLimit(limit).withRole(SOME_ROLE).build();
     user.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
     user.getCart().add(SOME_OTHER_TITLE, SOME_OTHER_QTY, stockRepository);
 
@@ -87,28 +92,28 @@ public class UserTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenReturnCalculatedTransaction() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
+  public void whenCheckoutCart_thenReturnCalculatedTransaction() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     Transaction result = user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(result).isEqualTo(transaction);
   }
 
   @Test
-  public void whenCheckoutCart_thenPaymentIsProcessedWithTheCurrentTransaction() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
+  public void whenCheckoutCart_thenPaymentIsProcessedWithTheCurrentTransaction() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     verify(paymentProcessor).payment(transaction);
   }
 
   @Test
-  public void whenCheckoutCart_thenANotificationIsSent() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
+  public void whenCheckoutCart_thenANotificationIsSent() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     verify(notificationSender).sendNotification(eq(notification), any());
   }
 
   @Test
-  public void whenCheckoutCart_thenContentIsAddedToPortfolio() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
+  public void whenCheckoutCart_thenContentIsAddedToPortfolio() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(user.getPortfolio().getStocks().getTitles()).containsExactlyInAnyOrder(SOME_TITLE, SOME_OTHER_TITLE);
@@ -117,35 +122,53 @@ public class UserTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException, TransactionExceedLimitException {
+  public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
-    assertThat(user.getCart().isEmpty());
+    assertThat(user.getCart().isEmpty()).isTrue();
   }
 
   @Test
-  public void givenEmptyCart_whenCheckoutCart_thenThrowException() {
+  public void givenEmptyCart_whenCheckoutCart_thenExceptionIsThrow() {
     user.getCart().empty();
 
-    assertThatThrownBy(() ->
-        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository))
-        .isInstanceOf(EmptyCartException.class);
+    ThrowingCallable checkoutCart = () ->
+        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
+    assertThatThrownBy(checkoutCart).isInstanceOf(EmptyCartException.class);
     verify(paymentProcessor, never()).payment(any());
     verify(notificationSender, never()).sendNotification(any(), any());
-    assertThat(user.getPortfolio().getStocks().isEmpty());
+    assertThat(user.getPortfolio().getStocks().isEmpty()).isTrue();
   }
 
   @Test
-  public void givenTransactionExceedLimit_whenCheckoutCart_thenThrowException() {
-    given(limit.doesTransactionExceedLimit(transaction)).willReturn(true);
+  public void givenTransactionExceedLimit_whenCheckoutCart_thenExceptionIsThrow() throws TransactionLimitExceededExeption {
+    doThrow(TransactionLimitExceededExeption.class).when(limit).checkIfTransactionExceed(transaction);
 
-    assertThatThrownBy(() ->
-        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository))
-        .isInstanceOf(TransactionExceedLimitException.class);
+    ThrowingCallable checkoutCart = () ->
+        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
+    assertThatThrownBy(checkoutCart).isInstanceOf(TransactionLimitExceededExeption.class);
     verify(paymentProcessor, never()).payment(any());
     verify(notificationSender, never()).sendNotification(any(), any());
-    assertThat(user.getPortfolio().getStocks().isEmpty());
+    assertThat(user.getPortfolio().getStocks().isEmpty()).isTrue();
+  }
+
+  @Test
+  public void givenListContainingUserRole_whenHaveRoleIn_thenTrue() {
+    List<UserRole> roles = asList(UserRole.INVESTOR, UserRole.ADMINISTRATOR);
+
+    boolean haveRoleIn = user.haveRoleIn(roles);
+
+    assertThat(haveRoleIn).isTrue();
+  }
+
+  @Test
+  public void givenListNotContainingUserRole_whenHaveRoleIn_thenFalse() {
+    List<UserRole> roles = emptyList();
+
+    boolean haveRoleIn = user.haveRoleIn(roles);
+
+    assertThat(haveRoleIn).isFalse();
   }
 }

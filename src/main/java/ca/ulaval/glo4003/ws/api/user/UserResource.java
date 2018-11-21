@@ -1,12 +1,13 @@
 package ca.ulaval.glo4003.ws.api.user;
 
+import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
-import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
+import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,7 +32,7 @@ import javax.ws.rs.core.Response;
 public interface UserResource {
 
   @GET
-  @AuthenticationRequiredBinding
+  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Get all users.",
       description = "Return all users, with their information.",
@@ -56,7 +57,7 @@ public interface UserResource {
 
   @GET
   @Path("/{email}")
-  @AuthenticationRequiredBinding
+  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Get a user for a given email.",
       description = "Return the details of the user with the corresponding email.",
@@ -110,7 +111,7 @@ public interface UserResource {
 
   @PUT
   @Path("/{email}/limit/stock")
-  @AuthenticationRequiredBinding
+  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Set a stock per transaction limit to a user.",
       responses = {
@@ -142,7 +143,7 @@ public interface UserResource {
 
   @PUT
   @Path("/{email}/limit/money_amount")
-  @AuthenticationRequiredBinding
+  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Set a money amount per transaction limit to a user.",
       responses = {
@@ -174,7 +175,7 @@ public interface UserResource {
 
   @DELETE
   @Path("/{email}/limit")
-  @AuthenticationRequiredBinding
+  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Remove a limit from a user.",
       responses = {

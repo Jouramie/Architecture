@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class Stock {
   private final String title;
@@ -42,7 +43,7 @@ public class Stock {
   }
 
   public Currency getCurrency() {
-    return getValue().getCurrentValue().getCurrency();
+    return getValue().getLatestValue().getCurrency();
   }
 
   public synchronized void updateValue(BigDecimal variation) {
@@ -53,14 +54,18 @@ public class Stock {
     return valueHistory.getLatestValue().value;
   }
 
-  public synchronized void open() {
-    MoneyAmount startValue = getValue().getCloseValue();
+  public synchronized StockValue getValueOnDay(LocalDate date) throws NoStockValueFitsCriteriaException {
+    return valueHistory.getValueOnDay(date);
+  }
+
+  public synchronized void saveOpeningPrice() {
+    MoneyAmount startValue = getValue().getLatestValue();
     StockValue newStockValue = new StockValue(startValue);
 
     valueHistory.addNextValue(newStockValue);
   }
 
-  public synchronized void close() {
+  public synchronized void saveClosingPrice() {
     getValue().close();
   }
 }

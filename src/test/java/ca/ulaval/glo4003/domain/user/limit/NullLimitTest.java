@@ -1,19 +1,17 @@
 package ca.ulaval.glo4003.domain.user.limit;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.util.TransactionBuilder;
 import org.junit.Test;
 
 public class NullLimitTest {
 
-  private NullLimit limit;
+  private static final Transaction SOME_TRANSACTION = new TransactionBuilder().build();
 
   @Test
-  public void whenVerified_thenTransactionNeverExceedLimit() {
-    limit = new NullLimit();
+  public void whenCheckIfTransactionExceed_thenNoExceptionIsThrow() {
+    NullLimit limit = new NullLimit();
 
-    boolean result = limit.doesTransactionExceedLimit(null);
-
-    assertThat(result).isFalse();
+    limit.checkIfTransactionExceed(SOME_TRANSACTION);
   }
 }

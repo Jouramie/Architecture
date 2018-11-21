@@ -14,7 +14,6 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.domain.transaction.NullPaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
-import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
@@ -27,13 +26,11 @@ import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryAuthenticationTokenRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
-import ca.ulaval.glo4003.infrastructure.persistence.InMemoryTransactionLedger;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryUserRepository;
 import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.investul.live_stock_emulator.StockSimulator;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
-import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.http.FilterRegistration;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,7 +62,7 @@ import org.glassfish.jersey.servlet.ServletContainer;
 public abstract class AbstractContext {
 
   protected final ServiceLocator serviceLocator;
-  private final String webServicePackagePrefix;
+  protected final String webServicePackagePrefix;
 
   public AbstractContext(String webServicePackagePrefix, ServiceLocator serviceLocator) {
     this.webServicePackagePrefix = webServicePackagePrefix;
@@ -89,7 +86,7 @@ public abstract class AbstractContext {
     createSwaggerApi(apiUrl);
   }
 
-  private void initializeServiceLocator() {
+  protected void initializeServiceLocator() {
     serviceLocator.discoverPackage(webServicePackagePrefix, Resource.class, ErrorMapper.class,
         Component.class, FilterRegistration.class);
     serviceLocator.registerInstance(OpenApiResource.class, new OpenApiResource());
@@ -100,12 +97,11 @@ public abstract class AbstractContext {
     serviceLocator.registerSingleton(StockRepository.class, InMemoryStockRepository.class);
     serviceLocator.registerSingleton(MarketRepository.class, InMemoryMarketRepository.class);
     serviceLocator.registerSingleton(StockValueRetriever.class, SimulatedStockValueRetriever.class);
-    serviceLocator.registerSingleton(TransactionLedger.class, InMemoryTransactionLedger.class);
     serviceLocator.registerSingleton(PaymentProcessor.class, NullPaymentProcessor.class);
     serviceLocator.registerSingleton(CurrentUserSession.class, CurrentUserSession.class);
   }
 
-  private Set<Object> createRegisteredComponentInstances() {
+  protected Set<Object> createRegisteredComponentInstances() {
     List<Class<?>> registeredClasses = Stream.of(Resource.class, ErrorMapper.class, Component.class)
         .map(annotation -> serviceLocator.getClassesForAnnotation(webServicePackagePrefix, annotation))
         .flatMap(Collection::stream).collect(toList());
@@ -116,7 +112,7 @@ public abstract class AbstractContext {
         .collect(toSet());
   }
 
-  private void loadData() {
+  protected void loadData() {
     try {
       loadCsvData();
       createAdministrator();
@@ -142,8 +138,7 @@ public abstract class AbstractContext {
   private void loadCsvData() throws IOException, MarketNotFoundException {
     MarketCsvLoader marketLoader = new MarketCsvLoader(
         serviceLocator.get(MarketRepository.class),
-        serviceLocator.get(StockRepository.class),
-        serviceLocator.get(StockValueRetriever.class));
+        serviceLocator.get(StockRepository.class));
     marketLoader.load();
 
     StockCsvLoader stockLoader = new StockCsvLoader(
@@ -190,7 +185,6 @@ public abstract class AbstractContext {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     setupJacksonJavaTimeModule(resourceConfig);
-    resourceConfig.register(CORSResponseFilter.class);
     serviceLocator.getClassesForAnnotation(
         webServicePackagePrefix,
         FilterRegistration.class)
