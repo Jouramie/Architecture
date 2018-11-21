@@ -21,6 +21,10 @@ public class Transaction implements Comparable<Transaction> {
         .reduce(MoneyAmount.zero(items.get(0).amount.getCurrency()), MoneyAmount::add);
   }
 
+  public int getTotalQuantity() {
+    return items.stream().mapToInt(item -> item.quantity).sum();
+  }
+
   @Override
   public int compareTo(Transaction other) {
     return timestamp.compareTo(other.timestamp);

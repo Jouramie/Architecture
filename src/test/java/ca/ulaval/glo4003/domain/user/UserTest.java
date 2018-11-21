@@ -2,9 +2,11 @@ package ca.ulaval.glo4003.domain.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -17,9 +19,12 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
+import ca.ulaval.glo4003.domain.user.limit.Limit;
+import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import ca.ulaval.glo4003.util.UserBuilder;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,6 +52,8 @@ public class UserTest {
   private NotificationFactory notificationFactory;
   @Mock
   private NotificationSender notificationSender;
+  @Mock
+  private Limit limit;
 
   private Transaction transaction;
   private Notification notification;
@@ -63,7 +70,7 @@ public class UserTest {
 
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
-    user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
+    user = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withLimit(limit).build();
     user.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
     user.getCart().add(SOME_OTHER_TITLE, SOME_OTHER_QTY, stockRepository);
 
@@ -82,40 +89,28 @@ public class UserTest {
   }
 
   @Test
-  public void whenCreatingUser_thenCartIsEmpty() {
-    User newUser = new User(SOME_EMAIL, SOME_PASSWORD, UserRole.ADMINISTRATOR);
-
-    assertThat(newUser.getCart().isEmpty()).isTrue();
-  }
-
-  @Test
-  public void whenCheckoutCart_thenReturnCalculatedTransaction() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenReturnCalculatedTransaction() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     Transaction result = user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(result).isEqualTo(transaction);
   }
 
   @Test
-  public void whenCreatingUser_thenUserDoesNotOwnStock() {
-    assertThat(user.getPortfolio().getStocks().isEmpty()).isTrue();
-  }
-
-  @Test
-  public void whenCheckoutCart_thenPaymentIsProcessedWithTheCurrentTransaction() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenPaymentIsProcessedWithTheCurrentTransaction() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     verify(paymentProcessor).payment(transaction);
   }
 
   @Test
-  public void whenCheckoutCart_thenANotificationIsSent() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenANotificationIsSent() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     verify(notificationSender).sendNotification(eq(notification), any());
   }
 
   @Test
-  public void whenCheckoutCart_thenContentIsAddedToPortfolio() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenContentIsAddedToPortfolio() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(user.getPortfolio().getStocks().getTitles()).containsExactlyInAnyOrder(SOME_TITLE, SOME_OTHER_TITLE);
@@ -124,22 +119,35 @@ public class UserTest {
   }
 
   @Test
-  public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException {
+  public void whenCheckoutCart_thenCartIsCleared() throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
-    assertThat(user.getCart().isEmpty());
+    assertTrue(user.getCart().isEmpty());
   }
 
   @Test
-  public void givenEmptyCart_whenCheckoutCart_thenThrowCheckoutEmptyCartException() {
+  public void givenEmptyCart_whenCheckoutCart_thenExceptionIsThrow() {
     user.getCart().empty();
 
-    assertThatThrownBy(() ->
-        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository))
-        .isInstanceOf(EmptyCartException.class);
+    ThrowingCallable checkoutCart = () ->
+        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
+    assertThatThrownBy(checkoutCart).isInstanceOf(EmptyCartException.class);
     verify(paymentProcessor, never()).payment(any());
     verify(notificationSender, never()).sendNotification(any(), any());
-    assertThat(user.getPortfolio().getStocks().isEmpty());
+    assertTrue(user.getPortfolio().getStocks().isEmpty());
+  }
+
+  @Test
+  public void givenTransactionExceedLimit_whenCheckoutCart_thenExceptionIsThrow() throws TransactionLimitExceededExeption {
+    doThrow(TransactionLimitExceededExeption.class).when(limit).checkIfTransactionExceed(transaction);
+
+    ThrowingCallable checkoutCart = () ->
+        user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
+
+    assertThatThrownBy(checkoutCart).isInstanceOf(TransactionLimitExceededExeption.class);
+    verify(paymentProcessor, never()).payment(any());
+    verify(notificationSender, never()).sendNotification(any(), any());
+    assertTrue(user.getPortfolio().getStocks().isEmpty());
   }
 }
