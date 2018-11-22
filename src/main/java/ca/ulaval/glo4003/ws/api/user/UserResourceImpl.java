@@ -5,6 +5,8 @@ import static javax.ws.rs.core.Response.Status.CREATED;
 import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.service.user.UserService;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
+import ca.ulaval.glo4003.service.user.limit.dto.MoneyAmountLimitDto;
+import ca.ulaval.glo4003.service.user.limit.dto.StockLimitDto;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserLimitAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
@@ -65,27 +67,30 @@ public class UserResourceImpl implements UserResource {
   }
 
   @Override
-  public ApiUserLimitDto setUserStockLimit(String email,
-                                           UserStockLimitCreationDto userStockLimitCreationDto) {
-    /*requestValidator.validate(userStockLimitCreationDto);
-    StockLimitDto limit = limitService.createStockQuantityLimit(email, userStockLimitCreationDto.applicationPeriod, userStockLimitCreationDto.maximalStockQuantity);
+  public Response setUserStockLimit(String email,
+                                    UserStockLimitCreationDto userStockLimitCreationDto) {
+    requestValidator.validate(userStockLimitCreationDto);
+    StockLimitDto limit = limitService.createStockQuantityLimit(email,
+        userStockLimitCreationDto.applicationPeriod, userStockLimitCreationDto.maximalStockQuantity);
 
-    ApiUserLimitDto apiUserLimitDto = apiUserLimitAssembler.toDtoStockLimit(limit);*/
-    return null; // apiUserLimitDto;
+    ApiUserLimitDto apiUserLimitDto = apiUserLimitAssembler.toDtoStockLimit(limit);
+    return Response.status(CREATED).entity(apiUserLimitDto).build();
   }
 
   @Override
-  public ApiUserLimitDto setUserMoneyAmountLimit(String email,
-                                                 UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
-    /*requestValidator.validate(userMoneyAmountLimitCreationDto);
-    MoneyAmountLimitDto limit = limitService.createMoneyAmountLimit(email, userMoneyAmountLimitCreationDto.applicationPeriod, userMoneyAmountLimitCreationDto.maximalMoneyAmountSpent);
-    ApiUserLimitDto apiUserLimitDto = apiUserLimitAssembler.toDtoMoneyAmountLimit(limit);*/
-    return null; //apiUserLimitDto;
+  public Response setUserMoneyAmountLimit(String email,
+                                          UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
+    requestValidator.validate(userMoneyAmountLimitCreationDto);
+    MoneyAmountLimitDto limit = limitService.createMoneyAmountLimit(email,
+        userMoneyAmountLimitCreationDto.applicationPeriod, userMoneyAmountLimitCreationDto.maximalMoneyAmountSpent);
+
+    ApiUserLimitDto apiUserLimitDto = apiUserLimitAssembler.toDtoMoneyAmountLimit(limit);
+    return Response.status(CREATED).entity(apiUserLimitDto).build();
   }
 
   @Override
   public Response removeUserLimit(String email) {
-    //limitService.removeUserLimit(email);
+    limitService.removeUserLimit(email);
     return Response.noContent().build();
   }
 }

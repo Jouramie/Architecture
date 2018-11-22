@@ -45,6 +45,7 @@ public class UserIT {
   private static final String LIMIT = "limit";
   private static final String INPUT_ERRORS = "inputErrors";
   private static final String MAXIMAL_STOCK_QUANTITY = "maximalStockQuantity";
+  private static final String MAXIMAL_MONEY_SPENT = "maximalMoneySpent";
   private static final String BEGIN_DATE = "beginDate";
   private static final String END_DATE = "endDate";
 
@@ -255,7 +256,7 @@ public class UserIT {
     String token = givenAdministratorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
 
-    double moneyAmountLimit = 99.99;
+    float moneyAmountLimit = 99.99f;
 
     //@formatter:off
     given()
@@ -268,7 +269,7 @@ public class UserIT {
         .statusCode(CREATED.getStatusCode())
         .body("$", hasKey(BEGIN_DATE))
         .body("$", hasKey(END_DATE))
-        .body(MAXIMAL_STOCK_QUANTITY, is(moneyAmountLimit));
+        .body(MAXIMAL_MONEY_SPENT, is(moneyAmountLimit));
     //@formatter:on
   }
 
@@ -278,7 +279,7 @@ public class UserIT {
     String token = givenAdministratorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
 
-    double moneyAmountLimit = 12.34;
+    float moneyAmountLimit = 12.34f;
     givenSomeLimitAddedToSomeUser(token,
         new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(moneyAmountLimit).build());
 
@@ -292,7 +293,7 @@ public class UserIT {
         .root(LIMIT)
         .body("$", hasKey(BEGIN_DATE))
         .body("$", hasKey(END_DATE))
-        .body(MAXIMAL_STOCK_QUANTITY, is(moneyAmountLimit));
+        .body(MAXIMAL_MONEY_SPENT, is(moneyAmountLimit));
     //@formatter:on
   }
 

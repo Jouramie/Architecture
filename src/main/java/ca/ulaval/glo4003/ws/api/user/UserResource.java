@@ -137,7 +137,7 @@ public interface UserResource {
           )
       }
   )
-  ApiUserLimitDto setUserStockLimit(
+  Response setUserStockLimit(
       @PathParam("email") String email,
       @Valid UserStockLimitCreationDto userStockLimitCreationDto);
 
@@ -169,7 +169,7 @@ public interface UserResource {
           )
       }
   )
-  ApiUserLimitDto setUserMoneyAmountLimit(
+  Response setUserMoneyAmountLimit(
       @PathParam("email") String email,
       @Valid UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto);
 

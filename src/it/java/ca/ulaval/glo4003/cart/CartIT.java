@@ -26,23 +26,19 @@ import org.junit.Rule;
 import org.junit.Test;
 
 public class CartIT {
+  public static final String API_USERS_EMAIL_LIMIT_STOCK_ROUTE = "/api/users/{email}/limit/stock";
   private static final String SOME_TITLE = "RBS.l";
   private static final String SOME_TRANSACTION_TYPE = "PURCHASE";
-
   private static final String API_CART_ROUTE = "/api/cart/";
   private static final String API_CART_STOCK_ROUTE = "/api/cart/{title}";
   private static final String API_CART_CHECKOUT_ROUTE = "/api/cart/checkout";
-
   private static final String TITLE = "title";
   private static final String MARKET = "market";
   private static final String CATEGORY = "category";
   private static final String CURRENT_VALUE = "currentValue";
-
   private static final String MONEY_AMOUNT = "moneyAmount";
   private static final String CURRENCY = "currency";
   private static final String QUANTITY = "quantity";
-
-
   private final CartStockRequestBuilder cartStockRequestBuilder = new CartStockRequestBuilder();
 
   @Rule
@@ -340,7 +336,7 @@ public class CartIT {
     Header administratorTokenHeader = new Header("token", administratorToken);
     given().header(administratorTokenHeader).contentType(MediaType.APPLICATION_JSON)
         .body(new StockLimitCreationRequestBuilder().withStockQuantity(maximalStockQuantity).build())
-        .when().put("/api/users/%s/limit/stock", UserAuthenticationHelper.SOME_EMAIL);
+        .when().put(API_USERS_EMAIL_LIMIT_STOCK_ROUTE, UserAuthenticationHelper.SOME_EMAIL);
 
     String investorToken = givenInvestorAlreadyAuthenticated();
     Header investorTokenHeader = new Header("token", investorToken);
