@@ -40,6 +40,7 @@ public class MarketHaltResourceImplTest {
     MarketStatusResponseDto marketStatusResponseDto = marketHaltResource.haltMarket("market", MESSAGE);
 
     assertThat(marketStatusResponseDto.market).isEqualTo(MARKET_ID.getValue());
-    assertThat(marketStatusResponseDto.status).isEqualTo(String.format("HALTED: %s", MESSAGE));
+    assertThat(marketStatusResponseDto.status).isEqualTo("HALTED");
+    assertThat(marketStatusResponseDto.haltMessage).isEqualTo(MESSAGE);
   }
 }

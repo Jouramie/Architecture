@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/markets/{market}/halt")
 @Produces(MediaType.APPLICATION_JSON)
+@AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
 public interface MarketHaltResource {
 
   @POST
