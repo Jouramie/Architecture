@@ -14,7 +14,13 @@ import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.limit.Limit;
+import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
+import ca.ulaval.glo4003.service.user.limit.LimitAssembler;
+import ca.ulaval.glo4003.service.user.limit.LimitDto;
+import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
 import ca.ulaval.glo4003.util.UserBuilder;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
@@ -30,6 +36,8 @@ public class UserServiceTest {
   private static final String SOME_PASSWORD = "password";
   private static final UserRole SOME_USER_ROLE = UserRole.INVESTOR;
   private static final User SOME_USER = new UserBuilder().build();
+  private static final LocalDateTime SOME_DATE = LocalDateTime.now();
+  private static final int SOME_STOCK_QUANTITY = 123;
 
   @Mock
   private UserFactory userFactory;
@@ -40,7 +48,7 @@ public class UserServiceTest {
 
   @Before
   public void setup() {
-    userService = new UserService(userFactory, userRepository, new UserAssembler());
+    userService = new UserService(userFactory, userRepository, new UserAssembler(new LimitAssembler()));
   }
 
   @Test
@@ -68,7 +76,7 @@ public class UserServiceTest {
 
     UserDto resultingUser = userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE, null);
     assertThat(resultingUser).isEqualToComparingFieldByField(expectedUser);
   }
 
@@ -92,13 +100,15 @@ public class UserServiceTest {
 
   @Test
   public void whenGetUser_thenReturnConvertedUser() throws UserNotFoundException {
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    Limit limit = new StockQuantityLimit(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).withLimit(limit).build();
     given(userRepository.find(any())).willReturn(user);
 
     UserDto resultingUser = userService.getUser(SOME_EMAIL);
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
-    assertThat(resultingUser).isEqualToComparingFieldByField(expectedUser);
+    LimitDto expectedLimit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE, expectedLimit);
+    assertThat(resultingUser).isEqualToComparingFieldByFieldRecursively(expectedUser);
   }
 
   @Test
@@ -119,14 +129,16 @@ public class UserServiceTest {
 
   @Test
   public void whenGetUsers_thenReturnConvertedUsers() {
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    Limit limit = new StockQuantityLimit(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).withLimit(limit).build();
     List<User> users = singletonList(user);
     given(userRepository.findAll()).willReturn(users);
 
     List<UserDto> resultingUsers = userService.getUsers();
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    LimitDto expectedLimit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE, expectedLimit);
     List<UserDto> expectedUsers = singletonList(expectedUser);
-    assertThat(resultingUsers).usingFieldByFieldElementComparator().containsExactlyElementsOf(expectedUsers);
+    assertThat(resultingUsers).usingRecursiveFieldByFieldElementComparator().containsExactlyElementsOf(expectedUsers);
   }
 }

@@ -20,9 +20,11 @@ public class TestingMarketBuilder {
   private static final String DEFAULT_STOCK_NAME = "name";
   private static final String DEFAULT_STOCK_CATEGORY = "category";
   private static final String DEFAULT_MARKET_NAME = "market";
+  private boolean halted = false;
   private MarketState initialState = new ClosedMarketState();
   private MarketId marketId = new MarketId("market");
   private List<Stock> stocks;
+  private String haltMessage = "";
 
   public TestingMarketBuilder() {
     StockHistory valueHistory = new StockHistory();
@@ -46,8 +48,15 @@ public class TestingMarketBuilder {
     return this;
   }
 
+  public TestingMarketBuilder halted(String message) {
+    halted = true;
+    haltMessage = message;
+    return this;
+  }
+
+
   public Market build() {
-    return new Market(
+    Market market = new Market(
         marketId,
         DEFAULT_OPENING_TIME,
         DEFAULT_CLOSING_TIME,
@@ -55,5 +64,10 @@ public class TestingMarketBuilder {
         stocks,
         initialState
     );
+    if (halted) {
+      market.halt(haltMessage);
+    }
+
+    return market;
   }
 }

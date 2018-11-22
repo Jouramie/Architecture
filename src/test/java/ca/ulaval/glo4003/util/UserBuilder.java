@@ -5,13 +5,13 @@ import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
-import ca.ulaval.glo4003.domain.user.limit.NullLimit;
+import ca.ulaval.glo4003.domain.user.limit.LimitBuilder;
 
 public class UserBuilder {
   public static final String DEFAULT_EMAIL = "email";
   public static final String DEFAULT_PASSWORD = "password";
-  private static final Limit DEFAULT_LIMIT = new NullLimit();
   private static final UserRole DEFAULT_USER_ROLE = UserRole.INVESTOR;
+  private static final Limit DEFAULT_LIMIT = new LimitBuilder().build();
 
   private UserRole userRole = DEFAULT_USER_ROLE;
   private String email = DEFAULT_EMAIL;
