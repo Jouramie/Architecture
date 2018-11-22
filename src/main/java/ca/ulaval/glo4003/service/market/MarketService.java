@@ -27,4 +27,13 @@ public class MarketService {
       throw new MarketDoesNotExistException();
     }
   }
+
+  public void haltMarket(MarketId marketId, String haltMessage) throws MarketDoesNotExistException {
+    try {
+      Market market = marketRepository.findById(marketId);
+      market.halt(haltMessage);
+    } catch (MarketNotFoundException e) {
+      throw new MarketDoesNotExistException();
+    }
+  }
 }
