@@ -6,9 +6,12 @@ import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
+import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
+import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.inject.Inject;
@@ -22,17 +25,22 @@ public class PortfolioAssembler {
     this.stockRepository = stockRepository;
   }
 
-  public PortfolioResponseDto toDto(Portfolio portfolio) throws InvalidStockInPortfolioException {
-    List<PortfolioItemResponseDto> items = portfolio.getStocks().getTitles().stream()
-        .map((title) -> itemToDto(title, portfolio.getQuantity(title))).collect(toList());
-    BigDecimal currentTotalValue = portfolio.getCurrentTotalValue(stockRepository).getAmount();
-    return new PortfolioResponseDto(items, currentTotalValue);
+  public PortfolioDto toDto(Portfolio portfolio) throws InvalidStockInPortfolioException {
+    List<PortfolioItemDto> items = stockCollectionToDto(portfolio.getStocks());
+    BigDecimal currentTotalValue = portfolio.getCurrentTotalValue(stockRepository).toUsd();
+    return new PortfolioDto(items, currentTotalValue);
   }
 
-  private PortfolioItemResponseDto itemToDto(String title, int quantity) {
+  private List<PortfolioItemDto> stockCollectionToDto(StockCollection stockCollection) {
+    return stockCollection.getTitles().stream()
+        .map((title) -> itemToDto(title, stockCollection.getQuantity(title)))
+        .collect(toList());
+  }
+
+  private PortfolioItemDto itemToDto(String title, int quantity) {
     Stock stock = getStock(title);
-    BigDecimal currentValue = stock.getValue().getCurrentValue().toUsd();
-    return new PortfolioItemResponseDto(title, currentValue, quantity);
+    BigDecimal currentValue = stock.getValue().getLatestValue().toUsd();
+    return new PortfolioItemDto(title, currentValue, quantity);
   }
 
   private Stock getStock(String title) {

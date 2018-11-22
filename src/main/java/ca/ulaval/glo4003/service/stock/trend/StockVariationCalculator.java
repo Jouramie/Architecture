@@ -16,9 +16,9 @@ public class StockVariationCalculator {
       HistoricalStockValue latestValue = valueHistory.getLatestValue();
       StockValue valueOnDay = valueHistory.getValueOnDay(date);
 
-      if (valueOnDay.getCurrentValue().isGreaterThan(latestValue.value.getCurrentValue())) {
+      if (valueOnDay.getLatestValue().isGreaterThan(latestValue.value.getLatestValue())) {
         return StockTrend.DECREASING;
-      } else if (valueOnDay.getCurrentValue().isLessThan(latestValue.value.getCurrentValue())) {
+      } else if (valueOnDay.getLatestValue().isLessThan(latestValue.value.getLatestValue())) {
         return StockTrend.INCREASING;
       } else {
         return StockTrend.STABLE;

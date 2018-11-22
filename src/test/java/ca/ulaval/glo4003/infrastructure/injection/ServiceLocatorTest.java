@@ -40,14 +40,14 @@ public class ServiceLocatorTest {
   }
 
   @Test(expected = NonInjectableConstructorException.class)
-  public void givenAClassWithANonInjectableConstructor_whenInstantiating_thenThrowNonInjectableConstructorException() {
+  public void givenAClassWithANonInjectableConstructor_whenInstantiating_thenExceptionIsThrow() {
     serviceLocator.register(AClassWithANonInjectableConstructor.class);
 
     serviceLocator.get(AClassWithANonInjectableConstructor.class);
   }
 
   @Test(expected = UnregisteredComponentException.class)
-  public void givenUnregisteredClass_whenGetting_thenThrowUnregisteredComponentException() {
+  public void givenUnregisteredClass_whenGetting_thenExceptionIsThrow() {
     serviceLocator.get(SomeInjectableComponent.class);
   }
 
