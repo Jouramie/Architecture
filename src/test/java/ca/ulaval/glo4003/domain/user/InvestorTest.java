@@ -1,7 +1,5 @@
 package ca.ulaval.glo4003.domain.user;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -25,7 +23,6 @@ import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import ca.ulaval.glo4003.util.UserBuilder;
-import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,9 +33,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class InvestorTest {
 
-  private static final String SOME_EMAIL = "4email@email.com";
-  private static final String SOME_PASSWORD = "a password";
-  private static final String WRONG_PASSWORD = SOME_PASSWORD + "wrong";
   private static final String SOME_TITLE = "MSFT";
   private static final int SOME_QTY = 2;
   private static final String SOME_OTHER_TITLE = "APPL";
@@ -72,7 +66,7 @@ public class InvestorTest {
 
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
-    investor = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withLimit(limit).buildInvestor();
+    investor = new UserBuilder().withLimit(limit).buildInvestor();
     investor.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
     investor.getCart().add(SOME_OTHER_TITLE, SOME_OTHER_QTY, stockRepository);
 
@@ -81,13 +75,10 @@ public class InvestorTest {
   }
 
   @Test
-  public void givenRightPassword_whenCheckingIfPasswordBelongsToUser_thenItDoes() {
-    assertThat(investor.isThisYourPassword(SOME_PASSWORD)).isTrue();
-  }
+  public void whenGetRole_thenRoleIsInvestor() {
+    UserRole role = investor.getRole();
 
-  @Test
-  public void givenWrongPassword_whenCheckingIfPasswordBelongsToUser_thenItDoesNot() {
-    assertThat(investor.isThisYourPassword(WRONG_PASSWORD)).isFalse();
+    assertThat(role).isSameAs(UserRole.INVESTOR);
   }
 
   @Test
@@ -151,23 +142,5 @@ public class InvestorTest {
     verify(paymentProcessor, never()).payment(any());
     verify(notificationSender, never()).sendNotification(any(), any());
     assertThat(investor.getPortfolio().getStocks().isEmpty()).isTrue();
-  }
-
-  @Test
-  public void givenListContainingUserRole_whenHaveRoleIn_thenTrue() {
-    List<UserRole> roles = asList(UserRole.INVESTOR, UserRole.ADMINISTRATOR);
-
-    boolean haveRoleIn = investor.haveRoleIn(roles);
-
-    assertThat(haveRoleIn).isTrue();
-  }
-
-  @Test
-  public void givenListNotContainingUserRole_whenHaveRoleIn_thenFalse() {
-    List<UserRole> roles = emptyList();
-
-    boolean haveRoleIn = investor.haveRoleIn(roles);
-
-    assertThat(haveRoleIn).isFalse();
   }
 }
