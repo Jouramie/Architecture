@@ -14,7 +14,7 @@ public class UserFactoryTest {
 
   @Test
   public void whenCreatingInvestor_thenReturnInvestorUser() {
-    Investor expectedInvestor = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
+    Investor expectedInvestor = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).buildInvestor();
 
     Investor createdInvestor = factory.createInvestor(SOME_EMAIL, SOME_PASSWORD);
 
@@ -44,11 +44,11 @@ public class UserFactoryTest {
 
   @Test
   public void whenCreatingAdministrator_thenReturnAdministratorUser() {
-    Investor expectedUser = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD)
-        .withRole(UserRole.ADMINISTRATOR).build();
+    Administrator expectedAdministrator = new UserBuilder().withEmail(SOME_EMAIL)
+        .withPassword(SOME_PASSWORD).buildAdministrator();
 
-    Investor createdUser = factory.createAdministrator(SOME_EMAIL, SOME_PASSWORD);
+    Administrator createdUser = factory.createAdministrator(SOME_EMAIL, SOME_PASSWORD);
 
-    assertThat(createdUser).isEqualToComparingOnlyGivenFields(expectedUser, "email", "password", "role");
+    assertThat(createdUser).isEqualToComparingOnlyGivenFields(expectedAdministrator, "email", "password", "role");
   }
 }

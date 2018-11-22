@@ -16,41 +16,30 @@ import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import java.util.List;
 
-public class Investor {
-  private final String email;
-  private final String password;
-  private final UserRole role;
+public class Investor extends User {
   private final Cart cart;
   private final Portfolio portfolio;
   private final Limit limit;
 
-  public Investor(String email, String password, UserRole role, Cart cart, Portfolio portfolio, Limit limit) {
-    this.email = email;
-    this.password = password;
-    this.role = role;
+  public Investor(String email, String password, Cart cart, Portfolio portfolio, Limit limit) {
+    super(email, password);
     this.cart = cart;
     this.portfolio = portfolio;
     this.limit = limit;
   }
 
-  public String getEmail() {
-    return email;
-  }
-
-  public boolean isThisYourPassword(String password) {
-    return this.password.equals(password);
-  }
-
+  @Override
   public UserRole getRole() {
-    return role;
+    return UserRole.INVESTOR;
   }
 
   public Limit getLimit() {
     return limit;
   }
 
+  @Override
   public boolean haveRoleIn(List<UserRole> roles) {
-    return roles.contains(role);
+    return roles.contains(UserRole.INVESTOR);
   }
 
   public Cart getCart() {

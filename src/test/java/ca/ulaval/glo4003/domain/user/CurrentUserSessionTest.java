@@ -7,14 +7,14 @@ import org.junit.Test;
 
 public class CurrentUserSessionTest {
 
-  private static final Investor SOME_USER = new UserBuilder().build();
+  private static final User SOME_USER = new UserBuilder().build();
   private final CurrentUserSession userRepository = new CurrentUserSession();
 
   @Test
   public void whenSettingCurrentUser_thenUserCanBeRetrieved() {
     userRepository.setCurrentUser(SOME_USER);
 
-    Investor retrievedUser = userRepository.getCurrentUser();
+    User retrievedUser = userRepository.getCurrentUser();
     assertThat(retrievedUser).isEqualTo(SOME_USER);
   }
 }

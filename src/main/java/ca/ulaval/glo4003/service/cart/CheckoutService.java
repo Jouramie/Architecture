@@ -47,7 +47,7 @@ public class CheckoutService {
   }
 
   public TransactionDto checkoutCart() throws InvalidStockTitleException, PurchaseLimitExceededOnCheckoutException {
-    Investor currentInvestor = currentUserSession.getCurrentUser();
+    Investor currentInvestor = (Investor) currentUserSession.getCurrentUser();
     try {
       Transaction transaction = currentInvestor.checkoutCart(
           transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);

@@ -9,7 +9,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.Investor;
+import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
@@ -36,7 +36,6 @@ public class AuthenticationServiceTest {
   private static final String SOME_TOKEN = "00000000-0000-0000-0000-000000000000";
   private static final String SOME_PASSWORD = UserBuilder.DEFAULT_PASSWORD;
   private static final String SOME_EMAIL = UserBuilder.DEFAULT_EMAIL;
-  private static final List<UserRole> SOME_USER_ROLES = singletonList(UserRole.INVESTOR);
 
   private static final ApiAuthenticationRequestDto AUTHENTICATION_REQUEST
       = new ApiAuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
@@ -47,7 +46,8 @@ public class AuthenticationServiceTest {
   private static final AuthenticationToken AUTHENTICATION_TOKEN
       = new AuthenticationToken(SOME_TOKEN, SOME_EMAIL);
 
-  private static final Investor SOME_USER = new UserBuilder().build();
+  private static final User SOME_USER = new UserBuilder().build();
+  private static final List<UserRole> SOME_USER_ROLES = singletonList(SOME_USER.getRole());
 
   private final AuthenticationResponseAssembler responseAssembler = new AuthenticationResponseAssembler();
 
@@ -168,15 +168,15 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenCurrentUserDoesNotHaveRequiredRole_whenValidatingToken_thenThrowInvalidTokenException()
+  public void givenCurrentUserDoesNotHaveRequiredRole_whenValidatingToken_thenExceptionIsThrown()
       throws UserNotFoundException {
-    Investor currentUser = new UserBuilder().withRole(UserRole.INVESTOR).build();
+    User currentUser = new UserBuilder().buildAdministrator();
     given(userRepository.find(any())).willReturn(currentUser);
 
     ThrowingCallable validateToken = () -> authenticationService
-        .validateAuthentication(AUTHENTICATION_TOKEN_DTO, singletonList(UserRole.ADMINISTRATOR));
+        .validateAuthentication(AUTHENTICATION_TOKEN_DTO, singletonList(UserRole.INVESTOR));
 
-    assertThatThrownBy(validateToken).isInstanceOf(InvalidTokenException.class);
+    assertThatThrownBy(validateToken).isInstanceOf(UnauthorizedRoleException.class);
   }
 
   @Test

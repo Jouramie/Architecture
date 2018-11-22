@@ -73,7 +73,8 @@ public class InvestorTest {
 
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
-    investor = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withLimit(limit).withRole(SOME_ROLE).build();
+    investor = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withLimit(limit)
+        .withRole(SOME_ROLE).buildInvestor();
     investor.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
     investor.getCart().add(SOME_OTHER_TITLE, SOME_OTHER_QTY, stockRepository);
 

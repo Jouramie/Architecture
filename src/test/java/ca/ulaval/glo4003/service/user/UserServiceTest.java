@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.user.Investor;
+import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
@@ -29,7 +30,8 @@ public class UserServiceTest {
   private static final String SOME_EMAIL = "email";
   private static final String SOME_PASSWORD = "password";
   private static final UserRole SOME_USER_ROLE = UserRole.INVESTOR;
-  private static final Investor SOME_USER = new UserBuilder().build();
+  private static final Investor SOME_INVESTOR = new UserBuilder().buildInvestor();
+  private static final User SOME_USER = new UserBuilder().build();
 
   @Mock
   private UserFactory userFactory;
@@ -44,8 +46,8 @@ public class UserServiceTest {
   }
 
   @Test
-  public void whenCreatingUser_thenUserIsCreated() {
-    given(userFactory.createInvestor(any(), any())).willReturn(SOME_USER);
+  public void whenCreatingInvestor_thenUserIsCreated() {
+    given(userFactory.createInvestor(any(), any())).willReturn(SOME_INVESTOR);
 
     userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
@@ -54,16 +56,16 @@ public class UserServiceTest {
 
   @Test
   public void whenCreatingUser_thenUserIsAddedToRepository() throws UserAlreadyExistsException {
-    given(userFactory.createInvestor(any(), any())).willReturn(SOME_USER);
+    given(userFactory.createInvestor(any(), any())).willReturn(SOME_INVESTOR);
 
     userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
-    verify(userRepository).add(SOME_USER);
+    verify(userRepository).add(SOME_INVESTOR);
   }
 
   @Test
   public void whenCreatingUser_thenReturnsConvertedUser() {
-    Investor investor = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    Investor investor = new UserBuilder().withEmail(SOME_EMAIL).buildInvestor();
     given(userFactory.createInvestor(any(), any())).willReturn(investor);
 
     UserDto resultingUser = userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
@@ -92,12 +94,13 @@ public class UserServiceTest {
 
   @Test
   public void whenGetUser_thenReturnConvertedUser() throws UserNotFoundException {
-    Investor user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    User user = new UserBuilder().withEmail(SOME_EMAIL).build();
+    UserRole role = user.getRole();
     given(userRepository.find(any())).willReturn(user);
 
     UserDto resultingUser = userService.getUser(SOME_EMAIL);
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, role);
     assertThat(resultingUser).isEqualToComparingFieldByField(expectedUser);
   }
 
@@ -119,13 +122,14 @@ public class UserServiceTest {
 
   @Test
   public void whenGetUsers_thenReturnConvertedUsers() {
-    Investor user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
-    List<Investor> users = singletonList(user);
+    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    UserRole role = user.getRole();
+    List<User> users = singletonList(user);
     given(userRepository.findAll()).willReturn(users);
 
     List<UserDto> resultingUsers = userService.getUsers();
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, role);
     List<UserDto> expectedUsers = singletonList(expectedUser);
     assertThat(resultingUsers).usingFieldByFieldElementComparator().containsExactlyElementsOf(expectedUsers);
   }

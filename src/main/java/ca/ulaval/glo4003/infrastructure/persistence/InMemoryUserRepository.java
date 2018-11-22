@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.infrastructure.persistence;
 
-import ca.ulaval.glo4003.domain.user.Investor;
+import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
@@ -12,10 +12,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryUserRepository implements UserRepository {
 
-  private final Map<String, Investor> content = new ConcurrentHashMap<>();
+  private final Map<String, User> content = new ConcurrentHashMap<>();
 
   @Override
-  public void add(Investor user) throws UserAlreadyExistsException {
+  public void add(User user) throws UserAlreadyExistsException {
     if (content.containsKey(user.getEmail())) {
       throw new UserAlreadyExistsException();
     }
@@ -23,7 +23,7 @@ public class InMemoryUserRepository implements UserRepository {
   }
 
   @Override
-  public void update(Investor user) throws UserNotFoundException {
+  public void update(User user) throws UserNotFoundException {
     if (!content.containsKey(user.getEmail())) {
       throw new UserNotFoundException();
     }
@@ -31,12 +31,12 @@ public class InMemoryUserRepository implements UserRepository {
   }
 
   @Override
-  public Investor find(String email) throws UserNotFoundException {
+  public User find(String email) throws UserNotFoundException {
     return Optional.ofNullable(content.get(email)).orElseThrow(UserNotFoundException::new);
   }
 
   @Override
-  public List<Investor> findAll() {
+  public List<User> findAll() {
     return new ArrayList<>(content.values());
   }
 }

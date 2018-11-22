@@ -36,7 +36,7 @@ public class PortfolioService {
   public PortfolioDto getPortfolio() throws InvalidPortfolioException {
     PortfolioDto dto;
     try {
-      Portfolio portfolio = currentUserSession.getCurrentUser().getPortfolio();
+      Portfolio portfolio = ((Investor) currentUserSession.getCurrentUser()).getPortfolio();
       dto = portfolioAssembler.toDto(portfolio);
     } catch (InvalidStockInPortfolioException e) {
       throw new InvalidPortfolioException();
@@ -46,7 +46,7 @@ public class PortfolioService {
 
   public PortfolioHistoryDto getPortfolioHistory(LocalDate from) {
     try {
-      Investor investor = currentUserSession.getCurrentUser();
+      Investor investor = (Investor) currentUserSession.getCurrentUser();
       TreeSet<HistoricalPortfolio> portfolios = investor.getPortfolio().getHistory(from, clock.getCurrentTime().toLocalDate());
       return historicalPortfolioAssembler.toDto(portfolios);
     } catch (StockNotFoundException | NoStockValueFitsCriteriaException e) {

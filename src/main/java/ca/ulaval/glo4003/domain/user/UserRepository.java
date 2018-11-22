@@ -5,11 +5,11 @@ import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import java.util.List;
 
 public interface UserRepository {
-  void add(Investor user) throws UserAlreadyExistsException;
+  void add(User user) throws UserAlreadyExistsException;
 
-  void update(Investor user) throws UserNotFoundException;
+  void update(User user) throws UserNotFoundException;
 
-  Investor find(String email) throws UserNotFoundException;
+  User find(String email) throws UserNotFoundException;
 
-  List<Investor> findAll();
+  List<User> findAll();
 }

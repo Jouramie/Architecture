@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.service.cart.assemblers.CartItemAssembler;
@@ -76,7 +77,7 @@ public class CartService {
   }
 
   private Cart getCart() {
-    return currentUserSession.getCurrentUser().getCart();
+    return ((Investor) currentUserSession.getCurrentUser()).getCart();
   }
 
   private void checkIfStockExists(String title) {
