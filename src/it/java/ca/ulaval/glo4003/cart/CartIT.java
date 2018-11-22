@@ -340,7 +340,7 @@ public class CartIT {
     Header administratorTokenHeader = new Header("token", administratorToken);
     given().header(administratorTokenHeader).contentType(MediaType.APPLICATION_JSON)
         .body(new StockLimitCreationRequestBuilder().withStockQuantity(maximalStockQuantity).build())
-        .when().put("/api/users/%s/limit/stock", UserAuthenticationHelper.SOME_EMAIL);
+        .when().put(String.format("/api/users/%s/limit/stock", UserAuthenticationHelper.SOME_EMAIL));
 
     String investorToken = givenInvestorAlreadyAuthenticated();
     Header investorTokenHeader = new Header("token", investorToken);

@@ -1,7 +1,9 @@
 package ca.ulaval.glo4003.market.halt;
 
 import static io.restassured.RestAssured.given;
-import static javax.ws.rs.core.Response.Status.*;
+import static javax.ws.rs.core.Response.Status.ACCEPTED;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 
@@ -48,7 +50,7 @@ public class MarketHaltIT {
   public void givenNonAdministratorUser_whenHaltingMarket_thenReturn401Unauthorized() {
     //@formatter:off
     given()
-        .queryParam("message", "foobar").when()
+        .queryParam("message", "foobar")
     .when()
         .post(String.format("/markets/%s/halt", MARKET))
     .then()

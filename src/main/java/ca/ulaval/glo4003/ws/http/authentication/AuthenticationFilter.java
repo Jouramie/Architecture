@@ -6,6 +6,7 @@ import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
+import ca.ulaval.glo4003.service.authentication.UnauthorizedRoleException;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
 import ca.ulaval.glo4003.ws.http.FilterRegistration;
 import java.util.List;
@@ -42,7 +43,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
       List<UserRole> acceptedRoles = acceptedRolesReflectionExtractor.extractAcceptedRoles(resourceInfo);
 
       authenticationService.validateAuthentication(authenticationTokenDto, acceptedRoles);
-    } catch (InvalidTokenException | IllegalArgumentException exception) {
+    } catch (InvalidTokenException | UnauthorizedRoleException | IllegalArgumentException exception) {
       containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
     }
   }
