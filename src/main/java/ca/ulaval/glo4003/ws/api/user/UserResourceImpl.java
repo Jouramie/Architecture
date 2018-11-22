@@ -30,19 +30,19 @@ public class UserResourceImpl implements UserResource {
 
   private final ApiUserAssembler apiUserAssembler;
 
-  private final ApiLimitAssembler apiUserLimitAssembler;
+  private final ApiLimitAssembler apiLimitAssembler;
 
   @Inject
   public UserResourceImpl(UserService userService,
                           LimitService limitService,
                           RequestValidator requestValidator,
                           ApiUserAssembler apiUserAssembler,
-                          ApiLimitAssembler apiUserLimitAssembler) {
+                          ApiLimitAssembler apiLimitAssembler) {
     this.userService = userService;
     this.limitService = limitService;
     this.requestValidator = requestValidator;
     this.apiUserAssembler = apiUserAssembler;
-    this.apiUserLimitAssembler = apiUserLimitAssembler;
+    this.apiLimitAssembler = apiLimitAssembler;
   }
 
   @Override
@@ -61,30 +61,30 @@ public class UserResourceImpl implements UserResource {
   public Response createUser(UserCreationDto userCreationDto) {
     requestValidator.validate(userCreationDto);
     UserDto createdUser = userService.createInvestorUser(userCreationDto.email, userCreationDto.password);
+    
     ApiUserDto apiCreatedUser = apiUserAssembler.toDto(createdUser);
     return Response.status(CREATED).entity(apiCreatedUser).build();
   }
 
   @Override
 
-  public Response setUserStockLimit(String email,
-                                    StockLimitCreationDto userStockLimitCreationDto) {
-    requestValidator.validate(userStockLimitCreationDto);
+  public Response setUserStockLimit(String email, StockLimitCreationDto stockLimitCreationDto) {
+    requestValidator.validate(stockLimitCreationDto);
     LimitDto limit = limitService.createStockQuantityLimit(email,
-        userStockLimitCreationDto.applicationPeriod, userStockLimitCreationDto.stockQuantity);
+        stockLimitCreationDto.applicationPeriod, stockLimitCreationDto.stockQuantity);
 
-    ApiLimitDto apiUserLimitDto = apiUserLimitAssembler.toDto(limit);
-    return Response.status(CREATED).entity(apiUserLimitDto).build();
+    ApiLimitDto apiLimitDto = apiLimitAssembler.toDto(limit);
+    return Response.status(CREATED).entity(apiLimitDto).build();
   }
 
   @Override
-  public Response setUserMoneyAmountLimit(String email, MoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
-    requestValidator.validate(userMoneyAmountLimitCreationDto);
+  public Response setUserMoneyAmountLimit(String email, MoneyAmountLimitCreationDto moneyAmountLimitCreationDto) {
+    requestValidator.validate(moneyAmountLimitCreationDto);
     LimitDto limit = limitService.createMoneyAmountLimit(email,
-        userMoneyAmountLimitCreationDto.applicationPeriod, userMoneyAmountLimitCreationDto.moneyAmount);
+        moneyAmountLimitCreationDto.applicationPeriod, moneyAmountLimitCreationDto.moneyAmount);
 
-    ApiLimitDto apiUserLimitDto = apiUserLimitAssembler.toDto(limit);
-    return Response.status(CREATED).entity(apiUserLimitDto).build();
+    ApiLimitDto apiLimitDto = apiLimitAssembler.toDto(limit);
+    return Response.status(CREATED).entity(apiLimitDto).build();
   }
 
   @Override
