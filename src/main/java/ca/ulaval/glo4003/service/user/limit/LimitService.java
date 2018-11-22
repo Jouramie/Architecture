@@ -38,8 +38,8 @@ public class LimitService {
     return new MoneyAmountLimitDto(limit.start, limit.end, amount);
   }
 
-  public StockLimitDto createStockQuantityLimit(String email, ApplicationPeriod applicationPeriod,
-                                                int stockQuantity) {
+  public StockQuantityLimitDto createStockQuantityLimit(String email, ApplicationPeriod applicationPeriod,
+                                                        int stockQuantity) {
     ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit limit = limitFactory.createStockQuantityLimit(applicationPeriod, stockQuantity);
     User user;
     try {
@@ -48,7 +48,7 @@ public class LimitService {
       throw new UserDoesNotExistException(e);
     }
     user.setLimit(limit);
-    return new StockLimitDto(limit.start, limit.end, stockQuantity);
+    return new StockQuantityLimitDto(limit.start, limit.end, stockQuantity);
   }
 
   public void removeUserLimit(String email) {

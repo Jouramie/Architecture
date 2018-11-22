@@ -8,7 +8,7 @@ import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 import ca.ulaval.glo4003.service.user.limit.LimitAssembler;
 import ca.ulaval.glo4003.service.user.limit.LimitDto;
-import ca.ulaval.glo4003.service.user.limit.StockLimitDto;
+import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
 import ca.ulaval.glo4003.util.UserBuilder;
 import java.time.LocalDateTime;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class UserAssemblerTest {
 
     UserDto createdUser = assembler.toDto(user);
 
-    LimitDto expectedLimit = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    LimitDto expectedLimit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
     UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_ROLE, expectedLimit);
     assertThat(createdUser).isEqualToComparingFieldByFieldRecursively(expectedUser);
   }

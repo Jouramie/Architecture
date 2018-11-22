@@ -5,7 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import ca.ulaval.glo4003.service.user.limit.LimitDto;
 import ca.ulaval.glo4003.service.user.limit.MoneyAmountLimitDto;
-import ca.ulaval.glo4003.service.user.limit.StockLimitDto;
+import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiMoneyAmountLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiStockLimitDto;
@@ -24,7 +24,7 @@ public class ApiLimitAssemblerTest {
 
   @Test
   public void givenStockLimit_whenAssemblingDto_thenKeepSameFieldValues() {
-    StockLimitDto limit = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    StockQuantityLimitDto limit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
 
     ApiLimitDto resultingLimit = apiLimitAssembler.toDto(limit);
 

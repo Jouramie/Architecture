@@ -24,8 +24,8 @@ public class LimitAssembler {
     throw new UnsupportedOperationException("There is no conversion for this limit: " + limit);
   }
 
-  private StockLimitDto toStockQuantityLimitDto(StockQuantityLimit limit) {
-    return new StockLimitDto(limit.start, limit.end, limit.stockQuantity);
+  private StockQuantityLimitDto toStockQuantityLimitDto(StockQuantityLimit limit) {
+    return new StockQuantityLimitDto(limit.start, limit.end, limit.stockQuantity);
   }
 
   private MoneyAmountLimitDto toMoneyAmountLimitDto(MoneyAmountLimit limit) {

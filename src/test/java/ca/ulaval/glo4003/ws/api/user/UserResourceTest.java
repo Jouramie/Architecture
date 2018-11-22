@@ -16,7 +16,7 @@ import ca.ulaval.glo4003.service.user.UserService;
 import ca.ulaval.glo4003.service.user.limit.LimitDto;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
 import ca.ulaval.glo4003.service.user.limit.MoneyAmountLimitDto;
-import ca.ulaval.glo4003.service.user.limit.StockLimitDto;
+import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiLimitAssembler;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiStockLimitDto;
@@ -57,7 +57,7 @@ public class UserResourceTest {
   private static final StockLimitCreationDto SOME_STOCK_LIMIT_CREATION_DTO = new StockLimitCreationDto(SOME_PERIOD, SOME_STOCK_QUANTITY);
   private static final MoneyAmountLimitCreationDto SOME_MONEY_AMOUNT_LIMIT_CREATION_DTO = new MoneyAmountLimitCreationDto(SOME_PERIOD, SOME_AMOUNT);
   private static final MoneyAmountLimitDto SOME_MONEY_AMOUNT_LIMIT = new MoneyAmountLimitDto(SOME_DATE, SOME_DATE, SOME_AMOUNT);
-  private static final StockLimitDto SOME_STOCK_QUANTITY_LIMIT = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+  private static final StockQuantityLimitDto SOME_STOCK_QUANTITY_LIMIT = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
   private static final LimitDto SOME_LIMIT = SOME_STOCK_QUANTITY_LIMIT;
   private static final UserDto SOME_USER_DTO = new UserDto(SOME_EMAIL, SOME_ROLE, SOME_LIMIT);
   @Mock
@@ -120,7 +120,7 @@ public class UserResourceTest {
 
   @Test
   public void whenGetUser_thenReturnConvertedUser() {
-    StockLimitDto limit = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    StockQuantityLimitDto limit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
     UserDto user = new UserDto(SOME_EMAIL, SOME_ROLE, limit);
     given(userService.getUser(any())).willReturn(user);
 
@@ -142,7 +142,7 @@ public class UserResourceTest {
 
   @Test
   public void whenGetUsers_thenReturnConvertedUsers() {
-    LimitDto limit = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    LimitDto limit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
     List<UserDto> users = singletonList(new UserDto(SOME_EMAIL, SOME_ROLE, limit));
     given(userService.getUsers()).willReturn(users);
 
@@ -164,7 +164,7 @@ public class UserResourceTest {
 
   @Test
   public void whenSetUserStockLimit_thenNewLimitIsReturned() {
-    StockLimitDto limit = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    StockQuantityLimitDto limit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
     given(limitService.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(limit);
 
     Response resultingLimit = userResource.setUserStockLimit(SOME_EMAIL, SOME_STOCK_LIMIT_CREATION_DTO);

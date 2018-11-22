@@ -28,7 +28,7 @@ public class LimitAssemblerTest {
 
     LimitDto resultingLimit = limitAssembler.toDto(limit);
 
-    StockLimitDto expectedLimit = new StockLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
+    StockQuantityLimitDto expectedLimit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
     assertThat(resultingLimit).isEqualToComparingFieldByField(expectedLimit);
   }
 
