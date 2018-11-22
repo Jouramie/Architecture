@@ -1,12 +1,16 @@
 package ca.ulaval.glo4003.domain.user.limit;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.time.LocalDateTime;
+import javax.inject.Inject;
 
+@Component
 public class LimitFactory {
   private final Clock clock;
 
+  @Inject
   public LimitFactory(Clock clock) {
     this.clock = clock;
   }

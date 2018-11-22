@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.user.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Schema(
     name = "Stock user limit",
@@ -13,7 +13,7 @@ public class ApiUserStockLimitDto extends ApiUserLimitDto {
   )
   public final int maximalStockQuantity;
 
-  public ApiUserStockLimitDto(int maximalStockQuantity, Date beginDate, Date endDate) {
+  public ApiUserStockLimitDto(int maximalStockQuantity, LocalDateTime beginDate, LocalDateTime endDate) {
     super(beginDate, endDate);
     this.maximalStockQuantity = maximalStockQuantity;
   }

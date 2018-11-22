@@ -9,12 +9,20 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.service.user.UserService;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
+import ca.ulaval.glo4003.service.user.limit.dto.MoneyAmountLimitDto;
+import ca.ulaval.glo4003.service.user.limit.dto.StockLimitDto;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
+import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserLimitAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
+import ca.ulaval.glo4003.ws.api.user.dto.ApiUserMoneyAmountLimitDto;
+import ca.ulaval.glo4003.ws.api.user.dto.ApiUserStockLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.UserStockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.List;
@@ -40,16 +48,31 @@ public class UserResourceTest {
   private static final String SOME_EMAIL = "email";
   private static final UserRole SOME_ROLE = UserRole.INVESTOR;
   private static final UserDto SOME_USER_DTO = new UserDto(SOME_EMAIL, SOME_ROLE);
-
+  private static final ApplicationPeriod SOME_PERIOD = ApplicationPeriod.DAILY;
+  private static final int SOME_STOCK_QUANTITY = 10;
+  private static final double SOME_AMOUNT = 20.0;
+  private static final UserStockLimitCreationDto SOME_USER_STOCK_LIMIT_DTO = new UserStockLimitCreationDto(SOME_PERIOD, SOME_STOCK_QUANTITY);
+  private static final UserMoneyAmountLimitCreationDto SOME_USER_AMOUNT_LIMIT_DTO = new UserMoneyAmountLimitCreationDto(SOME_PERIOD, SOME_AMOUNT);
   @Mock
   private UserService userService;
   @Mock
   private LimitService limitService;
+  @Mock
+  private StockLimitDto stockLimitDto;
+  @Mock
+  private MoneyAmountLimitDto moneyAmountLimitDto;
+  @Mock
+  private ApiUserLimitAssembler apiUserLimitAssembler;
+  @Mock
+  private ApiUserStockLimitDto expectedApiUserStockLimitDto;
+  @Mock
+  private ApiUserMoneyAmountLimitDto expectedApiAmountLimitDto;
+
   private UserResourceImpl userResource;
 
   @Before
   public void setup() {
-    userResource = new UserResourceImpl(userService, limitService, new RequestValidator(), new ApiUserAssembler());
+    userResource = new UserResourceImpl(userService, limitService, new RequestValidator(), new ApiUserAssembler(), new ApiUserLimitAssembler());
   }
 
   @Test
@@ -126,5 +149,50 @@ public class UserResourceTest {
 
     List<ApiUserDto> expectedUsers = singletonList(new ApiUserDto(SOME_EMAIL, SOME_ROLE, null));
     assertThat(resultingUsers).usingFieldByFieldElementComparator().containsExactlyElementsOf(expectedUsers);
+  }
+
+  @Test
+  public void whenSetUserStockLimit_thenLimitIsCreated() {
+   /* given(limitService.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockLimitDto);
+    ApiUserLimitDto userLimitDto = userResource.setUserStockLimit(SOME_EMAIL, SOME_USER_STOCK_LIMIT_DTO);
+
+    verify(limitService).createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);*/
+  }
+
+  @Test
+  public void whenSetUserStockLimit_thenNewLimitIsReturned() {
+    /*given(limitService.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockLimitDto);
+    given(apiUserLimitAssembler.toDtoStockLimit(stockLimitDto)).willReturn(expectedApiUserStockLimitDto);
+
+    ApiUserLimitDto results = userResource.setUserStockLimit(SOME_EMAIL, SOME_USER_STOCK_LIMIT_DTO);
+
+    assertThat(results).isEqualToComparingFieldByField(expectedApiUserStockLimitDto);*/
+  }
+
+  @Test
+  public void whenSetUserMoneyAmountLimit_thenLimitIsCreated() {
+   /* given(limitService.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT)).willReturn(moneyAmountLimitDto);
+
+    ApiUserLimitDto userLimitDto = userResource.setUserMoneyAmountLimit(SOME_EMAIL, SOME_USER_AMOUNT_LIMIT_DTO);
+
+    verify(limitService).createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT);*/
+  }
+
+  @Test
+  public void whenSetUserMoneyAmountLimit_thenNewLimitIsReturned() {
+    /*given(limitService.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT)).willReturn(moneyAmountLimitDto);
+    given(apiUserLimitAssembler.toDtoMoneyAmountLimit(moneyAmountLimitDto)).willReturn(expectedApiAmountLimitDto);
+
+    ApiUserLimitDto results = userResource.setUserMoneyAmountLimit(SOME_EMAIL, SOME_USER_AMOUNT_LIMIT_DTO);
+
+    assertThat(results).isEqualToComparingFieldByField(expectedApiAmountLimitDto);*/
+  }
+
+  @Test
+  public void whenRemoveUserLimit_thenLimitIsRemoved() {
+
+   /* Response response = userResource.removeUserLimit(SOME_EMAIL);
+
+    verify(limitService).removeUserLimit(SOME_EMAIL);*/
   }
 }

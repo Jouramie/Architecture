@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.user.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Schema(
     name = "Money amount user limit",
@@ -13,7 +13,7 @@ public class ApiUserMoneyAmountLimitDto extends ApiUserLimitDto {
   )
   public final double maximalMoneySpent;
 
-  public ApiUserMoneyAmountLimitDto(double maximalMoneySpent, Date beginDate, Date endDate) {
+  public ApiUserMoneyAmountLimitDto(double maximalMoneySpent, LocalDateTime beginDate, LocalDateTime endDate) {
     super(beginDate, endDate);
     this.maximalMoneySpent = maximalMoneySpent;
   }
