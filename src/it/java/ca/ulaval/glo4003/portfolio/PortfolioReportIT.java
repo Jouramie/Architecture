@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.portfolio;
 import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
 import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.greaterThan;
@@ -129,10 +129,27 @@ public class PortfolioReportIT {
   @Test
   public void givenUserNotLoggedIn_whenGetPortfolioReport_thenReturnUnauthorized() {
     //@formatter:off
-    when()
+    given()
+        .param(SINCE, LAST_FIVE_DAYS)
+    .when()
         .get(API_REPORT_ROUTE)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenNoSinceParam_whenGetPortfolioReport_thenReturnBadRequest() {
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+    .when()
+        .get(API_REPORT_ROUTE)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 }
