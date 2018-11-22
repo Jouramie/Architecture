@@ -21,9 +21,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MarketHaltResourceImplTest {
 
-  public static final String MESSAGE = "message";
-  public static final Market MARKET = new TestingMarketBuilder().halted(MESSAGE).build();
-  public static final MarketId MARKET_ID = MARKET.getId();
+  public static final String SOME_MESSAGE = "message";
+  public static final Market SOME_MARKET = new TestingMarketBuilder().halted(SOME_MESSAGE).build();
+  public static final MarketId SOME_MARKET_ID = SOME_MARKET.getId();
 
   private MarketHaltResourceImpl marketHaltResource;
 
@@ -33,29 +33,29 @@ public class MarketHaltResourceImplTest {
   @Before
   public void setUp() throws MarketDoesNotExistException {
     marketHaltResource = new MarketHaltResourceImpl(marketServiceMock, new ApiMarketStatusAssembler());
-    when(marketServiceMock.getMarketStatus(MARKET_ID)).thenReturn(new MarketStatusDto(MARKET_ID, true, MESSAGE));
+    when(marketServiceMock.getMarketStatus(SOME_MARKET_ID)).thenReturn(new MarketStatusDto(SOME_MARKET_ID, true, SOME_MESSAGE));
   }
 
   @Test
   public void whenHaltingMarket_thenReturnMarketStatus() throws MarketDoesNotExistException {
-    MarketStatusResponseDto marketStatusResponseDto = marketHaltResource.haltMarket("market", MESSAGE);
+    MarketStatusResponseDto marketStatusResponseDto = marketHaltResource.haltMarket(SOME_MARKET_ID.getValue(), SOME_MESSAGE);
 
-    assertThat(marketStatusResponseDto.market).isEqualTo(MARKET_ID.getValue());
+    assertThat(marketStatusResponseDto.market).isEqualTo(SOME_MARKET_ID.getValue());
     assertThat(marketStatusResponseDto.status).isEqualTo("HALTED");
-    assertThat(marketStatusResponseDto.haltMessage).isEqualTo(MESSAGE);
+    assertThat(marketStatusResponseDto.haltMessage).isEqualTo(SOME_MESSAGE);
   }
 
   @Test
   public void whenHaltingMarket_thenServiceHaltsMarket() throws MarketDoesNotExistException {
-    marketHaltResource.haltMarket("market", MESSAGE);
+    marketHaltResource.haltMarket(SOME_MARKET_ID.getValue(), SOME_MESSAGE);
 
-    verify(marketServiceMock).haltMarket(MARKET_ID, MESSAGE);
+    verify(marketServiceMock).haltMarket(SOME_MARKET_ID, SOME_MESSAGE);
   }
 
   @Test
   public void whenResumingMarket_thenServiceResumesMarket() throws MarketDoesNotExistException {
-    marketHaltResource.resumeMarket(MARKET_ID.getValue());
+    marketHaltResource.resumeMarket(SOME_MARKET_ID.getValue());
 
-    verify(marketServiceMock).resumeMarket(MARKET_ID);
+    verify(marketServiceMock).resumeMarket(SOME_MARKET_ID);
   }
 }

@@ -2,9 +2,7 @@ package ca.ulaval.glo4003.market.halt;
 
 import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.*;
-import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
@@ -28,13 +26,12 @@ public class MarketResumeIT {
     //@formatter:off
     given()
         .header("token", token)
-        .contentType(MediaType.APPLICATION_JSON)
     .when()
         .post(String.format(API_RESUME_MARKET_ROUTE, MARKET))
     .then()
         .statusCode(OK.getStatusCode())
         .body("market", equalTo(MARKET))
-        .body("status", any(String.class));
+        .body("status", equalTo("TRADING"));
     //@formatter:on
   }
 
@@ -45,25 +42,10 @@ public class MarketResumeIT {
     //@formatter:off
     given()
         .header("token", token)
-        .contentType(MediaType.APPLICATION_JSON)
     .when()
         .post(String.format(API_RESUME_MARKET_ROUTE, INEXISTENT_MARKET))
     .then()
         .statusCode(NOT_FOUND.getStatusCode());
-    //@formatter:on
-  }
-
-  @Test
-  public void givenActiveMarket_whenResumingMarketTrading_thenReturn400MarketAlreadyActive() {
-    String token = givenAdministratorAlreadyAuthenticated();
-    //@formatter:off
-    given()
-        .header("token", token)
-        .contentType(MediaType.APPLICATION_JSON)
-    .when()
-        .post(String.format(API_RESUME_MARKET_ROUTE, MARKET))
-    .then()
-        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 
@@ -80,9 +62,7 @@ public class MarketResumeIT {
   }
 
   private void givenHaltedMarket(String token) {
-    given()
-        .header("token", token)
-        .contentType(MediaType.APPLICATION_JSON)
+    given().header("token", token)
         .queryParam("message", "foobar")
         .when()
         .post(String.format(MarketHaltIT.API_HALT_MARKET_ROUTE, MARKET));
