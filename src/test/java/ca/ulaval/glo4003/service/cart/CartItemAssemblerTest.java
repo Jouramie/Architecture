@@ -90,6 +90,6 @@ public class CartItemAssemblerTest {
     assertThat(dto.name).isEqualTo(SOME_NAME);
     assertThat(dto.category).isEqualTo(SOME_CATEGORY);
     assertThat(dto.market).isEqualTo(SOME_MARKET_ID);
-    assertThat(dto.currentValue).isEqualTo(SOME_STOCK.getValue().getCurrentValue().toUsd());
+    assertThat(dto.currentValue).isEqualTo(SOME_STOCK.getValue().getLatestValue().toUsd());
   }
 }

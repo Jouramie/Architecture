@@ -52,7 +52,7 @@ public class TransactionFactory {
   }
 
   private TransactionItem buildTransactionItem(String title, int quantity) throws StockNotFoundException {
-    MoneyAmount amount = stockRepository.findByTitle(title).getValue().getCurrentValue();
+    MoneyAmount amount = stockRepository.findByTitle(title).getValue().getLatestValue();
     return new TransactionItem(title, quantity, amount);
   }
 }

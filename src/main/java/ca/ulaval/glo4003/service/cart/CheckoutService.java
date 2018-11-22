@@ -13,10 +13,12 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
+import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.cart.exceptions.EmptyCartOnCheckoutException;
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
+import ca.ulaval.glo4003.service.cart.exceptions.PurchaseLimitExceededOnCheckoutException;
 import javax.inject.Inject;
 
 @Component
@@ -60,6 +62,8 @@ public class CheckoutService {
       throw new EmptyCartOnCheckoutException();
     } catch (HaltedMarketException e) {
       throw new HaltedMarketOnCheckoutException(e.message);
+    } catch (TransactionLimitExceededExeption e) {
+      throw new PurchaseLimitExceededOnCheckoutException();
     }
   }
 }

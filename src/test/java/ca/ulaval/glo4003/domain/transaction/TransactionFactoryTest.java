@@ -59,7 +59,7 @@ public class TransactionFactoryTest {
     given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(stock);
     given(someStockRepository.findByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
-    given(someStockRepository.findByTitle(SOME_TITLE).getValue().getCurrentValue()).willReturn(DEFAULT_AMOUNT);
+    given(someStockRepository.findByTitle(SOME_TITLE).getValue().getLatestValue()).willReturn(DEFAULT_AMOUNT);
     given(marketRepository.findMarketForStock(SOME_TITLE)).willReturn(market);
     given(market.isHalted()).willReturn(false);
 

@@ -11,11 +11,12 @@ public class ApiMarketStatusAssembler {
   public MarketStatusResponseDto toDto(MarketStatusDto marketStatus) {
     return new MarketStatusResponseDto(
         marketStatus.marketId.getValue(),
-        getStatusString(marketStatus)
+        getStatusString(marketStatus),
+        marketStatus.isHalted ? marketStatus.haltMessage : null
     );
   }
 
   private String getStatusString(MarketStatusDto marketStatus) {
-    return marketStatus.isHalted ? String.format("HALTED: %s", marketStatus.haltMessage) : "TRADING";
+    return marketStatus.isHalted ? "HALTED" : "TRADING";
   }
 }

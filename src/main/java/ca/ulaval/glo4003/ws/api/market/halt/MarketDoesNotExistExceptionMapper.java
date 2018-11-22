@@ -9,6 +9,6 @@ import javax.ws.rs.ext.ExceptionMapper;
 public class MarketDoesNotExistExceptionMapper implements ExceptionMapper<MarketDoesNotExistException> {
   @Override
   public Response toResponse(MarketDoesNotExistException e) {
-    return Response.status(404).build();
+    return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
   }
 }
