@@ -7,18 +7,18 @@ import java.time.LocalDateTime;
     name = "User limit",
     description = "Partial representation of a transaction limit."
 )
-public abstract class ApiUserLimitDto {
+public abstract class ApiLimitDto {
   @Schema(
       description = "The date when then limit start applying."
   )
-  public final LocalDateTime beginDate;
+  public final LocalDateTime begin;
   @Schema(
       description = "The date when the limit stop applying."
   )
-  public final LocalDateTime endDate;
+  public final LocalDateTime end;
 
-  public ApiUserLimitDto(LocalDateTime beginDate, LocalDateTime endDate) {
-    this.beginDate = beginDate;
-    this.endDate = endDate;
+  public ApiLimitDto(LocalDateTime begin, LocalDateTime end) {
+    this.begin = begin;
+    this.end = end;
   }
 }

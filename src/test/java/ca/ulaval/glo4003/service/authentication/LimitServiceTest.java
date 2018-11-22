@@ -15,6 +15,7 @@ import ca.ulaval.glo4003.domain.user.limit.NullLimit;
 import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
 import ca.ulaval.glo4003.util.UserBuilder;
+import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ public class LimitServiceTest {
   private static final User SOME_USER = new UserBuilder().build();
 
 
-  private final double SOME_AMOUNT = 20.00;
+  private final BigDecimal SOME_AMOUNT = BigDecimal.valueOf(20.00);
   private final MoneyAmount SOME_MONEY_AMOUNT = new MoneyAmount(SOME_AMOUNT);
   private final ApplicationPeriod SOME_PERIOD = ApplicationPeriod.DAILY;
   private final int SOME_STOCK_QUANTITY = 3;

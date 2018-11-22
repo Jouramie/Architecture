@@ -4,16 +4,15 @@ import static javax.ws.rs.core.Response.Status.CREATED;
 
 import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.service.user.UserService;
+import ca.ulaval.glo4003.service.user.limit.LimitDto;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
-import ca.ulaval.glo4003.service.user.limit.dto.MoneyAmountLimitDto;
-import ca.ulaval.glo4003.service.user.limit.dto.StockLimitDto;
+import ca.ulaval.glo4003.ws.api.user.assemblers.ApiLimitAssembler;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
-import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserLimitAssembler;
+import ca.ulaval.glo4003.ws.api.user.dto.ApiLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
-import ca.ulaval.glo4003.ws.api.user.dto.ApiUserLimitDto;
+import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserStockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.List;
 import javax.annotation.Resource;
@@ -31,14 +30,14 @@ public class UserResourceImpl implements UserResource {
 
   private final ApiUserAssembler apiUserAssembler;
 
-  private final ApiUserLimitAssembler apiUserLimitAssembler;
+  private final ApiLimitAssembler apiUserLimitAssembler;
 
   @Inject
   public UserResourceImpl(UserService userService,
                           LimitService limitService,
                           RequestValidator requestValidator,
                           ApiUserAssembler apiUserAssembler,
-                          ApiUserLimitAssembler apiUserLimitAssembler) {
+                          ApiLimitAssembler apiUserLimitAssembler) {
     this.userService = userService;
     this.limitService = limitService;
     this.requestValidator = requestValidator;
@@ -69,22 +68,22 @@ public class UserResourceImpl implements UserResource {
   @Override
 
   public Response setUserStockLimit(String email,
-                                    UserStockLimitCreationDto userStockLimitCreationDto) {
+                                    StockLimitCreationDto userStockLimitCreationDto) {
     requestValidator.validate(userStockLimitCreationDto);
-    StockLimitDto limit = limitService.createStockQuantityLimit(email,
-        userStockLimitCreationDto.applicationPeriod, userStockLimitCreationDto.maximalStockQuantity);
+    LimitDto limit = limitService.createStockQuantityLimit(email,
+        userStockLimitCreationDto.applicationPeriod, userStockLimitCreationDto.stockQuantity);
 
-    ApiUserLimitDto apiUserLimitDto = apiUserLimitAssembler.toDtoStockLimit(limit);
+    ApiLimitDto apiUserLimitDto = apiUserLimitAssembler.toDto(limit);
     return Response.status(CREATED).entity(apiUserLimitDto).build();
   }
 
   @Override
-  public Response setUserMoneyAmountLimit(String email, UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
+  public Response setUserMoneyAmountLimit(String email, MoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
     requestValidator.validate(userMoneyAmountLimitCreationDto);
-    MoneyAmountLimitDto limit = limitService.createMoneyAmountLimit(email,
-        userMoneyAmountLimitCreationDto.applicationPeriod, userMoneyAmountLimitCreationDto.maximalMoneyAmountSpent);
+    LimitDto limit = limitService.createMoneyAmountLimit(email,
+        userMoneyAmountLimitCreationDto.applicationPeriod, userMoneyAmountLimitCreationDto.moneyAmount);
 
-    ApiUserLimitDto apiUserLimitDto = apiUserLimitAssembler.toDtoMoneyAmountLimit(limit);
+    ApiLimitDto apiUserLimitDto = apiUserLimitAssembler.toDto(limit);
     return Response.status(CREATED).entity(apiUserLimitDto).build();
   }
 

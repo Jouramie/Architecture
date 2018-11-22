@@ -5,10 +5,16 @@ import java.math.RoundingMode;
 
 public class MoneyAmount {
 
+  public static final MoneyAmount ZERO = zero(Currency.USD);
+
   private final BigDecimal amount;
   private final Currency currency;
 
   public MoneyAmount(double amount) {
+    this(amount, Currency.USD);
+  }
+
+  public MoneyAmount(BigDecimal amount) {
     this(amount, Currency.USD);
   }
 

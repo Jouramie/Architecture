@@ -9,10 +9,8 @@ import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
 import ca.ulaval.glo4003.domain.user.limit.MoneyAmountLimit;
 import ca.ulaval.glo4003.domain.user.limit.NullLimit;
-import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
-import ca.ulaval.glo4003.service.user.limit.dto.MoneyAmountLimitDto;
-import ca.ulaval.glo4003.service.user.limit.dto.StockLimitDto;
+import java.math.BigDecimal;
 import javax.inject.Inject;
 
 @Component
@@ -27,7 +25,8 @@ public class LimitService {
     this.userRepository = userRepository;
   }
 
-  public MoneyAmountLimitDto createMoneyAmountLimit(String email, ApplicationPeriod applicationPeriod, double amount) {
+  public MoneyAmountLimitDto createMoneyAmountLimit(String email, ApplicationPeriod applicationPeriod,
+                                                    BigDecimal amount) {
     MoneyAmountLimit limit = limitFactory.createMoneyAmountLimit(applicationPeriod, new MoneyAmount(amount));
     User user;
     try {
@@ -36,11 +35,12 @@ public class LimitService {
       throw new UserDoesNotExistException(e);
     }
     user.setLimit(limit);
-    return new MoneyAmountLimitDto(amount, limit.start, limit.end);
+    return new MoneyAmountLimitDto(limit.start, limit.end, amount);
   }
 
-  public StockLimitDto createStockQuantityLimit(String email, ApplicationPeriod applicationPeriod, int stockQuantity) {
-    StockQuantityLimit limit = limitFactory.createStockQuantityLimit(applicationPeriod, stockQuantity);
+  public StockLimitDto createStockQuantityLimit(String email, ApplicationPeriod applicationPeriod,
+                                                int stockQuantity) {
+    ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit limit = limitFactory.createStockQuantityLimit(applicationPeriod, stockQuantity);
     User user;
     try {
       user = userRepository.find(email);
@@ -48,7 +48,7 @@ public class LimitService {
       throw new UserDoesNotExistException(e);
     }
     user.setLimit(limit);
-    return new StockLimitDto(stockQuantity, limit.start, limit.end);
+    return new StockLimitDto(limit.start, limit.end, stockQuantity);
   }
 
   public void removeUserLimit(String email) {

@@ -1,6 +1,8 @@
 package ca.ulaval.glo4003.ws.api.market.halt;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.service.market.MarketDoesNotExistException;
+import ca.ulaval.glo4003.ws.api.market.dto.MarketStatusResponseDto;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/markets/{market}/halt")
 @Produces(MediaType.APPLICATION_JSON)
+@AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
 public interface MarketHaltResource {
 
   @POST
@@ -40,5 +43,5 @@ public interface MarketHaltResource {
           )
       }
   )
-  MarketStatusResponseDto haltMarket(@PathParam("market") String market, @QueryParam("message") String message);
+  MarketStatusResponseDto haltMarket(@PathParam("market") String market, @QueryParam("message") String message) throws MarketDoesNotExistException;
 }

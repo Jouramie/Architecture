@@ -20,9 +20,10 @@ import static org.hamcrest.Matchers.not;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
 import io.restassured.http.Header;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
@@ -44,10 +45,10 @@ public class UserIT {
   private static final String ROLE = "role";
   private static final String LIMIT = "limit";
   private static final String INPUT_ERRORS = "inputErrors";
-  private static final String MAXIMAL_STOCK_QUANTITY = "maximalStockQuantity";
-  private static final String MAXIMAL_MONEY_SPENT = "maximalMoneySpent";
-  private static final String BEGIN_DATE = "beginDate";
-  private static final String END_DATE = "endDate";
+  private static final String STOCK_QUANTITY = "stockQuantity";
+  private static final String MONEY_AMOUNT = "moneyAmount";
+  private static final String BEGIN_DATE = "begin";
+  private static final String END_DATE = "end";
 
   private static final String INVESTOR_USER_ROLE = UserRole.INVESTOR.toString();
 
@@ -58,7 +59,7 @@ public class UserIT {
     given().body(SOME_USER_CREATION_REQUEST).contentType(MediaType.APPLICATION_JSON).post(API_USERS_ROUTE);
   }
 
-  private static void givenSomeLimitAddedToSomeUser(String token, UserMoneyAmountLimitCreationDto request) {
+  private static void givenSomeLimitAddedToSomeUser(String token, MoneyAmountLimitCreationDto request) {
     Header tokenHeader = new Header("token", token);
     given().header(tokenHeader).body(request).contentType(MediaType.APPLICATION_JSON).when()
         .put(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL);
@@ -244,9 +245,9 @@ public class UserIT {
         .put(API_USERS_EMAIL_LIMIT_STOCK_ROUTE, SOME_EMAIL)
     .then()
         .statusCode(CREATED.getStatusCode())
-        .body("$", hasKey("beginDate"))
-        .body("$", hasKey("endDate"))
-        .body(MAXIMAL_STOCK_QUANTITY, is(5));
+        .body("$", hasKey(BEGIN_DATE))
+        .body("$", hasKey(END_DATE))
+        .body(STOCK_QUANTITY, is(5));
     //@formatter:on
   }
 
@@ -261,7 +262,7 @@ public class UserIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .body(new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(moneyAmountLimit).build())
+        .body(new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(BigDecimal.valueOf(moneyAmountLimit)).build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .put(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
@@ -269,7 +270,7 @@ public class UserIT {
         .statusCode(CREATED.getStatusCode())
         .body("$", hasKey(BEGIN_DATE))
         .body("$", hasKey(END_DATE))
-        .body(MAXIMAL_MONEY_SPENT, is(moneyAmountLimit));
+        .body(MONEY_AMOUNT, is(moneyAmountLimit));
     //@formatter:on
   }
 
@@ -281,7 +282,7 @@ public class UserIT {
 
     float moneyAmountLimit = 12.34f;
     givenSomeLimitAddedToSomeUser(token,
-        new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(moneyAmountLimit).build());
+        new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(BigDecimal.valueOf(moneyAmountLimit)).build());
 
     //@formatter:off
     given()
@@ -290,10 +291,9 @@ public class UserIT {
         .get(API_USERS_EMAIL_ROUTE, SOME_EMAIL)
     .then()
         .statusCode(OK.getStatusCode())
-        .root(LIMIT)
-        .body("$", hasKey(BEGIN_DATE))
-        .body("$", hasKey(END_DATE))
-        .body(MAXIMAL_MONEY_SPENT, is(moneyAmountLimit));
+        .body(LIMIT, hasKey(BEGIN_DATE))
+        .body(LIMIT, hasKey(END_DATE))
+        .body(LIMIT + "." + MONEY_AMOUNT, is(moneyAmountLimit));
     //@formatter:on
   }
 
@@ -412,7 +412,7 @@ public class UserIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .body(new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(-1).build())
+        .body(new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(BigDecimal.valueOf(-1)).build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .put(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
