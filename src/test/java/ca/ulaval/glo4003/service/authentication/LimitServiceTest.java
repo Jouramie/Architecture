@@ -53,7 +53,7 @@ public class LimitServiceTest {
   }
 
   @Test
-  public void whenCreatedAmountMoneyLimit_thenLimitIsCreated() throws UserNotFoundException {
+  public void whenCreateAmountMoneyLimit_thenLimitIsCreated() throws UserNotFoundException {
     given(userRepository.find(SOME_EMAIL)).willReturn(user);
     given(limitFactory.createMoneyAmountLimit(SOME_PERIOD, SOME_MONEY_AMOUNT)).willReturn(moneyAmountLimit);
 
@@ -73,7 +73,7 @@ public class LimitServiceTest {
   }
 
   @Test
-  public void whenCreatedAmountMoneyLimit_thenLimitIsAddedToUser() throws UserNotFoundException {
+  public void whenCreateAmountMoneyLimit_thenLimitIsAddedToUser() throws UserNotFoundException {
     given(userRepository.find(SOME_EMAIL)).willReturn(SOME_USER);
     given(limitFactory.createMoneyAmountLimit(SOME_PERIOD, SOME_MONEY_AMOUNT)).willReturn(moneyAmountLimit);
 
