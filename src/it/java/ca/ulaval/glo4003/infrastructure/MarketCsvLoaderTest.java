@@ -29,7 +29,6 @@ public class MarketCsvLoaderTest {
   }
 
 
-  // TODO Le test échoue si on change les CSV de markets. Il faudrait un CSV de test seulement pour ce test.
   @Test
   public void whenLoad_thenLoadTheValuesFromTheCsvFile() throws Exception {
     loader.load();
@@ -37,8 +36,6 @@ public class MarketCsvLoaderTest {
     assertThat(marketRepository.findAll()).hasSize(7);
     Market randomMarket = marketRepository.findById(new MarketId("New York"));
     assertThat(randomMarket.getId()).isEqualTo(new MarketId("New York"));
-//    assertThat(randomMarket.getOpeningTime()).isEqualTo(LocalTime.of(14, 30, 0));
-//    assertThat(randomMarket.getClosingTime()).isEqualTo(LocalTime.of(21, 0, 0));
     assertThat(randomMarket.getCurrency().getName()).isEqualTo("USD");
   }
 }

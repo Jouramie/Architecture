@@ -14,11 +14,9 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.domain.transaction.NullPaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
-import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
@@ -28,14 +26,13 @@ import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryAuthenticationTokenRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
-import ca.ulaval.glo4003.infrastructure.persistence.InMemoryTransactionLedger;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryUserRepository;
 import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.investul.live_stock_emulator.StockSimulator;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
-import ca.ulaval.glo4003.ws.http.CORSResponseFilter;
 import ca.ulaval.glo4003.ws.http.FilterRegistration;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -64,8 +61,8 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public abstract class AbstractContext {
 
-  protected final String webServicePackagePrefix;
   protected final ServiceLocator serviceLocator;
+  protected final String webServicePackagePrefix;
 
   public AbstractContext(String webServicePackagePrefix, ServiceLocator serviceLocator) {
     this.webServicePackagePrefix = webServicePackagePrefix;
@@ -76,6 +73,7 @@ public abstract class AbstractContext {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
     provider.setMapper(mapper);
     resourceConfig.register(provider);
@@ -99,7 +97,6 @@ public abstract class AbstractContext {
     serviceLocator.registerSingleton(StockRepository.class, InMemoryStockRepository.class);
     serviceLocator.registerSingleton(MarketRepository.class, InMemoryMarketRepository.class);
     serviceLocator.registerSingleton(StockValueRetriever.class, SimulatedStockValueRetriever.class);
-    serviceLocator.registerSingleton(TransactionLedger.class, InMemoryTransactionLedger.class);
     serviceLocator.registerSingleton(PaymentProcessor.class, NullPaymentProcessor.class);
     serviceLocator.registerSingleton(CurrentUserSession.class, CurrentUserSession.class);
   }
@@ -127,8 +124,9 @@ public abstract class AbstractContext {
   private void createAdministrator() {
     String testEmail = "Archi.test.42@gmail.com";
     try {
-      serviceLocator.get(UserRepository.class)
-          .add(new User(testEmail, "asdf", UserRole.ADMINISTRATOR));
+      UserRepository userRepository = serviceLocator.get(UserRepository.class);
+      UserFactory userFactory = serviceLocator.get(UserFactory.class);
+      userRepository.add(userFactory.createAdministrator(testEmail, "asdfasdf"));
     } catch (UserAlreadyExistsException exception) {
       System.out.println("Test user couldn't be added");
       exception.printStackTrace();
@@ -187,7 +185,6 @@ public abstract class AbstractContext {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     setupJacksonJavaTimeModule(resourceConfig);
-    resourceConfig.register(CORSResponseFilter.class);
     serviceLocator.getClassesForAnnotation(
         webServicePackagePrefix,
         FilterRegistration.class)

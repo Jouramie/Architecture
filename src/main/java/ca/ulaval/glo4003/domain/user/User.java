@@ -12,6 +12,9 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
+import ca.ulaval.glo4003.domain.user.limit.Limit;
+import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
+import java.util.List;
 
 public class User {
   private final String email;
@@ -19,25 +22,35 @@ public class User {
   private final UserRole role;
   private final Cart cart;
   private final Portfolio portfolio;
+  private Limit limit;
 
-  public User(String email, String password, UserRole role) {
+  public User(String email, String password, UserRole role, Cart cart, Portfolio portfolio, Limit limit) {
     this.email = email;
     this.password = password;
     this.role = role;
-    cart = new Cart();
-    portfolio = new Portfolio();
+    this.cart = cart;
+    this.portfolio = portfolio;
+    this.limit = limit;
   }
 
   public String getEmail() {
     return email;
   }
 
+  public boolean isThisYourPassword(String password) {
+    return this.password.equals(password);
+  }
+
   public UserRole getRole() {
     return role;
   }
 
-  public boolean isThisYourPassword(String password) {
-    return this.password.equals(password);
+  public Limit getLimit() {
+    return limit;
+  }
+
+  public boolean haveRoleIn(List<UserRole> roles) {
+    return roles.contains(role);
   }
 
   public Cart getCart() {
@@ -52,10 +65,14 @@ public class User {
                                   PaymentProcessor paymentProcessor,
                                   NotificationFactory notificationFactory,
                                   NotificationSender notificationSender,
-                                  StockRepository stockRepository) throws StockNotFoundException, EmptyCartException {
+                                  StockRepository stockRepository)
+      throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
+
     checkIfCartIsEmpty(cart);
 
     Transaction purchase = transactionFactory.createPurchase(cart);
+    limit.checkIfTransactionExceed(purchase);
+
     processPurchase(purchase, paymentProcessor, stockRepository);
     sendTransactionNotification(notificationFactory, notificationSender, purchase);
 
@@ -70,14 +87,16 @@ public class User {
     }
   }
 
-  private void processPurchase(Transaction transaction, PaymentProcessor paymentProcessor, StockRepository stockRepository) {
+  private void processPurchase(Transaction transaction,
+                               PaymentProcessor paymentProcessor,
+                               StockRepository stockRepository) {
     paymentProcessor.payment(transaction);
-    transaction.items.forEach((item) -> {
-      portfolio.add(item.title, item.quantity, stockRepository);
-    });
+    portfolio.add(transaction, stockRepository);
   }
 
-  private void sendTransactionNotification(NotificationFactory notificationFactory, NotificationSender notificationSender, Transaction transaction) {
+  private void sendTransactionNotification(NotificationFactory notificationFactory,
+                                           NotificationSender notificationSender,
+                                           Transaction transaction) {
     Notification notification = notificationFactory.create(transaction);
     notificationSender.sendNotification(notification, new NotificationCoordinates(email));
   }
