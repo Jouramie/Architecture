@@ -26,7 +26,7 @@ public class PortfolioReportITContext extends AbstractContext {
   private void setCurrentUserToDefaultAdmin() {
     User user = null;
     try {
-      user = serviceLocator.get(UserRepository.class).find(DEFAULT_ADMIN_EMAIL);
+      user = serviceLocator.get(UserRepository.class).find(DEFAULT_INVESTOR_EMAIL);
     } catch (UserNotFoundException e) {
       e.printStackTrace();
     }

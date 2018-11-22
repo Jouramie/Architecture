@@ -93,7 +93,7 @@ public class Portfolio {
   private BigDecimal computeStockValueVariation(LocalDate from, Stock stock) throws NoStockValueFitsCriteriaException {
     MoneyAmount startAmount = stock.getValueHistory().getValueOnDay(from).getLatestValue();
     MoneyAmount currentAmount = stock.getValue().getLatestValue();
-    return currentAmount.getAmount().divide(startAmount.getAmount());
+    return currentAmount.divide(startAmount);
   }
 
   private MoneyAmount getSubtotal(Stock stock) {

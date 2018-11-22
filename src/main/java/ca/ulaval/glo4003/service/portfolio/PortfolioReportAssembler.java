@@ -53,7 +53,7 @@ public class PortfolioReportAssembler {
 
   private PortfolioItemDto historicalItemToDto(LocalDate date, String title, int quantity) throws NoStockValueFitsCriteriaException {
     Stock stock = getStock(title);
-    BigDecimal currentValue = stock.getValueOnDay(date).getLatestValue().toUsd();
+    BigDecimal currentValue = stock.getLatestValueOnDate(date).getLatestValue().toUsd();
     return new PortfolioItemDto(title, currentValue, quantity);
   }
 

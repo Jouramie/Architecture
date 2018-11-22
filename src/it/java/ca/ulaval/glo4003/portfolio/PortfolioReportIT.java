@@ -6,6 +6,7 @@ import static io.restassured.RestAssured.given;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyString;
@@ -13,6 +14,7 @@ import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.iterableWithSize;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
+import ca.ulaval.glo4003.context.ProductionContext;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import io.restassured.http.Header;
@@ -40,8 +42,7 @@ public class PortfolioReportIT {
   public void givenPortfolioContainedStocksInRequestedRange_whenGetPortfolioReport_thenReturnPortfolioHistory() {
     LocalDate currentDate = ServiceLocator.INSTANCE.get(Clock.class).getCurrentTime().toLocalDate();
 
-    String token = "00000000-0000-0000-0000-000000000000";
-    Header tokenHeader = new Header("token", token);
+    Header tokenHeader = new Header("token", ProductionContext.DEFAULT_INVESTOR_TOKEN);
     //@formatter:off
     given()
         .header(tokenHeader)
@@ -59,8 +60,7 @@ public class PortfolioReportIT {
 
   @Test
   public void givenPortfolioContainedStocksInRequestedRange_whenGetPortfolioReport_thenReturnStocksWithGreatestVariation() {
-    String token = "00000000-0000-0000-0000-000000000000";
-    Header tokenHeader = new Header("token", token);
+    Header tokenHeader = new Header("token", ProductionContext.DEFAULT_INVESTOR_TOKEN);
     //@formatter:off
     given()
         .header(tokenHeader)
@@ -76,8 +76,7 @@ public class PortfolioReportIT {
 
   @Test
   public void givenTransactionsWereMadeInTimeRange_whenGetPortfolioReport_thenPortfolioContentIsVarying() {
-    String token = "00000000-0000-0000-0000-000000000000";
-    Header tokenHeader = new Header("token", token);
+    Header tokenHeader = new Header("token", ProductionContext.DEFAULT_INVESTOR_TOKEN);
     //@formatter:off
     given()
         .header(tokenHeader)
@@ -104,7 +103,9 @@ public class PortfolioReportIT {
         .get(API_REPORT_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
-        .body(HISTORY_KEY, is(iterableWithSize(0)));
+        .body(HISTORY_KEY, is(iterableWithSize(6)))
+        .body(HISTORY_KEY + "[0]." + TOTAL_VALUE_KEY, equalTo(0f))
+        .body(HISTORY_KEY + "[0]." + STOCKS_KEY, is(iterableWithSize(0)));
     //@formatter:on
   }
 

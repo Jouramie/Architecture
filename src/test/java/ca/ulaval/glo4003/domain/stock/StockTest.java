@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +21,7 @@ public class StockTest {
   private final Currency SOME_CURRENCY = new Currency("CAD", new BigDecimal(0.77));
   private final MoneyAmount SOME_LAST_OPEN_AMOUNT = new MoneyAmount(SOME_LAST_OPEN_VALUE, SOME_CURRENCY);
   private final MoneyAmount SOME_START_AMOUNT = new MoneyAmount(SOME_START_VALUE, SOME_CURRENCY);
+  private final MoneyAmount SOME_HISTORICAL_AMOUNT = new MoneyAmount(45.67, Currency.USD);
 
   private Stock stock;
 
@@ -90,5 +92,26 @@ public class StockTest {
     stock.saveClosingPrice();
 
     assertThat(stock.getValue().isClosed()).isTrue();
+  }
+
+  @Test
+  public void givenHistoricalDate_whenGetLatestValueOnDate_thenReturnHistoricalValue()
+      throws NoStockValueFitsCriteriaException {
+    LocalDate someDate = LocalDate.of(2018, 11, 12);
+    stock.getValueHistory().addValue(someDate, new StockValue(SOME_HISTORICAL_AMOUNT));
+
+    StockValue historicalValue = stock.getLatestValueOnDate(someDate);
+
+    assertThat(historicalValue.getLatestValue()).isEqualTo(SOME_HISTORICAL_AMOUNT);
+  }
+
+  @Test
+  public void givenFutureDate_whenGetLatestValueOnDate_thenReturnLatestKnownValue()
+      throws NoStockValueFitsCriteriaException {
+    LocalDate someFutureDate = LocalDate.MAX;
+
+    StockValue latestValue = stock.getLatestValueOnDate(someFutureDate);
+
+    assertThat(latestValue.getLatestValue()).isEqualTo(SOME_START_AMOUNT);
   }
 }

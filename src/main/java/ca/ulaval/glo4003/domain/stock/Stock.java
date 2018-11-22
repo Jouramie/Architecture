@@ -54,8 +54,15 @@ public class Stock {
     return valueHistory.getLatestValue().value;
   }
 
-  public synchronized StockValue getValueOnDay(LocalDate date) throws NoStockValueFitsCriteriaException {
-    return valueHistory.getValueOnDay(date);
+  public synchronized StockValue getLatestValueOnDate(LocalDate date) throws NoStockValueFitsCriteriaException {
+    StockValue latestStockValueOnDate;
+    if (date.isAfter(valueHistory.getLatestValue().date)) {
+      latestStockValueOnDate = valueHistory.getLatestValue().value;
+    } else {
+      latestStockValueOnDate = valueHistory.getValueOnDay(date);
+    }
+
+    return latestStockValueOnDate;
   }
 
   public synchronized void saveOpeningPrice() {

@@ -60,7 +60,12 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 public abstract class AbstractContext {
-  protected static final String DEFAULT_ADMIN_EMAIL = "Archi.test.42@gmail.com";
+  public static final String DEFAULT_ADMIN_EMAIL = "Archi.test.43@gmail.com";
+  public static final String DEFAULT_ADMIN_PASSWORD = "asdfasdf";
+  public static final String DEFAULT_ADMIN_TOKEN = "00000000-0000-0000-0000-000000000000";
+  public static final String DEFAULT_INVESTOR_EMAIL = "Archi.test.42@gmail.com";
+  public static final String DEFAULT_INVESTOR_PASSWORD = "asdfasdf";
+  public static final String DEFAULT_INVESTOR_TOKEN = "11111111-1111-1111-1111-111111111111";
   private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
   protected final ServiceLocator serviceLocator;
 
@@ -114,24 +119,26 @@ public abstract class AbstractContext {
   protected void loadData() {
     try {
       loadCsvData();
-      createAdministrator();
+      createUsers();
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
-  private void createAdministrator() {
-    String testEmail = DEFAULT_ADMIN_EMAIL;
+  private void createUsers() {
     try {
       UserRepository userRepository = serviceLocator.get(UserRepository.class);
       UserFactory userFactory = serviceLocator.get(UserFactory.class);
-      userRepository.add(userFactory.createAdministrator(testEmail, "asdfasdf"));
+      userRepository.add(userFactory.createAdministrator(DEFAULT_ADMIN_EMAIL, DEFAULT_ADMIN_PASSWORD));
+      userRepository.add(userFactory.createInvestor(DEFAULT_INVESTOR_EMAIL, DEFAULT_INVESTOR_PASSWORD));
     } catch (UserAlreadyExistsException exception) {
       System.out.println("Test user couldn't be added");
       exception.printStackTrace();
     }
-    serviceLocator.get(AuthenticationTokenRepository.class)
-        .add(new AuthenticationToken("00000000-0000-0000-0000-000000000000", testEmail));
+
+    AuthenticationTokenRepository authenticationTokenRepository = serviceLocator.get(AuthenticationTokenRepository.class);
+    authenticationTokenRepository.add(new AuthenticationToken(DEFAULT_ADMIN_TOKEN, DEFAULT_ADMIN_EMAIL));
+    authenticationTokenRepository.add(new AuthenticationToken(DEFAULT_INVESTOR_TOKEN, DEFAULT_INVESTOR_EMAIL));
   }
 
   private void loadCsvData() throws IOException, MarketNotFoundException {
