@@ -153,46 +153,46 @@ public class UserResourceTest {
 
   @Test
   public void whenSetUserStockLimit_thenLimitIsCreated() {
-   /* given(limitService.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockLimitDto);
-    ApiUserLimitDto userLimitDto = userResource.setUserStockLimit(SOME_EMAIL, SOME_USER_STOCK_LIMIT_DTO);
+    given(limitService.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockLimitDto);
+    Response userLimitDto = userResource.setUserStockLimit(SOME_EMAIL, SOME_USER_STOCK_LIMIT_DTO);
 
-    verify(limitService).createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);*/
+    verify(limitService).createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);
   }
 
   @Test
   public void whenSetUserStockLimit_thenNewLimitIsReturned() {
-    /*given(limitService.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockLimitDto);
+    given(limitService.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockLimitDto);
     given(apiUserLimitAssembler.toDtoStockLimit(stockLimitDto)).willReturn(expectedApiUserStockLimitDto);
 
-    ApiUserLimitDto results = userResource.setUserStockLimit(SOME_EMAIL, SOME_USER_STOCK_LIMIT_DTO);
+    Response results = userResource.setUserStockLimit(SOME_EMAIL, SOME_USER_STOCK_LIMIT_DTO);
 
-    assertThat(results).isEqualToComparingFieldByField(expectedApiUserStockLimitDto);*/
+    assertThat(results.getEntity()).isEqualToComparingFieldByField(expectedApiUserStockLimitDto);
   }
 
   @Test
   public void whenSetUserMoneyAmountLimit_thenLimitIsCreated() {
-   /* given(limitService.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT)).willReturn(moneyAmountLimitDto);
+    given(limitService.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT)).willReturn(moneyAmountLimitDto);
 
-    ApiUserLimitDto userLimitDto = userResource.setUserMoneyAmountLimit(SOME_EMAIL, SOME_USER_AMOUNT_LIMIT_DTO);
+    Response userLimitDto = userResource.setUserMoneyAmountLimit(SOME_EMAIL, SOME_USER_AMOUNT_LIMIT_DTO);
 
-    verify(limitService).createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT);*/
+    verify(limitService).createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT);
   }
 
   @Test
   public void whenSetUserMoneyAmountLimit_thenNewLimitIsReturned() {
-    /*given(limitService.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT)).willReturn(moneyAmountLimitDto);
+    given(limitService.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT)).willReturn(moneyAmountLimitDto);
     given(apiUserLimitAssembler.toDtoMoneyAmountLimit(moneyAmountLimitDto)).willReturn(expectedApiAmountLimitDto);
 
-    ApiUserLimitDto results = userResource.setUserMoneyAmountLimit(SOME_EMAIL, SOME_USER_AMOUNT_LIMIT_DTO);
+    Response results = userResource.setUserMoneyAmountLimit(SOME_EMAIL, SOME_USER_AMOUNT_LIMIT_DTO);
 
-    assertThat(results).isEqualToComparingFieldByField(expectedApiAmountLimitDto);*/
+    assertThat(results.getEntity()).isEqualToComparingFieldByField(expectedApiAmountLimitDto);
   }
 
   @Test
   public void whenRemoveUserLimit_thenLimitIsRemoved() {
 
-   /* Response response = userResource.removeUserLimit(SOME_EMAIL);
+    Response response = userResource.removeUserLimit(SOME_EMAIL);
 
-    verify(limitService).removeUserLimit(SOME_EMAIL);*/
+    verify(limitService).removeUserLimit(SOME_EMAIL);
   }
 }

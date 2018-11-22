@@ -65,10 +65,6 @@ public class User {
     return portfolio;
   }
 
-  /*public void removeLimit() {
-    limit = null;
-  }*/
-
   public Transaction checkoutCart(TransactionFactory transactionFactory,
                                   PaymentProcessor paymentProcessor,
                                   NotificationFactory notificationFactory,

@@ -67,6 +67,7 @@ public class UserResourceImpl implements UserResource {
   }
 
   @Override
+
   public Response setUserStockLimit(String email,
                                     UserStockLimitCreationDto userStockLimitCreationDto) {
     requestValidator.validate(userStockLimitCreationDto);
@@ -78,8 +79,7 @@ public class UserResourceImpl implements UserResource {
   }
 
   @Override
-  public Response setUserMoneyAmountLimit(String email,
-                                          UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
+  public Response setUserMoneyAmountLimit(String email, UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
     requestValidator.validate(userMoneyAmountLimitCreationDto);
     MoneyAmountLimitDto limit = limitService.createMoneyAmountLimit(email,
         userMoneyAmountLimitCreationDto.applicationPeriod, userMoneyAmountLimitCreationDto.maximalMoneyAmountSpent);
