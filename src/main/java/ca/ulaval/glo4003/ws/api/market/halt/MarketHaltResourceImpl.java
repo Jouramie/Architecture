@@ -28,4 +28,12 @@ public class MarketHaltResourceImpl implements MarketHaltResource {
     MarketStatusDto marketStatus = marketService.getMarketStatus(marketId);
     return apiMarketStatusAssembler.toDto(marketStatus);
   }
+
+  @Override
+  public MarketStatusResponseDto resumeMarket(String market) throws MarketDoesNotExistException {
+    MarketId marketId = new MarketId(market);
+    marketService.resumeMarket(marketId);
+    MarketStatusDto marketStatus = marketService.getMarketStatus(marketId);
+    return apiMarketStatusAssembler.toDto(marketStatus);
+  }
 }

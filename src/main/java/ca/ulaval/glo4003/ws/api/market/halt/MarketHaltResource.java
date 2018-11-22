@@ -15,13 +15,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-@Path("/markets/{market}/halt")
+@Path("/markets/{market}")
 @Produces(MediaType.APPLICATION_JSON)
-@AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
 public interface MarketHaltResource {
 
   @POST
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @Path("/halt")
   @Operation(
       summary = "Puts a market in trading halt.",
       responses = {
@@ -43,5 +42,32 @@ public interface MarketHaltResource {
           )
       }
   )
+  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
   MarketStatusResponseDto haltMarket(@PathParam("market") String market, @QueryParam("message") String message) throws MarketDoesNotExistException;
+
+  @POST
+  @Path("/resume")
+  @Operation(
+      summary = "Resumes trading in a halted market.",
+      responses = {
+          @ApiResponse(
+              responseCode = "200",
+              content = @Content(
+                  schema = @Schema(
+                      implementation = MarketStatusResponseDto.class
+                  )
+              )
+          ),
+          @ApiResponse(
+              responseCode = "404",
+              description = "Market does not exist."
+          ),
+          @ApiResponse(
+              responseCode = "401",
+              description = "The authenticated user is not an administrator."
+          )
+      }
+  )
+  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  MarketStatusResponseDto resumeMarket(@PathParam("market") String market) throws MarketDoesNotExistException;
 }
