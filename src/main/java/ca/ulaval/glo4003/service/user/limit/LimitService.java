@@ -9,6 +9,7 @@ import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
 import ca.ulaval.glo4003.domain.user.limit.MoneyAmountLimit;
 import ca.ulaval.glo4003.domain.user.limit.NullLimit;
+import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import java.math.BigDecimal;
 import javax.inject.Inject;
@@ -40,7 +41,7 @@ public class LimitService {
 
   public StockQuantityLimitDto createStockQuantityLimit(String email, ApplicationPeriod applicationPeriod,
                                                         int stockQuantity) {
-    ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit limit = limitFactory.createStockQuantityLimit(applicationPeriod, stockQuantity);
+    StockQuantityLimit limit = limitFactory.createStockQuantityLimit(applicationPeriod, stockQuantity);
     User user;
     try {
       user = userRepository.find(email);
