@@ -38,16 +38,13 @@ public class MarketServiceTest {
 
   @Test
   public void whenGettingMarketStatus_thenFindsMarket() throws MarketDoesNotExistException, MarketNotFoundException {
-    MarketStatusDto marketStatus = service.getMarketStatus(SOME_MARKET_ID);
+    service.getMarketStatus(SOME_MARKET_ID);
 
     verify(marketRepositoryMock).findById(SOME_MARKET_ID);
-    assertThat(marketStatus.isHalted).isEqualTo(market.isHalted());
-    assertThat(marketStatus.haltMessage).isEqualTo(market.getHaltMessage());
-    assertThat(marketStatus.marketId).isEqualTo(market.getId());
   }
 
   @Test
-  public void whenGettingMarketStatus_thenMapsItsAttributes() throws MarketDoesNotExistException, MarketNotFoundException {
+  public void whenGettingMarketStatus_thenMapsItsAttributes() throws MarketDoesNotExistException {
     MarketStatusDto marketStatus = service.getMarketStatus(SOME_MARKET_ID);
 
     assertThat(marketStatus.isHalted).isEqualTo(market.isHalted());
@@ -64,7 +61,7 @@ public class MarketServiceTest {
   }
 
   @Test
-  public void whenHaltingMarket_thenUpdateMarketState() throws MarketNotFoundException, MarketDoesNotExistException {
+  public void whenHaltingMarket_thenUpdateMarketState() throws MarketDoesNotExistException {
     service.haltMarket(SOME_MARKET_ID, SOME_MESSAGE);
 
     assertThat(market.isHalted()).isTrue();
@@ -85,7 +82,7 @@ public class MarketServiceTest {
     given(marketRepositoryMock.findById(SOME_MARKET_ID)).willThrow(new MarketNotFoundException(""));
 
     ThrowableAssert.ThrowingCallable resumeCallable = () -> service.resumeMarket(SOME_MARKET_ID);
-    
+
     assertThatThrownBy(resumeCallable).isInstanceOf(MarketDoesNotExistException.class);
   }
 }
