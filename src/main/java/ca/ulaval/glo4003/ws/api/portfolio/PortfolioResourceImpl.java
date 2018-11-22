@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.portfolio;
 
-import ca.ulaval.glo4003.service.portfolio.PortfolioResponseDto;
 import ca.ulaval.glo4003.service.portfolio.PortfolioService;
+import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 
@@ -18,7 +18,7 @@ public class PortfolioResourceImpl implements PortfolioResource {
 
   @Override
   public ApiPortfolioResponseDto getPortfolio() {
-    PortfolioResponseDto responseDto = portfolioService.getPortfolio();
+    PortfolioDto responseDto = portfolioService.getPortfolio();
     return apiPortfolioAssembler.toDto(responseDto);
   }
 }

@@ -1,7 +1,9 @@
 package ca.ulaval.glo4003.service.market;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.market.states.Market;
 
+@Component
 public class MarketStatusAssembler {
 
   public MarketStatusDto toDto(Market market) {

@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.ws.api.market.halt;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
@@ -9,7 +10,6 @@ import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.service.market.MarketDoesNotExistException;
 import ca.ulaval.glo4003.service.market.MarketService;
 import ca.ulaval.glo4003.service.market.MarketStatusDto;
-import ca.ulaval.glo4003.service.market.TradingHaltService;
 import ca.ulaval.glo4003.ws.api.market.ApiMarketStatusAssembler;
 import ca.ulaval.glo4003.ws.api.market.dto.MarketStatusResponseDto;
 import org.junit.Before;
@@ -28,13 +28,11 @@ public class MarketHaltResourceImplTest {
   private MarketHaltResourceImpl marketHaltResource;
 
   @Mock
-  private TradingHaltService tradingHaltServiceMock;
-  @Mock
   private MarketService marketServiceMock;
 
   @Before
   public void setUp() throws MarketDoesNotExistException {
-    marketHaltResource = new MarketHaltResourceImpl(tradingHaltServiceMock, marketServiceMock, new ApiMarketStatusAssembler());
+    marketHaltResource = new MarketHaltResourceImpl(marketServiceMock, new ApiMarketStatusAssembler());
     when(marketServiceMock.getMarketStatus(MARKET_ID)).thenReturn(new MarketStatusDto(MARKET_ID, true, MESSAGE));
   }
 
@@ -43,6 +41,21 @@ public class MarketHaltResourceImplTest {
     MarketStatusResponseDto marketStatusResponseDto = marketHaltResource.haltMarket("market", MESSAGE);
 
     assertThat(marketStatusResponseDto.market).isEqualTo(MARKET_ID.getValue());
-    assertThat(marketStatusResponseDto.status).isEqualTo(String.format("HALTED: %s", MESSAGE));
+    assertThat(marketStatusResponseDto.status).isEqualTo("HALTED");
+    assertThat(marketStatusResponseDto.haltMessage).isEqualTo(MESSAGE);
+  }
+
+  @Test
+  public void whenHaltingMarket_thenServiceHaltsMarket() throws MarketDoesNotExistException {
+    MarketStatusResponseDto marketStatusResponseDto = marketHaltResource.haltMarket("market", MESSAGE);
+
+    verify(marketServiceMock).haltMarket(MARKET_ID, MESSAGE);
+  }
+
+  @Test
+  public void whenResumingMarket_thenServiceResumesMarket() throws MarketDoesNotExistException {
+    marketHaltResource.resumeMarket(MARKET_ID.getValue());
+
+    verify(marketServiceMock).resumeMarket(MARKET_ID);
   }
 }

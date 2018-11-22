@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.domain.portfolio;
 
+import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -10,8 +11,15 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
+import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.util.TransactionBuilder;
+import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.LongStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,11 +30,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class PortfolioTest {
   private final String SOME_TITLE = "MSFT";
   private final int SOME_QUANTITY = 3;
+  private final int SOME_OTHER_QUANTITY = 4;
   private final String SOME_CURRENCY_NAME = "CAD";
   private final BigDecimal SOME_RATE_TO_USD = new BigDecimal(12);
   private final Currency SOME_CURRENCY = new Currency(SOME_CURRENCY_NAME, SOME_RATE_TO_USD);
   private final MoneyAmount SOME_VALUE = new MoneyAmount(12.2, SOME_CURRENCY);
   private final StockValue SOME_STOCK_VALUE = new StockValue(SOME_VALUE, SOME_VALUE, SOME_VALUE);
+  private final LocalDate NOW = LocalDate.now();
 
   @Mock
   private Stock someStock;
@@ -50,7 +60,11 @@ public class PortfolioTest {
 
   @Test
   public void whenAddStockToPortfolio_thenItCanBeRetrieved() {
-    portfolio.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
+    Transaction transaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
+        .build();
+
+    portfolio.add(transaction, someStockRepository);
 
     assertThat(portfolio.getQuantity(SOME_TITLE)).isEqualTo(SOME_QUANTITY);
   }
@@ -62,7 +76,10 @@ public class PortfolioTest {
 
   @Test
   public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues() throws InvalidStockInPortfolioException {
-    portfolio.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
+    Transaction transaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
+        .build();
+    portfolio.add(transaction, someStockRepository);
 
     BigDecimal currentTotal = SOME_VALUE.toUsd().multiply(new BigDecimal(SOME_QUANTITY));
     assertThat(portfolio.getCurrentTotalValue(someStockRepository).getAmount()).isEqualTo(currentTotal);
@@ -80,8 +97,89 @@ public class PortfolioTest {
     String invalidTitle = "invalid";
     given(someStockRepository.exists(invalidTitle)).willReturn(true);
     given(someStockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
-    portfolio.add(invalidTitle, SOME_QUANTITY, someStockRepository);
+    Transaction transaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(invalidTitle).withQuantity(SOME_QUANTITY).build())
+        .build();
+    portfolio.add(transaction, someStockRepository);
 
     assertThatExceptionOfType(InvalidStockInPortfolioException.class).isThrownBy(() -> portfolio.getCurrentTotalValue(someStockRepository));
+  }
+
+  @Test
+  public void whenGetHistory_thenReturnListWithAHistoricPortfolioPerDay() {
+    int numDays = 15;
+
+    LocalDate from = NOW.minusDays(numDays);
+
+    TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(from, NOW);
+
+    assertThat(portfolios).hasSize(numDays + 1);
+    List<LocalDate> expectedDates = LongStream.rangeClosed(0, numDays).mapToObj(NOW::minusDays).collect(toList());
+    assertThat(portfolios.stream().map((p) -> p.date)).containsExactlyInAnyOrderElementsOf(expectedDates);
+  }
+
+  @Test
+  public void givenEmptyHistory_whenGetHistory_thenReturnListWithUnchangedPortfolio() {
+    LocalDate now = LocalDate.now();
+    LocalDate from = now.minusDays(15);
+    Transaction transaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
+        .withTime(from.minusDays(1).atStartOfDay())
+        .build();
+    portfolio.add(transaction, someStockRepository);
+
+    TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(from, now);
+
+    assertThat(portfolios.stream().map((p) -> p.stocks)).containsOnly(portfolio.getStocks());
+  }
+
+  @Test
+  public void givenPortfolioWithFewTransactionsOnDifferentDates_whenGetHistory_thenReturnWithAccurateHistoricalValues() {
+    setupPortfolioWithTransactionsOnDifferentDates();
+
+    TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(NOW.minusDays(2), NOW);
+
+    int[] stockQuantities = portfolios.stream().mapToInt(p -> p.stocks.getQuantity(SOME_TITLE)).toArray();
+    assertThat(stockQuantities).containsExactly(SOME_QUANTITY,
+        SOME_QUANTITY + SOME_OTHER_QUANTITY,
+        SOME_QUANTITY + SOME_OTHER_QUANTITY);
+  }
+
+  @Test
+  public void givenPortfolioWithFewTransactionsOnSameDates_whenGetHistory_thenReturnWithAccurateHistoricalValues() {
+    setupPortfolioWithTransactionsOnSameDate(NOW.minusDays(1));
+
+    TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(NOW.minusDays(2), NOW);
+
+    int[] stockQuantities = portfolios.stream().mapToInt(p -> p.stocks.getQuantity(SOME_TITLE)).toArray();
+    assertThat(stockQuantities).containsExactly(0,
+        SOME_QUANTITY + SOME_OTHER_QUANTITY,
+        SOME_QUANTITY + SOME_OTHER_QUANTITY);
+  }
+
+  private void setupPortfolioWithTransactionsOnDifferentDates() {
+    Transaction firstTransaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
+        .withTime(NOW.minusDays(2).atStartOfDay())
+        .build();
+    portfolio.add(firstTransaction, someStockRepository);
+    Transaction secondTransaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_OTHER_QUANTITY).build())
+        .withTime(NOW.minusDays(1).atStartOfDay())
+        .build();
+    portfolio.add(secondTransaction, someStockRepository);
+  }
+
+  private void setupPortfolioWithTransactionsOnSameDate(LocalDate date) {
+    Transaction firstTransaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
+        .withTime(date.atStartOfDay())
+        .build();
+    portfolio.add(firstTransaction, someStockRepository);
+    Transaction secondTransaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_OTHER_QUANTITY).build())
+        .withTime(date.atStartOfDay().plusHours(1))
+        .build();
+    portfolio.add(secondTransaction, someStockRepository);
   }
 }
