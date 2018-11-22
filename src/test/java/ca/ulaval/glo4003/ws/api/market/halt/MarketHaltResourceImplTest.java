@@ -47,7 +47,7 @@ public class MarketHaltResourceImplTest {
 
   @Test
   public void whenHaltingMarket_thenServiceHaltsMarket() throws MarketDoesNotExistException {
-    MarketStatusResponseDto marketStatusResponseDto = marketHaltResource.haltMarket("market", MESSAGE);
+    marketHaltResource.haltMarket("market", MESSAGE);
 
     verify(marketServiceMock).haltMarket(MARKET_ID, MESSAGE);
   }
