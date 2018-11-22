@@ -78,7 +78,7 @@ public class Portfolio {
 
   public String getMostDecreasingStockTitle(LocalDate from, StockRepository stockRepository) throws InvalidStockInPortfolioException, NoStockValueFitsCriteriaException {
     List<Stock> stockList = getStockList(stockRepository);
-    BigDecimal lowestVariation = new BigDecimal(10000);
+    BigDecimal lowestVariation = new BigDecimal(Double.MAX_VALUE);
     String mostDecreasingStockTitle = "";
     for (Stock stock : stockList) {
       BigDecimal variation = computeStockValueVariation(from, stock);

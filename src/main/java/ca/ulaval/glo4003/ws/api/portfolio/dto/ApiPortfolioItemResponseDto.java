@@ -8,12 +8,12 @@ import java.math.BigDecimal;
 )
 public class ApiPortfolioItemResponseDto {
   public final String title;
-  public final BigDecimal currentValue;
+  public final BigDecimal value;
   public final int quantity;
 
-  public ApiPortfolioItemResponseDto(String title, BigDecimal currentValue, int quantity) {
+  public ApiPortfolioItemResponseDto(String title, BigDecimal value, int quantity) {
     this.title = title;
-    this.currentValue = currentValue;
+    this.value = value;
     this.quantity = quantity;
   }
 }

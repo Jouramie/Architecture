@@ -17,6 +17,7 @@ import ca.ulaval.glo4003.domain.user.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.TreeSet;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,7 +120,9 @@ public class PortfolioServiceTest {
       throws StockNotFoundException, NoStockValueFitsCriteriaException {
     given(somePortfolioReportAssembler.toDto(any(), any(), any())).willThrow(StockNotFoundException.class);
 
-    assertThatThrownBy(() -> portfolioService.getPortfolioReport(SOME_FROM_DATE)).isInstanceOf(InvalidPortfolioException.class);
+    ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_FROM_DATE);
+
+    assertThatThrownBy(getPortfolioReport).isInstanceOf(InvalidPortfolioException.class);
   }
 
   @Test
@@ -127,7 +130,9 @@ public class PortfolioServiceTest {
       throws StockNotFoundException, NoStockValueFitsCriteriaException {
     given(somePortfolioReportAssembler.toDto(any(), any(), any())).willThrow(NoStockValueFitsCriteriaException.class);
 
-    assertThatThrownBy(() -> portfolioService.getPortfolioReport(SOME_FROM_DATE)).isInstanceOf(InvalidPortfolioException.class);
+    ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_FROM_DATE);
+
+    assertThatThrownBy(getPortfolioReport).isInstanceOf(InvalidPortfolioException.class);
   }
 
   @Test
@@ -135,6 +140,8 @@ public class PortfolioServiceTest {
       throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
     given(portfolio.getMostIncreasingStockTitle(any(), any())).willThrow(InvalidStockInPortfolioException.class);
 
-    assertThatThrownBy(() -> portfolioService.getPortfolioReport(SOME_FROM_DATE)).isInstanceOf(InvalidPortfolioException.class);
+    ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_FROM_DATE);
+
+    assertThatThrownBy(getPortfolioReport).isInstanceOf(InvalidPortfolioException.class);
   }
 }

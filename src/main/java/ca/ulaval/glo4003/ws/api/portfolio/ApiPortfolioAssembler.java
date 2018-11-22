@@ -18,7 +18,6 @@ public class ApiPortfolioAssembler {
   }
 
   private ApiPortfolioItemResponseDto itemToDto(PortfolioItemDto itemResponseDto) {
-
     return new ApiPortfolioItemResponseDto(itemResponseDto.title, itemResponseDto.currentValue, itemResponseDto.quantity);
   }
 }
