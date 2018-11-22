@@ -31,6 +31,15 @@ public class InMemoryUserRepository implements UserRepository {
   }
 
   @Override
+  public <T> T find(String email, Class<T> clazz) throws UserNotFoundException {
+    try {
+      return clazz.cast(find(email));
+    } catch (ClassCastException e) {
+      throw new UserNotFoundException(e);
+    }
+  }
+
+  @Override
   public User find(String email) throws UserNotFoundException {
     return Optional.ofNullable(content.get(email)).orElseThrow(UserNotFoundException::new);
   }
