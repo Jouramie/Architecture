@@ -33,7 +33,6 @@ public class LimitServiceTest {
   private final ApplicationPeriod SOME_PERIOD = ApplicationPeriod.DAILY;
   private final int SOME_STOCK_QUANTITY = 3;
   private final String SOME_EMAIL = "28gg@email.com";
-  //private final MoneyAmountLimitDto moneyAmountLimitDto = new MoneyAmountLimitDto(SOME_MONEY_AMOUNT, , )
 
   private LimitService service;
   @Mock
