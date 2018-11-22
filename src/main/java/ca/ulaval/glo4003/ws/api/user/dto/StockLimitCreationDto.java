@@ -12,22 +12,22 @@ import javax.validation.constraints.PositiveOrZero;
     description = "Might apply on the money amount the user can spend or the number of stock the "
         + "user can purchase. In either case, the other field will not have a value."
 )
-public class UserMoneyAmountLimitCreationDto {
+public class StockLimitCreationDto {
   @NotNull
   public final ApplicationPeriod applicationPeriod;
-  
+
   @NotNull
   @PositiveOrZero
   @Schema(
-      description = "The maximal money amount the user can spend in a single transaction."
+      description = "The maximum quantity of stock the user can buy in a single transaction."
   )
-  public final double maximalMoneyAmountSpent;
+  public final int stockQuantity;
 
   @JsonCreator
-  public UserMoneyAmountLimitCreationDto(
+  public StockLimitCreationDto(
       @JsonProperty("applicationPeriod") ApplicationPeriod applicationPeriod,
-      @JsonProperty("maximalMoneyAmountSpent") double maximalMoneyAmountSpent) {
+      @JsonProperty("stockQuantity") int stockQuantity) {
     this.applicationPeriod = applicationPeriod;
-    this.maximalMoneyAmountSpent = maximalMoneyAmountSpent;
+    this.stockQuantity = stockQuantity;
   }
 }
