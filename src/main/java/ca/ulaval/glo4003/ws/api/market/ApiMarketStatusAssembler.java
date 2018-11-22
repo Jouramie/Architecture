@@ -11,7 +11,8 @@ public class ApiMarketStatusAssembler {
   public MarketStatusResponseDto toDto(MarketStatusDto marketStatus) {
     return new MarketStatusResponseDto(
         marketStatus.marketId.getValue(),
-        getStatusString(marketStatus)
+        getStatusString(marketStatus),
+        marketStatus.isHalted ? marketStatus.haltMessage : null
     );
   }
 
