@@ -29,36 +29,30 @@ public class LimitService {
   public MoneyAmountLimitDto createMoneyAmountLimit(String email, ApplicationPeriod applicationPeriod,
                                                     BigDecimal amount) {
     MoneyAmountLimit limit = limitFactory.createMoneyAmountLimit(applicationPeriod, new MoneyAmount(amount));
-    User user;
-    try {
-      user = userRepository.find(email);
-    } catch (UserNotFoundException e) {
-      throw new UserDoesNotExistException(e);
-    }
+    User user = getUserByEmail(email);
     user.setLimit(limit);
     return new MoneyAmountLimitDto(limit.start, limit.end, amount);
   }
 
-  public StockQuantityLimitDto createStockQuantityLimit(String email, ApplicationPeriod applicationPeriod,
-                                                        int stockQuantity) {
+  public StockQuantityLimitDto createStockQuantityLimit(String email, ApplicationPeriod applicationPeriod, int stockQuantity) {
     StockQuantityLimit limit = limitFactory.createStockQuantityLimit(applicationPeriod, stockQuantity);
-    User user;
-    try {
-      user = userRepository.find(email);
-    } catch (UserNotFoundException e) {
-      throw new UserDoesNotExistException(e);
-    }
+    User user = getUserByEmail(email);
     user.setLimit(limit);
     return new StockQuantityLimitDto(limit.start, limit.end, stockQuantity);
   }
 
   public void removeUserLimit(String email) {
+    User user = getUserByEmail(email);
+    user.setLimit(new NullLimit());
+  }
+
+  private User getUserByEmail(String email) {
     User user;
     try {
       user = userRepository.find(email);
     } catch (UserNotFoundException e) {
       throw new UserDoesNotExistException(e);
     }
-    user.setLimit(new NullLimit());
+    return user;
   }
 }
