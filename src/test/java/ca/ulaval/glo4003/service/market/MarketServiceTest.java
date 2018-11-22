@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.service.market;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -10,6 +11,7 @@ import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
 import ca.ulaval.glo4003.domain.market.states.Market;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,14 +57,15 @@ public class MarketServiceTest {
 
   @Test
   public void givenInexistentMarket_whenHaltingMarket_thenThrowException() throws MarketNotFoundException {
-    when(marketRepositoryMock.findById(SOME_MARKET_ID)).thenThrow(new MarketNotFoundException(""));
+    given(marketRepositoryMock.findById(SOME_MARKET_ID)).willThrow(new MarketNotFoundException(""));
 
-    assertThatThrownBy(() -> service.haltMarket(SOME_MARKET_ID, SOME_MESSAGE)).isInstanceOf(MarketDoesNotExistException.class);
+    ThrowableAssert.ThrowingCallable haltCallable = () -> service.haltMarket(SOME_MARKET_ID, SOME_MESSAGE);
+    assertThatThrownBy(haltCallable).isInstanceOf(MarketDoesNotExistException.class);
   }
 
   @Test
   public void whenHaltingMarket_thenUpdateMarketState() throws MarketNotFoundException, MarketDoesNotExistException {
-    when(marketRepositoryMock.findById(SOME_MARKET_ID)).thenReturn(SOME_MARKET);
+    given(marketRepositoryMock.findById(SOME_MARKET_ID)).willReturn(SOME_MARKET);
 
     service.haltMarket(SOME_MARKET_ID, SOME_MESSAGE);
 
