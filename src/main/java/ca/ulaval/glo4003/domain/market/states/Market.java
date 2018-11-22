@@ -26,7 +26,7 @@ public class Market {
     this.currency = currency;
     this.stocks = stocks;
     currentState = initialState;
-    tradingStatus = new TradingStatus(false, "");
+    tradingStatus = TradingStatus.trading();
   }
 
   public MarketId getId() {
@@ -38,7 +38,7 @@ public class Market {
   }
 
   public void halt(String message) {
-    tradingStatus = new TradingStatus(true, message);
+    tradingStatus = TradingStatus.halted(message);
   }
 
   public String getHaltMessage() {

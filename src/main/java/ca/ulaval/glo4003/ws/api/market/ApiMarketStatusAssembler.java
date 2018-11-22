@@ -16,6 +16,6 @@ public class ApiMarketStatusAssembler {
   }
 
   private String getStatusString(MarketStatusDto marketStatus) {
-    return marketStatus.isHalted ? String.format("HALTED: %s", marketStatus.haltMessage) : "TRADING";
+    return marketStatus.isHalted ? "HALTED" : "TRADING";
   }
 }
