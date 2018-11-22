@@ -60,9 +60,9 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 public abstract class AbstractContext {
+  protected static final String DEFAULT_ADMIN_EMAIL = "Archi.test.42@gmail.com";
   private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
   protected final ServiceLocator serviceLocator;
-  protected final String DEFAULT_ADMIN_EMAIL = "Archi.test.42@gmail.com";
 
   public AbstractContext() {
     serviceLocator = ServiceLocator.INSTANCE;

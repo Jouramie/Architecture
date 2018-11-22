@@ -6,6 +6,7 @@ import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
 import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
@@ -53,8 +54,9 @@ public class PortfolioService {
       Portfolio portfolio = user.getPortfolio();
       TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(from, clock.getCurrentTime().toLocalDate());
       String mostIncreasingStockTitle = portfolio.getMostIncreasingStockTitle(from, stockRepository);
-      return null;
-    } catch (NoStockValueFitsCriteriaException | InvalidStockInPortfolioException e) {
+      String mostDecreasingStockTitle = portfolio.getMostDecreasingStockTitle(from, stockRepository);
+      return portfolioReportAssembler.toDto(portfolios, mostIncreasingStockTitle, mostDecreasingStockTitle);
+    } catch (StockNotFoundException | NoStockValueFitsCriteriaException | InvalidStockInPortfolioException e) {
       throw new InvalidPortfolioException();
     }
   }

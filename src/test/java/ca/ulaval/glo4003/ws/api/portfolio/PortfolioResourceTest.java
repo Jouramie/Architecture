@@ -13,6 +13,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PortfolioResourceTest {
+  private final String SOME_SINCE_PARAMETER = "LAST_FIVE_DAYS";
+
   @Mock
   private PortfolioService portfolioService;
   @Mock
@@ -37,7 +39,7 @@ public class PortfolioResourceTest {
 
   @Test
   public void whenGetPortfolioReport_thenCallGetPortfolioReport() {
-    portfolioResource.getPortfolio();
+    portfolioResource.getPortfolioReport(SOME_SINCE_PARAMETER);
 
     verify(portfolioService).getPortfolioReport(any());
   }
