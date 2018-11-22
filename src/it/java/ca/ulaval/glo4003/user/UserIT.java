@@ -45,7 +45,7 @@ public class UserIT {
   private static final String ROLE = "role";
   private static final String LIMIT = "limit";
   private static final String INPUT_ERRORS = "inputErrors";
-  private static final String MAXIMAL_STOCK_QUANTITY = "maximalStockQuantity";
+  private static final String STOCK_QUANTITY = "stockQuantity";
   private static final String BEGIN_DATE = "from";
   private static final String END_DATE = "to";
 
@@ -246,7 +246,7 @@ public class UserIT {
         .statusCode(CREATED.getStatusCode())
         .body("$", hasKey("from"))
         .body("$", hasKey("to"))
-        .body(MAXIMAL_STOCK_QUANTITY, is(5));
+        .body(STOCK_QUANTITY, is(5));
     //@formatter:on
   }
 
@@ -269,7 +269,7 @@ public class UserIT {
         .statusCode(CREATED.getStatusCode())
         .body("$", hasKey(BEGIN_DATE))
         .body("$", hasKey(END_DATE))
-        .body(MAXIMAL_STOCK_QUANTITY, is(moneyAmountLimit));
+        .body(STOCK_QUANTITY, is(moneyAmountLimit));
     //@formatter:on
   }
 
@@ -293,7 +293,7 @@ public class UserIT {
         .root(LIMIT)
         .body("$", hasKey(BEGIN_DATE))
         .body("$", hasKey(END_DATE))
-        .body(MAXIMAL_STOCK_QUANTITY, is(moneyAmountLimit));
+        .body(STOCK_QUANTITY, is(moneyAmountLimit));
     //@formatter:on
   }
 

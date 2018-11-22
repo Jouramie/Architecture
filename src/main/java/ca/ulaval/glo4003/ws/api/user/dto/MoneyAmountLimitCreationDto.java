@@ -20,15 +20,15 @@ public class MoneyAmountLimitCreationDto {
   @NotNull
   @PositiveOrZero
   @Schema(
-      description = "The maximal money amount the user can spend in a single transaction."
+      description = "The maximum money amount the user can spend in a single transaction."
   )
-  public final BigDecimal maximalMoneyAmountSpent;
+  public final BigDecimal moneyAmount;
 
   @JsonCreator
   public MoneyAmountLimitCreationDto(
       @JsonProperty("applicationPeriod") ApplicationPeriod applicationPeriod,
-      @JsonProperty("maximalMoneyAmountSpent") BigDecimal maximalMoneyAmountSpent) {
+      @JsonProperty("moneyAmount") BigDecimal moneyAmount) {
     this.applicationPeriod = applicationPeriod;
-    this.maximalMoneyAmountSpent = maximalMoneyAmountSpent;
+    this.moneyAmount = moneyAmount;
   }
 }

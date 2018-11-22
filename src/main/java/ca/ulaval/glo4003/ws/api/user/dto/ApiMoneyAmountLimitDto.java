@@ -6,16 +6,16 @@ import java.time.LocalDateTime;
 
 @Schema(
     name = "Money amount user limit",
-    description = "Representation of a maximal money amount per transaction limit."
+    description = "Representation of a money amount per transaction limit."
 )
 public class ApiMoneyAmountLimitDto extends ApiLimitDto {
   @Schema(
-      description = "The maximal money amount the user can spend in a single transaction."
+      description = "The maximum money amount the user can spend in a single transaction."
   )
-  public final BigDecimal maximalMoneySpent;
+  public final BigDecimal moneyAmount;
 
-  public ApiMoneyAmountLimitDto(LocalDateTime start, LocalDateTime end, BigDecimal maximalMoneySpent) {
+  public ApiMoneyAmountLimitDto(LocalDateTime start, LocalDateTime end, BigDecimal moneyAmount) {
     super(start, end);
-    this.maximalMoneySpent = maximalMoneySpent;
+    this.moneyAmount = moneyAmount;
   }
 }

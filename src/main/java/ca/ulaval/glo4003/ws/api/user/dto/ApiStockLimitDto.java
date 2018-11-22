@@ -5,16 +5,16 @@ import java.time.LocalDateTime;
 
 @Schema(
     name = "Stock user limit",
-    description = "Representation of a maximal stock per transaction limit."
+    description = "Representation of a stock quantity per transaction limit."
 )
 public class ApiStockLimitDto extends ApiLimitDto {
   @Schema(
-      description = "The maximal quantity of stock the user can buy in a single transaction."
+      description = "The maximum quantity of stock the user can buy in a single transaction."
   )
-  public final int maximalStockQuantity;
+  public final int stockQuantity;
 
-  public ApiStockLimitDto(LocalDateTime from, LocalDateTime to, int maximalStockQuantity) {
+  public ApiStockLimitDto(LocalDateTime from, LocalDateTime to, int stockQuantity) {
     super(from, to);
-    this.maximalStockQuantity = maximalStockQuantity;
+    this.stockQuantity = stockQuantity;
   }
 }

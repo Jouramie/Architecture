@@ -19,15 +19,15 @@ public class StockLimitCreationDto {
   @NotNull
   @PositiveOrZero
   @Schema(
-      description = "The maximal quantity of stock the user can buy in a single transaction."
+      description = "The maximum quantity of stock the user can buy in a single transaction."
   )
-  public final int maximalStockQuantity;
+  public final int stockQuantity;
 
   @JsonCreator
   public StockLimitCreationDto(
       @JsonProperty("applicationPeriod") ApplicationPeriod applicationPeriod,
-      @JsonProperty("maximalStockQuantity") int maximalStockQuantity) {
+      @JsonProperty("stockQuantity") int stockQuantity) {
     this.applicationPeriod = applicationPeriod;
-    this.maximalStockQuantity = maximalStockQuantity;
+    this.stockQuantity = stockQuantity;
   }
 }
