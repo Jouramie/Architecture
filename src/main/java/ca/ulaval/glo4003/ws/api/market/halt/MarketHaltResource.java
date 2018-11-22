@@ -63,10 +63,6 @@ public interface MarketHaltResource {
               description = "Market does not exist."
           ),
           @ApiResponse(
-              responseCode = "400",
-              description = "Market is not halted."
-          ),
-          @ApiResponse(
               responseCode = "401",
               description = "The authenticated user is not an administrator."
           )
