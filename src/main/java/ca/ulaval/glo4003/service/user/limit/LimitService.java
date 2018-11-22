@@ -8,6 +8,7 @@ import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
 import ca.ulaval.glo4003.domain.user.limit.MoneyAmountLimit;
+import ca.ulaval.glo4003.domain.user.limit.NullLimit;
 import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import ca.ulaval.glo4003.service.user.limit.dto.MoneyAmountLimitDto;
@@ -34,7 +35,7 @@ public class LimitService {
     } catch (UserNotFoundException e) {
       throw new UserDoesNotExistException(e);
     }
-    user.addLimit(limit);
+    user.setLimit(limit);
     return new MoneyAmountLimitDto(amount, limit.start, limit.end);
   }
 
@@ -46,7 +47,7 @@ public class LimitService {
     } catch (UserNotFoundException e) {
       throw new UserDoesNotExistException(e);
     }
-    user.addLimit(limit);
+    user.setLimit(limit);
     return new StockLimitDto(stockQuantity, limit.start, limit.end);
   }
 
@@ -57,6 +58,6 @@ public class LimitService {
     } catch (UserNotFoundException e) {
       throw new UserDoesNotExistException(e);
     }
-    user.removeLimit();
+    user.setLimit(new NullLimit());
   }
 }

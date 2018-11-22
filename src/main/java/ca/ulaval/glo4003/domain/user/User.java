@@ -49,6 +49,10 @@ public class User {
     return limit;
   }
 
+  public void setLimit(Limit limit) {
+    this.limit = limit;
+  }
+
   public boolean haveRoleIn(List<UserRole> roles) {
     return roles.contains(role);
   }
@@ -61,13 +65,9 @@ public class User {
     return portfolio;
   }
 
-  public void addLimit(Limit limit) {
-    this.limit = limit;
-  }
-
-  public void removeLimit() {
+  /*public void removeLimit() {
     limit = null;
-  }
+  }*/
 
   public Transaction checkoutCart(TransactionFactory transactionFactory,
                                   PaymentProcessor paymentProcessor,

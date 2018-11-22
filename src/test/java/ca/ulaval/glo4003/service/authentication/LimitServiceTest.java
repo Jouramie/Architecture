@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.service.authentication;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -8,11 +9,12 @@ import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
-import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
 import ca.ulaval.glo4003.domain.user.limit.MoneyAmountLimit;
+import ca.ulaval.glo4003.domain.user.limit.NullLimit;
 import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
+import ca.ulaval.glo4003.util.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +24,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class LimitServiceTest {
 
-  //private static final User SOME_USER = new UserBuilder().build();
+  private static final User SOME_USER = new UserBuilder().build();
 
 
   private final double SOME_AMOUNT = 20.00;
@@ -71,30 +73,33 @@ public class LimitServiceTest {
 
   @Test
   public void whenCreatedAmountMoneyLimit_thenLimitIsAddedToUser() throws UserNotFoundException {
-    given(userRepository.find(SOME_EMAIL)).willReturn(user);
+    given(userRepository.find(SOME_EMAIL)).willReturn(SOME_USER);
     given(limitFactory.createMoneyAmountLimit(SOME_PERIOD, SOME_MONEY_AMOUNT)).willReturn(moneyAmountLimit);
-    
+
     service.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT);
 
-    Limit limit = limitFactory.createMoneyAmountLimit(SOME_PERIOD, SOME_MONEY_AMOUNT);
-
-    verify(user).addLimit(limit);
+    assertThat(SOME_USER.getLimit()).isInstanceOf(MoneyAmountLimit.class);
   }
 
   @Test
   public void whenCreateStockQuantityLimit_thenLimitIsAddedToUser() throws UserNotFoundException {
-    given(userRepository.find(SOME_EMAIL)).willReturn(user);
+    given(userRepository.find(SOME_EMAIL)).willReturn(SOME_USER);
     given(limitFactory.createStockQuantityLimit(SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockQuantityLimit);
 
     service.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);
-    Limit limit = limitFactory.createStockQuantityLimit(SOME_PERIOD, SOME_STOCK_QUANTITY);
-    verify(user).addLimit(limit);
+
+    assertThat(SOME_USER.getLimit()).isInstanceOf(StockQuantityLimit.class);
   }
 
   @Test
   public void whenRemoveLimit_thenLimitIsRemoved() throws UserNotFoundException {
-    given(userRepository.find(SOME_EMAIL)).willReturn(user);
+    given(userRepository.find(SOME_EMAIL)).willReturn(SOME_USER);
+    given(limitFactory.createStockQuantityLimit(SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockQuantityLimit);
+
+    service.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);
+
     service.removeUserLimit(SOME_EMAIL);
-    verify(user).removeLimit();
+
+    assertThat(SOME_USER.getLimit()).isInstanceOf(NullLimit.class);
   }
 }
