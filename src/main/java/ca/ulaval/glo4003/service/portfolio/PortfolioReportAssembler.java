@@ -9,8 +9,8 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
 import ca.ulaval.glo4003.service.portfolio.dto.HistoricalPortfolioDto;
-import ca.ulaval.glo4003.service.portfolio.dto.PortfolioHistoryDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
+import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,21 +19,22 @@ import java.util.TreeSet;
 import javax.inject.Inject;
 
 @Component
-public class HistoricalPortfolioAssembler {
+public class PortfolioReportAssembler {
   private final StockRepository stockRepository;
 
   @Inject
-  public HistoricalPortfolioAssembler(StockRepository stockRepository) {
+  public PortfolioReportAssembler(StockRepository stockRepository) {
     this.stockRepository = stockRepository;
   }
 
-  public PortfolioHistoryDto toDto(TreeSet<HistoricalPortfolio> portfolios) throws StockNotFoundException, NoStockValueFitsCriteriaException {
+  public PortfolioReportDto toDto(TreeSet<HistoricalPortfolio> portfolios, String mostIncreasingStock,
+                                  String mostDecreasingStock) throws StockNotFoundException, NoStockValueFitsCriteriaException {
     List<HistoricalPortfolioDto> portfoliosDto = new ArrayList<>();
     for (HistoricalPortfolio portfolio : portfolios) {
       HistoricalPortfolioDto toDto = historicalPortfolioToDto(portfolio);
       portfoliosDto.add(toDto);
     }
-    return new PortfolioHistoryDto(portfoliosDto);
+    return new PortfolioReportDto(portfoliosDto, mostIncreasingStock, mostDecreasingStock);
   }
 
   private HistoricalPortfolioDto historicalPortfolioToDto(HistoricalPortfolio historicalPortfolio) throws StockNotFoundException, NoStockValueFitsCriteriaException {

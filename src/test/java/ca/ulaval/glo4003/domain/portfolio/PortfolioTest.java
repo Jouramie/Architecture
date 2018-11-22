@@ -4,10 +4,13 @@ import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockHistory;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
@@ -29,6 +32,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class PortfolioTest {
   private final String SOME_TITLE = "MSFT";
+  private final String SOME_OTHER_TITLE = "AAPL";
   private final int SOME_QUANTITY = 3;
   private final int SOME_OTHER_QUANTITY = 4;
   private final String SOME_CURRENCY_NAME = "CAD";
@@ -40,6 +44,8 @@ public class PortfolioTest {
 
   @Mock
   private Stock someStock;
+  @Mock
+  private Stock someOtherStock;
 
   @Mock
   private StockRepository someStockRepository;
@@ -54,8 +60,13 @@ public class PortfolioTest {
     given(someStock.getCurrency()).willReturn(SOME_CURRENCY);
     given(someStock.getTitle()).willReturn(SOME_TITLE);
 
+    given(someOtherStock.getValue()).willReturn(SOME_STOCK_VALUE);
+    given(someOtherStock.getTitle()).willReturn(SOME_OTHER_TITLE);
+
     given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(someStock);
+    given(someStockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
+    given(someStockRepository.findByTitle(SOME_OTHER_TITLE)).willReturn(someOtherStock);
   }
 
   @Test
@@ -157,6 +168,13 @@ public class PortfolioTest {
         SOME_QUANTITY + SOME_OTHER_QUANTITY);
   }
 
+  @Test
+  public void givenTwoStocksInPortfolio_whenGetMostIncreasingStock_thenMostIncreasingStockIsReturned() throws NoStockValueFitsCriteriaException {
+    setupPortfolioWithDifferentStocksOnSameDate(NOW.minusDays(5));
+    setupStockWithLowestVariation(NOW.minusDays(5));
+    setupStockWithHighestVariation(NOW.minusDays(5));
+  }
+
   private void setupPortfolioWithTransactionsOnDifferentDates() {
     Transaction firstTransaction = new TransactionBuilder()
         .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
@@ -181,5 +199,32 @@ public class PortfolioTest {
         .withTime(date.atStartOfDay().plusHours(1))
         .build();
     portfolio.add(secondTransaction, someStockRepository);
+  }
+
+  private void setupPortfolioWithDifferentStocksOnSameDate(LocalDate date) {
+    Transaction firstTransaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
+        .withTime(date.atStartOfDay())
+        .build();
+    portfolio.add(firstTransaction, someStockRepository);
+    Transaction secondTransaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_OTHER_TITLE).withQuantity(SOME_QUANTITY).build())
+        .withTime(date.atStartOfDay())
+        .build();
+    portfolio.add(secondTransaction, someStockRepository);
+  }
+
+  private void setupStockWithLowestVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
+    StockHistory firstStockHistory = mock(StockHistory.class);
+    given(firstStockHistory.getValueOnDay(from)).willReturn(SOME_STOCK_VALUE);
+    given(someStock.getValueHistory()).willReturn(firstStockHistory);
+  }
+
+  private void setupStockWithHighestVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
+    StockHistory secondStockHistory = mock(StockHistory.class);
+    MoneyAmount someOtherValue = new MoneyAmount(SOME_VALUE.getAmount().multiply(new BigDecimal(0.5)), SOME_CURRENCY);
+    StockValue someOtherStockValue = new StockValue(someOtherValue, someOtherValue, someOtherValue);
+    given(secondStockHistory.getValueOnDay(from)).willReturn(someOtherStockValue);
+    given(someOtherStock.getValueHistory()).willReturn(secondStockHistory);
   }
 }

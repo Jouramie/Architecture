@@ -16,8 +16,8 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.service.portfolio.dto.HistoricalPortfolioDto;
-import ca.ulaval.glo4003.service.portfolio.dto.PortfolioHistoryDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
+import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,8 +29,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HistoricalPortfolioAssemblerTest {
+public class PortfolioReportAssemblerTest {
   private static final String SOME_TITLE = "title";
+  private static final String SOME_INCREASING_STOCK_TITLE = "increasing";
+  private static final String SOME_DECREASING_STOCK_TITLE = "decreasing";
   private static final int SOME_QUANTITY = 45;
   private static final MoneyAmount SOME_FIRST_HISTORICAL_MONEY_AMOUNT = new MoneyAmount(66.66, Currency.USD);
   private static final StockValue SOME_FIRST_HISTORICAL_STOCK_VALUE = new StockValue(SOME_FIRST_HISTORICAL_MONEY_AMOUNT);
@@ -49,11 +51,11 @@ public class HistoricalPortfolioAssemblerTest {
   @Mock
   private HistoricalPortfolio someSecondPortfolio;
 
-  private HistoricalPortfolioAssembler assembler;
+  private PortfolioReportAssembler assembler;
 
   @Before
-  public void setupHistoricalPortfolioAssembler() throws StockNotFoundException, NoStockValueFitsCriteriaException {
-    assembler = new HistoricalPortfolioAssembler(someStockRepository);
+  public void setupPortfolioReportAssembler() throws StockNotFoundException, NoStockValueFitsCriteriaException {
+    assembler = new PortfolioReportAssembler(someStockRepository);
     setupStockRepository();
     setupHistoricalPortfolios();
   }
@@ -78,9 +80,9 @@ public class HistoricalPortfolioAssemblerTest {
 
   @Test
   public void givenNoHistoricalPortfolio_whenToDto_thenDtoWithEmptyList() throws StockNotFoundException, NoStockValueFitsCriteriaException {
-    PortfolioHistoryDto dto = assembler.toDto(new TreeSet<>());
+    PortfolioReportDto dto = assembler.toDto(new TreeSet<>(), SOME_INCREASING_STOCK_TITLE, SOME_DECREASING_STOCK_TITLE);
 
-    assertThat(dto.historicalPortfolios).hasSize(0);
+    assertThat(dto.history).hasSize(0);
   }
 
   @Test
@@ -89,9 +91,9 @@ public class HistoricalPortfolioAssemblerTest {
     portfolios.add(someFirstPortfolio);
     portfolios.add(someSecondPortfolio);
 
-    PortfolioHistoryDto dto = assembler.toDto(portfolios);
+    PortfolioReportDto dto = assembler.toDto(portfolios, SOME_INCREASING_STOCK_TITLE, SOME_DECREASING_STOCK_TITLE);
 
-    List<LocalDate> dates = dto.historicalPortfolios.stream().map((portfolio) -> portfolio.date).collect(toList());
+    List<LocalDate> dates = dto.history.stream().map((portfolio) -> portfolio.date).collect(toList());
     assertThat(dates).containsExactly(SOME_FIRST_DATE, SOME_SECOND_DATE);
   }
 
@@ -100,9 +102,9 @@ public class HistoricalPortfolioAssemblerTest {
     TreeSet<HistoricalPortfolio> portfolios = new TreeSet<>();
     portfolios.add(someFirstPortfolio);
 
-    PortfolioHistoryDto dto = assembler.toDto(portfolios);
+    PortfolioReportDto dto = assembler.toDto(portfolios, SOME_INCREASING_STOCK_TITLE, SOME_DECREASING_STOCK_TITLE);
 
-    HistoricalPortfolioDto portfolioDto = dto.historicalPortfolios.get(0);
+    HistoricalPortfolioDto portfolioDto = dto.history.get(0);
     PortfolioItemDto portfolioItemDto = portfolioDto.stocks.get(0);
     assertThat(portfolioItemDto.title).isEqualTo(SOME_TITLE);
     assertThat(portfolioItemDto.quantity).isEqualTo(SOME_QUANTITY);
@@ -113,9 +115,9 @@ public class HistoricalPortfolioAssemblerTest {
     TreeSet<HistoricalPortfolio> portfolios = new TreeSet<>();
     portfolios.add(someFirstPortfolio);
 
-    PortfolioHistoryDto dto = assembler.toDto(portfolios);
+    PortfolioReportDto dto = assembler.toDto(portfolios, SOME_INCREASING_STOCK_TITLE, SOME_DECREASING_STOCK_TITLE);
 
-    HistoricalPortfolioDto portfolioDto = dto.historicalPortfolios.get(0);
+    HistoricalPortfolioDto portfolioDto = dto.history.get(0);
     assertThat(portfolioDto.totalValue).isEqualTo(SOME_FIRST_PORTFOLIO_TOTAL.toUsd());
   }
 
@@ -124,10 +126,20 @@ public class HistoricalPortfolioAssemblerTest {
     TreeSet<HistoricalPortfolio> portfolios = new TreeSet<>();
     portfolios.add(someFirstPortfolio);
 
-    PortfolioHistoryDto dto = assembler.toDto(portfolios);
+    PortfolioReportDto dto = assembler.toDto(portfolios, SOME_INCREASING_STOCK_TITLE, SOME_DECREASING_STOCK_TITLE);
 
-    HistoricalPortfolioDto portfolioDto = dto.historicalPortfolios.get(0);
+    HistoricalPortfolioDto portfolioDto = dto.history.get(0);
     PortfolioItemDto portfolioItemDto = portfolioDto.stocks.get(0);
     assertThat(portfolioItemDto.currentValue).isEqualTo(SOME_FIRST_HISTORICAL_MONEY_AMOUNT.toUsd());
+  }
+
+  @Test
+  public void whenToDto_thenMostVolatileStocksAreMappedCorrectly() throws StockNotFoundException, NoStockValueFitsCriteriaException {
+    TreeSet<HistoricalPortfolio> portfolios = new TreeSet<>();
+    
+    PortfolioReportDto dto = assembler.toDto(portfolios, SOME_INCREASING_STOCK_TITLE, SOME_DECREASING_STOCK_TITLE);
+
+    assertThat(dto.mostIncreasingStock).isEqualTo(SOME_INCREASING_STOCK_TITLE);
+    assertThat(dto.mostDecreasingStock).isEqualTo(SOME_DECREASING_STOCK_TITLE);
   }
 }

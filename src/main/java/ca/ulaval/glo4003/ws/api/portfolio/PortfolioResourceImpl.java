@@ -4,7 +4,7 @@ import ca.ulaval.glo4003.service.InternalErrorException;
 import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.portfolio.PortfolioService;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
-import ca.ulaval.glo4003.service.portfolio.dto.PortfolioHistoryDto;
+import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
 import ca.ulaval.glo4003.ws.api.portfolio.dto.ApiPortfolioReportResponseDto;
 import ca.ulaval.glo4003.ws.api.portfolio.dto.ApiPortfolioResponseDto;
 import ca.ulaval.glo4003.ws.api.portfolio.dto.SinceParameter;
@@ -17,12 +17,15 @@ import javax.ws.rs.BadRequestException;
 public class PortfolioResourceImpl implements PortfolioResource {
   private final PortfolioService portfolioService;
   private final ApiPortfolioAssembler apiPortfolioAssembler;
+  private final ApiPortfolioReportAssembler apiPortfolioReportAssembler;
   private final DateService dateService;
 
   @Inject
-  public PortfolioResourceImpl(PortfolioService portfolioService, ApiPortfolioAssembler apiPortfolioAssembler, DateService dateService) {
+  public PortfolioResourceImpl(PortfolioService portfolioService, ApiPortfolioAssembler apiPortfolioAssembler,
+                               ApiPortfolioReportAssembler apiPortfolioReportAssembler, DateService dateService) {
     this.portfolioService = portfolioService;
     this.apiPortfolioAssembler = apiPortfolioAssembler;
+    this.apiPortfolioReportAssembler = apiPortfolioReportAssembler;
     this.dateService = dateService;
   }
 
@@ -37,7 +40,8 @@ public class PortfolioResourceImpl implements PortfolioResource {
     try {
       SinceParameter sinceValue = SinceParameter.valueOf(since);
       LocalDate from = getFromDate(sinceValue);
-      PortfolioHistoryDto historyDto = portfolioService.getPortfolioHistory(from);
+      PortfolioReportDto reportDto = portfolioService.getPortfolioReport(from);
+      return apiPortfolioReportAssembler.toDto(reportDto);
     } catch (NullPointerException | IllegalArgumentException e) {
       throw new BadRequestException("Invalid 'since' parameter");
     }

@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.domain.portfolio;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -9,6 +10,7 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionHistory;
 import ca.ulaval.glo4003.domain.transaction.TransactionItem;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,6 +60,26 @@ public class Portfolio {
 
   public StockCollection getStocks() {
     return stocks;
+  }
+
+  public String getMostIncreasingStockTitle(LocalDate from, StockRepository stockRepository) throws InvalidStockInPortfolioException, NoStockValueFitsCriteriaException {
+    List<Stock> stockList = getStockList(stockRepository);
+    BigDecimal highestVariation = BigDecimal.ZERO;
+    String mostIncreasingStockTitle = "";
+    for (Stock stock : stockList) {
+      BigDecimal variation = computeStockValueVariation(from, stock);
+      if (variation.compareTo(highestVariation) > 0) {
+        highestVariation = variation;
+        mostIncreasingStockTitle = stock.getTitle();
+      }
+    }
+    return mostIncreasingStockTitle;
+  }
+
+  private BigDecimal computeStockValueVariation(LocalDate from, Stock stock) throws NoStockValueFitsCriteriaException {
+    MoneyAmount startAmount = stock.getValueHistory().getValueOnDay(from).getLatestValue();
+    MoneyAmount currentAmount = stock.getValue().getLatestValue();
+    return currentAmount.getAmount().divide(startAmount.getAmount());
   }
 
   private MoneyAmount getSubtotal(Stock stock) {
