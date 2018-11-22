@@ -77,7 +77,7 @@ public class CartService {
   }
 
   private Cart getCart() {
-    return ((Investor) currentUserSession.getCurrentUser()).getCart();
+    return currentUserSession.getCurrentUser(Investor.class).getCart();
   }
 
   private void checkIfStockExists(String title) {

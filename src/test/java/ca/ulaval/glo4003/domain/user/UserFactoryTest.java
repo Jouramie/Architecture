@@ -47,8 +47,8 @@ public class UserFactoryTest {
     Administrator expectedAdministrator = new UserBuilder().withEmail(SOME_EMAIL)
         .withPassword(SOME_PASSWORD).buildAdministrator();
 
-    Administrator createdUser = factory.createAdministrator(SOME_EMAIL, SOME_PASSWORD);
+    Administrator createdAdministrator = factory.createAdministrator(SOME_EMAIL, SOME_PASSWORD);
 
-    assertThat(createdUser).isEqualToComparingOnlyGivenFields(expectedAdministrator, "email", "password", "role");
+    assertThat(createdAdministrator).isEqualToComparingOnlyGivenFields(expectedAdministrator, "email", "password", "role");
   }
 }

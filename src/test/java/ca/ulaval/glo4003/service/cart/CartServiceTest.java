@@ -33,8 +33,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class CartServiceTest {
   private static final String SOME_TITLE = "title";
   private static final int SOME_QUANTITY = 1;
-  @Mock
-  private CurrentUserSession currentUserSession;
+
   @Mock
   private UserRepository userRepository;
   @Mock
@@ -52,7 +51,8 @@ public class CartServiceTest {
 
   @Before
   public void setup() {
-    given(currentUserSession.getCurrentUser()).willReturn(currentInvestor);
+    CurrentUserSession currentUserSession = new CurrentUserSession();
+    currentUserSession.setCurrentUser(currentInvestor);
     given(currentInvestor.getCart()).willReturn(cart);
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
 

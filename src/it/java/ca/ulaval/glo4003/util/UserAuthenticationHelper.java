@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.util;
 import static io.restassured.RestAssured.given;
 
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import io.restassured.response.Response;
 import javax.ws.rs.core.MediaType;
 
@@ -15,8 +15,8 @@ public class UserAuthenticationHelper {
   private static final String API_USERS_ROUTE = "/api/users";
   private static final String API_AUTHENTICATION_ROUTE = "/api/authenticate";
   private static final String SOME_PASSWORD = "stockistock";
-  private static final UserCreationDto SOME_USER_CREATION_REQUEST =
-      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
+  private static final InvestorCreationDto SOME_USER_CREATION_REQUEST =
+      new InvestorCreationDto(SOME_EMAIL, SOME_PASSWORD);
   private static final ApiAuthenticationRequestDto SOME_USER_AUTHENTICATION_REQUEST =
       new ApiAuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);
 

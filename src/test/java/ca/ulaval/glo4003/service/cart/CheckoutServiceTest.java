@@ -33,8 +33,6 @@ public class CheckoutServiceTest {
   private static final String SOME_TITLE = "MSFT";
 
   @Mock
-  private CurrentUserSession currentUserSession;
-  @Mock
   private TransactionFactory transactionFactory;
   @Mock
   private PaymentProcessor paymentProcessor;
@@ -57,7 +55,8 @@ public class CheckoutServiceTest {
 
   @Before
   public void setup() {
-    given(currentUserSession.getCurrentUser()).willReturn(currentInvestor);
+    CurrentUserSession currentUserSession = new CurrentUserSession();
+    currentUserSession.setCurrentUser(currentInvestor);
     given(transactionAssembler.toDto(transaction)).willReturn(expectedDto);
 
     checkoutService = new CheckoutService(

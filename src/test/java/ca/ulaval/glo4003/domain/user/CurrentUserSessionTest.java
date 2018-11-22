@@ -17,4 +17,14 @@ public class CurrentUserSessionTest {
     User retrievedUser = userRepository.getCurrentUser();
     assertThat(retrievedUser).isEqualTo(SOME_USER);
   }
+
+  @Test
+  public void givenCurrentUserIsAdministrator_whenGetCurrentAdministrator_thenCurrentAdministratorIsReturned() {
+    Administrator expectedAdministrator = new UserBuilder().buildAdministrator();
+    userRepository.setCurrentUser(expectedAdministrator);
+
+    Administrator resultingAdministrator = userRepository.getCurrentUser(Administrator.class);
+
+    assertThat(resultingAdministrator).isSameAs(expectedAdministrator);
+  }
 }

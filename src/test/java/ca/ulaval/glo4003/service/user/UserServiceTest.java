@@ -29,7 +29,6 @@ public class UserServiceTest {
 
   private static final String SOME_EMAIL = "email";
   private static final String SOME_PASSWORD = "password";
-  private static final UserRole SOME_USER_ROLE = UserRole.INVESTOR;
   private static final Investor SOME_INVESTOR = new UserBuilder().buildInvestor();
   private static final User SOME_USER = new UserBuilder().build();
 
@@ -70,7 +69,7 @@ public class UserServiceTest {
 
     UserDto resultingUser = userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, UserRole.INVESTOR);
     assertThat(resultingUser).isEqualToComparingFieldByField(expectedUser);
   }
 
@@ -122,7 +121,7 @@ public class UserServiceTest {
 
   @Test
   public void whenGetUsers_thenReturnConvertedUsers() {
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
+    User user = new UserBuilder().withEmail(SOME_EMAIL).build();
     UserRole role = user.getRole();
     List<User> users = singletonList(user);
     given(userRepository.findAll()).willReturn(users);

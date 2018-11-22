@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.ws.api.user;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserLimitDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.UserStockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
@@ -49,7 +49,7 @@ public interface UserResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "Investor is not logged in or not administrator."
+              description = "Administrator is not logged in."
           )
       }
   )
@@ -72,7 +72,7 @@ public interface UserResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "Investor is not logged in or not administrator."
+              description = "Administrator is not logged in."
           ),
           @ApiResponse(
               responseCode = "404",
@@ -84,15 +84,15 @@ public interface UserResource {
 
   @POST
   @Operation(
-      summary = "Create a user",
-      description = "Register a new user",
+      summary = "Create an investor",
+      description = "Register a new investor",
       responses = {
           @ApiResponse(
               responseCode = "201",
               description = "Investor successfully created.",
               content = @Content(
                   schema = @Schema(
-                      implementation = UserCreationDto.class
+                      implementation = InvestorCreationDto.class
                   )
               )
           ),
@@ -107,13 +107,13 @@ public interface UserResource {
           )
       }
   )
-  Response createUser(@Valid UserCreationDto userCreationDto);
+  Response createInvestor(@Valid InvestorCreationDto investorCreationDto);
 
   @PUT
   @Path("/{email}/limit/stock")
   @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
   @Operation(
-      summary = "Set a stock per transaction limit to a user.",
+      summary = "Set a stock per transaction limit to an investor.",
       responses = {
           @ApiResponse(
               responseCode = "201",
@@ -129,7 +129,7 @@ public interface UserResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "Investor is not logged in or not administrator."
+              description = "Administrator is not logged in."
           ),
           @ApiResponse(
               responseCode = "404",
@@ -145,7 +145,7 @@ public interface UserResource {
   @Path("/{email}/limit/money_amount")
   @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
   @Operation(
-      summary = "Set a money amount per transaction limit to a user.",
+      summary = "Set a money amount per transaction limit to an investor.",
       responses = {
           @ApiResponse(
               responseCode = "201",
@@ -161,7 +161,7 @@ public interface UserResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "Investor is not logged in or not administrator."
+              description = "Administrator is not logged in."
           ),
           @ApiResponse(
               responseCode = "404",
@@ -177,14 +177,14 @@ public interface UserResource {
   @Path("/{email}/limit")
   @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
   @Operation(
-      summary = "Remove a limit from a user.",
+      summary = "Remove a limit from an investor.",
       responses = {
           @ApiResponse(
               responseCode = "204"
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "Investor is not logged in or not administrator."
+              description = "Administrator is not logged in."
           ),
           @ApiResponse(
               responseCode = "404",

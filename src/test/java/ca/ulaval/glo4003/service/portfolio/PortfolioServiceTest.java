@@ -28,8 +28,6 @@ public class PortfolioServiceTest {
   private final LocalDate SOME_FROM_DATE = SOME_CURRENT_DATETIME.toLocalDate().minusDays(5);
 
   @Mock
-  private CurrentUserSession someCurrentUserSession;
-  @Mock
   private Investor someCurrentInvestor;
   @Mock
   private PortfolioAssembler somePortfolioAssembler;
@@ -46,10 +44,11 @@ public class PortfolioServiceTest {
 
   @Before
   public void setupPortfolioService() {
-    portfolioService = new PortfolioService(someCurrentUserSession, somePortfolioAssembler,
+    CurrentUserSession currentUserSession = new CurrentUserSession();
+    currentUserSession.setCurrentUser(someCurrentInvestor);
+    portfolioService = new PortfolioService(currentUserSession, somePortfolioAssembler,
         someHistoricalPortfolioAssembler, clock);
 
-    given(someCurrentUserSession.getCurrentUser()).willReturn(someCurrentInvestor);
     given(someCurrentInvestor.getPortfolio()).willReturn(portfolio);
     given(portfolio.getHistory(SOME_FROM_DATE, SOME_CURRENT_DATETIME.toLocalDate())).willReturn(somePortfolioHistory);
     given(clock.getCurrentTime()).willReturn(SOME_CURRENT_DATETIME);

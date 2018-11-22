@@ -14,7 +14,6 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
-import java.util.List;
 
 public class Investor extends User {
   private final Cart cart;
@@ -35,11 +34,6 @@ public class Investor extends User {
 
   public Limit getLimit() {
     return limit;
-  }
-
-  @Override
-  public boolean haveRoleIn(List<UserRole> roles) {
-    return roles.contains(UserRole.INVESTOR);
   }
 
   public Cart getCart() {

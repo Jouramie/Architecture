@@ -21,5 +21,7 @@ public abstract class User {
 
   public abstract UserRole getRole();
 
-  public abstract boolean haveRoleIn(List<UserRole> roles);
+  public final boolean haveRoleIn(List<UserRole> roles) {
+    return roles.contains(getRole());
+  }
 }

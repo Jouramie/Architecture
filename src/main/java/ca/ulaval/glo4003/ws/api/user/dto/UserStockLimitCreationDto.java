@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 @Schema(
-    name = "Investor limit creation request",
+    name = "Limit creation request",
     description = "Might apply on the money amount the user can spend or the number of stock the "
         + "user can purchase. In either case, the other field will not have a value."
 )

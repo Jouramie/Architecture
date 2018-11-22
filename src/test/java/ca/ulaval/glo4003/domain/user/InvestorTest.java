@@ -38,7 +38,6 @@ public class InvestorTest {
 
   private static final String SOME_EMAIL = "4email@email.com";
   private static final String SOME_PASSWORD = "a password";
-  private static final UserRole SOME_ROLE = UserRole.INVESTOR;
   private static final String WRONG_PASSWORD = SOME_PASSWORD + "wrong";
   private static final String SOME_TITLE = "MSFT";
   private static final int SOME_QTY = 2;
@@ -73,8 +72,7 @@ public class InvestorTest {
 
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
-    investor = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withLimit(limit)
-        .withRole(SOME_ROLE).buildInvestor();
+    investor = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).withLimit(limit).buildInvestor();
     investor.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
     investor.getCart().add(SOME_OTHER_TITLE, SOME_OTHER_QTY, stockRepository);
 

@@ -11,4 +11,8 @@ public class CurrentUserSession {
   public void setCurrentUser(User user) {
     currentUser.set(user);
   }
+
+  public <T> T getCurrentUser(Class<T> clazz) {
+    return clazz.cast(currentUser.get());
+  }
 }

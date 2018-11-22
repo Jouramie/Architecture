@@ -13,7 +13,7 @@ import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.service.user.UserService;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.List;
@@ -29,12 +29,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UserResourceTest {
 
-  private static final UserCreationDto SOME_CREATION_REQUEST =
-      new UserCreationDto("email", "password");
-  private static final UserCreationDto CREATION_REQUEST_WITH_INVALID_EMAIL =
-      new UserCreationDto("", "password");
-  private static final UserCreationDto CREATION_REQUEST_WITH_INVALID_PASSWORD =
-      new UserCreationDto("email", "");
+  private static final InvestorCreationDto SOME_CREATION_REQUEST =
+      new InvestorCreationDto("email", "password");
+  private static final InvestorCreationDto CREATION_REQUEST_WITH_INVALID_EMAIL =
+      new InvestorCreationDto("", "password");
+  private static final InvestorCreationDto CREATION_REQUEST_WITH_INVALID_PASSWORD =
+      new InvestorCreationDto("email", "");
 
   private static final String SOME_EMAIL = "email";
   private static final UserRole SOME_ROLE = UserRole.INVESTOR;
@@ -54,7 +54,7 @@ public class UserResourceTest {
   public void whenCreatingUser_thenUserIsCreated() {
     given(userService.createInvestorUser(any(), any())).willReturn(SOME_USER_DTO);
 
-    userResource.createUser(SOME_CREATION_REQUEST);
+    userResource.createInvestor(SOME_CREATION_REQUEST);
 
     verify(userService).createInvestorUser(SOME_CREATION_REQUEST.email, SOME_CREATION_REQUEST.password);
   }
@@ -64,7 +64,7 @@ public class UserResourceTest {
     UserDto user = new UserDto(SOME_EMAIL, SOME_ROLE);
     given(userService.createInvestorUser(any(), any())).willReturn(user);
 
-    Response response = userResource.createUser(SOME_CREATION_REQUEST);
+    Response response = userResource.createInvestor(SOME_CREATION_REQUEST);
 
     ApiUserDto expectedUser = new ApiUserDto(SOME_EMAIL, SOME_ROLE, null);
     assertThat(response.getEntity()).isEqualToComparingFieldByField(expectedUser);
@@ -72,7 +72,7 @@ public class UserResourceTest {
 
   @Test
   public void givenInvalidEmail_whenCreatingUser_thenExceptionIsThrown() {
-    ThrowingCallable createUser = () -> userResource.createUser(CREATION_REQUEST_WITH_INVALID_EMAIL);
+    ThrowingCallable createUser = () -> userResource.createInvestor(CREATION_REQUEST_WITH_INVALID_EMAIL);
 
     InvalidInputException exception = catchThrowableOfType(createUser, InvalidInputException.class);
     assertThatExceptionContainsErrorFor(exception, "email");
@@ -80,7 +80,7 @@ public class UserResourceTest {
 
   @Test
   public void givenInvalidPassword_whenCreatingUser_thenExceptionIsThrown() {
-    ThrowingCallable createUser = () -> userResource.createUser(CREATION_REQUEST_WITH_INVALID_PASSWORD);
+    ThrowingCallable createUser = () -> userResource.createInvestor(CREATION_REQUEST_WITH_INVALID_PASSWORD);
 
     InvalidInputException exception = Assertions.catchThrowableOfType(createUser, InvalidInputException.class);
     assertThatExceptionContainsErrorFor(exception, "password");
