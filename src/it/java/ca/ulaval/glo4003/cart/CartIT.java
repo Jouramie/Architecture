@@ -46,7 +46,6 @@ public class CartIT {
   private static final String MONEY_AMOUNT = "moneyAmount";
   private static final String CURRENCY = "currency";
   private static final String QUANTITY = "quantity";
-  private static final String ADMINISTRATOR_TOKEN = "00000000-0000-0000-0000-000000000000";
   private static final String HALT_MESSAGE = "market halted";
 
 
@@ -371,12 +370,15 @@ public class CartIT {
 
   @Test
   public void givenCartContainsAStockWhichMarketIsHalted_whenCheckout_thenBadRequest() {
-    givenMarketHalted(ADMINISTRATOR_TOKEN, SOME_MARKET);
-    givenCartContainsDefaultStock(new Header("token", ADMINISTRATOR_TOKEN));
+    givenInvestorAlreadyRegistered();
+    String investorToken = givenInvestorAlreadyAuthenticated();
+    String token = givenAdministratorAlreadyAuthenticated();
+    givenMarketHalted(token, SOME_MARKET);
+    givenCartContainsDefaultStock(new Header("token", investorToken));
 
     //@formatter:off
     given()
-        .header("token", ADMINISTRATOR_TOKEN)
+        .header("token", investorToken)
     .when()
         .post(API_CART_CHECKOUT_ROUTE)
     .then()
