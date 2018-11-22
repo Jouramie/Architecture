@@ -169,10 +169,25 @@ public class PortfolioTest {
   }
 
   @Test
-  public void givenTwoStocksInPortfolio_whenGetMostIncreasingStock_thenMostIncreasingStockIsReturned() throws NoStockValueFitsCriteriaException {
+  public void givenTwoStocksInPortfolio_whenGetMostIncreasingStock_thenMostIncreasingStockIsReturned() throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
     setupPortfolioWithDifferentStocksOnSameDate(NOW.minusDays(5));
     setupStockWithLowestVariation(NOW.minusDays(5));
     setupStockWithHighestVariation(NOW.minusDays(5));
+
+    String mostIncreasingStockTitle = portfolio.getMostIncreasingStockTitle(NOW.minusDays(5), someStockRepository);
+
+    assertThat(mostIncreasingStockTitle).isEqualTo(SOME_OTHER_TITLE);
+  }
+
+  @Test
+  public void givenTwoStocksInPortfolio_whenGetMostDecreasingStock_thenMostDecreasingStockIsReturned() throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
+    setupPortfolioWithDifferentStocksOnSameDate(NOW.minusDays(5));
+    setupStockWithLowestVariation(NOW.minusDays(5));
+    setupStockWithHighestVariation(NOW.minusDays(5));
+
+    String mostDecreasingStockTitle = portfolio.getMostDecreasingStockTitle(NOW.minusDays(5), someStockRepository);
+
+    assertThat(mostDecreasingStockTitle).isEqualTo(SOME_TITLE);
   }
 
   private void setupPortfolioWithTransactionsOnDifferentDates() {

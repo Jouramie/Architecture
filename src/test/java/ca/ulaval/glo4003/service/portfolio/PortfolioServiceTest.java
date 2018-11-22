@@ -83,24 +83,24 @@ public class PortfolioServiceTest {
     verify(portfolio).getHistory(SOME_FROM_DATE, SOME_CURRENT_DATETIME.toLocalDate());
   }
 
-//  @Test
-//  public void whenGetPortfolioHistory_thenHistoryIsConvertedUsingAssembler() throws StockNotFoundException, NoStockValueFitsCriteriaException {
-//    portfolioService.getPortfolioReport(SOME_FROM_DATE);
-//
-//    verify(somePortfolioReportAssembler).toDto(somePortfolioHistory);
-//  }
-//
-//  @Test
-//  public void givenPortfolioAssemblerThrowsStockNotFoundException_whenGetPortfolioHistory_thenConvertException() throws StockNotFoundException, NoStockValueFitsCriteriaException {
-//    given(somePortfolioReportAssembler.toDto(somePortfolioHistory)).willThrow(StockNotFoundException.class);
-//
-//    assertThatThrownBy(() -> portfolioService.getPortfolioReport(SOME_FROM_DATE)).isInstanceOf(InvalidPortfolioException.class);
-//  }
-//
-//  @Test
-//  public void givenPortfolioAssemblerThrowsCriteriaException_whenGetPortfolioHistory_thenConvertException() throws StockNotFoundException, NoStockValueFitsCriteriaException {
-//    given(somePortfolioReportAssembler.toDto(somePortfolioHistory)).willThrow(NoStockValueFitsCriteriaException.class);
-//
-//    assertThatThrownBy(() -> portfolioService.getPortfolioReport(SOME_FROM_DATE)).isInstanceOf(InvalidPortfolioException.class);
-//  }
+  @Test
+  public void whenGetPortfolioHistory_thenHistoryIsConvertedUsingAssembler() throws StockNotFoundException, NoStockValueFitsCriteriaException {
+    portfolioService.getPortfolioReport(SOME_FROM_DATE);
+
+    verify(somePortfolioReportAssembler).toDto(somePortfolioHistory);
+  }
+
+  @Test
+  public void givenPortfolioAssemblerThrowsStockNotFoundException_whenGetPortfolioHistory_thenConvertException() throws StockNotFoundException, NoStockValueFitsCriteriaException {
+    given(somePortfolioReportAssembler.toDto(somePortfolioHistory)).willThrow(StockNotFoundException.class);
+
+    assertThatThrownBy(() -> portfolioService.getPortfolioReport(SOME_FROM_DATE)).isInstanceOf(InvalidPortfolioException.class);
+  }
+
+  @Test
+  public void givenPortfolioAssemblerThrowsCriteriaException_whenGetPortfolioHistory_thenConvertException() throws StockNotFoundException, NoStockValueFitsCriteriaException {
+    given(somePortfolioReportAssembler.toDto(somePortfolioHistory)).willThrow(NoStockValueFitsCriteriaException.class);
+
+    assertThatThrownBy(() -> portfolioService.getPortfolioReport(SOME_FROM_DATE)).isInstanceOf(InvalidPortfolioException.class);
+  }
 }

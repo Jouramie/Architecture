@@ -5,6 +5,8 @@ import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
 import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
+import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
+import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
@@ -19,16 +21,19 @@ public class PortfolioService {
   private final PortfolioAssembler portfolioAssembler;
   private final PortfolioReportAssembler portfolioReportAssembler;
   private final Clock clock;
+  private final StockRepository stockRepository;
 
   @Inject
   public PortfolioService(CurrentUserSession currentUserSession,
                           PortfolioAssembler portfolioAssembler,
                           PortfolioReportAssembler portfolioReportAssembler,
-                          Clock clock) {
+                          Clock clock,
+                          StockRepository stockRepository) {
     this.currentUserSession = currentUserSession;
     this.portfolioAssembler = portfolioAssembler;
     this.portfolioReportAssembler = portfolioReportAssembler;
     this.clock = clock;
+    this.stockRepository = stockRepository;
   }
 
   public PortfolioDto getPortfolio() throws InvalidPortfolioException {
@@ -43,12 +48,14 @@ public class PortfolioService {
   }
 
   public PortfolioReportDto getPortfolioReport(LocalDate from) {
-    //    try {
-    User user = currentUserSession.getCurrentUser();
-    TreeSet<HistoricalPortfolio> portfolios = user.getPortfolio().getHistory(from, clock.getCurrentTime().toLocalDate());
-    return null;
-    //    } catch (StockNotFoundException | NoStockValueFitsCriteriaException e) {
-    //      throw new InvalidPortfolioException();
-    //    }
+    try {
+      User user = currentUserSession.getCurrentUser();
+      Portfolio portfolio = user.getPortfolio();
+      TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(from, clock.getCurrentTime().toLocalDate());
+      String mostIncreasingStockTitle = portfolio.getMostIncreasingStockTitle(from, stockRepository);
+      return null;
+    } catch (NoStockValueFitsCriteriaException | InvalidStockInPortfolioException e) {
+      throw new InvalidPortfolioException();
+    }
   }
 }

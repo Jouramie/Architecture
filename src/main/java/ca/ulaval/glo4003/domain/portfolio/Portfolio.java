@@ -76,6 +76,20 @@ public class Portfolio {
     return mostIncreasingStockTitle;
   }
 
+  public String getMostDecreasingStockTitle(LocalDate from, StockRepository stockRepository) throws InvalidStockInPortfolioException, NoStockValueFitsCriteriaException {
+    List<Stock> stockList = getStockList(stockRepository);
+    BigDecimal lowestVariation = new BigDecimal(10000);
+    String mostDecreasingStockTitle = "";
+    for (Stock stock : stockList) {
+      BigDecimal variation = computeStockValueVariation(from, stock);
+      if (variation.compareTo(lowestVariation) < 0) {
+        lowestVariation = variation;
+        mostDecreasingStockTitle = stock.getTitle();
+      }
+    }
+    return mostDecreasingStockTitle;
+  }
+
   private BigDecimal computeStockValueVariation(LocalDate from, Stock stock) throws NoStockValueFitsCriteriaException {
     MoneyAmount startAmount = stock.getValueHistory().getValueOnDay(from).getLatestValue();
     MoneyAmount currentAmount = stock.getValue().getLatestValue();
