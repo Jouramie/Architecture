@@ -26,8 +26,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class LimitServiceTest {
 
   private static final User SOME_USER = new UserBuilder().build();
-
-
   private final BigDecimal SOME_AMOUNT = BigDecimal.valueOf(20.00);
   private final MoneyAmount SOME_MONEY_AMOUNT = new MoneyAmount(SOME_AMOUNT);
   private final ApplicationPeriod SOME_PERIOD = ApplicationPeriod.DAILY;
