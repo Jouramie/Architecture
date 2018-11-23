@@ -1,18 +1,35 @@
 package ca.ulaval.glo4003.domain.user.limit;
 
+import ca.ulaval.glo4003.domain.Component;
+import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.time.LocalDateTime;
+import javax.inject.Inject;
 
+@Component
 public class LimitFactory {
-  public StockQuantityLimit createStockQuantityLimit(LocalDateTime start, ApplicationPeriod applicationPeriod, int stockQuantity) {
-    return new StockQuantityLimit(start, calculateEnd(start, applicationPeriod), stockQuantity);
+  private final Clock clock;
+
+  @Inject
+  public LimitFactory(Clock clock) {
+    this.clock = clock;
   }
 
-  public MoneyAmountLimit createMoneyAmountLimit(LocalDateTime start, ApplicationPeriod applicationPeriod, MoneyAmount amount) {
-    return new MoneyAmountLimit(start, calculateEnd(start, applicationPeriod), amount);
+  public StockQuantityLimit createStockQuantityLimit(ApplicationPeriod applicationPeriod, int stockQuantity) {
+    LocalDateTime beginDate = clock.getCurrentTime();
+    return new StockQuantityLimit(beginDate, calculateEnd(beginDate, applicationPeriod), stockQuantity);
   }
 
-  private LocalDateTime calculateEnd(LocalDateTime start, ApplicationPeriod period) {
-    return start.plus(period.getDuration());
+  public MoneyAmountLimit createMoneyAmountLimit(ApplicationPeriod applicationPeriod, MoneyAmount moneyAmount) {
+    LocalDateTime beginDate = clock.getCurrentTime();
+    return new MoneyAmountLimit(beginDate, calculateEnd(beginDate, applicationPeriod), moneyAmount);
+  }
+
+  public NullLimit createNullLimit() {
+    return new NullLimit();
+  }
+
+  private LocalDateTime calculateEnd(LocalDateTime beginDate, ApplicationPeriod period) {
+    return beginDate.plus(period.getDuration());
   }
 }

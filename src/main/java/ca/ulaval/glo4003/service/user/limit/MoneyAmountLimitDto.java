@@ -7,8 +7,8 @@ public class MoneyAmountLimitDto extends LimitDto {
 
   public final BigDecimal moneyAmount;
 
-  public MoneyAmountLimitDto(LocalDateTime from, LocalDateTime to, BigDecimal moneyAmount) {
-    super(from, to);
+  public MoneyAmountLimitDto(LocalDateTime begin, LocalDateTime end, BigDecimal moneyAmount) {
+    super(begin, end);
     this.moneyAmount = moneyAmount;
   }
 }

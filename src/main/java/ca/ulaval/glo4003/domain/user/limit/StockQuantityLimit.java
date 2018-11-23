@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 public class StockQuantityLimit extends TemporaryLimit {
   public final int stockQuantity;
 
-  public StockQuantityLimit(LocalDateTime start, LocalDateTime end, int stockQuantity) {
-    super(start, end);
+  public StockQuantityLimit(LocalDateTime begin, LocalDateTime end, int stockQuantity) {
+    super(begin, end);
     this.stockQuantity = stockQuantity;
   }
 

@@ -18,7 +18,7 @@ import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 public class Investor extends User {
   private final Cart cart;
   private final Portfolio portfolio;
-  private final Limit limit;
+  private Limit limit;
 
   public Investor(String email, String password, Cart cart, Portfolio portfolio, Limit limit) {
     super(email, password);
@@ -34,6 +34,10 @@ public class Investor extends User {
 
   public Limit getLimit() {
     return limit;
+  }
+
+  public void setLimit(Limit limit) {
+    this.limit = limit;
   }
 
   public Cart getCart() {
