@@ -1,10 +1,12 @@
 package ca.ulaval.glo4003.service.cart;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
+import ca.ulaval.glo4003.domain.market.HaltedMarketException;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -30,6 +32,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CheckoutServiceTest {
+  private static final String SOME_HALTED_MESSAGE = "market halted";
   private static final String SOME_TITLE = "MSFT";
 
   @Mock
@@ -71,7 +74,8 @@ public class CheckoutServiceTest {
 
   @Test
   public void whenCheckoutCart_thenTransactionIsAssembledToDto()
-      throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
+      throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
+      HaltedMarketException {
     given(currentInvestor.checkoutCart(transactionFactory, paymentProcessor,
         notificationFactory, notificationSender, stockRepository)).willReturn(transaction);
 
@@ -82,7 +86,8 @@ public class CheckoutServiceTest {
 
   @Test
   public void whenCheckoutCartThrowingStockNotFound_thenExceptionIsTransformed()
-      throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
+      throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
+      HaltedMarketException {
     given(currentInvestor.checkoutCart(any(), any(), any(), any(), any())).willThrow(new StockNotFoundException(SOME_TITLE));
 
     ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
@@ -92,7 +97,8 @@ public class CheckoutServiceTest {
 
   @Test
   public void whenCheckoutCartThrowingEmptyCart_thenExceptionIsTransformed()
-      throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption {
+      throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
+      HaltedMarketException {
     given(currentInvestor.checkoutCart(any(), any(), any(), any(), any())).willThrow(new EmptyCartException());
 
     ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
@@ -102,11 +108,21 @@ public class CheckoutServiceTest {
 
   @Test
   public void whenCheckoutCartThrowingExceedLimit_thenExceptionIsTransformed()
-      throws EmptyCartException, TransactionLimitExceededExeption, StockNotFoundException {
+      throws EmptyCartException, TransactionLimitExceededExeption, StockNotFoundException,
+      HaltedMarketException {
     given(currentInvestor.checkoutCart(any(), any(), any(), any(), any())).willThrow(new TransactionLimitExceededExeption());
 
     ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
 
     assertThatThrownBy(checkoutCart).isInstanceOf(PurchaseLimitExceededOnCheckoutException.class);
+  }
+
+  @Test
+  public void givenMarketHaltedOnCheckout_whenCheckout_thenExceptionIsTransformed()
+      throws HaltedMarketException, StockNotFoundException,
+      EmptyCartException, TransactionLimitExceededExeption {
+    given(currentInvestor.checkoutCart(any(), any(), any(), any(), any())).willThrow(new HaltedMarketException(SOME_HALTED_MESSAGE));
+
+    assertThatExceptionOfType(HaltedMarketOnCheckoutException.class).isThrownBy(() -> checkoutService.checkoutCart());
   }
 }
