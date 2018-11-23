@@ -39,7 +39,8 @@ public class CheckoutService {
                          NotificationFactory notificationFactory,
                          NotificationSender notificationSender,
                          TransactionAssembler transactionAssembler,
-                         StockRepository stockRepository, MarketRepository marketRepository) {
+                         StockRepository stockRepository,
+                         MarketRepository marketRepository) {
     this.currentUserSession = currentUserSession;
     this.transactionFactory = transactionFactory;
     this.paymentProcessor = paymentProcessor;
