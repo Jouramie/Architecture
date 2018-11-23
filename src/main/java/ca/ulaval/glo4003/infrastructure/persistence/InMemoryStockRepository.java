@@ -30,6 +30,16 @@ public class InMemoryStockRepository implements StockRepository {
   }
 
   @Override
+  public List<Stock> findByTitles(List<String> titles) throws StockNotFoundException {
+    List<Stock> list = new ArrayList<>();
+    for (String title : titles) {
+      Stock byTitle = findByTitle(title);
+      list.add(byTitle);
+    }
+    return list;
+  }
+
+  @Override
   public List<Stock> findByMarket(MarketId marketId) {
     return stocks.values().stream().filter((stock) -> stock.getMarketId().equals(marketId))
         .collect(toList());

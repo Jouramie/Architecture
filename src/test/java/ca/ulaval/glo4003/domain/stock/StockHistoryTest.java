@@ -125,7 +125,7 @@ public class StockHistoryTest {
   }
 
   @Test
-  public void givenMissingDataOnRequestedDay_whenGettingValueOnASpecificDay_thenExceptionIsThrow() {
+  public void givenNoData_whenGettingValueOnASpecificDay_thenExceptionIsThrow() {
     LocalDate missingDate = LocalDate.of(1970, Month.JANUARY, 1);
 
     ThrowingCallable getValue = () -> history.getValueOnDay(missingDate);
@@ -134,14 +134,20 @@ public class StockHistoryTest {
   }
 
   @Test
-  public void whenGettingValueOnASpecificDay_thenReturnStockValueOnThatDay() {
+  public void givenNoDataOnRequestedDay_whenGettingValueOnASpecificDay_thenReturnPreviousValue()
+      throws NoStockValueFitsCriteriaException {
     history.addValue(SOME_DATE, buildStockValue(SOME_AMOUNT));
 
-    try {
-      StockValue valueOnDay = history.getValueOnDay(SOME_DATE);
-      assertThat(valueOnDay.getLatestValue().getAmount().doubleValue()).isEqualTo(SOME_AMOUNT);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    StockValue valueOnDay = history.getValueOnDay(SOME_DATE.plusDays(1));
+    assertThat(valueOnDay.getLatestValue().getAmount().doubleValue()).isEqualTo(SOME_AMOUNT);
+  }
+
+  @Test
+  public void whenGettingValueOnASpecificDay_thenReturnStockValueOnThatDay()
+      throws NoStockValueFitsCriteriaException {
+    history.addValue(SOME_DATE, buildStockValue(SOME_AMOUNT));
+
+    StockValue valueOnDay = history.getValueOnDay(SOME_DATE);
+    assertThat(valueOnDay.getLatestValue().getAmount().doubleValue()).isEqualTo(SOME_AMOUNT);
   }
 }
