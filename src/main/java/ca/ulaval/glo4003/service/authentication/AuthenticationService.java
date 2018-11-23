@@ -56,7 +56,7 @@ public class AuthenticationService {
       User currentUser = getUserByEmail(savedToken.email);
 
       if (!currentUser.haveRoleIn(acceptedRoles)) {
-        throw new UnauthorizedRoleException();
+        throw new UnauthorizedUserException();
       }
 
       currentUserSession.setCurrentUser(currentUser);

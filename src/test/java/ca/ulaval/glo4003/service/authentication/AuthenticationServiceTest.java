@@ -176,7 +176,7 @@ public class AuthenticationServiceTest {
     ThrowingCallable validateToken = () -> authenticationService
         .validateAuthentication(AUTHENTICATION_TOKEN_DTO, singletonList(UserRole.INVESTOR));
 
-    assertThatThrownBy(validateToken).isInstanceOf(UnauthorizedRoleException.class);
+    assertThatThrownBy(validateToken).isInstanceOf(UnauthorizedUserException.class);
   }
 
   @Test

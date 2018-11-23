@@ -12,7 +12,7 @@ public interface UserRepository {
 
   User find(String email) throws UserNotFoundException;
 
-  <T> T find(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException;
+  <T extends User> T find(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException;
 
   List<User> findAll();
 }

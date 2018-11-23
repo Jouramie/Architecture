@@ -32,7 +32,7 @@ public class InMemoryUserRepository implements UserRepository {
   }
 
   @Override
-  public <T> T find(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException {
+  public <T extends User> T find(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException {
     try {
       return clazz.cast(find(email));
     } catch (ClassCastException e) {
