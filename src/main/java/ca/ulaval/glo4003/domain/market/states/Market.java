@@ -41,6 +41,10 @@ public class Market {
     tradingStatus = TradingStatus.halted(message);
   }
 
+  public void resume() {
+    tradingStatus = TradingStatus.trading();
+  }
+
   public String getHaltMessage() {
     return tradingStatus.haltMessage;
   }
