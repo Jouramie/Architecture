@@ -770,6 +770,79 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Markets",
+			"item": [
+				{
+					"name": "Halt Market",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/markets/London/halt?message=Halted Market",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"markets",
+								"London",
+								"halt"
+							],
+							"query": [
+								{
+									"key": "message",
+									"value": "Halted Market"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resume Market",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/markets/London/resume",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"markets",
+								"London",
+								"resume"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

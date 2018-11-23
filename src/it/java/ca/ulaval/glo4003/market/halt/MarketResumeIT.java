@@ -1,9 +1,7 @@
 package ca.ulaval.glo4003.market.halt;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.*;
-import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
@@ -22,12 +20,14 @@ public class MarketResumeIT {
   public void whenResumingMarket_thenReturnMarketStatus() {
     givenHaltedMarket();
     //@formatter:off
-    when()
-        .post(String.format("/markets/%s/resume", MARKET))
+    given()
+        .header("token", "00000000-0000-0000-0000-000000000000")
+    .when()
+        .post(String.format("/api/markets/%s/resume", MARKET))
     .then()
-        .statusCode(ACCEPTED.getStatusCode())
+        .statusCode(OK.getStatusCode())
         .body("market", equalTo(MARKET))
-        .body("status", any(String.class));
+        .body("status", equalTo("TRADING"));
     //@formatter:on
   }
 
@@ -35,20 +35,12 @@ public class MarketResumeIT {
   @Test
   public void givenInexistentMarket_whenResumingMarket_thenReturn404NotFound() {
     //@formatter:off
-    when()
-        .post(String.format("/markets/%s/resume", INEXISTENT_MARKET))
+    given()
+        .header("token", "00000000-0000-0000-0000-000000000000")
+    .when()
+        .post(String.format("/api/markets/%s/resume", INEXISTENT_MARKET))
     .then()
         .statusCode(NOT_FOUND.getStatusCode());
-    //@formatter:on
-  }
-
-  @Test
-  public void givenActiveMarket_whenResumingMarketTrading_thenReturn400MarketAlreadyActive() {
-    //@formatter:off
-    when()
-        .post(String.format("/markets/%s/resume", INEXISTENT_MARKET))
-    .then()
-        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 
@@ -58,13 +50,14 @@ public class MarketResumeIT {
     given()
         .queryParam("message", "foobar").when()
     .when()
-        .post(String.format("/markets/%s/resume", MARKET))
+        .post(String.format("/api/markets/%s/resume", MARKET))
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
   }
 
   private void givenHaltedMarket() {
-    given().queryParam("message", "foobar").when().post(String.format("/markets/%s/halt", MARKET));
+    given().header("token", "00000000-0000-0000-0000-000000000000")
+        .queryParam("message", "foobar").when().post(String.format("/api/markets/%s/halt", MARKET));
   }
 }

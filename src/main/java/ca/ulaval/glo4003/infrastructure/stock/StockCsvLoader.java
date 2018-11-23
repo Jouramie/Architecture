@@ -21,6 +21,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
 public class StockCsvLoader {
+  public static final LocalDate LAST_STOCK_DATA_DATE = LocalDate.of(2018, 11, 16);
   private static final String STOCKS_DATA_ZIP_PATH = "src/main/data/stocks_data.zip";
   private static final String STOCKS_FILE_PATH = "src/main/data/stocks.csv";
 
@@ -41,7 +42,12 @@ public class StockCsvLoader {
       String category = record.get("category");
       MarketId marketId = new MarketId(record.get("market"));
 
-      Stock stock = new Stock(title, name, category, marketId, getStockHistory(title, marketId));
+      StockHistory history = getStockHistory(title, marketId);
+      if (!history.getLatestValue().date.isEqual(LAST_STOCK_DATA_DATE)) {
+        continue;
+      }
+
+      Stock stock = new Stock(title, name, category, marketId, history);
       stockRepository.add(stock);
     }
 
