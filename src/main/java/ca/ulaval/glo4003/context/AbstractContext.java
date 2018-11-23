@@ -7,8 +7,6 @@ import static java.util.stream.Collectors.toSet;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
-import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.domain.transaction.NullPaymentProcessor;
@@ -151,11 +149,7 @@ public abstract class AbstractContext {
   }
 
   private void initializeClock() {
-    StockRepository stockRepository = serviceLocator.get(StockRepository.class);
-    Stock stock = stockRepository.findAll().get(0);
-    HistoricalStockValue latestStockValue = stock.getValueHistory().getLatestValue();
-
-    LocalDate startDate = latestStockValue.date.plusDays(1);
+    LocalDate startDate = StockCsvLoader.LAST_STOCK_DATA_DATE;
 
     serviceLocator.registerInstance(
         Clock.class,

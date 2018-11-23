@@ -47,7 +47,7 @@ public class StockCsvLoaderTest {
       throws StockNotFoundException, IOException, MarketNotFoundException {
     loader.load();
 
-    assertThat(stockRepository.findAll()).hasSize(35);
+    assertThat(stockRepository.findAll()).hasSize(33);
     Stock msftStock = stockRepository.findByTitle("MSFT");
     assertThat(msftStock.getTitle()).isEqualTo("MSFT");
     assertThat(msftStock.getName()).isEqualTo("Microsoft");
@@ -70,10 +70,10 @@ public class StockCsvLoaderTest {
     loader.load();
 
     Stock msftStock = stockRepository.findByTitle("MSFT");
-    assertThat(msftStock.getValue().getOpenValue().getAmount().doubleValue()).isEqualTo(110.85);
-    assertThat(msftStock.getValue().getCloseValue().getAmount().doubleValue()).isEqualTo(109.57);
-    assertThat(msftStock.getValue().getMaximumValue().getAmount().doubleValue()).isEqualTo(111.45);
-    assertThat(msftStock.getValueHistory().getAllStoredValues()).hasSize(5250);
+    assertThat(msftStock.getValue().getOpenValue().getAmount().doubleValue()).isEqualTo(107.08);
+    assertThat(msftStock.getValue().getCloseValue().getAmount().doubleValue()).isEqualTo(108.29);
+    assertThat(msftStock.getValue().getMaximumValue().getAmount().doubleValue()).isEqualTo(108.88);
+    assertThat(msftStock.getValueHistory().getAllStoredValues()).hasSize(5255);
   }
 
   @Test
