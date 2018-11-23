@@ -151,7 +151,7 @@ public class PortfolioTest {
   }
 
   @Test
-  public void givenTwoStocksInPortfolio_whenGetMostIncreasingStock_thenMostIncreasingStockIsReturned()
+  public void givenStocksInPortfolio_whenGetMostIncreasingStock_thenMostIncreasingStockIsReturned()
       throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
     setupPortfolioWithDifferentStocksOnSameDate(NOW.minusDays(5));
     setupStockWithLowestVariation(NOW.minusDays(5));
@@ -171,7 +171,7 @@ public class PortfolioTest {
   }
 
   @Test
-  public void givenTwoStocksInPortfolio_whenGetMostDecreasingStock_thenMostDecreasingStockIsReturned()
+  public void givenStocksInPortfolio_whenGetMostDecreasingStock_thenMostDecreasingStockIsReturned()
       throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
     setupPortfolioWithDifferentStocksOnSameDate(NOW.minusDays(5));
     setupStockWithLowestVariation(NOW.minusDays(5));
