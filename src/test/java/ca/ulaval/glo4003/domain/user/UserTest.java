@@ -178,6 +178,7 @@ public class UserTest {
     assertThatThrownBy(checkoutCart).isInstanceOf(TransactionLimitExceededExeption.class);
     verify(paymentProcessor, never()).payment(any());
     verify(notificationSender, never()).sendNotification(any(), any());
+    assertThat(user.getCart().getStocks().isEmpty()).isFalse();
     assertThat(user.getPortfolio().getStocks().isEmpty()).isTrue();
   }
 

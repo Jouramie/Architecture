@@ -81,6 +81,7 @@ public class User {
     processPurchase(purchase, paymentProcessor, stockRepository);
     sendTransactionNotification(notificationFactory, notificationSender, purchase);
 
+    cart.empty();
     return purchase;
   }
 

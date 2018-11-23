@@ -51,10 +51,7 @@ public class Cart {
 
     checkIfCartIsEmpty();
     checkIfMarketOfStocksIsNotHalted(marketRepository);
-    Transaction purchase = transactionFactory.createPurchase(stocks);
-
-    empty();
-    return purchase;
+    return transactionFactory.createPurchase(stocks);
   }
 
   private void checkIfCartIsEmpty() throws EmptyCartException {
