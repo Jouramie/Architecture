@@ -10,8 +10,8 @@ import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
+import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class PortfolioReportITContext extends AbstractContext {
   @Override
@@ -41,12 +41,12 @@ public class PortfolioReportITContext extends AbstractContext {
   }
 
   private void addStock(String title, int quantity, LocalDate transactionDate) {
-    Clock clock = serviceLocator.get(Clock.class);
-    LocalDateTime oldDateTime = clock.getCurrentTime();
+    Clock currentClock = serviceLocator.get(Clock.class);
+    Clock testClock = new Clock(transactionDate.atTime(0, 0, 0), Duration.ZERO);
 
-    clock.setCurrentTime(transactionDate.atTime(0, 0, 0));
+    serviceLocator.registerInstance(Clock.class, testClock);
     performTransaction(title, quantity);
-    clock.setCurrentTime(oldDateTime);
+    serviceLocator.registerInstance(Clock.class, currentClock);
   }
 
   private void performTransaction(String title, int quantity) {

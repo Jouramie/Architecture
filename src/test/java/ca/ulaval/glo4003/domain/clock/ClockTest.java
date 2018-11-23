@@ -27,14 +27,7 @@ public class ClockTest {
 
     assertThat(currentTime).isEqualTo(SOME_START_TIME);
   }
-
-  @Test
-  public void whenSetCurrentTime_thenClockCurrentTimeIsSet() {
-    clock.setCurrentTime(SOME_NEW_TIME);
-
-    assertThat(clock.getCurrentTime()).isEqualTo(SOME_NEW_TIME);
-  }
-
+  
   @Test
   public void whenTick_thenTimeIsAdvancedByConfiguredTickStep() {
     clock.tick();
