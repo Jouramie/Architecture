@@ -16,6 +16,7 @@ import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
 import ca.ulaval.glo4003.util.UserBuilder;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,11 +27,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class LimitServiceTest {
 
   private static final User SOME_USER = new UserBuilder().build();
+  private static final LocalDateTime SOME_START_DATE = LocalDateTime.of(2018, 4, 1, 9, 0);
+  private static final LocalDateTime SOME_END_DATE = LocalDateTime.of(2018, 8, 1, 9, 0);
   private final BigDecimal SOME_AMOUNT = BigDecimal.valueOf(20.00);
   private final MoneyAmount SOME_MONEY_AMOUNT = new MoneyAmount(SOME_AMOUNT);
   private final ApplicationPeriod SOME_PERIOD = ApplicationPeriod.DAILY;
   private final int SOME_STOCK_QUANTITY = 3;
   private final String SOME_EMAIL = "28gg@email.com";
+  private final MoneyAmountLimit moneyAmountLimit = new MoneyAmountLimit(SOME_START_DATE, SOME_END_DATE, SOME_MONEY_AMOUNT);
+  private StockQuantityLimit stockQuantityLimit = new StockQuantityLimit(SOME_START_DATE, SOME_END_DATE, SOME_STOCK_QUANTITY);
 
   private LimitService service;
   @Mock
@@ -39,10 +44,6 @@ public class LimitServiceTest {
   private UserRepository userRepository;
   @Mock
   private User user;
-  @Mock
-  private MoneyAmountLimit moneyAmountLimit;
-  @Mock
-  private StockQuantityLimit stockQuantityLimit;
 
   @Before
   public void setUp() {
