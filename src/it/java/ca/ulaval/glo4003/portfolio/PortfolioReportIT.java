@@ -9,7 +9,7 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isEmptyString;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.iterableWithSize;
 
@@ -122,8 +122,8 @@ public class PortfolioReportIT {
         .get(API_REPORT_ROUTE)
     .then()
         .statusCode(OK.getStatusCode())
-        .body(INCREASING_STOCK_KEY, isEmptyString())
-        .body(DECREASING_STOCK_KEY, isEmptyString());
+        .body(INCREASING_STOCK_KEY, isEmptyOrNullString())
+        .body(DECREASING_STOCK_KEY, isEmptyOrNullString());
     //@formatter:on
   }
 
