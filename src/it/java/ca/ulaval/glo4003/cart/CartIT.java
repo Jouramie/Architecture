@@ -36,6 +36,7 @@ public class CartIT {
   private static final String API_CART_ROUTE = "/api/cart/";
   private static final String API_CART_STOCK_ROUTE = "/api/cart/{title}";
   private static final String API_CART_CHECKOUT_ROUTE = "/api/cart/checkout";
+  private static final String API_USERS_EMAIL_LIMIT_STOCK_ROUTE = "/api/users/{email}/limit/stock";
 
   private static final String TITLE = "title";
   private static final String MARKET = "market";
@@ -345,7 +346,7 @@ public class CartIT {
     Header administratorTokenHeader = new Header("token", administratorToken);
     given().header(administratorTokenHeader).contentType(MediaType.APPLICATION_JSON)
         .body(new StockLimitCreationRequestBuilder().withStockQuantity(maximalStockQuantity).build())
-        .when().put("/api/users/%s/limit/stock", UserAuthenticationHelper.SOME_EMAIL);
+        .when().put(API_USERS_EMAIL_LIMIT_STOCK_ROUTE, UserAuthenticationHelper.SOME_EMAIL);
 
     String investorToken = givenInvestorAlreadyAuthenticated();
     Header investorTokenHeader = new Header("token", investorToken);

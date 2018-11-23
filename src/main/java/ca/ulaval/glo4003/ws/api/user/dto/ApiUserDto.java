@@ -19,9 +19,9 @@ public class ApiUserDto {
       description = "Trade limit of the user",
       nullable = true
   )
-  public final ApiUserLimitDto limit;
+  public final ApiLimitDto limit;
 
-  public ApiUserDto(String email, UserRole role, ApiUserLimitDto limit) {
+  public ApiUserDto(String email, UserRole role, ApiLimitDto limit) {
     this.email = email;
     this.role = role;
     this.limit = limit;

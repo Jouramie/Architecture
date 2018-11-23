@@ -50,6 +50,10 @@ public class User {
     return limit;
   }
 
+  public void setLimit(Limit limit) {
+    this.limit = limit;
+  }
+
   public boolean haveRoleIn(List<UserRole> roles) {
     return roles.contains(role);
   }
