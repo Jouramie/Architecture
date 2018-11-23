@@ -43,11 +43,18 @@ public class StockCsvLoaderTest {
   }
 
   @Test
+  public void whenLoad_thenStockRepositoryIsFilledWithStocks()
+      throws IOException, MarketNotFoundException {
+    loader.load();
+
+    assertThat(stockRepository.findAll()).isNotEmpty();
+  }
+
+  @Test
   public void whenLoad_thenLoadTheValuesFromTheCsvFile()
       throws StockNotFoundException, IOException, MarketNotFoundException {
     loader.load();
 
-    assertThat(stockRepository.findAll()).hasSize(33);
     Stock msftStock = stockRepository.findByTitle("MSFT");
     assertThat(msftStock.getTitle()).isEqualTo("MSFT");
     assertThat(msftStock.getName()).isEqualTo("Microsoft");
