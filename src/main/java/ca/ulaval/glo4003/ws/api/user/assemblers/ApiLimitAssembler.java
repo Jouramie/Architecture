@@ -17,11 +17,11 @@ public class ApiLimitAssembler {
     }
 
     if (limit instanceof StockQuantityLimitDto) {
-      return new ApiStockLimitDto(limit.begin, limit.begin, ((StockQuantityLimitDto) limit).stockQuantity);
+      return new ApiStockLimitDto(limit.begin, limit.end, ((StockQuantityLimitDto) limit).stockQuantity);
     }
 
     if (limit instanceof MoneyAmountLimitDto) {
-      return new ApiMoneyAmountLimitDto(limit.begin, limit.begin, ((MoneyAmountLimitDto) limit).moneyAmount);
+      return new ApiMoneyAmountLimitDto(limit.begin, limit.end, ((MoneyAmountLimitDto) limit).moneyAmount);
     }
 
     throw new UnsupportedOperationException("There is no conversion for this limit: " + limit);

@@ -39,7 +39,7 @@ public class PortfolioReportIT {
   public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest(new PortfolioReportITContext());
 
   @Test
-  public void givenPortfolioContainedStocksInRequestedRange_whenGetPortfolioReport_thenReturnPortfolioHistory() {
+  public void givenPortfolioWithStocksInRequestedRange_whenGetPortfolioReport_thenReturnPortfolioHistory() {
     LocalDate currentDate = ServiceLocator.INSTANCE.get(Clock.class).getCurrentTime().toLocalDate();
 
     Header tokenHeader = new Header("token", ProductionContext.DEFAULT_INVESTOR_TOKEN);

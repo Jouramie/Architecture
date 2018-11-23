@@ -46,8 +46,9 @@ public class UserIT {
   private static final String LIMIT = "limit";
   private static final String INPUT_ERRORS = "inputErrors";
   private static final String STOCK_QUANTITY = "stockQuantity";
-  private static final String BEGIN_DATE = "from";
-  private static final String END_DATE = "to";
+  private static final String MONEY_AMOUNT = "moneyAmount";
+  private static final String BEGIN_DATE = "begin";
+  private static final String END_DATE = "end";
 
   private static final String INVESTOR_USER_ROLE = UserRole.INVESTOR.toString();
 
@@ -244,8 +245,8 @@ public class UserIT {
         .put(API_USERS_EMAIL_LIMIT_STOCK_ROUTE, SOME_EMAIL)
     .then()
         .statusCode(CREATED.getStatusCode())
-        .body("$", hasKey("from"))
-        .body("$", hasKey("to"))
+        .body("$", hasKey(BEGIN_DATE))
+        .body("$", hasKey(END_DATE))
         .body(STOCK_QUANTITY, is(5));
     //@formatter:on
   }
@@ -256,12 +257,12 @@ public class UserIT {
     String token = givenAdministratorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
 
-    BigDecimal moneyAmountLimit = BigDecimal.valueOf(99.99);
+    float moneyAmountLimit = 99.99f;
 
     //@formatter:off
     given()
         .header(tokenHeader)
-        .body(new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(moneyAmountLimit).build())
+        .body(new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(BigDecimal.valueOf(moneyAmountLimit)).build())
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .put(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
@@ -269,7 +270,7 @@ public class UserIT {
         .statusCode(CREATED.getStatusCode())
         .body("$", hasKey(BEGIN_DATE))
         .body("$", hasKey(END_DATE))
-        .body(STOCK_QUANTITY, is(moneyAmountLimit));
+        .body(MONEY_AMOUNT, is(moneyAmountLimit));
     //@formatter:on
   }
 
@@ -279,9 +280,9 @@ public class UserIT {
     String token = givenAdministratorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
 
-    BigDecimal moneyAmountLimit = BigDecimal.valueOf(12.34);
+    float moneyAmountLimit = 12.34f;
     givenSomeLimitAddedToSomeUser(token,
-        new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(moneyAmountLimit).build());
+        new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(BigDecimal.valueOf(moneyAmountLimit)).build());
 
     //@formatter:off
     given()
@@ -290,10 +291,9 @@ public class UserIT {
         .get(API_USERS_EMAIL_ROUTE, SOME_EMAIL)
     .then()
         .statusCode(OK.getStatusCode())
-        .root(LIMIT)
-        .body("$", hasKey(BEGIN_DATE))
-        .body("$", hasKey(END_DATE))
-        .body(STOCK_QUANTITY, is(moneyAmountLimit));
+        .body(LIMIT, hasKey(BEGIN_DATE))
+        .body(LIMIT, hasKey(END_DATE))
+        .body(LIMIT + "." + MONEY_AMOUNT, is(moneyAmountLimit));
     //@formatter:on
   }
 
@@ -413,6 +413,7 @@ public class UserIT {
     given()
         .header(tokenHeader)
         .body(new MoneyAmountLimitCreationRequestBuilder().withMoneyAmount(BigDecimal.valueOf(-1)).build())
+        .contentType(MediaType.APPLICATION_JSON)
     .when()
         .put(API_USERS_EMAIL_LIMIT_MONEY_AMOUNT_ROUTE, SOME_EMAIL)
     .then()
@@ -430,6 +431,7 @@ public class UserIT {
     given()
         .header(tokenHeader)
         .body(new StockLimitCreationRequestBuilder().withStockQuantity(-1).build())
+        .contentType(MediaType.APPLICATION_JSON)
     .when()
         .put(API_USERS_EMAIL_LIMIT_STOCK_ROUTE, SOME_EMAIL)
     .then()

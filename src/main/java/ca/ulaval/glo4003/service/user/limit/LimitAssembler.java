@@ -25,10 +25,10 @@ public class LimitAssembler {
   }
 
   private StockQuantityLimitDto toStockQuantityLimitDto(StockQuantityLimit limit) {
-    return new StockQuantityLimitDto(limit.start, limit.start, limit.stockQuantity);
+    return new StockQuantityLimitDto(limit.begin, limit.end, limit.stockQuantity);
   }
 
   private MoneyAmountLimitDto toMoneyAmountLimitDto(MoneyAmountLimit limit) {
-    return new MoneyAmountLimitDto(limit.start, limit.start, limit.amount.toUsd());
+    return new MoneyAmountLimitDto(limit.begin, limit.end, limit.moneyAmount.toUsd());
   }
 }

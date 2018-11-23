@@ -17,7 +17,8 @@ public class UserService {
   private final UserAssembler userAssembler;
 
   @Inject
-  public UserService(UserFactory userFactory, UserRepository userRepository,
+  public UserService(UserFactory userFactory,
+                     UserRepository userRepository,
                      UserAssembler userAssembler) {
     this.userFactory = userFactory;
     this.userRepository = userRepository;

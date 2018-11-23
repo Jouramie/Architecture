@@ -22,7 +22,7 @@ public class User {
   private final UserRole role;
   private final Cart cart;
   private final Portfolio portfolio;
-  private final Limit limit;
+  private Limit limit;
 
   public User(String email, String password, UserRole role, Cart cart, Portfolio portfolio, Limit limit) {
     this.email = email;
@@ -47,6 +47,10 @@ public class User {
 
   public Limit getLimit() {
     return limit;
+  }
+
+  public void setLimit(Limit limit) {
+    this.limit = limit;
   }
 
   public boolean haveRoleIn(List<UserRole> roles) {
