@@ -35,7 +35,7 @@ public class LimitServiceTest {
   private final int SOME_STOCK_QUANTITY = 3;
   private final String SOME_EMAIL = "28gg@email.com";
   private final MoneyAmountLimit moneyAmountLimit = new MoneyAmountLimit(SOME_START_DATE, SOME_END_DATE, SOME_MONEY_AMOUNT);
-  private StockQuantityLimit stockQuantityLimit = new StockQuantityLimit(SOME_START_DATE, SOME_END_DATE, SOME_STOCK_QUANTITY);
+  private final StockQuantityLimit stockQuantityLimit = new StockQuantityLimit(SOME_START_DATE, SOME_END_DATE, SOME_STOCK_QUANTITY);
 
   private LimitService service;
   @Mock
@@ -94,7 +94,6 @@ public class LimitServiceTest {
   public void whenRemoveLimit_thenLimitIsRemoved() throws UserNotFoundException {
     given(userRepository.find(SOME_EMAIL)).willReturn(SOME_USER);
     given(limitFactory.createStockQuantityLimit(SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockQuantityLimit);
-
     service.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);
 
     service.removeUserLimit(SOME_EMAIL);
