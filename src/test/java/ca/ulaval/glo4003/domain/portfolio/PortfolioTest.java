@@ -1,18 +1,16 @@
 package ca.ulaval.glo4003.domain.portfolio;
 
 import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
@@ -25,7 +23,6 @@ import java.util.stream.LongStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -44,13 +41,12 @@ public class PortfolioTest {
   private Stock someStock;
   private Stock someOtherStock;
 
-  @Mock
   private StockRepository someStockRepository;
 
   private Portfolio portfolio;
 
   @Before
-  public void setupPortfolio() throws StockNotFoundException {
+  public void setupPortfolio() {
     portfolio = new Portfolio();
 
     someStock = new TestStockBuilder()
@@ -63,10 +59,9 @@ public class PortfolioTest {
         .withCloseValue(SOME_VALUE)
         .build();
 
-    given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
-    given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(someStock);
-    given(someStockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
-    given(someStockRepository.findByTitle(SOME_OTHER_TITLE)).willReturn(someOtherStock);
+    someStockRepository = new InMemoryStockRepository();
+    someStockRepository.add(someStock);
+    someStockRepository.add(someOtherStock);
   }
 
   @Test
@@ -101,20 +96,6 @@ public class PortfolioTest {
   public void givenPortfolioIsEmpty_whenGetCurrentTotalValue_thenReturnZero() throws InvalidStockInPortfolioException {
     BigDecimal currentTotal = new BigDecimal(0).setScale(2, RoundingMode.HALF_EVEN);
     assertThat(portfolio.getCurrentTotalValue(someStockRepository).getAmount()).isEqualTo(currentTotal);
-  }
-
-  @Test
-  public void givenPortfolioContainsInvalidStock_whenGetCurrentTotalValue_thenAnExceptionIsThrown()
-      throws StockNotFoundException {
-    String invalidTitle = "invalid";
-    given(someStockRepository.exists(invalidTitle)).willReturn(true);
-    given(someStockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
-    Transaction transaction = new TransactionBuilder()
-        .withItem(new TransactionItemBuilder().withTitle(invalidTitle).withQuantity(SOME_QUANTITY).build())
-        .build();
-    portfolio.add(transaction, someStockRepository);
-
-    assertThatExceptionOfType(InvalidStockInPortfolioException.class).isThrownBy(() -> portfolio.getCurrentTotalValue(someStockRepository));
   }
 
   @Test

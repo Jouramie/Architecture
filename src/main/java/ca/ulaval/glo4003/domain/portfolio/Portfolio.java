@@ -12,7 +12,6 @@ import ca.ulaval.glo4003.domain.transaction.TransactionHistory;
 import ca.ulaval.glo4003.domain.transaction.TransactionItem;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
@@ -99,15 +98,11 @@ public class Portfolio {
   }
 
   private List<Stock> getStockList(StockRepository stockRepository) throws InvalidStockInPortfolioException {
-    List<Stock> stockList = new ArrayList<>();
-    for (String title : stocks.getTitles()) {
-      try {
-        stockList.add(stockRepository.findByTitle(title));
-      } catch (StockNotFoundException e) {
-        throw new InvalidStockInPortfolioException("Portfolio contains invalid stock with title " + title);
-      }
+    try {
+      return stockRepository.findByTitles(stocks.getTitles());
+    } catch (StockNotFoundException e) {
+      throw new InvalidStockInPortfolioException("Portfolio contains invalid stock with title " + e.title);
     }
-    return stockList;
   }
 
   private StockCollection rollbackTransactionsForDay(LocalDate date, StockCollection currentStockCollection) {
