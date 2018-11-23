@@ -8,6 +8,7 @@ import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
 import ca.ulaval.glo4003.util.UserBuilder;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -87,7 +88,7 @@ public class InMemoryUserRepositoryTest {
 
   @Test
   public void givenInvestorAlreadyInRepo_whenFindingInvestor_thenReturnTheInvestor()
-      throws UserAlreadyExistsException, UserNotFoundException {
+      throws UserAlreadyExistsException, UserNotFoundException, WrongRoleException {
     Investor expectedInvestor = new UserBuilder().buildInvestor();
     inMemoryUserRepository.add(expectedInvestor);
 
@@ -104,6 +105,6 @@ public class InMemoryUserRepositoryTest {
 
     ThrowingCallable findInvestor = () -> inMemoryUserRepository.find(administrator.getEmail(), Investor.class);
 
-    assertThatThrownBy(findInvestor).isInstanceOf(UserNotFoundException.class);
+    assertThatThrownBy(findInvestor).isInstanceOf(WrongRoleException.class);
   }
 }
