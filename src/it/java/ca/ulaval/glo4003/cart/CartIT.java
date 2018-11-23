@@ -11,6 +11,8 @@ import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.any;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasKey;
@@ -18,6 +20,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
+import ca.ulaval.glo4003.market.halt.MarketHaltIT;
 import ca.ulaval.glo4003.user.StockLimitCreationRequestBuilder;
 import ca.ulaval.glo4003.util.UserAuthenticationHelper;
 import io.restassured.http.Header;
@@ -27,6 +30,7 @@ import org.junit.Test;
 
 public class CartIT {
   private static final String SOME_TITLE = "RBS.l";
+  private static final String SOME_MARKET = "London";
   private static final String SOME_TRANSACTION_TYPE = "PURCHASE";
 
   private static final String API_CART_ROUTE = "/api/cart/";
@@ -42,6 +46,7 @@ public class CartIT {
   private static final String MONEY_AMOUNT = "moneyAmount";
   private static final String CURRENCY = "currency";
   private static final String QUANTITY = "quantity";
+  private static final String HALT_MESSAGE = "market halted";
 
 
   private final CartStockRequestBuilder cartStockRequestBuilder = new CartStockRequestBuilder();
@@ -360,6 +365,36 @@ public class CartIT {
         .post(API_CART_CHECKOUT_ROUTE)
     .then()
         .statusCode(FORBIDDEN.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenCartContainsAStockWhichMarketIsHalted_whenCheckout_thenBadRequest() {
+    givenInvestorAlreadyRegistered();
+    String investorToken = givenInvestorAlreadyAuthenticated();
+    String token = givenAdministratorAlreadyAuthenticated();
+    givenHaltedMarket(token, SOME_MARKET);
+    givenCartContainsDefaultStock(new Header("token", investorToken));
+
+    //@formatter:off
+    given()
+        .header("token", investorToken)
+    .when()
+        .post(API_CART_CHECKOUT_ROUTE)
+    .then()
+        .body(containsString(HALT_MESSAGE))
+        .statusCode(FORBIDDEN.getStatusCode());
+    //@formatter:on
+  }
+
+  private void givenHaltedMarket(String token, String market) {
+    //@formatter:off
+    given()
+        .header("token", token)
+        .queryParam("message", HALT_MESSAGE)
+        .contentType(MediaType.APPLICATION_JSON)
+    .when()
+        .post(String.format(MarketHaltIT.API_HALT_MARKET_ROUTE, market));
     //@formatter:on
   }
 
