@@ -1,6 +1,9 @@
 package ca.ulaval.glo4003.domain.cart;
 
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
@@ -43,10 +46,11 @@ public class Cart {
     return stocks;
   }
 
-  public Transaction checkoutCart(TransactionFactory transactionFactory)
+  public Transaction checkout(TransactionFactory transactionFactory, MarketRepository marketRepository)
       throws StockNotFoundException, HaltedMarketException, EmptyCartException {
 
     checkIfCartIsEmpty();
+    checkIfMarketOfStocksIsNotHalted(marketRepository);
     Transaction purchase = transactionFactory.createPurchase(stocks);
 
     empty();
@@ -56,6 +60,24 @@ public class Cart {
   private void checkIfCartIsEmpty() throws EmptyCartException {
     if (isEmpty()) {
       throw new EmptyCartException();
+    }
+  }
+
+  private void checkIfMarketOfStocksIsNotHalted(MarketRepository marketRepository)
+      throws StockNotFoundException, HaltedMarketException {
+    for (String title : stocks.getTitles()) {
+      validateMarketOfStockIsNotHalted(title, marketRepository);
+    }
+  }
+
+  private void validateMarketOfStockIsNotHalted(String title, MarketRepository marketRepository) throws HaltedMarketException, StockNotFoundException {
+    try {
+      Market market = marketRepository.findMarketForStock(title);
+      if (market.isHalted()) {
+        throw new HaltedMarketException(market.getHaltMessage());
+      }
+    } catch (MarketNotFoundException e) {
+      throw new StockNotFoundException(title);
     }
   }
 }

@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.domain.user;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationCoordinates;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
@@ -67,14 +68,14 @@ public class User {
   }
 
   public Transaction checkoutCart(TransactionFactory transactionFactory,
+                                  MarketRepository marketRepository,
                                   PaymentProcessor paymentProcessor,
+                                  StockRepository stockRepository,
                                   NotificationFactory notificationFactory,
-                                  NotificationSender notificationSender,
-                                  StockRepository stockRepository)
-      throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
-      HaltedMarketException {
+                                  NotificationSender notificationSender)
+      throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption, HaltedMarketException {
 
-    Transaction purchase = cart.checkoutCart(transactionFactory);
+    Transaction purchase = cart.checkout(transactionFactory, marketRepository);
     limit.checkIfTransactionExceed(purchase);
 
     processPurchase(purchase, paymentProcessor, stockRepository);
@@ -82,7 +83,6 @@ public class User {
 
     return purchase;
   }
-
 
   private void processPurchase(Transaction transaction,
                                PaymentProcessor paymentProcessor,
