@@ -1,20 +1,20 @@
 package ca.ulaval.glo4003.infrastructure.persistence;
 
-import ca.ulaval.glo4003.domain.market.Market;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.market.states.Market;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class InMemoryMarketRepository implements MarketRepository {
   private final Map<MarketId, Market> markets = new HashMap<>();
 
   @Override
   public List<Market> findAll() {
-    return markets.values().stream().collect(Collectors.toList());
+    return new ArrayList<>(markets.values());
   }
 
   @Override

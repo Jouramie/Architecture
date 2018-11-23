@@ -5,10 +5,16 @@ import java.math.RoundingMode;
 
 public class MoneyAmount {
 
+  public static final MoneyAmount ZERO = zero(Currency.USD);
+
   private final BigDecimal amount;
   private final Currency currency;
 
   public MoneyAmount(double amount) {
+    this(amount, Currency.USD);
+  }
+
+  public MoneyAmount(BigDecimal amount) {
     this(amount, Currency.USD);
   }
 
@@ -77,10 +83,10 @@ public class MoneyAmount {
   }
 
   public boolean isGreaterThan(MoneyAmount other) {
-    return toUsd().compareTo(other.toUsd()) == 1;
+    return toUsd().compareTo(other.toUsd()) > 0;
   }
 
   public boolean isLessThan(MoneyAmount other) {
-    return toUsd().compareTo(other.toUsd()) == -1;
+    return toUsd().compareTo(other.toUsd()) < 0;
   }
 }

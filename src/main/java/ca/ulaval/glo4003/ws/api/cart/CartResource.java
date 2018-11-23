@@ -1,6 +1,10 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
-import ca.ulaval.glo4003.ws.http.AuthenticationRequiredBinding;
+import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
+import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionDto;
+import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
+import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,7 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/cart")
-@AuthenticationRequiredBinding
+@AuthenticationRequiredBinding(acceptedRoles = UserRole.INVESTOR)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface CartResource {
@@ -76,7 +80,7 @@ public interface CartResource {
   )
   List<ApiCartItemResponseDto> addStockToCart(
       @PathParam("title") String title,
-      CartStockRequest cartStockRequest);
+      CartStockRequestDto cartStockRequestDto);
 
   @PATCH
   @Path("/{title}")
@@ -108,7 +112,7 @@ public interface CartResource {
   )
   List<ApiCartItemResponseDto> updateStockInCart(
       @PathParam("title") String title,
-      CartStockRequest cartStockRequest);
+      CartStockRequestDto cartStockRequestDto);
 
   @DELETE
   @Path("/{title}")
@@ -181,6 +185,10 @@ public interface CartResource {
           @ApiResponse(
               responseCode = "401",
               description = "User is not logged in."
+          ),
+          @ApiResponse(
+              responseCode = "403",
+              description = "Transaction exceed user limit."
           )
       }
   )

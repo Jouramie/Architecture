@@ -1,9 +1,11 @@
 package ca.ulaval.glo4003.infrastructure.persistence;
 
 import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.domain.user.UserAlreadyExistsException;
-import ca.ulaval.glo4003.domain.user.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.UserRepository;
+import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
+import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,5 +33,10 @@ public class InMemoryUserRepository implements UserRepository {
   @Override
   public User find(String email) throws UserNotFoundException {
     return Optional.ofNullable(content.get(email)).orElseThrow(UserNotFoundException::new);
+  }
+
+  @Override
+  public List<User> findAll() {
+    return new ArrayList<>(content.values());
   }
 }

@@ -63,7 +63,7 @@ public class StockResourceTest {
   public void whenGetStocks_thenReturnStocks() {
     given(stockService.queryStocks(any(), any())).willReturn(serviceDtos);
     given(apiStockAssembler.toDtoList(serviceDtos)).willReturn(expectedDtos);
-    
+
     List<ApiStockDto> resultingDtos = stockResource.getStocks(SOME_NAME, SOME_CATEGORY, DEFAULT_PAGE,
         DEFAULT_PER_PAGE);
 

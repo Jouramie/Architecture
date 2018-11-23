@@ -32,7 +32,7 @@ public interface StockTrendResource {
           ),
           @ApiResponse(
               responseCode = "404",
-              description = "Stock does not exist"
+              description = "Stock does not exist."
           )
       }
   )

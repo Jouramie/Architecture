@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
-import ca.ulaval.glo4003.domain.market.Market;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -61,7 +61,7 @@ public class StockCsvLoaderTest {
     loader.load();
 
     Stock mmmStock = stockRepository.findByTitle("MMM");
-    assertThat(mmmStock.getValue().getCurrentValue().getCurrency()).isEqualTo(SOME_CURRENCY);
+    assertThat(mmmStock.getValue().getLatestValue().getCurrency()).isEqualTo(SOME_CURRENCY);
   }
 
   @Test
@@ -71,7 +71,7 @@ public class StockCsvLoaderTest {
 
     Stock msftStock = stockRepository.findByTitle("MSFT");
     assertThat(msftStock.getValue().getOpenValue().getAmount().doubleValue()).isEqualTo(107.08);
-    assertThat(msftStock.getValue().getCloseValue().getAmount().doubleValue()).isEqualTo(108.29);
+    assertThat(msftStock.getValue().getLatestValue().getAmount().doubleValue()).isEqualTo(108.29);
     assertThat(msftStock.getValue().getMaximumValue().getAmount().doubleValue()).isEqualTo(108.88);
     assertThat(msftStock.getValueHistory().getAllStoredValues()).hasSize(5255);
   }

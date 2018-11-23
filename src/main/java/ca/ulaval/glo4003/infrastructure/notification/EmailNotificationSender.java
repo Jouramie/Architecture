@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.infrastructure.notification;
 
 import ca.ulaval.glo4003.domain.notification.Notification;
+import ca.ulaval.glo4003.domain.notification.NotificationCoordinates;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
-import ca.ulaval.glo4003.domain.user.User;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.Body;
 import com.amazonaws.services.simpleemail.model.Content;
@@ -24,10 +24,10 @@ public class EmailNotificationSender implements NotificationSender {
   }
 
   @Override
-  public void sendNotification(Notification notification, User user) {
+  public void sendNotification(Notification notification, NotificationCoordinates coordinates) {
     try {
       Message message = constructEmailMessage(notification);
-      Destination destination = new Destination().withToAddresses(user.getEmail());
+      Destination destination = new Destination().withToAddresses(coordinates.email);
       SendEmailRequest request = new SendEmailRequest()
           .withDestination(destination)
           .withMessage(message)

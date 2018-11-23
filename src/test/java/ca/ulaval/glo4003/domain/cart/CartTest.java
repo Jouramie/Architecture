@@ -29,8 +29,8 @@ public class CartTest {
   public void setupCarts() {
     cart = new Cart();
 
-    given(someStockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
-    given(someStockRepository.doesStockExist(SOME_OTHER_TITLE)).willReturn(true);
+    given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
+    given(someStockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
   }
 
   @Test
