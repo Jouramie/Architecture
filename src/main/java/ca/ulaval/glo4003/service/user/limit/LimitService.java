@@ -20,24 +20,26 @@ public class LimitService {
 
   private final LimitFactory limitFactory;
   private final UserRepository userRepository;
+  private final LimitAssembler limitAssembler;
 
   @Inject
-  public LimitService(LimitFactory limitFactory, UserRepository userRepository) {
+  public LimitService(LimitFactory limitFactory, LimitAssembler limitAssembler, UserRepository userRepository) {
     this.limitFactory = limitFactory;
     this.userRepository = userRepository;
+    this.limitAssembler = limitAssembler;
   }
 
-  public MoneyAmountLimitDto createMoneyAmountLimit(String email, ApplicationPeriod applicationPeriod,
-                                                    BigDecimal amount) {
+  public LimitDto createMoneyAmountLimit(String email, ApplicationPeriod applicationPeriod,
+                                         BigDecimal amount) {
     MoneyAmountLimit limit = limitFactory.createMoneyAmountLimit(applicationPeriod, new MoneyAmount(amount));
     setUserLimit(email, limit);
-    return new MoneyAmountLimitDto(limit.start, limit.end, amount);
+    return limitAssembler.toDto(limit);
   }
 
-  public StockQuantityLimitDto createStockQuantityLimit(String email, ApplicationPeriod applicationPeriod, int stockQuantity) {
+  public LimitDto createStockQuantityLimit(String email, ApplicationPeriod applicationPeriod, int stockQuantity) {
     StockQuantityLimit limit = limitFactory.createStockQuantityLimit(applicationPeriod, stockQuantity);
     setUserLimit(email, limit);
-    return new StockQuantityLimitDto(limit.start, limit.end, stockQuantity);
+    return limitAssembler.toDto(limit);
   }
 
   public void removeUserLimit(String email) {

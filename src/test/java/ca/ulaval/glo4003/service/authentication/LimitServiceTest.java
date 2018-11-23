@@ -12,6 +12,7 @@ import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
 import ca.ulaval.glo4003.domain.user.limit.MoneyAmountLimit;
 import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
+import ca.ulaval.glo4003.service.user.limit.LimitAssembler;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
 import ca.ulaval.glo4003.util.UserBuilder;
 import java.math.BigDecimal;
@@ -46,7 +47,7 @@ public class LimitServiceTest {
 
   @Before
   public void setUp() {
-    service = new LimitService(limitFactory, userRepository);
+    service = new LimitService(limitFactory, new LimitAssembler(), userRepository);
   }
 
   @Test
