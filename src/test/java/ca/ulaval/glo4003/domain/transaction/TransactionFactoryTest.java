@@ -9,6 +9,7 @@ import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundForStockException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
@@ -45,8 +46,9 @@ public class TransactionFactoryTest {
   private MarketRepository marketRepository;
   @Mock
   private Stock stock;
-  @Mock
+
   private Market market;
+
   @Mock
   private StockValue stockValue;
 
@@ -60,8 +62,8 @@ public class TransactionFactoryTest {
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(stock);
     given(someStockRepository.findByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
     given(someStockRepository.findByTitle(SOME_TITLE).getValue().getLatestValue()).willReturn(DEFAULT_AMOUNT);
+    market = new TestingMarketBuilder().build();
     given(marketRepository.findMarketForStock(SOME_TITLE)).willReturn(market);
-    given(market.isHalted()).willReturn(false);
 
     cart = new Cart();
     cart.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
@@ -98,7 +100,7 @@ public class TransactionFactoryTest {
 
   @Test
   public void givenMarketHalted_whenCreate_thenExceptionIsThrown() {
-    given(market.isHalted()).willReturn(true);
+    market.halt("");
 
     assertThatExceptionOfType(HaltedMarketException.class).isThrownBy(() -> factory.createPurchase(cart));
   }

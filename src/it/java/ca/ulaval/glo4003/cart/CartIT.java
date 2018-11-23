@@ -27,7 +27,6 @@ import io.restassured.http.Header;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.internal.matchers.Matches;
 
 public class CartIT {
   private static final String SOME_TITLE = "RBS.l";
@@ -373,7 +372,7 @@ public class CartIT {
     givenInvestorAlreadyRegistered();
     String investorToken = givenInvestorAlreadyAuthenticated();
     String token = givenAdministratorAlreadyAuthenticated();
-    givenMarketHalted(token, SOME_MARKET);
+    givenHaltedMarket(token, SOME_MARKET);
     givenCartContainsDefaultStock(new Header("token", investorToken));
 
     //@formatter:off
@@ -387,7 +386,7 @@ public class CartIT {
     //@formatter:on
   }
 
-  private void givenMarketHalted(String token, String market) {
+  private void givenHaltedMarket(String token, String market) {
     //@formatter:off
     given()
         .header("token", token)
