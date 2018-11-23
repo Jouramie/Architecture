@@ -20,9 +20,9 @@ public class LimitFactory {
     return new StockQuantityLimit(beginDate, calculateEnd(beginDate, applicationPeriod), stockQuantity);
   }
 
-  public MoneyAmountLimit createMoneyAmountLimit(ApplicationPeriod applicationPeriod, MoneyAmount amount) {
+  public MoneyAmountLimit createMoneyAmountLimit(ApplicationPeriod applicationPeriod, MoneyAmount moneyAmount) {
     LocalDateTime beginDate = clock.getCurrentTime();
-    return new MoneyAmountLimit(beginDate, calculateEnd(beginDate, applicationPeriod), amount);
+    return new MoneyAmountLimit(beginDate, calculateEnd(beginDate, applicationPeriod), moneyAmount);
   }
 
   public NullLimit createNullLimit() {

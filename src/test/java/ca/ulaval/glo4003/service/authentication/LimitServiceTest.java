@@ -13,7 +13,10 @@ import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
 import ca.ulaval.glo4003.domain.user.limit.MoneyAmountLimit;
 import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 import ca.ulaval.glo4003.service.user.limit.LimitAssembler;
+import ca.ulaval.glo4003.service.user.limit.LimitDto;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
+import ca.ulaval.glo4003.service.user.limit.MoneyAmountLimitDto;
+import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
 import ca.ulaval.glo4003.util.UserBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -99,5 +102,27 @@ public class LimitServiceTest {
     service.removeUserLimit(SOME_EMAIL);
 
     assertThat(SOME_USER.getLimit()).isNull();
+  }
+
+  @Test
+  public void whenCreateStockQuantityLimit_thenLimitDtoIsReturned() throws UserNotFoundException {
+    given(userRepository.find(SOME_EMAIL)).willReturn(SOME_USER);
+    given(limitFactory.createStockQuantityLimit(SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockQuantityLimit);
+
+    LimitDto limit = service.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);
+
+    StockQuantityLimitDto stockQuantityLimitDto = new StockQuantityLimitDto(SOME_START_DATE, SOME_END_DATE, SOME_STOCK_QUANTITY);
+    assertThat(limit).isEqualToComparingFieldByField(stockQuantityLimitDto);
+  }
+
+  @Test
+  public void whenCreateAmountMoneyLimit_thenLimitDtoIsReturned() throws UserNotFoundException {
+    given(userRepository.find(SOME_EMAIL)).willReturn(SOME_USER);
+    given(limitFactory.createMoneyAmountLimit(SOME_PERIOD, SOME_MONEY_AMOUNT)).willReturn(moneyAmountLimit);
+
+    LimitDto limit = service.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_MONEY_AMOUNT.getAmount());
+
+    MoneyAmountLimitDto amountLimitDto = new MoneyAmountLimitDto(SOME_START_DATE, SOME_END_DATE, SOME_MONEY_AMOUNT.toUsd());
+    assertThat(limit).isEqualToComparingFieldByField(amountLimitDto);
   }
 }
