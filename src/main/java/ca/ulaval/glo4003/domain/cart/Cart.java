@@ -1,7 +1,12 @@
 package ca.ulaval.glo4003.domain.cart;
 
+import ca.ulaval.glo4003.domain.market.HaltedMarketException;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
+import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 
 public class Cart {
   private StockCollection stocks;
@@ -36,5 +41,21 @@ public class Cart {
 
   public StockCollection getStocks() {
     return stocks;
+  }
+
+  public Transaction checkoutCart(TransactionFactory transactionFactory)
+      throws StockNotFoundException, HaltedMarketException, EmptyCartException {
+
+    checkIfCartIsEmpty();
+    Transaction purchase = transactionFactory.createPurchase(stocks);
+
+    empty();
+    return purchase;
+  }
+
+  private void checkIfCartIsEmpty() throws EmptyCartException {
+    if (isEmpty()) {
+      throw new EmptyCartException();
+    }
   }
 }

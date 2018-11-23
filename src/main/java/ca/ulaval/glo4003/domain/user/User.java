@@ -74,24 +74,15 @@ public class User {
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
       HaltedMarketException {
 
-    checkIfCartIsEmpty(cart);
-
-    Transaction purchase = transactionFactory.createPurchase(cart);
+    Transaction purchase = cart.checkoutCart(transactionFactory);
     limit.checkIfTransactionExceed(purchase);
 
     processPurchase(purchase, paymentProcessor, stockRepository);
     sendTransactionNotification(notificationFactory, notificationSender, purchase);
 
-    cart.empty();
-
     return purchase;
   }
 
-  private void checkIfCartIsEmpty(Cart cart) throws EmptyCartException {
-    if (cart.isEmpty()) {
-      throw new EmptyCartException();
-    }
-  }
 
   private void processPurchase(Transaction transaction,
                                PaymentProcessor paymentProcessor,

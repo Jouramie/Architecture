@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.domain.transaction;
 
 import ca.ulaval.glo4003.domain.Component;
-import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
@@ -28,8 +27,8 @@ public class TransactionFactory {
     this.marketRepository = marketRepository;
   }
 
-  public Transaction createPurchase(Cart cart) throws StockNotFoundException, HaltedMarketException {
-    List<TransactionItem> transactionItems = buildTransactionItems(cart.getStocks());
+  public Transaction createPurchase(StockCollection stocks) throws StockNotFoundException, HaltedMarketException {
+    List<TransactionItem> transactionItems = buildTransactionItems(stocks);
     return new Transaction(clock.getCurrentTime(), transactionItems, TransactionType.PURCHASE);
   }
 

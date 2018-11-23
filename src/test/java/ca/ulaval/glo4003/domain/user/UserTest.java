@@ -2,17 +2,21 @@ package ca.ulaval.glo4003.domain.user;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
@@ -77,7 +81,7 @@ public class UserTest {
     user.getCart().add(SOME_TITLE, SOME_QTY, stockRepository);
     user.getCart().add(SOME_OTHER_TITLE, SOME_OTHER_QTY, stockRepository);
 
-    given(transactionFactory.createPurchase(user.getCart())).willReturn(transaction);
+    given(transactionFactory.createPurchase(user.getCart().getStocks())).willReturn(transaction);
     given(notificationFactory.create(transaction)).willReturn(notification);
   }
 
@@ -185,7 +189,7 @@ public class UserTest {
   @Test
   public void givenMarketHalted_whenCheckoutCart_thenExceptionIsPropagated()
       throws HaltedMarketException, StockNotFoundException {
-    given(transactionFactory.createPurchase(any(Cart.class))).willThrow(new HaltedMarketException(SOME_HALTED_MESSAGE));
+    given(transactionFactory.createPurchase(any(StockCollection.class))).willThrow(new HaltedMarketException(SOME_HALTED_MESSAGE));
 
     assertThatExceptionOfType(HaltedMarketException.class)
         .isThrownBy(() ->
