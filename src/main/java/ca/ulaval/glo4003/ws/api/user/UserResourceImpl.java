@@ -5,11 +5,11 @@ import static javax.ws.rs.core.Response.Status.CREATED;
 import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.service.user.UserService;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
+import ca.ulaval.glo4003.ws.api.user.dto.ApiLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
-import ca.ulaval.glo4003.ws.api.user.dto.ApiUserLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserStockLimitCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.List;
 import javax.annotation.Resource;
@@ -55,15 +55,15 @@ public class UserResourceImpl implements UserResource {
   }
 
   @Override
-  public ApiUserLimitDto setUserStockLimit(String email,
-                                           UserStockLimitCreationDto userStockLimitCreationDto) {
+  public ApiLimitDto setUserStockLimit(String email,
+                                       StockLimitCreationDto stockLimitCreationDto) {
 
     return null;
   }
 
   @Override
-  public ApiUserLimitDto setUserMoneyAmountLimit(String email,
-                                                 UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto) {
+  public ApiLimitDto setUserMoneyAmountLimit(String email,
+                                             MoneyAmountLimitCreationDto moneyAmountLimitCreationDto) {
 
     return null;
   }

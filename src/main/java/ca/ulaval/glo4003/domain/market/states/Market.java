@@ -15,7 +15,7 @@ public class Market {
   final LocalTime closingTime;
   private final MarketId id;
   private final Currency currency;
-  private boolean isHalted = false;
+  private TradingStatus tradingStatus;
   private MarketState currentState;
 
   public Market(MarketId id, LocalTime openingTime, LocalTime closingTime, Currency currency,
@@ -26,6 +26,7 @@ public class Market {
     this.currency = currency;
     this.stocks = stocks;
     currentState = initialState;
+    tradingStatus = TradingStatus.trading();
   }
 
   public MarketId getId() {
@@ -36,12 +37,20 @@ public class Market {
     return currency;
   }
 
-  public void halt() {
-    isHalted = true;
+  public void halt(String message) {
+    tradingStatus = TradingStatus.halted(message);
+  }
+
+  public void resume() {
+    tradingStatus = TradingStatus.trading();
+  }
+
+  public String getHaltMessage() {
+    return tradingStatus.haltMessage;
   }
 
   public boolean isHalted() {
-    return isHalted;
+    return tradingStatus.isHalted;
   }
 
   public void update(LocalDateTime currentTime, StockValueRetriever stockValueRetriever) {

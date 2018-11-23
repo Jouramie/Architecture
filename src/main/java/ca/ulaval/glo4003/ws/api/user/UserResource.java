@@ -1,11 +1,11 @@
 package ca.ulaval.glo4003.ws.api.user;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.ws.api.user.dto.ApiLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
-import ca.ulaval.glo4003.ws.api.user.dto.ApiUserLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserMoneyAmountLimitCreationDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserStockLimitCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
@@ -119,7 +119,7 @@ public interface UserResource {
               responseCode = "201",
               content = @Content(
                   schema = @Schema(
-                      implementation = ApiUserLimitDto.class
+                      implementation = ApiLimitDto.class
                   )
               )
           ),
@@ -137,9 +137,9 @@ public interface UserResource {
           )
       }
   )
-  ApiUserLimitDto setUserStockLimit(
+  ApiLimitDto setUserStockLimit(
       @PathParam("email") String email,
-      @Valid UserStockLimitCreationDto userStockLimitCreationDto);
+      @Valid StockLimitCreationDto stockLimitCreationDto);
 
   @PUT
   @Path("/{email}/limit/money_amount")
@@ -151,7 +151,7 @@ public interface UserResource {
               responseCode = "201",
               content = @Content(
                   schema = @Schema(
-                      implementation = ApiUserLimitDto.class
+                      implementation = ApiLimitDto.class
                   )
               )
           ),
@@ -169,9 +169,9 @@ public interface UserResource {
           )
       }
   )
-  ApiUserLimitDto setUserMoneyAmountLimit(
+  ApiLimitDto setUserMoneyAmountLimit(
       @PathParam("email") String email,
-      @Valid UserMoneyAmountLimitCreationDto userMoneyAmountLimitCreationDto);
+      @Valid MoneyAmountLimitCreationDto moneyAmountLimitCreationDto);
 
   @DELETE
   @Path("/{email}/limit")

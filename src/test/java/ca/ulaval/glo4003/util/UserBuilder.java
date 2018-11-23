@@ -6,12 +6,12 @@ import ca.ulaval.glo4003.domain.user.Administrator;
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
-import ca.ulaval.glo4003.domain.user.limit.NullLimit;
+import ca.ulaval.glo4003.domain.user.limit.LimitBuilder;
 
 public class UserBuilder {
   public static final String DEFAULT_EMAIL = "email";
   public static final String DEFAULT_PASSWORD = "password";
-  private static final Limit DEFAULT_LIMIT = new NullLimit();
+  private static final Limit DEFAULT_LIMIT = new LimitBuilder().build();
 
   private String email = DEFAULT_EMAIL;
   private String password = DEFAULT_PASSWORD;

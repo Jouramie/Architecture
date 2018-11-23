@@ -46,7 +46,7 @@ public class MarketCsvLoader {
 
       Market market = new Market(marketId, open, close, currency.get(marketId), stocks, new ClosedMarketState());
       if (halt) {
-        market.halt();
+        market.halt("");
       }
 
       marketRepository.add(market);

@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.user;
 
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
-import ca.ulaval.glo4003.ws.api.user.dto.UserStockLimitCreationDto;
+import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
 
 public class StockLimitCreationRequestBuilder {
   public static final ApplicationPeriod DEFAULT_APPLICATION_PERIOD = ApplicationPeriod.DAILY;
@@ -20,7 +20,7 @@ public class StockLimitCreationRequestBuilder {
     return this;
   }
 
-  public UserStockLimitCreationDto build() {
-    return new UserStockLimitCreationDto(applicationPeriod, stockQuantity);
+  public StockLimitCreationDto build() {
+    return new StockLimitCreationDto(applicationPeriod, stockQuantity);
   }
 }
