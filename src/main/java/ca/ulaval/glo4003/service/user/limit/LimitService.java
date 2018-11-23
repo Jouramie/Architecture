@@ -42,8 +42,9 @@ public class LimitService {
   }
 
   public void removeUserLimit(String email) {
+    NullLimit limit = limitFactory.createNullLimit();
     User user = getUserByEmail(email);
-    user.setLimit(new NullLimit());
+    user.setLimit(limit);
   }
 
   private User getUserByEmail(String email) {

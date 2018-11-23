@@ -11,7 +11,6 @@ import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
 import ca.ulaval.glo4003.domain.user.limit.MoneyAmountLimit;
-import ca.ulaval.glo4003.domain.user.limit.NullLimit;
 import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
 import ca.ulaval.glo4003.util.UserBuilder;
@@ -98,6 +97,6 @@ public class LimitServiceTest {
 
     service.removeUserLimit(SOME_EMAIL);
 
-    assertThat(SOME_USER.getLimit()).isInstanceOf(NullLimit.class);
+    assertThat(SOME_USER.getLimit()).isNull();
   }
 }
