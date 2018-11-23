@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
@@ -37,7 +36,16 @@ public class StockHistory {
   }
 
   public StockValue getValueOnDay(LocalDate day) throws NoStockValueFitsCriteriaException {
-    return Optional.ofNullable(values.get(day)).orElseThrow(NoStockValueFitsCriteriaException::new);
+    LocalDate currentDay = day;
+    for (int i = 0; i < 10; ++i) {
+      StockValue value = values.get(currentDay);
+      if (value != null) {
+        return value;
+      }
+      currentDay = currentDay.minusDays(1);
+    }
+
+    throw new NoStockValueFitsCriteriaException();
   }
 
   private Stream<Map.Entry<LocalDate, StockValue>> getHistoricalValuesBetweenDates(LocalDate from, LocalDate to) {
