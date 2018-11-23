@@ -37,14 +37,20 @@ public class PortfolioResourceImpl implements PortfolioResource {
 
   @Override
   public ApiPortfolioReportResponseDto getPortfolioReport(String since) {
+    if (since == null) {
+      throw new BadRequestException("Missing 'since' parameter");
+    }
+
+    SinceParameter sinceValue;
     try {
-      SinceParameter sinceValue = SinceParameter.valueOf(since);
-      LocalDate from = getFromDate(sinceValue);
-      PortfolioReportDto reportDto = portfolioService.getPortfolioReport(from);
-      return apiPortfolioReportAssembler.toDto(reportDto);
-    } catch (NullPointerException | IllegalArgumentException e) {
+      sinceValue = SinceParameter.valueOf(since);
+    } catch (IllegalArgumentException e) {
       throw new BadRequestException("Invalid 'since' parameter");
     }
+
+    LocalDate from = getFromDate(sinceValue);
+    PortfolioReportDto reportDto = portfolioService.getPortfolioReport(from);
+    return apiPortfolioReportAssembler.toDto(reportDto);
   }
 
   private LocalDate getFromDate(SinceParameter sinceParameter) {
