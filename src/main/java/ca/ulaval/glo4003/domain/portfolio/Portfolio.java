@@ -62,7 +62,8 @@ public class Portfolio {
     return stocks;
   }
 
-  public String getMostIncreasingStockTitle(LocalDate from, StockRepository stockRepository) throws InvalidStockInPortfolioException, NoStockValueFitsCriteriaException {
+  public String getMostIncreasingStockTitle(LocalDate from, StockRepository stockRepository)
+      throws InvalidStockInPortfolioException, NoStockValueFitsCriteriaException {
     List<Stock> stockList = getStockList(stockRepository);
     BigDecimal highestVariation = BigDecimal.ZERO;
     String mostIncreasingStockTitle = null;
@@ -76,7 +77,8 @@ public class Portfolio {
     return mostIncreasingStockTitle;
   }
 
-  public String getMostDecreasingStockTitle(LocalDate from, StockRepository stockRepository) throws InvalidStockInPortfolioException, NoStockValueFitsCriteriaException {
+  public String getMostDecreasingStockTitle(LocalDate from, StockRepository stockRepository)
+      throws InvalidStockInPortfolioException, NoStockValueFitsCriteriaException {
     List<Stock> stockList = getStockList(stockRepository);
     BigDecimal lowestVariation = new BigDecimal(Double.MAX_VALUE);
     String mostDecreasingStockTitle = null;
