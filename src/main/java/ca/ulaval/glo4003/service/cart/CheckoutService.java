@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.service.cart;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -29,6 +30,7 @@ public class CheckoutService {
   private final NotificationSender notificationSender;
   private final TransactionAssembler transactionAssembler;
   private final StockRepository stockRepository;
+  private final MarketRepository marketRepository;
 
   @Inject
   public CheckoutService(CurrentUserSession currentUserSession,
@@ -37,7 +39,8 @@ public class CheckoutService {
                          NotificationFactory notificationFactory,
                          NotificationSender notificationSender,
                          TransactionAssembler transactionAssembler,
-                         StockRepository stockRepository) {
+                         StockRepository stockRepository,
+                         MarketRepository marketRepository) {
     this.currentUserSession = currentUserSession;
     this.transactionFactory = transactionFactory;
     this.paymentProcessor = paymentProcessor;
@@ -45,13 +48,14 @@ public class CheckoutService {
     this.notificationSender = notificationSender;
     this.transactionAssembler = transactionAssembler;
     this.stockRepository = stockRepository;
+    this.marketRepository = marketRepository;
   }
 
   public TransactionDto checkoutCart() throws InvalidStockTitleException {
     Investor currentInvestor = currentUserSession.getCurrentUser(Investor.class);
     try {
-      Transaction transaction = currentInvestor.checkoutCart(
-          transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
+      Transaction transaction = currentInvestor.checkoutCart(transactionFactory, marketRepository,
+          paymentProcessor, stockRepository, notificationFactory, notificationSender);
       return transactionAssembler.toDto(transaction);
     } catch (StockNotFoundException e) {
       throw new InvalidStockTitleException(e.title);

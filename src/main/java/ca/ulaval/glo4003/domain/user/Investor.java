@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.domain.user;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationCoordinates;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
@@ -50,29 +51,21 @@ public class Investor extends User {
   }
 
   public Transaction checkoutCart(TransactionFactory transactionFactory,
+                                  MarketRepository marketRepository,
                                   PaymentProcessor paymentProcessor,
+                                  StockRepository stockRepository,
                                   NotificationFactory notificationFactory,
-                                  NotificationSender notificationSender,
-                                  StockRepository stockRepository)
+                                  NotificationSender notificationSender)
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption, HaltedMarketException {
 
-    checkIfCartIsEmpty(cart);
-
-    Transaction purchase = transactionFactory.createPurchase(cart);
+    Transaction purchase = cart.checkout(transactionFactory, marketRepository);
     limit.checkIfTransactionExceed(purchase);
 
     processPurchase(purchase, paymentProcessor, stockRepository);
     sendTransactionNotification(notificationFactory, notificationSender, purchase);
 
     cart.empty();
-
     return purchase;
-  }
-
-  private void checkIfCartIsEmpty(Cart cart) throws EmptyCartException {
-    if (cart.isEmpty()) {
-      throw new EmptyCartException();
-    }
   }
 
   private void processPurchase(Transaction transaction,

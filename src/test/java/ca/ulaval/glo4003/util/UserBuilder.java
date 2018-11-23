@@ -12,10 +12,12 @@ public class UserBuilder {
   public static final String DEFAULT_EMAIL = "email";
   public static final String DEFAULT_PASSWORD = "password";
   private static final Limit DEFAULT_LIMIT = new LimitBuilder().build();
+  private static final Cart DEFAULT_CART = new Cart();
 
   private String email = DEFAULT_EMAIL;
   private String password = DEFAULT_PASSWORD;
   private Limit limit = DEFAULT_LIMIT;
+  private Cart cart = DEFAULT_CART;
 
   public UserBuilder withEmail(String email) {
     this.email = email;
@@ -24,6 +26,11 @@ public class UserBuilder {
 
   public UserBuilder withPassword(String password) {
     this.password = password;
+    return this;
+  }
+
+  public UserBuilder withCart(Cart cart) {
+    this.cart = cart;
     return this;
   }
 
@@ -37,7 +44,7 @@ public class UserBuilder {
   }
 
   public Investor buildInvestor() {
-    return new Investor(email, password, new Cart(), new Portfolio(), limit);
+    return new Investor(email, password, cart, new Portfolio(), limit);
   }
 
   public Administrator buildAdministrator() {
