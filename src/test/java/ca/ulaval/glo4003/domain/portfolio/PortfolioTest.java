@@ -1,17 +1,17 @@
 package ca.ulaval.glo4003.domain.portfolio;
 
 import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
+import ca.ulaval.glo4003.util.TestStockBuilder;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.math.BigDecimal;
@@ -23,12 +23,12 @@ import java.util.stream.LongStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PortfolioTest {
   private final String SOME_TITLE = "MSFT";
+  private final String SOME_OTHER_TITLE = "AAPL";
   private final int SOME_QUANTITY = 3;
   private final int SOME_OTHER_QUANTITY = 4;
   private final String SOME_CURRENCY_NAME = "CAD";
@@ -38,24 +38,30 @@ public class PortfolioTest {
   private final StockValue SOME_STOCK_VALUE = new StockValue(SOME_VALUE, SOME_VALUE, SOME_VALUE);
   private final LocalDate NOW = LocalDate.now();
 
-  @Mock
   private Stock someStock;
+  private Stock someOtherStock;
 
-  @Mock
   private StockRepository someStockRepository;
 
   private Portfolio portfolio;
 
   @Before
-  public void setupPortfolio() throws StockNotFoundException {
+  public void setupPortfolio() {
     portfolio = new Portfolio();
 
-    given(someStock.getValue()).willReturn(SOME_STOCK_VALUE);
-    given(someStock.getCurrency()).willReturn(SOME_CURRENCY);
-    given(someStock.getTitle()).willReturn(SOME_TITLE);
+    someStock = new TestStockBuilder()
+        .withTitle(SOME_TITLE)
+        .withCloseValue(SOME_VALUE)
+        .build();
 
-    given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
-    given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(someStock);
+    someOtherStock = new TestStockBuilder()
+        .withTitle(SOME_OTHER_TITLE)
+        .withCloseValue(SOME_VALUE)
+        .build();
+
+    someStockRepository = new InMemoryStockRepository();
+    someStockRepository.add(someStock);
+    someStockRepository.add(someOtherStock);
   }
 
   @Test
@@ -75,7 +81,8 @@ public class PortfolioTest {
   }
 
   @Test
-  public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues() throws InvalidStockInPortfolioException {
+  public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues()
+      throws InvalidStockInPortfolioException {
     Transaction transaction = new TransactionBuilder()
         .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
         .build();
@@ -89,20 +96,6 @@ public class PortfolioTest {
   public void givenPortfolioIsEmpty_whenGetCurrentTotalValue_thenReturnZero() throws InvalidStockInPortfolioException {
     BigDecimal currentTotal = new BigDecimal(0).setScale(2, RoundingMode.HALF_EVEN);
     assertThat(portfolio.getCurrentTotalValue(someStockRepository).getAmount()).isEqualTo(currentTotal);
-  }
-
-  @Test
-  public void givenPortfolioContainsInvalidStock_whenGetCurrentTotalValue_thenAnExceptionIsThrown()
-      throws StockNotFoundException {
-    String invalidTitle = "invalid";
-    given(someStockRepository.exists(invalidTitle)).willReturn(true);
-    given(someStockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
-    Transaction transaction = new TransactionBuilder()
-        .withItem(new TransactionItemBuilder().withTitle(invalidTitle).withQuantity(SOME_QUANTITY).build())
-        .build();
-    portfolio.add(transaction, someStockRepository);
-
-    assertThatExceptionOfType(InvalidStockInPortfolioException.class).isThrownBy(() -> portfolio.getCurrentTotalValue(someStockRepository));
   }
 
   @Test
@@ -157,6 +150,46 @@ public class PortfolioTest {
         SOME_QUANTITY + SOME_OTHER_QUANTITY);
   }
 
+  @Test
+  public void givenStocksInPortfolio_whenGetMostIncreasingStock_thenMostIncreasingStockIsReturned()
+      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
+    setupPortfolioWithDifferentStocksOnSameDate(NOW.minusDays(5));
+    setupStockWithLowestVariation(NOW.minusDays(5));
+    setupStockWithHighestVariation(NOW.minusDays(5));
+
+    String mostIncreasingStockTitle = portfolio.getMostIncreasingStockTitle(NOW.minusDays(5), someStockRepository);
+
+    assertThat(mostIncreasingStockTitle).isEqualTo(SOME_OTHER_TITLE);
+  }
+
+  @Test
+  public void givenEmptyPortfolio_whenGetMostIncreasingStock_thenReturnNull()
+      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
+    String mostIncreasingStockTitle = portfolio.getMostIncreasingStockTitle(NOW.minusDays(5), someStockRepository);
+
+    assertThat(mostIncreasingStockTitle).isNull();
+  }
+
+  @Test
+  public void givenStocksInPortfolio_whenGetMostDecreasingStock_thenMostDecreasingStockIsReturned()
+      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
+    setupPortfolioWithDifferentStocksOnSameDate(NOW.minusDays(5));
+    setupStockWithLowestVariation(NOW.minusDays(5));
+    setupStockWithHighestVariation(NOW.minusDays(5));
+
+    String mostDecreasingStockTitle = portfolio.getMostDecreasingStockTitle(NOW.minusDays(5), someStockRepository);
+
+    assertThat(mostDecreasingStockTitle).isEqualTo(SOME_TITLE);
+  }
+
+  @Test
+  public void givenEmptyPortfolio_whenGetMostDecreasingStock_thenReturnNull()
+      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
+    String mostDecreasingStockTitle = portfolio.getMostDecreasingStockTitle(NOW.minusDays(5), someStockRepository);
+
+    assertThat(mostDecreasingStockTitle).isNull();
+  }
+
   private void setupPortfolioWithTransactionsOnDifferentDates() {
     Transaction firstTransaction = new TransactionBuilder()
         .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
@@ -181,5 +214,28 @@ public class PortfolioTest {
         .withTime(date.atStartOfDay().plusHours(1))
         .build();
     portfolio.add(secondTransaction, someStockRepository);
+  }
+
+  private void setupPortfolioWithDifferentStocksOnSameDate(LocalDate date) {
+    Transaction firstTransaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
+        .withTime(date.atStartOfDay())
+        .build();
+    portfolio.add(firstTransaction, someStockRepository);
+    Transaction secondTransaction = new TransactionBuilder()
+        .withItem(new TransactionItemBuilder().withTitle(SOME_OTHER_TITLE).withQuantity(SOME_QUANTITY).build())
+        .withTime(date.atStartOfDay())
+        .build();
+    portfolio.add(secondTransaction, someStockRepository);
+  }
+
+  private void setupStockWithLowestVariation(LocalDate from) {
+    someStock.getValueHistory().addValue(from, SOME_STOCK_VALUE);
+  }
+
+  private void setupStockWithHighestVariation(LocalDate from) {
+    MoneyAmount someOtherValue = new MoneyAmount(SOME_VALUE.getAmount().multiply(new BigDecimal(0.5)), SOME_CURRENCY);
+    StockValue someOtherStockValue = new StockValue(someOtherValue, someOtherValue, someOtherValue);
+    someOtherStock.getValueHistory().addValue(from, someOtherStockValue);
   }
 }

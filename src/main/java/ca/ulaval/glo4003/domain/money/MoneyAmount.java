@@ -59,6 +59,10 @@ public class MoneyAmount {
     return new MoneyAmount(amount.multiply(new BigDecimal(multiplier)), getCurrency());
   }
 
+  public BigDecimal divide(MoneyAmount other) {
+    return amount.divide(other.amount, RoundingMode.HALF_EVEN);
+  }
+
   public BigDecimal toUsd() {
     return currency.toUsd(amount);
   }

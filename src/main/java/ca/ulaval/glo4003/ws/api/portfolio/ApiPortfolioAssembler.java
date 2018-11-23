@@ -5,6 +5,8 @@ import static java.util.stream.Collectors.toList;
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
+import ca.ulaval.glo4003.ws.api.portfolio.dto.ApiPortfolioItemResponseDto;
+import ca.ulaval.glo4003.ws.api.portfolio.dto.ApiPortfolioResponseDto;
 import java.util.List;
 
 @Component
@@ -16,7 +18,6 @@ public class ApiPortfolioAssembler {
   }
 
   private ApiPortfolioItemResponseDto itemToDto(PortfolioItemDto itemResponseDto) {
-
     return new ApiPortfolioItemResponseDto(itemResponseDto.title, itemResponseDto.currentValue, itemResponseDto.quantity);
   }
 }

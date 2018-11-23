@@ -29,7 +29,7 @@ public class PortfolioIT {
 
   private static final String STOCKS_KEY = "stocks";
   private static final String TITLE_KEY = "title";
-  private static final String CURRENT_VALUE_KEY = "currentValue";
+  private static final String VALUE_KEY = "value";
   private static final String QUANTITY_KEY = "quantity";
   private static final String CURRENT_TOTAL_VALUE_KEY = "currentTotalValue";
 
@@ -53,7 +53,7 @@ public class PortfolioIT {
         .statusCode(OK.getStatusCode())
         .body(STOCKS_KEY, is(iterableWithSize(1)))
         .body(STOCKS_KEY + "[0]." + TITLE_KEY, is(SOME_TITLE))
-        .body(STOCKS_KEY + "[0]." + CURRENT_VALUE_KEY, greaterThan(0f))
+        .body(STOCKS_KEY + "[0]." + VALUE_KEY, greaterThan(0f))
         .body(STOCKS_KEY + "[0]." + QUANTITY_KEY, is(SOME_QUANTITY));
     //@formatter:on
   }

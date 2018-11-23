@@ -54,8 +54,21 @@ public class Stock {
     return valueHistory.getLatestValue().value;
   }
 
-  public synchronized StockValue getValueOnDay(LocalDate date) throws NoStockValueFitsCriteriaException {
-    return valueHistory.getValueOnDay(date);
+  public synchronized StockValue getLatestValueOnDate(LocalDate date) throws NoStockValueFitsCriteriaException {
+    StockValue latestStockValueOnDate;
+    if (date.isAfter(valueHistory.getLatestValue().date)) {
+      latestStockValueOnDate = valueHistory.getLatestValue().value;
+    } else {
+      latestStockValueOnDate = valueHistory.getValueOnDay(date);
+    }
+
+    return latestStockValueOnDate;
+  }
+
+  public BigDecimal computeStockValueVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
+    MoneyAmount startAmount = getLatestValueOnDate(from).getLatestValue();
+    MoneyAmount currentAmount = getValue().getLatestValue();
+    return currentAmount.divide(startAmount);
   }
 
   public synchronized void saveOpeningPrice() {

@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +21,8 @@ public class StockTest {
   private final Currency SOME_CURRENCY = new Currency("CAD", new BigDecimal(0.77));
   private final MoneyAmount SOME_LAST_OPEN_AMOUNT = new MoneyAmount(SOME_LAST_OPEN_VALUE, SOME_CURRENCY);
   private final MoneyAmount SOME_START_AMOUNT = new MoneyAmount(SOME_START_VALUE, SOME_CURRENCY);
+  private final LocalDate SOME_HISTORICAL_DATE = LocalDate.of(2018, 11, 12);
+  private final MoneyAmount SOME_HISTORICAL_AMOUNT = new MoneyAmount(45.67, Currency.USD);
 
   private Stock stock;
 
@@ -30,6 +33,7 @@ public class StockTest {
         .withName(SOME_NAME)
         .withCategory(SOME_CATEGORY)
         .withMarketId(SOME_MARKET_ID)
+        .withHistoricalValue(SOME_HISTORICAL_DATE, new StockValue(SOME_HISTORICAL_AMOUNT))
         .withOpenValue(SOME_LAST_OPEN_AMOUNT)
         .withCloseValue(SOME_START_AMOUNT)
         .build();
@@ -82,7 +86,7 @@ public class StockTest {
     stock.saveOpeningPrice();
 
     assertThat(stock.getValue().getOpenValue()).isEqualTo(SOME_START_AMOUNT);
-    assertThat(stock.getValueHistory().getAllStoredValues()).hasSize(2);
+    assertThat(stock.getValueHistory().getAllStoredValues()).hasSize(3);
   }
 
   @Test
@@ -90,5 +94,30 @@ public class StockTest {
     stock.saveClosingPrice();
 
     assertThat(stock.getValue().isClosed()).isTrue();
+  }
+
+  @Test
+  public void givenHistoricalDate_whenGetLatestValueOnDate_thenReturnHistoricalValue()
+      throws NoStockValueFitsCriteriaException {
+    StockValue historicalValue = stock.getLatestValueOnDate(SOME_HISTORICAL_DATE);
+
+    assertThat(historicalValue.getLatestValue()).isEqualTo(SOME_HISTORICAL_AMOUNT);
+  }
+
+  @Test
+  public void givenFutureDate_whenGetLatestValueOnDate_thenReturnLatestKnownValue()
+      throws NoStockValueFitsCriteriaException {
+    LocalDate someFutureDate = LocalDate.MAX;
+
+    StockValue latestValue = stock.getLatestValueOnDate(someFutureDate);
+
+    assertThat(latestValue.getLatestValue()).isEqualTo(SOME_START_AMOUNT);
+  }
+
+  @Test
+  public void asdf() throws NoStockValueFitsCriteriaException {
+    BigDecimal variation = stock.computeStockValueVariation(SOME_HISTORICAL_DATE);
+
+    assertThat(variation).isEqualTo(SOME_START_AMOUNT.divide(SOME_HISTORICAL_AMOUNT));
   }
 }
