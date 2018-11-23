@@ -4,17 +4,16 @@ import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
-import ca.ulaval.glo4003.domain.stock.StockHistory;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.util.TestStockBuilder;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.math.BigDecimal;
@@ -42,9 +41,7 @@ public class PortfolioTest {
   private final StockValue SOME_STOCK_VALUE = new StockValue(SOME_VALUE, SOME_VALUE, SOME_VALUE);
   private final LocalDate NOW = LocalDate.now();
 
-  @Mock
   private Stock someStock;
-  @Mock
   private Stock someOtherStock;
 
   @Mock
@@ -56,12 +53,15 @@ public class PortfolioTest {
   public void setupPortfolio() throws StockNotFoundException {
     portfolio = new Portfolio();
 
-    given(someStock.getValue()).willReturn(SOME_STOCK_VALUE);
-    given(someStock.getCurrency()).willReturn(SOME_CURRENCY);
-    given(someStock.getTitle()).willReturn(SOME_TITLE);
+    someStock = new TestStockBuilder()
+        .withTitle(SOME_TITLE)
+        .withCloseValue(SOME_VALUE)
+        .build();
 
-    given(someOtherStock.getValue()).willReturn(SOME_STOCK_VALUE);
-    given(someOtherStock.getTitle()).willReturn(SOME_OTHER_TITLE);
+    someOtherStock = new TestStockBuilder()
+        .withTitle(SOME_OTHER_TITLE)
+        .withCloseValue(SOME_VALUE)
+        .build();
 
     given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(someStock);
@@ -248,17 +248,13 @@ public class PortfolioTest {
     portfolio.add(secondTransaction, someStockRepository);
   }
 
-  private void setupStockWithLowestVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
-    StockHistory firstStockHistory = mock(StockHistory.class);
-    given(firstStockHistory.getValueOnDay(from)).willReturn(SOME_STOCK_VALUE);
-    given(someStock.getValueHistory()).willReturn(firstStockHistory);
+  private void setupStockWithLowestVariation(LocalDate from) {
+    someStock.getValueHistory().addValue(from, SOME_STOCK_VALUE);
   }
 
-  private void setupStockWithHighestVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
-    StockHistory secondStockHistory = mock(StockHistory.class);
+  private void setupStockWithHighestVariation(LocalDate from) {
     MoneyAmount someOtherValue = new MoneyAmount(SOME_VALUE.getAmount().multiply(new BigDecimal(0.5)), SOME_CURRENCY);
     StockValue someOtherStockValue = new StockValue(someOtherValue, someOtherValue, someOtherValue);
-    given(secondStockHistory.getValueOnDay(from)).willReturn(someOtherStockValue);
-    given(someOtherStock.getValueHistory()).willReturn(secondStockHistory);
+    someOtherStock.getValueHistory().addValue(from, someOtherStockValue);
   }
 }

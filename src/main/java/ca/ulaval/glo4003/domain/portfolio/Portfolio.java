@@ -68,7 +68,7 @@ public class Portfolio {
     BigDecimal highestVariation = BigDecimal.ZERO;
     String mostIncreasingStockTitle = null;
     for (Stock stock : stockList) {
-      BigDecimal variation = computeStockValueVariation(from, stock);
+      BigDecimal variation = stock.computeStockValueVariation(from);
       if (variation.compareTo(highestVariation) > 0) {
         highestVariation = variation;
         mostIncreasingStockTitle = stock.getTitle();
@@ -83,19 +83,13 @@ public class Portfolio {
     BigDecimal lowestVariation = new BigDecimal(Double.MAX_VALUE);
     String mostDecreasingStockTitle = null;
     for (Stock stock : stockList) {
-      BigDecimal variation = computeStockValueVariation(from, stock);
+      BigDecimal variation = stock.computeStockValueVariation(from);
       if (variation.compareTo(lowestVariation) < 0) {
         lowestVariation = variation;
         mostDecreasingStockTitle = stock.getTitle();
       }
     }
     return mostDecreasingStockTitle;
-  }
-
-  private BigDecimal computeStockValueVariation(LocalDate from, Stock stock) throws NoStockValueFitsCriteriaException {
-    MoneyAmount startAmount = stock.getValueHistory().getValueOnDay(from).getLatestValue();
-    MoneyAmount currentAmount = stock.getValue().getLatestValue();
-    return currentAmount.divide(startAmount);
   }
 
   private MoneyAmount getSubtotal(Stock stock) {

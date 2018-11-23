@@ -65,6 +65,12 @@ public class Stock {
     return latestStockValueOnDate;
   }
 
+  public BigDecimal computeStockValueVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
+    MoneyAmount startAmount = getLatestValueOnDate(from).getLatestValue();
+    MoneyAmount currentAmount = getValue().getLatestValue();
+    return currentAmount.divide(startAmount);
+  }
+
   public synchronized void saveOpeningPrice() {
     MoneyAmount startValue = getValue().getLatestValue();
     StockValue newStockValue = new StockValue(startValue);
