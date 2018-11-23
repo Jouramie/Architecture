@@ -37,6 +37,10 @@ public class Market {
     return currency;
   }
 
+  public void addStock(Stock stock) {
+    stocks.add(stock);
+  }
+
   public void halt(String message) {
     tradingStatus = TradingStatus.halted(message);
   }
@@ -55,5 +59,9 @@ public class Market {
 
   public void update(LocalDateTime currentTime, StockValueRetriever stockValueRetriever) {
     currentState = currentState.update(this, currentTime, stockValueRetriever);
+  }
+
+  public boolean containsStock(String title) {
+    return stocks.stream().anyMatch(stock -> stock.getTitle().equals(title));
   }
 }

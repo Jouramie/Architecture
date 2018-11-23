@@ -13,6 +13,7 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,9 +43,8 @@ public class MarketCsvLoader {
       LocalTime open = parseTime(record.get("open"));
       LocalTime close = parseTime(record.get("close"));
       boolean halt = Boolean.parseBoolean(record.get("tradinghalt"));
-      List<Stock> stocks = stockRepository.findByMarket(marketId);
 
-      Market market = new Market(marketId, open, close, currency.get(marketId), stocks, new ClosedMarketState());
+      Market market = new Market(marketId, open, close, currency.get(marketId), new ArrayList<>(), new ClosedMarketState());
       if (halt) {
         market.halt("");
       }

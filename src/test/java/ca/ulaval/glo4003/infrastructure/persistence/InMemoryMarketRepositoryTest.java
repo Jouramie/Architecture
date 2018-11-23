@@ -1,13 +1,14 @@
 package ca.ulaval.glo4003.infrastructure.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import java.util.List;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,7 +43,22 @@ public class InMemoryMarketRepositoryTest {
 
   @Test
   public void givenMarketDoesNotExist_whenFindingByTitle_thenStockNotFoundExceptionIsThrown() {
-    assertThatExceptionOfType(MarketNotFoundException.class)
-        .isThrownBy(() -> repository.findById(new MarketId("ASDF")));
+    ThrowingCallable findById = () -> repository.findById(new MarketId("ASDF"));
+
+    assertThatThrownBy(findById).isInstanceOf(MarketNotFoundException.class);
+  }
+
+  @Test
+  public void whenFindingMarketForStock_thenMarketIsReturned() throws MarketNotFoundException {
+    Market market = repository.findMarketForStock(TestingMarketBuilder.DEFAULT_STOCK_TITLE);
+
+    assertThat(market).isEqualTo(SOME_MARKET);
+  }
+
+  @Test
+  public void givenNoMarketContainsStock_whenFindingMarketForStock_thenExceptionIsThrown() {
+    ThrowingCallable findMarketStock = () -> repository.findMarketForStock("no market");
+
+    assertThatThrownBy(findMarketStock).isInstanceOf(MarketNotFoundException.class);
   }
 }

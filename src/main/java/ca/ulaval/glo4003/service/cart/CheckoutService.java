@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.service.cart;
 
 import ca.ulaval.glo4003.domain.Component;
+import ca.ulaval.glo4003.domain.market.HaltedMarketException;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -46,7 +47,7 @@ public class CheckoutService {
     this.stockRepository = stockRepository;
   }
 
-  public TransactionDto checkoutCart() throws InvalidStockTitleException, PurchaseLimitExceededOnCheckoutException {
+  public TransactionDto checkoutCart() throws InvalidStockTitleException {
     User currentUser = currentUserSession.getCurrentUser();
     try {
       Transaction transaction = currentUser.checkoutCart(
@@ -56,6 +57,8 @@ public class CheckoutService {
       throw new InvalidStockTitleException(e.title);
     } catch (EmptyCartException e) {
       throw new EmptyCartOnCheckoutException();
+    } catch (HaltedMarketException e) {
+      throw new HaltedMarketOnCheckoutException(e.message);
     } catch (TransactionLimitExceededExeption e) {
       throw new PurchaseLimitExceededOnCheckoutException();
     }

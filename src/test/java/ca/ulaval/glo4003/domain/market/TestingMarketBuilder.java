@@ -14,9 +14,9 @@ import java.util.List;
 
 public class TestingMarketBuilder {
 
+  public static final String DEFAULT_STOCK_TITLE = "stock";
   private static final LocalTime DEFAULT_CLOSING_TIME = LocalTime.of(21, 0, 0);
   private static final LocalTime DEFAULT_OPENING_TIME = LocalTime.of(14, 30, 0);
-  private static final String DEFAULT_STOCK_TITLE = "stock";
   private static final String DEFAULT_STOCK_NAME = "name";
   private static final String DEFAULT_STOCK_CATEGORY = "category";
   private static final String DEFAULT_MARKET_NAME = "market";

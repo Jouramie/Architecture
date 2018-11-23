@@ -48,7 +48,9 @@ public class StockCsvLoader {
       }
 
       Stock stock = new Stock(title, name, category, marketId, history);
+
       stockRepository.add(stock);
+      marketRepository.findById(marketId).addStock(stock);
     }
 
     file.close();

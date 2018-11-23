@@ -31,4 +31,12 @@ public class InMemoryMarketRepository implements MarketRepository {
   public void add(Market stock) {
     markets.put(stock.getId(), stock);
   }
+
+  @Override
+  public Market findMarketForStock(String stockTitle) throws MarketNotFoundException {
+    return markets.values().stream()
+        .filter(market -> market.containsStock(stockTitle))
+        .findFirst()
+        .orElseThrow(() -> new MarketNotFoundException("Cannot find market for stock " + stockTitle));
+  }
 }
