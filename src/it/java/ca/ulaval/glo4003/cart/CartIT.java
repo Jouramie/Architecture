@@ -383,7 +383,7 @@ public class CartIT {
         .post(API_CART_CHECKOUT_ROUTE)
     .then()
         .body(containsString(HALT_MESSAGE))
-        .statusCode(BAD_REQUEST.getStatusCode());
+        .statusCode(FORBIDDEN.getStatusCode());
     //@formatter:on
   }
 

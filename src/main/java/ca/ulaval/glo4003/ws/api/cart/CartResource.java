@@ -188,7 +188,7 @@ public interface CartResource {
           ),
           @ApiResponse(
               responseCode = "403",
-              description = "Transaction exceed user limit."
+              description = "Transaction exceed user limit or one market of a stock is halted."
           )
       }
   )

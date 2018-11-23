@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.cart.mappers;
 
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.FORBIDDEN;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo4003.service.cart.HaltedMarketOnCheckoutException;
@@ -24,7 +24,7 @@ public class HaltedMarketOnCheckoutExceptionMapperTest {
 
     Response response =mapper.toResponse(new HaltedMarketOnCheckoutException(message));
 
-    assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.getStatusCode());
+    assertThat(response.getStatus()).isEqualTo(FORBIDDEN.getStatusCode());
     assertThat(response.getEntity()).toString().contains(message);
   }
 }
