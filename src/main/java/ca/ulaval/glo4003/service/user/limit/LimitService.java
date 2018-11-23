@@ -6,6 +6,7 @@ import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
+import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
 import ca.ulaval.glo4003.domain.user.limit.MoneyAmountLimit;
 import ca.ulaval.glo4003.domain.user.limit.NullLimit;
@@ -29,31 +30,31 @@ public class LimitService {
   public MoneyAmountLimitDto createMoneyAmountLimit(String email, ApplicationPeriod applicationPeriod,
                                                     BigDecimal amount) {
     MoneyAmountLimit limit = limitFactory.createMoneyAmountLimit(applicationPeriod, new MoneyAmount(amount));
-    User user = getUserByEmail(email);
-    user.setLimit(limit);
+    setUserLimit(email, limit);
     return new MoneyAmountLimitDto(limit.start, limit.end, amount);
   }
 
   public StockQuantityLimitDto createStockQuantityLimit(String email, ApplicationPeriod applicationPeriod, int stockQuantity) {
     StockQuantityLimit limit = limitFactory.createStockQuantityLimit(applicationPeriod, stockQuantity);
-    User user = getUserByEmail(email);
-    user.setLimit(limit);
+    setUserLimit(email, limit);
     return new StockQuantityLimitDto(limit.start, limit.end, stockQuantity);
   }
 
   public void removeUserLimit(String email) {
     NullLimit limit = limitFactory.createNullLimit();
-    User user = getUserByEmail(email);
-    user.setLimit(limit);
+    setUserLimit(email, limit);
   }
 
   private User getUserByEmail(String email) {
-    User user;
     try {
-      user = userRepository.find(email);
+      return userRepository.find(email);
     } catch (UserNotFoundException e) {
       throw new UserDoesNotExistException(e);
     }
-    return user;
+  }
+
+  private void setUserLimit(String email, Limit limit) {
+    User user = getUserByEmail(email);
+    user.setLimit(limit);
   }
 }
