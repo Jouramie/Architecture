@@ -14,6 +14,10 @@ public class MoneyAmount {
     this(amount, Currency.USD);
   }
 
+  public MoneyAmount(BigDecimal amount) {
+    this(amount, Currency.USD);
+  }
+
   public MoneyAmount(double amount, Currency currency) {
     this.amount = new BigDecimal(amount).setScale(2, RoundingMode.HALF_EVEN);
     this.currency = currency;
