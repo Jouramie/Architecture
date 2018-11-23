@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
-import ca.ulaval.glo4003.domain.market.MarketNotFoundForStockException;
 import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import java.util.List;
@@ -50,7 +49,7 @@ public class InMemoryMarketRepositoryTest {
   }
 
   @Test
-  public void whenFindingMarketForStock_thenMarketIsReturned() throws MarketNotFoundForStockException {
+  public void whenFindingMarketForStock_thenMarketIsReturned() throws MarketNotFoundException {
     Market market = repository.findMarketForStock(TestingMarketBuilder.DEFAULT_STOCK_TITLE);
 
     assertThat(market).isEqualTo(SOME_MARKET);
@@ -60,6 +59,6 @@ public class InMemoryMarketRepositoryTest {
   public void givenNoMarketContainsStock_whenFindingMarketForStock_thenExceptionIsThrown() {
     ThrowingCallable findMarketStock = () -> repository.findMarketForStock("no market");
 
-    assertThatThrownBy(findMarketStock).isInstanceOf(MarketNotFoundForStockException.class);
+    assertThatThrownBy(findMarketStock).isInstanceOf(MarketNotFoundException.class);
   }
 }

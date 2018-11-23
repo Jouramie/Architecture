@@ -7,7 +7,7 @@ import static org.mockito.BDDMockito.given;
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
-import ca.ulaval.glo4003.domain.market.MarketNotFoundForStockException;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
 import ca.ulaval.glo4003.domain.market.states.Market;
@@ -17,7 +17,6 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
-import ca.ulaval.glo4003.service.cart.HaltedMarketOnCheckoutException;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -56,7 +55,7 @@ public class TransactionFactoryTest {
   private Cart cart;
 
   @Before
-  public void setup() throws StockNotFoundException, MarketNotFoundForStockException {
+  public void setup() throws StockNotFoundException, MarketNotFoundException {
     given(clock.getCurrentTime()).willReturn(SOME_TIME);
     given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(stock);
@@ -72,7 +71,7 @@ public class TransactionFactoryTest {
 
   @Test
   public void whenCreate_thenTypeIsSetToTransaction()
-      throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
+      throws StockNotFoundException, HaltedMarketException {
     Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
@@ -81,7 +80,7 @@ public class TransactionFactoryTest {
 
   @Test
   public void whenCreate_thenLocalTimeSetToTransaction()
-      throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
+      throws StockNotFoundException, HaltedMarketException {
     Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
@@ -90,7 +89,7 @@ public class TransactionFactoryTest {
 
   @Test
   public void whenCreate_thenTransactionItemsIsSetToTransaction()
-      throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
+      throws StockNotFoundException, HaltedMarketException {
     Transaction transaction = factory.createPurchase(cart);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).withDefaultItems().build();
 

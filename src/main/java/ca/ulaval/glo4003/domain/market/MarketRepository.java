@@ -10,5 +10,5 @@ public interface MarketRepository {
 
   void add(Market market);
 
-  Market findMarketForStock(String stockTitle) throws MarketNotFoundForStockException;
+  Market findMarketForStock(String stockTitle) throws MarketNotFoundException;
 }

@@ -2,19 +2,14 @@ package ca.ulaval.glo4003.domain.user;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
-import ca.ulaval.glo4003.domain.market.MarketNotFoundForStockException;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
@@ -69,7 +64,7 @@ public class UserTest {
   private User user;
 
   @Before
-  public void setup() throws StockNotFoundException, MarketNotFoundForStockException, HaltedMarketException {
+  public void setup() throws StockNotFoundException, HaltedMarketException {
     transaction = new TransactionBuilder()
         .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QTY).build())
         .withItem(new TransactionItemBuilder().withTitle(SOME_OTHER_TITLE).withQuantity(SOME_OTHER_QTY).build())
@@ -99,7 +94,7 @@ public class UserTest {
   @Test
   public void whenCheckoutCart_thenReturnCalculatedTransaction()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
-      MarketNotFoundForStockException, HaltedMarketException {
+      HaltedMarketException {
     Transaction result = user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(result).isEqualTo(transaction);
@@ -108,7 +103,7 @@ public class UserTest {
   @Test
   public void whenCheckoutCart_thenPaymentIsProcessedWithTheCurrentTransaction()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
-      MarketNotFoundForStockException, HaltedMarketException {
+      HaltedMarketException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     verify(paymentProcessor).payment(transaction);
@@ -117,7 +112,7 @@ public class UserTest {
   @Test
   public void whenCheckoutCart_thenANotificationIsSent()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
-      MarketNotFoundForStockException, HaltedMarketException {
+      HaltedMarketException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     verify(notificationSender).sendNotification(eq(notification), any());
@@ -126,7 +121,7 @@ public class UserTest {
   @Test
   public void whenCheckoutCart_thenContentIsAddedToPortfolio()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
-      MarketNotFoundForStockException, HaltedMarketException {
+      HaltedMarketException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(user.getPortfolio().getStocks().getTitles()).containsExactlyInAnyOrder(SOME_TITLE, SOME_OTHER_TITLE);
@@ -137,7 +132,7 @@ public class UserTest {
   @Test
   public void whenCheckoutCart_thenCartIsCleared()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
-      MarketNotFoundForStockException, HaltedMarketException {
+      HaltedMarketException {
     user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository);
 
     assertThat(user.getCart().isEmpty()).isTrue();
@@ -189,20 +184,10 @@ public class UserTest {
 
   @Test
   public void givenMarketHalted_whenCheckoutCart_thenExceptionIsPropagated()
-      throws MarketNotFoundForStockException, HaltedMarketException, StockNotFoundException {
+      throws HaltedMarketException, StockNotFoundException {
     given(transactionFactory.createPurchase(any(Cart.class))).willThrow(new HaltedMarketException(SOME_HALTED_MESSAGE));
 
     assertThatExceptionOfType(HaltedMarketException.class)
-        .isThrownBy(() ->
-            user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository));
-  }
-
-  @Test
-  public void givenNoMarketForAStock_whenCheckoutCart_thenExceptionIsPropagated()
-      throws MarketNotFoundForStockException, HaltedMarketException, StockNotFoundException {
-    given(transactionFactory.createPurchase(any(Cart.class))).willThrow(new MarketNotFoundForStockException(SOME_TITLE));
-
-    assertThatExceptionOfType(MarketNotFoundForStockException.class)
         .isThrownBy(() ->
             user.checkoutCart(transactionFactory, paymentProcessor, notificationFactory, notificationSender, stockRepository));
   }
