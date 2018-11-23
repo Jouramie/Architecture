@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,15 @@ public class InMemoryUserRepository implements UserRepository {
       throw new UserNotFoundException();
     }
     content.put(user.getEmail(), user);
+  }
+
+  @Override
+  public <T extends User> T find(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException {
+    try {
+      return clazz.cast(find(email));
+    } catch (ClassCastException e) {
+      throw new WrongRoleException(e);
+    }
   }
 
   @Override

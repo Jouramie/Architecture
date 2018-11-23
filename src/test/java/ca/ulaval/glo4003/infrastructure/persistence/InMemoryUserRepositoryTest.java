@@ -3,9 +3,12 @@ package ca.ulaval.glo4003.infrastructure.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ca.ulaval.glo4003.domain.user.Administrator;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
 import ca.ulaval.glo4003.util.UserBuilder;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -81,5 +84,27 @@ public class InMemoryUserRepositoryTest {
     List<User> resultingUsers = inMemoryUserRepository.findAll();
 
     assertThat(resultingUsers).containsExactly(SOME_USER, SOME_OTHER_USER);
+  }
+
+  @Test
+  public void givenInvestorAlreadyInRepo_whenFindingInvestor_thenReturnTheInvestor()
+      throws UserAlreadyExistsException, UserNotFoundException, WrongRoleException {
+    Investor expectedInvestor = new UserBuilder().buildInvestor();
+    inMemoryUserRepository.add(expectedInvestor);
+
+    Investor resultingInvestor = inMemoryUserRepository.find(expectedInvestor.getEmail(), Investor.class);
+
+    assertThat(resultingInvestor).isSameAs(expectedInvestor);
+  }
+
+  @Test
+  public void givenAdministratorAlreadyInRepo_whenFindingInvestor_thenExceptionIsThrown()
+      throws UserAlreadyExistsException {
+    Administrator administrator = new UserBuilder().buildAdministrator();
+    inMemoryUserRepository.add(administrator);
+
+    ThrowingCallable findInvestor = () -> inMemoryUserRepository.find(administrator.getEmail(), Investor.class);
+
+    assertThatThrownBy(findInvestor).isInstanceOf(WrongRoleException.class);
   }
 }

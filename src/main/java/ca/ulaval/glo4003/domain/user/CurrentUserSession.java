@@ -4,6 +4,10 @@ public class CurrentUserSession {
 
   private final ThreadLocal<User> currentUser = new ThreadLocal<>();
 
+  public <T extends User> T getCurrentUser(Class<T> clazz) {
+    return clazz.cast(getCurrentUser());
+  }
+
   public User getCurrentUser() {
     return currentUser.get();
   }

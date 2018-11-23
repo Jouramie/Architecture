@@ -8,6 +8,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
@@ -34,7 +35,7 @@ public class UserServiceTest {
 
   private static final String SOME_EMAIL = "email";
   private static final String SOME_PASSWORD = "password";
-  private static final UserRole SOME_USER_ROLE = UserRole.INVESTOR;
+  private static final Investor SOME_INVESTOR = new UserBuilder().buildInvestor();
   private static final User SOME_USER = new UserBuilder().build();
   private static final LocalDateTime SOME_DATE = LocalDateTime.now();
   private static final int SOME_STOCK_QUANTITY = 123;
@@ -52,8 +53,8 @@ public class UserServiceTest {
   }
 
   @Test
-  public void whenCreatingUser_thenUserIsCreated() {
-    given(userFactory.createInvestor(any(), any())).willReturn(SOME_USER);
+  public void whenCreatingInvestor_thenUserIsCreated() {
+    given(userFactory.createInvestor(any(), any())).willReturn(SOME_INVESTOR);
 
     userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
@@ -62,21 +63,21 @@ public class UserServiceTest {
 
   @Test
   public void whenCreatingUser_thenUserIsAddedToRepository() throws UserAlreadyExistsException {
-    given(userFactory.createInvestor(any(), any())).willReturn(SOME_USER);
+    given(userFactory.createInvestor(any(), any())).willReturn(SOME_INVESTOR);
 
     userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
-    verify(userRepository).add(SOME_USER);
+    verify(userRepository).add(SOME_INVESTOR);
   }
 
   @Test
   public void whenCreatingUser_thenReturnsConvertedUser() {
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).build();
-    given(userFactory.createInvestor(any(), any())).willReturn(user);
+    Investor investor = new UserBuilder().withEmail(SOME_EMAIL).buildInvestor();
+    given(userFactory.createInvestor(any(), any())).willReturn(investor);
 
     UserDto resultingUser = userService.createInvestorUser(SOME_EMAIL, SOME_PASSWORD);
 
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE, null);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, UserRole.INVESTOR, null);
     assertThat(resultingUser).isEqualToComparingFieldByField(expectedUser);
   }
 
@@ -101,13 +102,13 @@ public class UserServiceTest {
   @Test
   public void whenGetUser_thenReturnConvertedUser() throws UserNotFoundException {
     Limit limit = new StockQuantityLimit(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).withLimit(limit).build();
+    User user = new UserBuilder().withEmail(SOME_EMAIL).withLimit(limit).buildInvestor();
     given(userRepository.find(any())).willReturn(user);
 
     UserDto resultingUser = userService.getUser(SOME_EMAIL);
 
     LimitDto expectedLimit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE, expectedLimit);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, UserRole.INVESTOR, expectedLimit);
     assertThat(resultingUser).isEqualToComparingFieldByFieldRecursively(expectedUser);
   }
 
@@ -130,14 +131,14 @@ public class UserServiceTest {
   @Test
   public void whenGetUsers_thenReturnConvertedUsers() {
     Limit limit = new StockQuantityLimit(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_USER_ROLE).withLimit(limit).build();
+    User user = new UserBuilder().withEmail(SOME_EMAIL).withLimit(limit).buildInvestor();
     List<User> users = singletonList(user);
     given(userRepository.findAll()).willReturn(users);
 
     List<UserDto> resultingUsers = userService.getUsers();
 
     LimitDto expectedLimit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_USER_ROLE, expectedLimit);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, UserRole.INVESTOR, expectedLimit);
     List<UserDto> expectedUsers = singletonList(expectedUser);
     assertThat(resultingUsers).usingRecursiveFieldByFieldElementComparator().containsExactlyElementsOf(expectedUsers);
   }

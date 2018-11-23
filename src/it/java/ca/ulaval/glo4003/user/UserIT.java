@@ -8,8 +8,8 @@ import static org.hamcrest.Matchers.*;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
-import ca.ulaval.glo4003.ws.api.user.dto.UserCreationDto;
 import io.restassured.http.Header;
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +21,7 @@ public class UserIT {
 
   private static final String SOME_EMAIL = "john.smith@investul.com";
   private static final String SOME_PASSWORD = "password";
-  private static final UserCreationDto SOME_USER_CREATION_REQUEST = new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
+  private static final InvestorCreationDto SOME_USER_CREATION_REQUEST = new InvestorCreationDto(SOME_EMAIL, SOME_PASSWORD);
 
   private static final String API_USERS_ROUTE = "/api/users";
   private static final String API_USERS_EMAIL_ROUTE = "/api/users/{email}";
@@ -88,7 +88,7 @@ public class UserIT {
   public void givenEmptyEmail_whenCreatingUser_thenBadRequest() {
     //@formatter:off
     given()
-        .body(new UserCreationDto("", SOME_PASSWORD))
+        .body(new InvestorCreationDto("", SOME_PASSWORD))
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .post(API_USERS_ROUTE)
@@ -102,7 +102,7 @@ public class UserIT {
   public void givenTooSmallPassword_whenCreatingUser_thenBadRequest() {
     //@formatter:off
     given()
-        .body(new UserCreationDto(SOME_EMAIL, "1234567"))
+        .body(new InvestorCreationDto(SOME_EMAIL, "1234567"))
         .contentType(MediaType.APPLICATION_JSON)
     .when()
         .post(API_USERS_ROUTE)

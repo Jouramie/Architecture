@@ -14,41 +14,41 @@ public class UserFactoryTest {
 
   @Test
   public void whenCreatingInvestor_thenReturnInvestorUser() {
-    User expectedUser = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).build();
+    Investor expectedInvestor = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD).buildInvestor();
 
-    User createdUser = factory.createInvestor(SOME_EMAIL, SOME_PASSWORD);
+    Investor createdInvestor = factory.createInvestor(SOME_EMAIL, SOME_PASSWORD);
 
-    assertThat(createdUser).isEqualToComparingOnlyGivenFields(expectedUser, "email", "password", "role");
+    assertThat(createdInvestor).isEqualToComparingOnlyGivenFields(expectedInvestor, "email", "password", "role");
   }
 
   @Test
   public void whenCreatingInvestor_thenCartIsEmpty() {
-    User createdUser = factory.createInvestor(SOME_EMAIL, SOME_PASSWORD);
+    Investor createdInvestor = factory.createInvestor(SOME_EMAIL, SOME_PASSWORD);
 
-    assertThat(createdUser.getCart().isEmpty()).isTrue();
+    assertThat(createdInvestor.getCart().isEmpty()).isTrue();
   }
 
   @Test
   public void whenCreatingInvestor_thenUserDoesNotOwnStock() {
-    User createdUser = factory.createInvestor(SOME_EMAIL, SOME_PASSWORD);
+    Investor createdInvestor = factory.createInvestor(SOME_EMAIL, SOME_PASSWORD);
 
-    assertThat(createdUser.getPortfolio().getStocks().isEmpty()).isTrue();
+    assertThat(createdInvestor.getPortfolio().getStocks().isEmpty()).isTrue();
   }
 
   @Test
   public void whenCreatingInvestor_thenUserIsNotLimited() {
-    User createdUser = factory.createInvestor(SOME_EMAIL, SOME_PASSWORD);
+    Investor createdInvestor = factory.createInvestor(SOME_EMAIL, SOME_PASSWORD);
 
-    assertThat(createdUser.getLimit()).isInstanceOf(NullLimit.class);
+    assertThat(createdInvestor.getLimit()).isInstanceOf(NullLimit.class);
   }
 
   @Test
   public void whenCreatingAdministrator_thenReturnAdministratorUser() {
-    User expectedUser = new UserBuilder().withEmail(SOME_EMAIL).withPassword(SOME_PASSWORD)
-        .withRole(UserRole.ADMINISTRATOR).build();
+    Administrator expectedAdministrator = new UserBuilder().withEmail(SOME_EMAIL)
+        .withPassword(SOME_PASSWORD).buildAdministrator();
 
-    User createdUser = factory.createAdministrator(SOME_EMAIL, SOME_PASSWORD);
+    Administrator createdAdministrator = factory.createAdministrator(SOME_EMAIL, SOME_PASSWORD);
 
-    assertThat(createdUser).isEqualToComparingOnlyGivenFields(expectedUser, "email", "password", "role");
+    assertThat(createdAdministrator).isEqualToComparingOnlyGivenFields(expectedAdministrator, "email", "password", "role");
   }
 }

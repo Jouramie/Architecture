@@ -2,9 +2,10 @@ package ca.ulaval.glo4003.service.user.limit;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
@@ -47,16 +48,15 @@ public class LimitService {
     setUserLimit(email, limit);
   }
 
-  private User getUserByEmail(String email) {
+  private Investor getInvestorByEmail(String email) {
     try {
-      return userRepository.find(email);
-    } catch (UserNotFoundException e) {
+      return userRepository.find(email, Investor.class);
+    } catch (UserNotFoundException | WrongRoleException e) {
       throw new UserDoesNotExistException(e);
     }
   }
 
   private void setUserLimit(String email, Limit limit) {
-    User user = getUserByEmail(email);
-    user.setLimit(limit);
+    getInvestorByEmail(email).setLimit(limit);
   }
 }

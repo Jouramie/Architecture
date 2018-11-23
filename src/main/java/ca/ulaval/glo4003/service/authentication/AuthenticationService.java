@@ -40,22 +40,23 @@ public class AuthenticationService {
 
   public AuthenticationResponseDto authenticate(ApiAuthenticationRequestDto authenticationRequest) {
     User user = getUserByEmail(authenticationRequest.email);
-    if (user.isThisYourPassword(authenticationRequest.password)) {
-      AuthenticationToken token = tokenFactory.createToken(authenticationRequest.email);
-      authenticationTokenRepository.add(token);
-      return responseAssembler.toDto(token);
+    if (!user.isThisYourPassword(authenticationRequest.password)) {
+      throw new AuthenticationFailedException();
     }
-    throw new AuthenticationFailedException();
+
+    AuthenticationToken token = tokenFactory.createToken(authenticationRequest.email);
+    authenticationTokenRepository.add(token);
+    return responseAssembler.toDto(token);
   }
 
   public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto, List<UserRole> acceptedRoles) {
     try {
-      AuthenticationToken savedToken =
-          authenticationTokenRepository.findByUUID(UUID.fromString(authenticationTokenDto.token));
+      AuthenticationToken savedToken = authenticationTokenRepository
+          .findByUUID(UUID.fromString(authenticationTokenDto.token));
       User currentUser = getUserByEmail(savedToken.email);
 
       if (!currentUser.haveRoleIn(acceptedRoles)) {
-        throw new InvalidTokenException();
+        throw new UnauthorizedUserException();
       }
 
       currentUserSession.setCurrentUser(currentUser);

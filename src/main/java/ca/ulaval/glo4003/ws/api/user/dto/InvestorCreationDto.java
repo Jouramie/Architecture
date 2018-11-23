@@ -8,9 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Schema(
-    name = "User creation request"
+    name = "Investor creation request"
 )
-public class UserCreationDto {
+public class InvestorCreationDto {
 
   @NotNull
   @NotBlank
@@ -21,7 +21,7 @@ public class UserCreationDto {
   public final String password;
 
   @JsonCreator
-  public UserCreationDto(
+  public InvestorCreationDto(
       @JsonProperty("email") String email,
       @JsonProperty("password") String password) {
     this.email = email;

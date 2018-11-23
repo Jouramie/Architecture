@@ -12,7 +12,7 @@ import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.service.cart.assemblers.CartItemAssembler;
@@ -33,8 +33,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class CartServiceTest {
   private static final String SOME_TITLE = "title";
   private static final int SOME_QUANTITY = 1;
-  @Mock
-  private CurrentUserSession currentUserSession;
+
   @Mock
   private UserRepository userRepository;
   @Mock
@@ -42,7 +41,7 @@ public class CartServiceTest {
   @Mock
   private CartItemAssembler cartItemAssembler;
   @Mock
-  private User currentUser;
+  private Investor currentInvestor;
   @Mock
   private Cart cart;
   @Mock
@@ -52,8 +51,9 @@ public class CartServiceTest {
 
   @Before
   public void setup() {
-    given(currentUserSession.getCurrentUser()).willReturn(currentUser);
-    given(currentUser.getCart()).willReturn(cart);
+    CurrentUserSession currentUserSession = new CurrentUserSession();
+    currentUserSession.setCurrentUser(currentInvestor);
+    given(currentInvestor.getCart()).willReturn(cart);
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
 
     cartService = new CartService(stockRepository, currentUserSession, userRepository, cartItemAssembler);
@@ -90,7 +90,7 @@ public class CartServiceTest {
     cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).add(SOME_TITLE, SOME_QUANTITY, stockRepository);
-    verify(userRepository).update(currentUser);
+    verify(userRepository).update(currentInvestor);
   }
 
   @Test
@@ -111,7 +111,7 @@ public class CartServiceTest {
     cartService.updateStockInCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).update(SOME_TITLE, SOME_QUANTITY);
-    verify(userRepository).update(currentUser);
+    verify(userRepository).update(currentInvestor);
   }
 
   @Test
@@ -144,7 +144,7 @@ public class CartServiceTest {
     cartService.removeStockFromCart(SOME_TITLE);
 
     verify(cart).removeAll(SOME_TITLE);
-    verify(userRepository).update(currentUser);
+    verify(userRepository).update(currentInvestor);
   }
 
   @Test
@@ -164,7 +164,7 @@ public class CartServiceTest {
     cartService.emptyCart();
 
     verify(cart).empty();
-    verify(userRepository).update(currentUser);
+    verify(userRepository).update(currentInvestor);
   }
 
   @Test

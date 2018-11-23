@@ -13,7 +13,7 @@ import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.TreeSet;
@@ -32,9 +32,7 @@ public class PortfolioServiceTest {
   private final String SOME_MOST_DECREASING_STOCK = "AAPL";
 
   @Mock
-  private CurrentUserSession someCurrentUserSession;
-  @Mock
-  private User someCurrentUser;
+  private Investor someCurrentInvestor;
   @Mock
   private PortfolioAssembler somePortfolioAssembler;
   @Mock
@@ -52,11 +50,12 @@ public class PortfolioServiceTest {
 
   @Before
   public void setupPortfolioService() throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
-    portfolioService = new PortfolioService(someCurrentUserSession, somePortfolioAssembler,
+    CurrentUserSession currentUserSession = new CurrentUserSession();
+    currentUserSession.setCurrentUser(someCurrentInvestor);
+    portfolioService = new PortfolioService(currentUserSession, somePortfolioAssembler,
         somePortfolioReportAssembler, clock, someStockRepository);
 
-    given(someCurrentUserSession.getCurrentUser()).willReturn(someCurrentUser);
-    given(someCurrentUser.getPortfolio()).willReturn(portfolio);
+    given(someCurrentInvestor.getPortfolio()).willReturn(portfolio);
     given(portfolio.getHistory(SOME_FROM_DATE, SOME_CURRENT_DATETIME.toLocalDate())).willReturn(somePortfolioHistory);
     given(portfolio.getMostIncreasingStockTitle(SOME_FROM_DATE, someStockRepository)).willReturn(SOME_MOST_INCREASING_STOCK);
     given(portfolio.getMostDecreasingStockTitle(SOME_FROM_DATE, someStockRepository)).willReturn(SOME_MOST_DECREASING_STOCK);
@@ -67,7 +66,7 @@ public class PortfolioServiceTest {
   public void whenGetPortfolio_thenPortfolioOfCurrentUserIsRetrieved() {
     portfolioService.getPortfolio();
 
-    verify(someCurrentUser).getPortfolio();
+    verify(someCurrentInvestor).getPortfolio();
   }
 
   @Test
@@ -81,7 +80,7 @@ public class PortfolioServiceTest {
   public void whenGetPortfolioReport_thenPortfolioOfCurrentUserIsRetrieved() {
     portfolioService.getPortfolioReport(SOME_FROM_DATE);
 
-    verify(someCurrentUser).getPortfolio();
+    verify(someCurrentInvestor).getPortfolio();
   }
 
   @Test

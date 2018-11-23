@@ -11,7 +11,7 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
@@ -52,9 +52,9 @@ public class CheckoutService {
   }
 
   public TransactionDto checkoutCart() throws InvalidStockTitleException {
-    User currentUser = currentUserSession.getCurrentUser();
+    Investor currentInvestor = currentUserSession.getCurrentUser(Investor.class);
     try {
-      Transaction transaction = currentUser.checkoutCart(transactionFactory, marketRepository,
+      Transaction transaction = currentInvestor.checkoutCart(transactionFactory, marketRepository,
           paymentProcessor, stockRepository, notificationFactory, notificationSender);
       return transactionAssembler.toDto(transaction);
     } catch (StockNotFoundException e) {

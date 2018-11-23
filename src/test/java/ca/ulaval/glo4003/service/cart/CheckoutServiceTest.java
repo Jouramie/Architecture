@@ -16,7 +16,7 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
 import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
@@ -37,8 +37,6 @@ public class CheckoutServiceTest {
   private static final String SOME_TITLE = "MSFT";
 
   @Mock
-  private CurrentUserSession currentUserSession;
-  @Mock
   private TransactionFactory transactionFactory;
   @Mock
   private PaymentProcessor paymentProcessor;
@@ -53,7 +51,7 @@ public class CheckoutServiceTest {
   @Mock
   private MarketRepository marketRepository;
   @Mock
-  private User currentUser;
+  private Investor currentInvestor;
   @Mock
   private Transaction transaction;
   @Mock
@@ -63,7 +61,8 @@ public class CheckoutServiceTest {
 
   @Before
   public void setup() {
-    given(currentUserSession.getCurrentUser()).willReturn(currentUser);
+    CurrentUserSession currentUserSession = new CurrentUserSession();
+    currentUserSession.setCurrentUser(currentInvestor);
     given(transactionAssembler.toDto(transaction)).willReturn(expectedDto);
 
     checkoutService = new CheckoutService(
@@ -81,7 +80,7 @@ public class CheckoutServiceTest {
   public void whenCheckoutCart_thenTransactionIsAssembledToDto()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
       HaltedMarketException {
-    given(currentUser.checkoutCart(transactionFactory, marketRepository, paymentProcessor,
+    given(currentInvestor.checkoutCart(transactionFactory, marketRepository, paymentProcessor,
         stockRepository, notificationFactory, notificationSender)).willReturn(transaction);
 
     TransactionDto transactionDto = checkoutService.checkoutCart();
@@ -93,7 +92,7 @@ public class CheckoutServiceTest {
   public void whenCheckoutCartThrowingStockNotFound_thenExceptionIsTransformed()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
       HaltedMarketException {
-    given(currentUser.checkoutCart(any(), any(), any(), any(), any(), any())).willThrow(new StockNotFoundException(SOME_TITLE));
+    given(currentInvestor.checkoutCart(any(), any(), any(), any(), any(), any())).willThrow(new StockNotFoundException(SOME_TITLE));
 
     ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
 
@@ -104,7 +103,7 @@ public class CheckoutServiceTest {
   public void whenCheckoutCartThrowingEmptyCart_thenExceptionIsTransformed()
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption,
       HaltedMarketException {
-    given(currentUser.checkoutCart(any(), any(), any(), any(), any(), any())).willThrow(new EmptyCartException());
+    given(currentInvestor.checkoutCart(any(), any(), any(), any(), any(), any())).willThrow(new EmptyCartException());
 
     ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
 
@@ -115,7 +114,7 @@ public class CheckoutServiceTest {
   public void whenCheckoutCartThrowingExceedLimit_thenExceptionIsTransformed()
       throws EmptyCartException, TransactionLimitExceededExeption, StockNotFoundException,
       HaltedMarketException {
-    given(currentUser.checkoutCart(any(), any(), any(), any(), any(), any())).willThrow(new TransactionLimitExceededExeption());
+    given(currentInvestor.checkoutCart(any(), any(), any(), any(), any(), any())).willThrow(new TransactionLimitExceededExeption());
 
     ThrowingCallable checkoutCart = () -> checkoutService.checkoutCart();
 
@@ -126,7 +125,7 @@ public class CheckoutServiceTest {
   public void givenMarketHaltedOnCheckout_whenCheckout_thenExceptionIsTransformed()
       throws HaltedMarketException, StockNotFoundException,
       EmptyCartException, TransactionLimitExceededExeption {
-    given(currentUser.checkoutCart(any(), any(), any(), any(), any(), any())).willThrow(new HaltedMarketException(SOME_HALTED_MESSAGE));
+    given(currentInvestor.checkoutCart(any(), any(), any(), any(), any(), any())).willThrow(new HaltedMarketException(SOME_HALTED_MESSAGE));
 
     assertThatExceptionOfType(HaltedMarketOnCheckoutException.class).isThrownBy(() -> checkoutService.checkoutCart());
   }

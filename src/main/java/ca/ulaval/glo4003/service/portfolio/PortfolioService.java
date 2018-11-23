@@ -9,7 +9,7 @@ import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
 import java.time.LocalDate;
@@ -40,7 +40,7 @@ public class PortfolioService {
   public PortfolioDto getPortfolio() throws InvalidPortfolioException {
     PortfolioDto dto;
     try {
-      Portfolio portfolio = currentUserSession.getCurrentUser().getPortfolio();
+      Portfolio portfolio = currentUserSession.getCurrentUser(Investor.class).getPortfolio();
       dto = portfolioAssembler.toDto(portfolio);
     } catch (InvalidStockInPortfolioException e) {
       throw new InvalidPortfolioException();
@@ -50,8 +50,8 @@ public class PortfolioService {
 
   public PortfolioReportDto getPortfolioReport(LocalDate from) {
     try {
-      User user = currentUserSession.getCurrentUser();
-      Portfolio portfolio = user.getPortfolio();
+      Investor investor = currentUserSession.getCurrentUser(Investor.class);
+      Portfolio portfolio = investor.getPortfolio();
       TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(from, clock.getCurrentTime().toLocalDate());
       String mostIncreasingStockTitle = portfolio.getMostIncreasingStockTitle(from, stockRepository);
       String mostDecreasingStockTitle = portfolio.getMostDecreasingStockTitle(from, stockRepository);

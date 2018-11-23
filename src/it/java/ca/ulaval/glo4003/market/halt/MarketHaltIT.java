@@ -51,7 +51,7 @@ public class MarketHaltIT {
   public void givenNonAdministratorUser_whenHaltingMarket_thenReturn401Unauthorized() {
     //@formatter:off
     given()
-        .queryParam("message", "foobar").when()
+        .queryParam("message", "foobar")
     .when()
         .post(String.format(API_HALT_MARKET_ROUTE, MARKET))
     .then()

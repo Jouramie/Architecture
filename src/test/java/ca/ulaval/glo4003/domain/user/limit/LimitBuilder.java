@@ -33,15 +33,15 @@ public class LimitBuilder {
     return buildNullLimit();
   }
 
-  public Limit buildNullLimit() {
+  public NullLimit buildNullLimit() {
     return new NullLimit();
   }
 
-  public Limit buildStockQuantityLimit() {
+  public StockQuantityLimit buildStockQuantityLimit() {
     return new StockQuantityLimit(start, end, stockQuantity);
   }
 
-  public Limit buildMoneyAmountLimit() {
+  public MoneyAmountLimit buildMoneyAmountLimit() {
     return new MoneyAmountLimit(start, end, moneyAmount);
   }
 }

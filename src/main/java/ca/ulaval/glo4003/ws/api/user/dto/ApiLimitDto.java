@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
 @Schema(
-    name = "User limit",
+    name = "Limit",
     description = "Partial representation of a transaction limit."
 )
 public abstract class ApiLimitDto {

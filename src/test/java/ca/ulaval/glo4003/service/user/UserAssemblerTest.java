@@ -16,21 +16,30 @@ import org.junit.Test;
 public class UserAssemblerTest {
 
   private static final String SOME_EMAIL = "1234@5678.com";
-  private static final UserRole SOME_ROLE = UserRole.ADMINISTRATOR;
   private static final LocalDateTime SOME_DATE = LocalDateTime.now();
   private static final int SOME_STOCK_QUANTITY = 123;
 
   private final UserAssembler assembler = new UserAssembler(new LimitAssembler());
 
   @Test
-  public void whenAssemblingDto_thenKeepSameFieldValues() {
+  public void givenInvestor_whenAssemblingDto_thenKeepSameFieldValues() {
     Limit limit = new StockQuantityLimit(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
-    User user = new UserBuilder().withEmail(SOME_EMAIL).withRole(SOME_ROLE).withLimit(limit).build();
+    User user = new UserBuilder().withEmail(SOME_EMAIL).withLimit(limit).buildInvestor();
 
     UserDto createdUser = assembler.toDto(user);
 
     LimitDto expectedLimit = new StockQuantityLimitDto(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
-    UserDto expectedUser = new UserDto(SOME_EMAIL, SOME_ROLE, expectedLimit);
+    UserDto expectedUser = new UserDto(SOME_EMAIL, UserRole.INVESTOR, expectedLimit);
+    assertThat(createdUser).isEqualToComparingFieldByFieldRecursively(expectedUser);
+  }
+
+  @Test
+  public void givenAdministrator_whenAssemblingDto_thenKeepSameFieldValues() {
+    User user = new UserBuilder().withEmail(SOME_EMAIL).buildAdministrator();
+
+    UserDto createdUser = assembler.toDto(user);
+
+    UserDto expectedUser = new UserDto(SOME_EMAIL, UserRole.ADMINISTRATOR, null);
     assertThat(createdUser).isEqualToComparingFieldByFieldRecursively(expectedUser);
   }
 }

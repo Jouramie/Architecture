@@ -2,11 +2,12 @@ package ca.ulaval.glo4003.market.halt;
 
 import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
 import static io.restassured.RestAssured.given;
-import static javax.ws.rs.core.Response.Status.*;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.OK;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -53,7 +54,7 @@ public class MarketResumeIT {
   public void givenNonAdministratorUser_whenResumingMarketTrading_thenReturn401Unauthorized() {
     //@formatter:off
     given()
-        .queryParam("message", "foobar").when()
+        .queryParam("message", "foobar")
     .when()
         .post(String.format(API_RESUME_MARKET_ROUTE, MARKET))
     .then()
@@ -62,7 +63,8 @@ public class MarketResumeIT {
   }
 
   private void givenHaltedMarket(String token) {
-    given().header("token", token)
+    given()
+        .header("token", token)
         .queryParam("message", "foobar")
         .when()
         .post(String.format(MarketHaltIT.API_HALT_MARKET_ROUTE, MARKET));
