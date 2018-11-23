@@ -9,8 +9,8 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.any;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.ws.api.authentication.ApiAuthenticationRequestDto;
-import ca.ulaval.glo4003.ws.api.authentication.UserCreationDto;
+import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
+import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import java.util.List;
@@ -24,8 +24,8 @@ public class AuthenticationIT {
 
   private static final String SOME_PASSWORD = "password";
 
-  private static final UserCreationDto A_CREATION_REQUEST =
-      new UserCreationDto(SOME_EMAIL, SOME_PASSWORD);
+  private static final InvestorCreationDto A_CREATION_REQUEST =
+      new InvestorCreationDto(SOME_EMAIL, SOME_PASSWORD);
 
   private static final ApiAuthenticationRequestDto AN_AUTHENTICATION_REQUEST =
       new ApiAuthenticationRequestDto(SOME_EMAIL, SOME_PASSWORD);

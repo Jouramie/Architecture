@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.portfolio;
 
-import static ca.ulaval.glo4003.util.TestUserHelper.givenUserAlreadyAuthenticated;
-import static ca.ulaval.glo4003.util.TestUserHelper.givenUserAlreadyRegistered;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.util.CartStockRequestBuilder;
+import ca.ulaval.glo4003.cart.CartStockRequestBuilder;
 import io.restassured.http.Header;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
@@ -29,7 +29,7 @@ public class PortfolioIT {
 
   private static final String STOCKS_KEY = "stocks";
   private static final String TITLE_KEY = "title";
-  private static final String CURRENT_VALUE_KEY = "currentValue";
+  private static final String VALUE_KEY = "value";
   private static final String QUANTITY_KEY = "quantity";
   private static final String CURRENT_TOTAL_VALUE_KEY = "currentTotalValue";
 
@@ -40,8 +40,8 @@ public class PortfolioIT {
 
   @Test
   public void givenPortfolioContainsDefaultStocks_whenGetPortfolio_thenReturnStocksInPortfolio() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenPortfolioContainsDefaultStocks(tokenHeader);
     //@formatter:off
@@ -53,15 +53,15 @@ public class PortfolioIT {
         .statusCode(OK.getStatusCode())
         .body(STOCKS_KEY, is(iterableWithSize(1)))
         .body(STOCKS_KEY + "[0]." + TITLE_KEY, is(SOME_TITLE))
-        .body(STOCKS_KEY + "[0]." + CURRENT_VALUE_KEY, greaterThan(0f))
+        .body(STOCKS_KEY + "[0]." + VALUE_KEY, greaterThan(0f))
         .body(STOCKS_KEY + "[0]." + QUANTITY_KEY, is(SOME_QUANTITY));
     //@formatter:on
   }
 
   @Test
   public void givenPortfolioContainsDefaultStocks_whenGetPortfolio_thenReturnCurrentTotalValueGreaterThanZero() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     givenPortfolioContainsDefaultStocks(tokenHeader);
     //@formatter:off
@@ -77,8 +77,8 @@ public class PortfolioIT {
 
   @Test
   public void givenEmptyPortfolio_whenGetPortfolio_thenReturnEmptyList() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()
@@ -93,8 +93,8 @@ public class PortfolioIT {
 
   @Test
   public void givenEmptyPortfolio_whenGetPortfolio_thenReturnCurrentTotalValueOfZero() {
-    givenUserAlreadyRegistered();
-    String token = givenUserAlreadyAuthenticated();
+    givenInvestorAlreadyRegistered();
+    String token = givenInvestorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()

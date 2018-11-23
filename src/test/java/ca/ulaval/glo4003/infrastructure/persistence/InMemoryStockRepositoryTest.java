@@ -2,12 +2,15 @@ package ca.ulaval.glo4003.infrastructure.persistence;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.util.TestStockBuilder;
+import java.util.Arrays;
 import java.util.List;
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,6 +55,24 @@ public class InMemoryStockRepositoryTest {
   public void givenStockDoesNotExist_whenFindingByTitle_thenStockNotFoundExceptionIsThrown() {
     assertThatExceptionOfType(StockNotFoundException.class)
         .isThrownBy(() -> repository.findByTitle("ASDF"));
+  }
+
+  @Test
+  public void whenFindingByTitles_thenStocksAreReturned() throws StockNotFoundException {
+    List<String> stockTitles = Arrays.asList(SOME_NASDAQ_BANKING_STOCK.getTitle(), SOME_TSX_BANKING_STOCK.getTitle());
+
+    List<Stock> stocks = repository.findByTitles(stockTitles);
+
+    assertThat(stocks).containsExactly(SOME_NASDAQ_BANKING_STOCK, SOME_TSX_BANKING_STOCK);
+  }
+
+  @Test
+  public void givenStockDoesNotExist_whenFindingByTitles_thenStockNotFoundExceptionIsThrown() {
+    List<String> stockTitles = Arrays.asList(SOME_NASDAQ_BANKING_STOCK.getTitle(), "invalid");
+
+    ThrowingCallable findByTitles = () -> repository.findByTitles(stockTitles);
+
+    assertThatThrownBy(findByTitles).isInstanceOf(StockNotFoundException.class);
   }
 
   @Test

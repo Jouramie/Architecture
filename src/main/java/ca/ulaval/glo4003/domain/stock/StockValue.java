@@ -4,63 +4,59 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
 
 public class StockValue {
-  private MoneyAmount currentValue;
+  private MoneyAmount latestValue;
   private MoneyAmount openValue;
-  private MoneyAmount closeValue;
   private MoneyAmount maximumValue;
+  private boolean isClosed;
 
   public StockValue(MoneyAmount startValue) {
-    currentValue = startValue;
+    latestValue = startValue;
     openValue = startValue;
     maximumValue = startValue;
-    closeValue = null;
+    isClosed = false;
   }
 
   public StockValue(MoneyAmount openValue, MoneyAmount closeValue, MoneyAmount maximumValue) {
-    currentValue = closeValue;
+    latestValue = closeValue;
     this.openValue = openValue;
-    this.closeValue = closeValue;
     this.maximumValue = maximumValue;
+    isClosed = true;
   }
 
-  public MoneyAmount getCurrentValue() {
-    return currentValue;
+  public MoneyAmount getLatestValue() {
+    return latestValue;
   }
 
   public MoneyAmount getOpenValue() {
     return openValue;
   }
 
-  public MoneyAmount getCloseValue() {
-    return closeValue;
-  }
-
   public MoneyAmount getMaximumValue() {
     return maximumValue;
   }
 
-  boolean isClosed() {
-    return closeValue != null;
+  public boolean isClosed() {
+    return isClosed;
   }
 
   public void updateValue(BigDecimal variation) {
-    setValue(getCurrentValue().add(variation));
+    setValue(getLatestValue().add(variation));
   }
 
   public void setValue(MoneyAmount currentValue) {
     if (isClosed()) {
       openValue = currentValue;
-      closeValue = null;
+      isClosed = false;
     }
 
     if (currentValue.toUsd().compareTo(maximumValue.toUsd()) > 0) {
       maximumValue = currentValue;
     }
 
-    this.currentValue = currentValue;
+    latestValue = currentValue;
   }
 
   public void close() {
-    closeValue = currentValue;
+    isClosed = true;
   }
 }

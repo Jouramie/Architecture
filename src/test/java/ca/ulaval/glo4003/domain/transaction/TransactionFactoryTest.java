@@ -3,11 +3,11 @@ package ca.ulaval.glo4003.domain.transaction;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
@@ -37,43 +37,48 @@ public class TransactionFactoryTest {
   private StockRepository someStockRepository;
   @Mock
   private Stock stock;
+
   @Mock
   private StockValue stockValue;
-  private Cart cart;
+
+  private StockCollection stocks;
 
   @Before
   public void setup() throws StockNotFoundException {
     given(clock.getCurrentTime()).willReturn(SOME_TIME);
-    given(someStockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(stock);
     given(someStockRepository.findByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
-    given(someStockRepository.findByTitle(SOME_TITLE).getValue().getCurrentValue()).willReturn(DEFAULT_AMOUNT);
+    given(someStockRepository.findByTitle(SOME_TITLE).getValue().getLatestValue()).willReturn(DEFAULT_AMOUNT);
 
-    cart = new Cart();
-    cart.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
+    stocks = new StockCollection();
+    stocks = stocks.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
     factory = new TransactionFactory(clock, someStockRepository);
   }
 
   @Test
-  public void whenCreate_thenTypeIsSetToTransaction() throws StockNotFoundException {
-    Transaction transaction = factory.createPurchase(cart);
+  public void whenCreate_thenTypeIsSetToTransaction()
+      throws StockNotFoundException {
+    Transaction transaction = factory.createPurchase(stocks);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
     assertThat(transaction.type).isEqualTo(expected.type);
   }
 
   @Test
-  public void whenCreate_thenLocalTimeSetToTransaction() throws StockNotFoundException {
-    Transaction transaction = factory.createPurchase(cart);
+  public void whenCreate_thenLocalTimeSetToTransaction()
+      throws StockNotFoundException {
+    Transaction transaction = factory.createPurchase(stocks);
     Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
 
     assertThat(transaction.timestamp).isEqualTo(expected.timestamp);
   }
 
   @Test
-  public void whenCreate_thenTransactionItemsIsSetToTransaction() throws StockNotFoundException {
-    Transaction transaction = factory.createPurchase(cart);
-    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).build();
+  public void whenCreate_thenTransactionItemsIsSetToTransaction()
+      throws StockNotFoundException {
+    Transaction transaction = factory.createPurchase(stocks);
+    Transaction expected = new TransactionBuilder().withTime(clock.getCurrentTime()).withDefaultItems().build();
 
     assertThat(transaction.items).first().isEqualToComparingOnlyGivenFields(expected.items.get(0), "title", "quantity");
     assertThat(transaction.items.get(0).amount.getAmount()).isEqualTo(expected.items.get(0).amount.getAmount());

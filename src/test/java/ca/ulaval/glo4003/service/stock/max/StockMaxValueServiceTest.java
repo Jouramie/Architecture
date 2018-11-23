@@ -11,9 +11,9 @@ import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockHistory;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.stock.StockValueHistory;
 import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import ca.ulaval.glo4003.service.stock.max.dto.StockMaxValueSummary;
@@ -45,7 +45,7 @@ public class StockMaxValueServiceTest {
   @Mock
   Stock givenStock;
   @Mock
-  StockValueHistory givenStockValueHistory;
+  StockHistory givenStockHistory;
 
   private StockMaxValueService stockMaxValueService;
 
@@ -67,27 +67,27 @@ public class StockMaxValueServiceTest {
     given(dateService.getFiveYearsAgo()).willReturn(FIVE_YEARS_AGO);
     given(dateService.getTenYearsAgo()).willReturn(TEN_YEARS_AGO);
 
-    given(givenStock.getValueHistory()).willReturn(givenStockValueHistory);
+    given(givenStock.getValueHistory()).willReturn(givenStockHistory);
     HistoricalStockValue lastFiveDaysValue = mock(HistoricalStockValue.class);
-    given(givenStockValueHistory.getMaxValue(FIVE_DAYS_AGO, CURRENT_TIME.toLocalDate()))
+    given(givenStockHistory.getMaxValue(FIVE_DAYS_AGO, CURRENT_TIME.toLocalDate()))
         .willReturn(lastFiveDaysValue);
     HistoricalStockValue currentMonthValue = mock(HistoricalStockValue.class);
-    given(givenStockValueHistory.getMaxValue(START_OF_MONTH, CURRENT_TIME.toLocalDate()))
+    given(givenStockHistory.getMaxValue(START_OF_MONTH, CURRENT_TIME.toLocalDate()))
         .willReturn(currentMonthValue);
     HistoricalStockValue lastMonthValue = mock(HistoricalStockValue.class);
-    given(givenStockValueHistory.getMaxValue(THIRTY_DAYS_AGO, CURRENT_TIME.toLocalDate()))
+    given(givenStockHistory.getMaxValue(THIRTY_DAYS_AGO, CURRENT_TIME.toLocalDate()))
         .willReturn(lastMonthValue);
     HistoricalStockValue lastYearValue = mock(HistoricalStockValue.class);
-    given(givenStockValueHistory.getMaxValue(ONE_YEAR_AGO, CURRENT_TIME.toLocalDate()))
+    given(givenStockHistory.getMaxValue(ONE_YEAR_AGO, CURRENT_TIME.toLocalDate()))
         .willReturn(lastYearValue);
     HistoricalStockValue lastFiveYearsValue = mock(HistoricalStockValue.class);
-    given(givenStockValueHistory.getMaxValue(FIVE_YEARS_AGO, CURRENT_TIME.toLocalDate()))
+    given(givenStockHistory.getMaxValue(FIVE_YEARS_AGO, CURRENT_TIME.toLocalDate()))
         .willReturn(lastFiveYearsValue);
     HistoricalStockValue lastTenYearsValue = mock(HistoricalStockValue.class);
-    given(givenStockValueHistory.getMaxValue(TEN_YEARS_AGO, CURRENT_TIME.toLocalDate()))
+    given(givenStockHistory.getMaxValue(TEN_YEARS_AGO, CURRENT_TIME.toLocalDate()))
         .willReturn(lastTenYearsValue);
     HistoricalStockValue allTimeValue = mock(HistoricalStockValue.class);
-    given(givenStockValueHistory.getMaxValue(LocalDate.MIN, CURRENT_TIME.toLocalDate()))
+    given(givenStockHistory.getMaxValue(LocalDate.MIN, CURRENT_TIME.toLocalDate()))
         .willReturn(allTimeValue);
 
     StockMaxValueSummary summary = stockMaxValueService.getStockMaxValue(SOME_TITLE);

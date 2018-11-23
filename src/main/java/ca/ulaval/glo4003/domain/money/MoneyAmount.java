@@ -5,10 +5,16 @@ import java.math.RoundingMode;
 
 public class MoneyAmount {
 
+  public static final MoneyAmount ZERO = zero(Currency.USD);
+
   private final BigDecimal amount;
   private final Currency currency;
 
   public MoneyAmount(double amount) {
+    this(amount, Currency.USD);
+  }
+
+  public MoneyAmount(BigDecimal amount) {
     this(amount, Currency.USD);
   }
 
@@ -53,6 +59,10 @@ public class MoneyAmount {
     return new MoneyAmount(amount.multiply(new BigDecimal(multiplier)), getCurrency());
   }
 
+  public BigDecimal divide(MoneyAmount other) {
+    return amount.divide(other.amount, RoundingMode.HALF_EVEN);
+  }
+
   public BigDecimal toUsd() {
     return currency.toUsd(amount);
   }
@@ -77,10 +87,10 @@ public class MoneyAmount {
   }
 
   public boolean isGreaterThan(MoneyAmount other) {
-    return toUsd().compareTo(other.toUsd()) == 1;
+    return toUsd().compareTo(other.toUsd()) > 0;
   }
 
   public boolean isLessThan(MoneyAmount other) {
-    return toUsd().compareTo(other.toUsd()) == -1;
+    return toUsd().compareTo(other.toUsd()) < 0;
   }
 }

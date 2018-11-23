@@ -4,16 +4,17 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class Stock {
   private final String title;
   private final String name;
   private final String category;
   private final MarketId marketId;
-  private final StockValueHistory valueHistory;
+  private final StockHistory valueHistory;
 
   public Stock(String title, String name, String category, MarketId marketId,
-               StockValueHistory valueHistory) {
+               StockHistory valueHistory) {
     this.title = title;
     this.name = name;
     this.category = category;
@@ -37,12 +38,12 @@ public class Stock {
     return marketId;
   }
 
-  public StockValueHistory getValueHistory() {
+  public StockHistory getValueHistory() {
     return valueHistory;
   }
 
   public Currency getCurrency() {
-    return getValue().getCurrentValue().getCurrency();
+    return getValue().getLatestValue().getCurrency();
   }
 
   public synchronized void updateValue(BigDecimal variation) {
@@ -53,14 +54,31 @@ public class Stock {
     return valueHistory.getLatestValue().value;
   }
 
-  public synchronized void open() {
-    MoneyAmount startValue = getValue().getCloseValue();
+  public synchronized StockValue getLatestValueOnDate(LocalDate date) throws NoStockValueFitsCriteriaException {
+    StockValue latestStockValueOnDate;
+    if (date.isAfter(valueHistory.getLatestValue().date)) {
+      latestStockValueOnDate = valueHistory.getLatestValue().value;
+    } else {
+      latestStockValueOnDate = valueHistory.getValueOnDay(date);
+    }
+
+    return latestStockValueOnDate;
+  }
+
+  public BigDecimal computeStockValueVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
+    MoneyAmount startAmount = getLatestValueOnDate(from).getLatestValue();
+    MoneyAmount currentAmount = getValue().getLatestValue();
+    return currentAmount.divide(startAmount);
+  }
+
+  public synchronized void saveOpeningPrice() {
+    MoneyAmount startValue = getValue().getLatestValue();
     StockValue newStockValue = new StockValue(startValue);
 
     valueHistory.addNextValue(newStockValue);
   }
 
-  public synchronized void close() {
+  public synchronized void saveClosingPrice() {
     getValue().close();
   }
 }

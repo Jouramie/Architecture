@@ -1,13 +1,17 @@
 package ca.ulaval.glo4003.domain.market.states;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.never;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
 
-import ca.ulaval.glo4003.domain.market.Market;
+import ca.ulaval.glo4003.domain.market.MarketState;
+import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
+import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,37 +20,37 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClosedMarketStateTest {
-  private static final LocalTime SOME_OPENING_TIME = LocalTime.of(14, 30, 0);
-  private static final LocalTime SOME_CLOSING_TIME = LocalTime.of(21, 0, 0);
-  private static final LocalDateTime SOME_OPEN_TIME = LocalDateTime.of(2018, 9, 22, 14, 30, 0);
-  private static final LocalDateTime SOME_CLOSED_TIME = LocalDateTime.of(2018, 9, 22, 3, 0, 0);
-
+  private final Market market = new TestingMarketBuilder().build();
   @Mock
-  Market market;
-
+  private StockValueRetriever stockValueRetriever;
+  @Mock
+  private Stock stockMock;
   private ClosedMarketState state;
 
   @Before
-  public void setupCloseMarketState() {
+  public void setupClosedMarketState() {
     state = new ClosedMarketState();
-
-    given(market.getOpeningTime()).willReturn(SOME_OPENING_TIME);
-    given(market.getClosingTime()).willReturn(SOME_CLOSING_TIME);
   }
 
   @Test
-  public void whenTimeDoesNotOpenTheMarket_thenDoNothing() {
-    state.update(market, SOME_CLOSED_TIME);
+  public void whenTimeDoesNotOpenTheMarket_thenStayCloseAndValuesAreNotUpdated() {
+    LocalDateTime someCloseTime = LocalDateTime.of(LocalDate.now(), market.closingTime.plusMinutes(1));
 
-    verify(market, never()).updateAllStockValues();
-    verify(market, never()).setState(any());
+    MarketState newState = state.update(market, someCloseTime, stockValueRetriever);
+
+    verify(stockValueRetriever, never()).updateStockValue(any(Stock.class));
+    assertThat(newState).isInstanceOf(ClosedMarketState.class);
   }
 
   @Test
-  public void whenTimeOpensTheMarket_thenOpenAllStockAndChangeStateToOpen() {
-    state.update(market, SOME_OPEN_TIME);
+  public void whenTimeClosesTheMarket_thenMarketOpensAndOpeningPriceIsSaved() {
+    LocalDateTime someOpenedTime = LocalDateTime.of(LocalDate.now(), market.openingTime.plusMinutes(1));
+    Market market = new TestingMarketBuilder().withStocks(Collections.singletonList(stockMock)).build();
 
-    verify(market).openAllStocks();
-    verify(market).setState(any(OpenMarketState.class));
+    MarketState newState = state.update(market, someOpenedTime, stockValueRetriever);
+
+    verify(stockMock).saveOpeningPrice();
+
+    assertThat(newState).isInstanceOf(OpenMarketState.class);
   }
 }

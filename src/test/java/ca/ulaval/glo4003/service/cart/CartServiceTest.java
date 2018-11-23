@@ -12,9 +12,13 @@ import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.domain.user.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
+import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.service.cart.assemblers.CartItemAssembler;
+import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
+import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
+import ca.ulaval.glo4003.service.cart.exceptions.StockNotInCartException;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import java.util.Collections;
 import java.util.List;
@@ -29,8 +33,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class CartServiceTest {
   private static final String SOME_TITLE = "title";
   private static final int SOME_QUANTITY = 1;
-  @Mock
-  private CurrentUserSession currentUserSession;
+
   @Mock
   private UserRepository userRepository;
   @Mock
@@ -38,7 +41,7 @@ public class CartServiceTest {
   @Mock
   private CartItemAssembler cartItemAssembler;
   @Mock
-  private User currentUser;
+  private Investor currentInvestor;
   @Mock
   private Cart cart;
   @Mock
@@ -48,9 +51,10 @@ public class CartServiceTest {
 
   @Before
   public void setup() {
-    given(currentUserSession.getCurrentUser()).willReturn(currentUser);
-    given(currentUser.getCart()).willReturn(cart);
-    given(stockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
+    CurrentUserSession currentUserSession = new CurrentUserSession();
+    currentUserSession.setCurrentUser(currentInvestor);
+    given(currentInvestor.getCart()).willReturn(cart);
+    given(stockRepository.exists(SOME_TITLE)).willReturn(true);
 
     cartService = new CartService(stockRepository, currentUserSession, userRepository, cartItemAssembler);
   }
@@ -86,7 +90,7 @@ public class CartServiceTest {
     cartService.addStockToCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).add(SOME_TITLE, SOME_QUANTITY, stockRepository);
-    verify(userRepository).update(currentUser);
+    verify(userRepository).update(currentInvestor);
   }
 
   @Test
@@ -107,7 +111,7 @@ public class CartServiceTest {
     cartService.updateStockInCart(SOME_TITLE, SOME_QUANTITY);
 
     verify(cart).update(SOME_TITLE, SOME_QUANTITY);
-    verify(userRepository).update(currentUser);
+    verify(userRepository).update(currentInvestor);
   }
 
   @Test
@@ -127,7 +131,7 @@ public class CartServiceTest {
     String notInCartTitle = "stock not in cart";
     doThrow(new IllegalArgumentException())
         .when(cart).update(notInCartTitle, SOME_QUANTITY);
-    given(stockRepository.doesStockExist(notInCartTitle)).willReturn(true);
+    given(stockRepository.exists(notInCartTitle)).willReturn(true);
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.updateStockInCart(notInCartTitle, SOME_QUANTITY);
@@ -140,7 +144,7 @@ public class CartServiceTest {
     cartService.removeStockFromCart(SOME_TITLE);
 
     verify(cart).removeAll(SOME_TITLE);
-    verify(userRepository).update(currentUser);
+    verify(userRepository).update(currentInvestor);
   }
 
   @Test
@@ -160,7 +164,7 @@ public class CartServiceTest {
     cartService.emptyCart();
 
     verify(cart).empty();
-    verify(userRepository).update(currentUser);
+    verify(userRepository).update(currentInvestor);
   }
 
   @Test

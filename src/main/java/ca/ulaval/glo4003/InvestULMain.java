@@ -2,17 +2,15 @@ package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.context.AbstractContext;
 import ca.ulaval.glo4003.context.ProductionContext;
-import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import java.net.URL;
 import org.eclipse.jetty.server.Server;
 
 public class InvestULMain {
 
-  private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
   private static Server server;
 
   public static void main(String[] args) throws Exception {
-    AbstractContext context = new ProductionContext(WEB_SERVICE_PACKAGE_PREFIX, ServiceLocator.INSTANCE);
+    AbstractContext context = new ProductionContext();
     startServer(context);
   }
 

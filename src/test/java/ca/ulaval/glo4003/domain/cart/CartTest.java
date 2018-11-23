@@ -1,11 +1,19 @@
 package ca.ulaval.glo4003.domain.cart;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 
+import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
+import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +30,10 @@ public class CartTest {
 
   @Mock
   private StockRepository someStockRepository;
+  @Mock
+  private TransactionFactory transactionFactory;
+  @Mock
+  private MarketRepository marketRepository;
 
   private Cart cart;
 
@@ -29,8 +41,8 @@ public class CartTest {
   public void setupCarts() {
     cart = new Cart();
 
-    given(someStockRepository.doesStockExist(SOME_TITLE)).willReturn(true);
-    given(someStockRepository.doesStockExist(SOME_OTHER_TITLE)).willReturn(true);
+    given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
+    given(someStockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
   }
 
   @Test
@@ -126,5 +138,17 @@ public class CartTest {
   private void givenTwoStocksInCart() {
     cart.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
     cart.add(SOME_OTHER_TITLE, SOME_OTHER_QUANTITY, someStockRepository);
+  }
+
+  @Test
+  public void givenMarketHalted_whenCreate_thenExceptionIsThrown() throws MarketNotFoundException {
+    givenTwoStocksInCart();
+    Market market = new TestingMarketBuilder().build();
+    market.halt("");
+    given(marketRepository.findMarketForStock(any())).willReturn(market);
+
+    ThrowingCallable checkout = () -> cart.checkout(transactionFactory, marketRepository);
+
+    assertThatExceptionOfType(HaltedMarketException.class).isThrownBy(checkout);
   }
 }

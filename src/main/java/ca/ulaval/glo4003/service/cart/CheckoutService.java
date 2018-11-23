@@ -1,7 +1,8 @@
 package ca.ulaval.glo4003.service.cart;
 
-import ca.ulaval.glo4003.domain.cart.Cart;
-import ca.ulaval.glo4003.domain.notification.Notification;
+import ca.ulaval.glo4003.domain.Component;
+import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -9,83 +10,61 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
-import ca.ulaval.glo4003.domain.transaction.TransactionLedger;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
-import ca.ulaval.glo4003.domain.user.User;
-import ca.ulaval.glo4003.service.Component;
+import ca.ulaval.glo4003.domain.user.Investor;
+import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
+import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
+import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
+import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
+import ca.ulaval.glo4003.service.cart.exceptions.EmptyCartOnCheckoutException;
+import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
+import ca.ulaval.glo4003.service.cart.exceptions.PurchaseLimitExceededOnCheckoutException;
 import javax.inject.Inject;
 
 @Component
 public class CheckoutService {
-  private final PaymentProcessor paymentProcessor;
   private final CurrentUserSession currentUserSession;
   private final TransactionFactory transactionFactory;
-  private final TransactionLedger transactionLedger;
-  private final NotificationSender notificationSender;
+  private final PaymentProcessor paymentProcessor;
   private final NotificationFactory notificationFactory;
+  private final NotificationSender notificationSender;
   private final TransactionAssembler transactionAssembler;
   private final StockRepository stockRepository;
+  private final MarketRepository marketRepository;
 
   @Inject
-  public CheckoutService(PaymentProcessor paymentProcessor,
-                         CurrentUserSession currentUserSession,
+  public CheckoutService(CurrentUserSession currentUserSession,
                          TransactionFactory transactionFactory,
-                         TransactionLedger transactionLedger,
-                         NotificationSender notificationSender,
+                         PaymentProcessor paymentProcessor,
                          NotificationFactory notificationFactory,
+                         NotificationSender notificationSender,
                          TransactionAssembler transactionAssembler,
-                         StockRepository stockRepository) {
-
-    this.paymentProcessor = paymentProcessor;
+                         StockRepository stockRepository,
+                         MarketRepository marketRepository) {
     this.currentUserSession = currentUserSession;
     this.transactionFactory = transactionFactory;
-    this.transactionLedger = transactionLedger;
-    this.notificationSender = notificationSender;
+    this.paymentProcessor = paymentProcessor;
     this.notificationFactory = notificationFactory;
+    this.notificationSender = notificationSender;
     this.transactionAssembler = transactionAssembler;
     this.stockRepository = stockRepository;
+    this.marketRepository = marketRepository;
   }
 
   public TransactionDto checkoutCart() throws InvalidStockTitleException {
-    User currentUser = currentUserSession.getCurrentUser();
-    Cart cart = currentUser.getCart();
-    checkIfCartIsEmpty(cart);
-
-    Transaction transaction = createTransaction(cart);
-    processTransaction(transaction);
-    sendTransactionNotification(transaction, currentUser);
-    addStocksToUserPortfolio(currentUser, cart);
-    cart.empty();
-    return transactionAssembler.toDto(transaction);
-  }
-
-  private void checkIfCartIsEmpty(Cart cart) {
-    if (cart.isEmpty()) {
-      throw new EmptyCartException();
-    }
-  }
-
-  private Transaction createTransaction(Cart cart) {
+    Investor currentInvestor = currentUserSession.getCurrentUser(Investor.class);
     try {
-      return transactionFactory.createPurchase(cart);
-    } catch (StockNotFoundException exception) {
-      throw new InvalidStockTitleException(exception);
+      Transaction transaction = currentInvestor.checkoutCart(transactionFactory, marketRepository,
+          paymentProcessor, stockRepository, notificationFactory, notificationSender);
+      return transactionAssembler.toDto(transaction);
+    } catch (StockNotFoundException e) {
+      throw new InvalidStockTitleException(e.title);
+    } catch (EmptyCartException e) {
+      throw new EmptyCartOnCheckoutException();
+    } catch (HaltedMarketException e) {
+      throw new HaltedMarketOnCheckoutException(e.message);
+    } catch (TransactionLimitExceededExeption e) {
+      throw new PurchaseLimitExceededOnCheckoutException();
     }
-  }
-
-  private void sendTransactionNotification(Transaction transaction, User currentUser) {
-    Notification notification = notificationFactory.create(transaction);
-    notificationSender.sendNotification(notification, currentUser);
-  }
-
-  private void addStocksToUserPortfolio(User currentUser, Cart cart) throws InvalidStockTitleException {
-    for (String title : cart.getStocks().getTitles()) {
-      currentUser.addStockToPortfolio(title, cart.getQuantity(title), stockRepository);
-    }
-  }
-
-  private void processTransaction(Transaction transaction) {
-    paymentProcessor.payment(transaction);
-    transactionLedger.save(transaction);
   }
 }
