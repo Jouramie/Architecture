@@ -27,7 +27,7 @@ public class InMemoryUserRepositoryTest {
   public void whenAddingUser_thenUserIsStored() throws UserAlreadyExistsException, UserNotFoundException {
     inMemoryUserRepository.add(SOME_USER);
 
-    User retrievedUser = inMemoryUserRepository.find(SOME_USER.getEmail());
+    User retrievedUser = inMemoryUserRepository.findByEmail(SOME_USER.getEmail());
     assertThat(retrievedUser).isSameAs(SOME_USER);
   }
 
@@ -48,7 +48,7 @@ public class InMemoryUserRepositoryTest {
     User modifiedUser = new UserBuilder().withEmail(SOME_USER.getEmail()).withPassword("SOME_NEW_PASSWORD").build();
     inMemoryUserRepository.update(modifiedUser);
 
-    User retrievedUser = inMemoryUserRepository.find(modifiedUser.getEmail());
+    User retrievedUser = inMemoryUserRepository.findByEmail(modifiedUser.getEmail());
     assertThat(retrievedUser).isSameAs(modifiedUser);
   }
 
@@ -64,14 +64,14 @@ public class InMemoryUserRepositoryTest {
       throws UserAlreadyExistsException, UserNotFoundException {
     inMemoryUserRepository.add(SOME_USER);
 
-    User resultingUser = inMemoryUserRepository.find(SOME_USER.getEmail());
+    User resultingUser = inMemoryUserRepository.findByEmail(SOME_USER.getEmail());
 
     assertThat(resultingUser).isSameAs(SOME_USER);
   }
 
   @Test
   public void givenUserDoesNotExist_whenFindingUser_thenExceptionIsThrown() {
-    ThrowingCallable findUser = () -> inMemoryUserRepository.find(SOME_USER.getEmail());
+    ThrowingCallable findUser = () -> inMemoryUserRepository.findByEmail(SOME_USER.getEmail());
 
     assertThatThrownBy(findUser).isInstanceOf(UserNotFoundException.class);
   }
@@ -92,7 +92,7 @@ public class InMemoryUserRepositoryTest {
     Investor expectedInvestor = new UserBuilder().buildInvestor();
     inMemoryUserRepository.add(expectedInvestor);
 
-    Investor resultingInvestor = inMemoryUserRepository.find(expectedInvestor.getEmail(), Investor.class);
+    Investor resultingInvestor = inMemoryUserRepository.findByEmail(expectedInvestor.getEmail(), Investor.class);
 
     assertThat(resultingInvestor).isSameAs(expectedInvestor);
   }
@@ -103,7 +103,7 @@ public class InMemoryUserRepositoryTest {
     Administrator administrator = new UserBuilder().buildAdministrator();
     inMemoryUserRepository.add(administrator);
 
-    ThrowingCallable findInvestor = () -> inMemoryUserRepository.find(administrator.getEmail(), Investor.class);
+    ThrowingCallable findInvestor = () -> inMemoryUserRepository.findByEmail(administrator.getEmail(), Investor.class);
 
     assertThatThrownBy(findInvestor).isInstanceOf(WrongRoleException.class);
   }

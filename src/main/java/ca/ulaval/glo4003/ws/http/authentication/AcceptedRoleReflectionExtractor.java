@@ -15,7 +15,7 @@ public class AcceptedRoleReflectionExtractor {
 
     Class<?> clazz = resourceInfo.getResourceClass();
     if (clazz == null) {
-      throw new RuntimeException("Could not find annotated class.");
+      throw new RuntimeException("Could not findByEmail annotated class.");
     }
 
     binding = clazz.getAnnotation(AuthenticationRequiredBinding.class);
@@ -25,7 +25,7 @@ public class AcceptedRoleReflectionExtractor {
 
     Method method = resourceInfo.getResourceMethod();
     if (method == null) {
-      throw new RuntimeException("Could not find annotated method.");
+      throw new RuntimeException("Could not findByEmail annotated method.");
     }
 
     binding = method.getAnnotation(AuthenticationRequiredBinding.class);

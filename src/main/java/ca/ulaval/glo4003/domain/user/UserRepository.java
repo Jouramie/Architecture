@@ -10,9 +10,9 @@ public interface UserRepository {
 
   void update(User user) throws UserNotFoundException;
 
-  User find(String email) throws UserNotFoundException;
+  User findByEmail(String email) throws UserNotFoundException;
 
-  <T extends User> T find(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException;
+  <T extends User> T findByEmail(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException;
 
   List<User> findAll();
 }

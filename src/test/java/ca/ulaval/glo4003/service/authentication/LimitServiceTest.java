@@ -56,7 +56,7 @@ public class LimitServiceTest {
 
   @Test
   public void whenCreateAmountMoneyLimit_thenLimitIsCreated() throws UserNotFoundException, WrongRoleException {
-    given(userRepository.find(SOME_EMAIL, Investor.class)).willReturn(investor);
+    given(userRepository.findByEmail(SOME_EMAIL, Investor.class)).willReturn(investor);
     given(limitFactory.createMoneyAmountLimit(SOME_PERIOD, SOME_MONEY_AMOUNT)).willReturn(moneyAmountLimit);
 
     service.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT);
@@ -66,7 +66,7 @@ public class LimitServiceTest {
 
   @Test
   public void whenCreateStockQuantityLimit_thenLimitIsCreated() throws UserNotFoundException, WrongRoleException {
-    given(userRepository.find(SOME_EMAIL, Investor.class)).willReturn(investor);
+    given(userRepository.findByEmail(SOME_EMAIL, Investor.class)).willReturn(investor);
     given(limitFactory.createStockQuantityLimit(SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockQuantityLimit);
 
     service.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);
@@ -76,7 +76,7 @@ public class LimitServiceTest {
 
   @Test
   public void whenCreateAmountMoneyLimit_thenLimitIsAddedToUser() throws UserNotFoundException, WrongRoleException {
-    given(userRepository.find(SOME_EMAIL, Investor.class)).willReturn(investor);
+    given(userRepository.findByEmail(SOME_EMAIL, Investor.class)).willReturn(investor);
     given(limitFactory.createMoneyAmountLimit(SOME_PERIOD, SOME_MONEY_AMOUNT)).willReturn(moneyAmountLimit);
 
     service.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_AMOUNT);
@@ -86,7 +86,7 @@ public class LimitServiceTest {
 
   @Test
   public void whenCreateStockQuantityLimit_thenLimitIsAddedToUser() throws UserNotFoundException, WrongRoleException {
-    given(userRepository.find(SOME_EMAIL, Investor.class)).willReturn(investor);
+    given(userRepository.findByEmail(SOME_EMAIL, Investor.class)).willReturn(investor);
     given(limitFactory.createStockQuantityLimit(SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockQuantityLimit);
 
     service.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);
@@ -96,7 +96,7 @@ public class LimitServiceTest {
 
   @Test
   public void whenRemoveLimit_thenLimitIsRemoved() throws UserNotFoundException, WrongRoleException {
-    given(userRepository.find(SOME_EMAIL, Investor.class)).willReturn(investor);
+    given(userRepository.findByEmail(SOME_EMAIL, Investor.class)).willReturn(investor);
     given(limitFactory.createStockQuantityLimit(SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockQuantityLimit);
     service.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);
 
@@ -107,7 +107,7 @@ public class LimitServiceTest {
 
   @Test
   public void whenCreateStockQuantityLimit_thenLimitDtoIsReturned() throws UserNotFoundException, WrongRoleException {
-    given(userRepository.find(SOME_EMAIL, Investor.class)).willReturn(investor);
+    given(userRepository.findByEmail(SOME_EMAIL, Investor.class)).willReturn(investor);
     given(limitFactory.createStockQuantityLimit(SOME_PERIOD, SOME_STOCK_QUANTITY)).willReturn(stockQuantityLimit);
 
     LimitDto limit = service.createStockQuantityLimit(SOME_EMAIL, SOME_PERIOD, SOME_STOCK_QUANTITY);
@@ -118,7 +118,7 @@ public class LimitServiceTest {
 
   @Test
   public void whenCreateAmountMoneyLimit_thenLimitDtoIsReturned() throws UserNotFoundException, WrongRoleException {
-    given(userRepository.find(SOME_EMAIL, Investor.class)).willReturn(investor);
+    given(userRepository.findByEmail(SOME_EMAIL, Investor.class)).willReturn(investor);
     given(limitFactory.createMoneyAmountLimit(SOME_PERIOD, SOME_MONEY_AMOUNT)).willReturn(moneyAmountLimit);
 
     LimitDto limit = service.createMoneyAmountLimit(SOME_EMAIL, SOME_PERIOD, SOME_MONEY_AMOUNT.getAmount());

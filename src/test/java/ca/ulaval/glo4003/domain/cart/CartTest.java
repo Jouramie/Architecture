@@ -145,7 +145,7 @@ public class CartTest {
     givenTwoStocksInCart();
     Market market = new TestingMarketBuilder().build();
     market.halt("");
-    given(marketRepository.findMarketForStock(any())).willReturn(market);
+    given(marketRepository.findByStock(any())).willReturn(market);
 
     ThrowingCallable checkout = () -> cart.checkout(transactionFactory, marketRepository);
 

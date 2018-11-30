@@ -67,7 +67,7 @@ public class AuthenticationService {
 
   private User getUserByEmail(String email) {
     try {
-      return userRepository.find(email);
+      return userRepository.findByEmail(email);
     } catch (UserNotFoundException exception) {
       throw new AuthenticationFailedException(exception);
     }

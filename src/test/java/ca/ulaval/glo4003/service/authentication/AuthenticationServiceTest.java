@@ -74,7 +74,7 @@ public class AuthenticationServiceTest {
   @Before
   public void initializeMocks() throws UserNotFoundException, TokenNotFoundException {
     given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
-    given(userRepository.find(any())).willReturn(SOME_USER);
+    given(userRepository.findByEmail(any())).willReturn(SOME_USER);
     given(tokenRepository.findByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token)))
         .willReturn(AUTHENTICATION_TOKEN);
     given(tokenFactory.createToken(any())).willReturn(AUTHENTICATION_TOKEN);
@@ -84,7 +84,7 @@ public class AuthenticationServiceTest {
   public void whenAuthenticatingUser_thenUserIsRetrievedFromRepository() throws UserNotFoundException {
     authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
-    verify(userRepository).find(AUTHENTICATION_REQUEST.email);
+    verify(userRepository).findByEmail(AUTHENTICATION_REQUEST.email);
   }
 
   @Test
@@ -111,7 +111,7 @@ public class AuthenticationServiceTest {
   @Test
   public void givenUserDoesNotExist_whenAuthenticationUser_thenExceptionIsThrown()
       throws UserNotFoundException {
-    doThrow(UserNotFoundException.class).when(userRepository).find(any());
+    doThrow(UserNotFoundException.class).when(userRepository).findByEmail(any());
 
     ThrowingCallable authenticateUser = () -> authenticationService.authenticate(INVALID_AUTHENTICATION_REQUEST);
 
@@ -128,7 +128,7 @@ public class AuthenticationServiceTest {
   @Test
   public void givenUserDoesNotExist_whenValidatingAuthentication_thenExceptionIsThrown()
       throws UserNotFoundException {
-    doThrow(UserNotFoundException.class).when(userRepository).find(any());
+    doThrow(UserNotFoundException.class).when(userRepository).findByEmail(any());
 
     ThrowingCallable authenticateUser = () -> authenticationService
         .validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLES);
@@ -171,7 +171,7 @@ public class AuthenticationServiceTest {
   public void givenCurrentUserDoesNotHaveRequiredRole_whenValidatingToken_thenExceptionIsThrown()
       throws UserNotFoundException {
     User currentUser = new UserBuilder().buildAdministrator();
-    given(userRepository.find(any())).willReturn(currentUser);
+    given(userRepository.findByEmail(any())).willReturn(currentUser);
 
     ThrowingCallable validateToken = () -> authenticationService
         .validateAuthentication(AUTHENTICATION_TOKEN_DTO, singletonList(UserRole.INVESTOR));

@@ -50,14 +50,14 @@ public class InMemoryMarketRepositoryTest {
 
   @Test
   public void whenFindingMarketForStock_thenMarketIsReturned() throws MarketNotFoundException {
-    Market market = repository.findMarketForStock(TestingMarketBuilder.DEFAULT_STOCK_TITLE);
+    Market market = repository.findByStock(TestingMarketBuilder.DEFAULT_STOCK_TITLE);
 
     assertThat(market).isEqualTo(SOME_MARKET);
   }
 
   @Test
   public void givenNoMarketContainsStock_whenFindingMarketForStock_thenExceptionIsThrown() {
-    ThrowingCallable findMarketStock = () -> repository.findMarketForStock("no market");
+    ThrowingCallable findMarketStock = () -> repository.findByStock("no market");
 
     assertThatThrownBy(findMarketStock).isInstanceOf(MarketNotFoundException.class);
   }
