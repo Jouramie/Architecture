@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.infrastructure.injection;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 
+import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,8 +34,41 @@ public class ServiceLocatorInitializerTest {
 
     assertThat(serviceLocator.get(Object.class)).isEqualTo(anObject);
   }
+
+  @Test
+  public void givenTwoClassesWithSameDependency_whenConfiguring_thenTheyShareTheSameReferenceToTheDependency() {
+    serviceLocatorInitializer.register(Object.class)
+        .register(ADependingClass.class)
+        .register(ASecondDependingClass.class).configure();
+
+    ADependingClass aDependingClass = serviceLocator.get(ADependingClass.class);
+    ASecondDependingClass aSecondDependingClass = serviceLocator.get(ASecondDependingClass.class);
+
+    assertThat(aDependingClass.dependency).isEqualTo(aSecondDependingClass.dependency);
+  }
 }
 
 class AnInjectableClass {
 
 }
+
+class ADependingClass {
+
+  public final Object dependency;
+
+  @Inject
+  public ADependingClass(Object depdendency) {
+    dependency = depdendency;
+  }
+}
+
+class ASecondDependingClass {
+
+  public final Object dependency;
+
+  @Inject
+  public ASecondDependingClass(Object dependency) {
+    this.dependency = dependency;
+  }
+}
+
