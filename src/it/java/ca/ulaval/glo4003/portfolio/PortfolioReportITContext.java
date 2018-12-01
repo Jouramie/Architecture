@@ -8,6 +8,7 @@ import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.infrastructure.injection.ServiceLocatorInitializer;
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
 import java.time.Duration;
@@ -17,10 +18,14 @@ public class PortfolioReportITContext extends AbstractContext {
   @Override
   public void configureApplication(String apiUrl) {
     super.configureApplication(apiUrl);
-    serviceLocator.register(NotificationSender.class, NullNotificationSender.class);
 
     setCurrentUserToDefaultAdmin();
     addStocksToCurrentUserPortfolio();
+  }
+
+  @Override
+  protected ServiceLocatorInitializer createServiceLocatorInitializer() {
+    return super.createServiceLocatorInitializer().register(NotificationSender.class, NullNotificationSender.class);
   }
 
   private void setCurrentUserToDefaultAdmin() {
