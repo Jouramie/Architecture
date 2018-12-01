@@ -23,14 +23,12 @@ public class ProductionContext extends AbstractContext {
   }
 
   private void startClockAndMarketsUpdater() {
-    clockDriver = new ClockDriver(
-        serviceLocator.get(Clock.class),
-        SimulationSettings.SIMULATION_UPDATE_FREQUENCY);
-    MarketUpdater marketUpdater = new MarketUpdater(
+    Clock clock = serviceLocator.get(Clock.class);
+    clockDriver = new ClockDriver(clock, SimulationSettings.SIMULATION_UPDATE_FREQUENCY);
+    clock.register(new MarketUpdater(
         serviceLocator.get(MarketRepository.class),
         serviceLocator.get(StockValueRetriever.class)
-    );
-    serviceLocator.get(Clock.class).register(marketUpdater);
+    ));
     clockDriver.start();
   }
 

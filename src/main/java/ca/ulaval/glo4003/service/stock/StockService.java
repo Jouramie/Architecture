@@ -33,7 +33,8 @@ public class StockService {
   }
 
   public List<StockDto> queryStocks(String name, String category) {
-    return stockAssembler.toDtoList(stockRepository.queryStocks(name, category));
+    List<Stock> stocks = stockRepository.queryStocks(name, category);
+    return stockAssembler.toDtoList(stocks);
   }
 
   public List<String> getCategories() {

@@ -11,7 +11,6 @@ import javax.validation.ValidatorFactory;
 public class RequestValidator {
 
   public <T> void validate(T requestToValidate) {
-
     ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
     Validator validator = validatorFactory.getValidator();
     validatorFactory.close();
