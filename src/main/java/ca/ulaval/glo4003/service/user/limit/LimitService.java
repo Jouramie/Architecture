@@ -50,7 +50,7 @@ public class LimitService {
 
   private Investor getInvestorByEmail(String email) {
     try {
-      return userRepository.find(email, Investor.class);
+      return userRepository.findByEmail(email, Investor.class);
     } catch (UserNotFoundException | WrongRoleException e) {
       throw new UserDoesNotExistException(e);
     }

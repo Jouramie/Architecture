@@ -69,7 +69,7 @@ public class Cart {
 
   private void validateMarketOfStockIsNotHalted(String title, MarketRepository marketRepository) throws HaltedMarketException, StockNotFoundException {
     try {
-      Market market = marketRepository.findMarketForStock(title);
+      Market market = marketRepository.findByStock(title);
       if (market.isHalted()) {
         throw new HaltedMarketException(market.getHaltMessage());
       }

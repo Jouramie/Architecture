@@ -33,7 +33,7 @@ public class InMemoryMarketRepository implements MarketRepository {
   }
 
   @Override
-  public Market findMarketForStock(String stockTitle) throws MarketNotFoundException {
+  public Market findByStock(String stockTitle) throws MarketNotFoundException {
     return markets.values().stream()
         .filter(market -> market.containsStock(stockTitle))
         .findFirst()

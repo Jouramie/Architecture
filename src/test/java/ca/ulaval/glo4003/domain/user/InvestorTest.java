@@ -76,8 +76,8 @@ public class InvestorTest {
     notification = new Notification("title", "message");
 
     market = new TestingMarketBuilder().build();
-    given(marketRepository.findMarketForStock(SOME_TITLE)).willReturn(market);
-    given(marketRepository.findMarketForStock(SOME_OTHER_TITLE)).willReturn(market);
+    given(marketRepository.findByStock(SOME_TITLE)).willReturn(market);
+    given(marketRepository.findByStock(SOME_OTHER_TITLE)).willReturn(market);
 
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
