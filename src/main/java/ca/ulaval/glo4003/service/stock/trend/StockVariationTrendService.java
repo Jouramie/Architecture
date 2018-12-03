@@ -15,15 +15,12 @@ public class StockVariationTrendService {
 
   private final StockRepository stockRepository;
   private final DateService dateService;
-  private final StockVariationCalculator stockVariationCalculator;
 
   @Inject
   public StockVariationTrendService(StockRepository stockRepository,
-                                    DateService dateService,
-                                    StockVariationCalculator stockVariationCalculator) {
+                                    DateService dateService) {
     this.stockRepository = stockRepository;
     this.dateService = dateService;
-    this.stockVariationCalculator = stockVariationCalculator;
   }
 
   public StockVariationSummary getStockVariationSummary(String stockTitle) {
@@ -32,9 +29,9 @@ public class StockVariationTrendService {
       StockHistory valueHistory = stock.getValueHistory();
 
       return new StockVariationSummary(
-          stockVariationCalculator.getStockVariationTrendSinceDate(valueHistory, dateService.getFiveDaysAgo()),
-          stockVariationCalculator.getStockVariationTrendSinceDate(valueHistory, dateService.getThirtyDaysAgo()),
-          stockVariationCalculator.getStockVariationTrendSinceDate(valueHistory, dateService.getOneYearAgo())
+          valueHistory.getStockVariationTrendSinceDate(dateService.getFiveDaysAgo()),
+          valueHistory.getStockVariationTrendSinceDate(dateService.getThirtyDaysAgo()),
+          valueHistory.getStockVariationTrendSinceDate(dateService.getOneYearAgo())
       );
     } catch (StockNotFoundException e) {
       throw new StockDoesNotExistException(e);

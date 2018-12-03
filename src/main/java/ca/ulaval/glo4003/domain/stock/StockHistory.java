@@ -48,6 +48,23 @@ public class StockHistory {
     throw new NoStockValueFitsCriteriaException();
   }
 
+  public StockTrend getStockVariationTrendSinceDate(LocalDate date) {
+    try {
+      HistoricalStockValue latestValue = getLatestValue();
+      StockValue valueOnDay = getValueOnDay(date);
+
+      if (valueOnDay.getLatestValue().isGreaterThan(latestValue.value.getLatestValue())) {
+        return StockTrend.DECREASING;
+      } else if (valueOnDay.getLatestValue().isLessThan(latestValue.value.getLatestValue())) {
+        return StockTrend.INCREASING;
+      } else {
+        return StockTrend.STABLE;
+      }
+    } catch (NoStockValueFitsCriteriaException e) {
+      return StockTrend.NO_DATA;
+    }
+  }
+
   private Stream<Map.Entry<LocalDate, StockValue>> getHistoricalValuesBetweenDates(LocalDate from, LocalDate to) {
     return values.entrySet().stream().filter((entry) ->
         !(entry.getKey().isBefore(from) || entry.getKey().isAfter(to))
