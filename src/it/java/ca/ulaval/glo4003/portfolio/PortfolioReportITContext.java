@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.portfolio;
 
 import ca.ulaval.glo4003.context.AbstractContext;
 import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.notification.NullNotificationSender;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
@@ -34,19 +35,19 @@ public class PortfolioReportITContext extends AbstractContext {
   }
 
   private void addStocksToCurrentUserPortfolio() {
-    LocalDate currentDate = serviceLocator.get(Clock.class).getCurrentTime().toLocalDate();
+    LocalDate currentDate = serviceLocator.get(ReadableClock.class).getCurrentTime().toLocalDate();
     addStock("RBS.l", 6, currentDate.minusDays(45));
     addStock("AAPL", 12, currentDate.minusDays(15));
     addStock("MSFT", 24, currentDate.minusDays(3));
   }
 
   private void addStock(String title, int quantity, LocalDate transactionDate) {
-    Clock currentClock = serviceLocator.get(Clock.class);
+    ReadableClock currentClock = serviceLocator.get(ReadableClock.class);
     Clock testClock = new Clock(transactionDate.atTime(0, 0, 0), Duration.ZERO);
 
-    serviceLocator.registerInstance(Clock.class, testClock);
+    serviceLocator.registerInstance(ReadableClock.class, testClock);
     performTransaction(title, quantity);
-    serviceLocator.registerInstance(Clock.class, currentClock);
+    serviceLocator.registerInstance(ReadableClock.class, currentClock);
   }
 
   private void performTransaction(String title, int quantity) {

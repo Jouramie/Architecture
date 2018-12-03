@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toSet;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
@@ -153,11 +154,10 @@ public abstract class AbstractContext {
 
   private void initializeClock() {
     LocalDate startDate = StockCsvLoader.LAST_STOCK_DATA_DATE;
+    Clock clock = new Clock(startDate.atTime(0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION);
 
-    serviceLocator.registerInstance(
-        Clock.class,
-        new Clock(startDate.atTime(0, 0, 0),
-            SimulationSettings.CLOCK_TICK_DURATION));
+    serviceLocator.registerInstance(ReadableClock.class, clock);
+    serviceLocator.registerInstance(Clock.class, clock);
   }
 
   public void configureDestruction() {

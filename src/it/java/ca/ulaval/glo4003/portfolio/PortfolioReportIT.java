@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.iterableWithSize;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.context.ProductionContext;
-import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import io.restassured.http.Header;
 import java.time.LocalDate;
@@ -40,7 +40,7 @@ public class PortfolioReportIT {
 
   @Test
   public void givenPortfolioWithStocksInRequestedRange_whenGetPortfolioReport_thenReturnPortfolioHistory() {
-    LocalDate currentDate = ServiceLocator.INSTANCE.get(Clock.class).getCurrentTime().toLocalDate();
+    LocalDate currentDate = ServiceLocator.INSTANCE.get(ReadableClock.class).getCurrentTime().toLocalDate();
 
     Header tokenHeader = new Header("token", ProductionContext.DEFAULT_INVESTOR_TOKEN);
     //@formatter:off
