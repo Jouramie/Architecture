@@ -1,13 +1,13 @@
-package ca.ulaval.glo4003.market.halt;
+package ca.ulaval.glo4003.it.market.halt;
 
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
 import static io.restassured.RestAssured.given;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-import ca.ulaval.glo4003.ResetServerBetweenTest;
+import ca.ulaval.glo4003.it.ResetServerBetweenTest;
 import org.junit.Rule;
 import org.junit.Test;
 

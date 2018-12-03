@@ -1,7 +1,7 @@
-package ca.ulaval.glo4003.portfolio;
+package ca.ulaval.glo4003.it.portfolio;
 
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
+import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 
-import ca.ulaval.glo4003.ResetServerBetweenTest;
+import ca.ulaval.glo4003.it.ResetServerBetweenTest;
 import ca.ulaval.glo4003.ws.api.cart.CartStockRequestBuilder;
 import io.restassured.http.Header;
 import javax.ws.rs.core.MediaType;

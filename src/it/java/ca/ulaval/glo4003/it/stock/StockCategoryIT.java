@@ -1,11 +1,11 @@
-package ca.ulaval.glo4003.stock;
+package ca.ulaval.glo4003.it.stock;
 
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.not;
 
-import ca.ulaval.glo4003.ResetServerBetweenTest;
+import ca.ulaval.glo4003.it.ResetServerBetweenTest;
 import org.junit.Rule;
 import org.junit.Test;
 

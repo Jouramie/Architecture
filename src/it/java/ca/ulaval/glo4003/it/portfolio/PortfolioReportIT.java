@@ -1,7 +1,7 @@
-package ca.ulaval.glo4003.portfolio;
+package ca.ulaval.glo4003.it.portfolio;
 
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
+import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -13,10 +13,10 @@ import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.iterableWithSize;
 
-import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.context.ProductionContext;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
+import ca.ulaval.glo4003.it.ResetServerBetweenTest;
 import io.restassured.http.Header;
 import java.time.LocalDate;
 import org.junit.Rule;

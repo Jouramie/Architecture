@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.util;
+package ca.ulaval.glo4003.it.util;
 
 import static io.restassured.RestAssured.given;
 

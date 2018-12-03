@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.user;
 
-import static ca.ulaval.glo4003.util.InputValidationAsserts.assertThatExceptionContainsErrorFor;
+import static ca.ulaval.glo4003.ws.api.validation.InputValidationAsserts.assertThatExceptionContainsErrorFor;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;

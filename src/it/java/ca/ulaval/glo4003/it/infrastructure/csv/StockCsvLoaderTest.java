@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.infrastructure;
+package ca.ulaval.glo4003.it.infrastructure.csv;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;

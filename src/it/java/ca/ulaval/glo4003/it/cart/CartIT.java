@@ -1,8 +1,8 @@
-package ca.ulaval.glo4003.cart;
+package ca.ulaval.glo4003.it.cart;
 
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
-import static ca.ulaval.glo4003.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
+import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
+import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -18,9 +18,9 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 
-import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.market.halt.MarketHaltIT;
-import ca.ulaval.glo4003.util.UserAuthenticationHelper;
+import ca.ulaval.glo4003.it.ResetServerBetweenTest;
+import ca.ulaval.glo4003.it.market.halt.MarketHaltIT;
+import ca.ulaval.glo4003.it.util.UserAuthenticationHelper;
 import ca.ulaval.glo4003.ws.api.cart.CartStockRequestBuilder;
 import ca.ulaval.glo4003.ws.api.user.StockLimitCreationRequestBuilder;
 import io.restassured.http.Header;

@@ -1,5 +1,6 @@
-package ca.ulaval.glo4003;
+package ca.ulaval.glo4003.it;
 
+import ca.ulaval.glo4003.InvestULMain;
 import ca.ulaval.glo4003.context.AbstractContext;
 import ca.ulaval.glo4003.context.ProductionContext;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;

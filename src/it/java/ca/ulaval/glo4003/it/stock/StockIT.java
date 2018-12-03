@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.stock;
+package ca.ulaval.glo4003.it.stock;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
-import ca.ulaval.glo4003.ResetServerBetweenTest;
+import ca.ulaval.glo4003.it.ResetServerBetweenTest;
 import org.junit.ClassRule;
 import org.junit.Test;
 

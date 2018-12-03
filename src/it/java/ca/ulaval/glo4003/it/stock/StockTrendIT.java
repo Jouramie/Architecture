@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.stock;
+package ca.ulaval.glo4003.it.stock;
 
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
@@ -6,7 +6,7 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.anyOf;
 
-import ca.ulaval.glo4003.ResetServerBetweenTest;
+import ca.ulaval.glo4003.it.ResetServerBetweenTest;
 import org.hamcrest.Matcher;
 import org.junit.ClassRule;
 import org.junit.Test;

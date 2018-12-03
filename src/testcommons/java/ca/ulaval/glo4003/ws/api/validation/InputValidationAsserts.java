@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.util;
+package ca.ulaval.glo4003.ws.api.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.portfolio;
+package ca.ulaval.glo4003.it.portfolio;
 
 import ca.ulaval.glo4003.context.AbstractContext;
 import ca.ulaval.glo4003.domain.clock.Clock;

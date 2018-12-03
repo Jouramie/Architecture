@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.authentication;
+package ca.ulaval.glo4003.it.authentication;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
@@ -8,7 +8,7 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.any;
 
-import ca.ulaval.glo4003.ResetServerBetweenTest;
+import ca.ulaval.glo4003.it.ResetServerBetweenTest;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import io.restassured.http.Header;
