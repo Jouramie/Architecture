@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.user;
+package ca.ulaval.glo4003.ws.api.user;
 
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;

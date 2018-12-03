@@ -5,10 +5,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.domain.market.MarketBuilder;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.Before;
@@ -32,7 +32,7 @@ public class MarketServiceTest {
   @Before
   public void setUp() throws MarketNotFoundException {
     service = new MarketService(marketRepositoryMock, new MarketStatusAssembler());
-    market = new TestingMarketBuilder().build();
+    market = new MarketBuilder().build();
     given(marketRepositoryMock.findById(SOME_MARKET_ID)).willReturn(market);
   }
 

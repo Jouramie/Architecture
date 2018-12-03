@@ -11,7 +11,6 @@ import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.Matchers.any;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.equalTo;
@@ -21,8 +20,9 @@ import static org.hamcrest.Matchers.iterableWithSize;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
 import ca.ulaval.glo4003.market.halt.MarketHaltIT;
-import ca.ulaval.glo4003.user.StockLimitCreationRequestBuilder;
 import ca.ulaval.glo4003.util.UserAuthenticationHelper;
+import ca.ulaval.glo4003.ws.api.cart.CartStockRequestBuilder;
+import ca.ulaval.glo4003.ws.api.user.StockLimitCreationRequestBuilder;
 import io.restassured.http.Header;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;

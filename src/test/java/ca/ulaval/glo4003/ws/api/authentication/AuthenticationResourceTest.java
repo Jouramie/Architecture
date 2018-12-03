@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
 
-import static ca.ulaval.glo4003.util.InputValidationTestUtil.assertThatExceptionContainsErrorFor;
+import static ca.ulaval.glo4003.util.InputValidationAsserts.assertThatExceptionContainsErrorFor;
 import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.assertj.core.api.Assertions.assertThat;

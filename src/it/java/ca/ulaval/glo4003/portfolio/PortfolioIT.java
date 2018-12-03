@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.iterableWithSize;
 
 import ca.ulaval.glo4003.ResetServerBetweenTest;
-import ca.ulaval.glo4003.cart.CartStockRequestBuilder;
+import ca.ulaval.glo4003.ws.api.cart.CartStockRequestBuilder;
 import io.restassured.http.Header;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;

@@ -3,8 +3,8 @@ package ca.ulaval.glo4003.domain.market.states;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.verify;
 
+import ca.ulaval.glo4003.domain.market.MarketBuilder;
 import ca.ulaval.glo4003.domain.market.MarketState;
-import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import java.time.LocalDate;
@@ -18,7 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OpenMarketStateTest {
-  private final Market market = new TestingMarketBuilder().build();
+  private final Market market = new MarketBuilder().build();
   @Mock
   private StockValueRetriever stockValueRetriever;
   @Mock
@@ -43,7 +43,7 @@ public class OpenMarketStateTest {
   @Test
   public void whenTimeClosesTheMarket_thenUpdateAllStockAndChangeStateToClose() {
     LocalDateTime someClosedTime = LocalDateTime.of(LocalDate.now(), market.closingTime.plusMinutes(1));
-    Market market = new TestingMarketBuilder().withStocks(Collections.singletonList(stockMock)).build();
+    Market market = new MarketBuilder().withStocks(Collections.singletonList(stockMock)).build();
 
     MarketState newState = state.update(market, someClosedTime, stockValueRetriever);
 
@@ -54,7 +54,7 @@ public class OpenMarketStateTest {
   @Test
   public void whenTimeClosesTheMarket_thenClosingPricesAreSaved() {
     LocalDateTime someClosedTime = LocalDateTime.of(LocalDate.now(), market.closingTime.plusMinutes(1));
-    Market market = new TestingMarketBuilder().withStocks(Collections.singletonList(stockMock)).build();
+    Market market = new MarketBuilder().withStocks(Collections.singletonList(stockMock)).build();
 
     state.update(market, someClosedTime, stockValueRetriever);
 

@@ -6,7 +6,7 @@ import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import java.util.regex.Pattern;
 
 
-public class InputValidationTestUtil {
+public class InputValidationAsserts {
 
   private static final String ERROR_MESSAGE_PATTERN = "%s.+";
 

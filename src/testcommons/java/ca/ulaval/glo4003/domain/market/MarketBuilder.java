@@ -12,7 +12,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
-public class TestingMarketBuilder {
+public class MarketBuilder {
 
   public static final String DEFAULT_STOCK_TITLE = "stock";
   private static final LocalTime DEFAULT_CLOSING_TIME = LocalTime.of(21, 0, 0);
@@ -26,29 +26,29 @@ public class TestingMarketBuilder {
   private List<Stock> stocks;
   private String haltMessage = "";
 
-  public TestingMarketBuilder() {
+  public MarketBuilder() {
     StockHistory valueHistory = new StockHistory();
     valueHistory.addValue(LocalDate.now(), new StockValue(new MoneyAmount(1)));
     stocks = Collections.singletonList(new Stock(DEFAULT_STOCK_TITLE,
         DEFAULT_STOCK_NAME, DEFAULT_STOCK_CATEGORY, new MarketId(DEFAULT_MARKET_NAME), valueHistory));
   }
 
-  public TestingMarketBuilder withId(MarketId id) {
+  public MarketBuilder withId(MarketId id) {
     marketId = id;
     return this;
   }
 
-  public TestingMarketBuilder withState(MarketState marketState) {
+  public MarketBuilder withState(MarketState marketState) {
     initialState = marketState;
     return this;
   }
 
-  public TestingMarketBuilder withStocks(List<Stock> stocks) {
+  public MarketBuilder withStocks(List<Stock> stocks) {
     this.stocks = stocks;
     return this;
   }
 
-  public TestingMarketBuilder halted(String message) {
+  public MarketBuilder halted(String message) {
     halted = true;
     haltMessage = message;
     return this;

@@ -1,10 +1,7 @@
-package ca.ulaval.glo4003.util;
+package ca.ulaval.glo4003.domain.user;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
-import ca.ulaval.glo4003.domain.user.Administrator;
-import ca.ulaval.glo4003.domain.user.Investor;
-import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.LimitBuilder;
 

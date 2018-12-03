@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ca.ulaval.glo4003.domain.market.MarketBuilder;
 import ca.ulaval.glo4003.domain.market.MarketId;
-import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.service.market.MarketDoesNotExistException;
 import ca.ulaval.glo4003.service.market.MarketService;
@@ -19,10 +19,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MarketHaltResourceImplTest {
+public class MarketHaltResourceTest {
 
   public static final String SOME_MESSAGE = "message";
-  public static final Market SOME_MARKET = new TestingMarketBuilder().halted(SOME_MESSAGE).build();
+  public static final Market SOME_MARKET = new MarketBuilder().halted(SOME_MESSAGE).build();
   public static final MarketId SOME_MARKET_ID = SOME_MARKET.getId();
 
   private MarketHaltResourceImpl marketHaltResource;

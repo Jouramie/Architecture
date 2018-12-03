@@ -1,8 +1,5 @@
-package ca.ulaval.glo4003.util;
+package ca.ulaval.glo4003.domain.transaction;
 
-import ca.ulaval.glo4003.domain.transaction.Transaction;
-import ca.ulaval.glo4003.domain.transaction.TransactionItem;
-import ca.ulaval.glo4003.domain.transaction.TransactionType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
