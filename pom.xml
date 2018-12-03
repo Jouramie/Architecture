@@ -276,6 +276,7 @@
                         <configuration>
                             <sources>
                                 <source>src/it/java</source>
+                                <source>src/testcommons/java</source>
                             </sources>
                         </configuration>
                     </execution>

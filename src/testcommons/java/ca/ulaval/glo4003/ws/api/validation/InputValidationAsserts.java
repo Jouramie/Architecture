@@ -2,7 +2,6 @@ package ca.ulaval.glo4003.ws.api.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import java.util.regex.Pattern;
 
 
