@@ -1,8 +1,7 @@
 package ca.ulaval.glo4003.it.transaction;
 
 import static ca.ulaval.glo4003.context.AbstractContext.DEFAULT_INVESTOR_EMAIL;
-import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenInvestorAlreadyAuthenticated;
-import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenInvestorAlreadyRegistered;
+import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -23,8 +22,7 @@ public class TransactionIT {
 
   @Test
   public void whenGettingUserTransactions_thenReturnListOfTransactions() {
-    givenInvestorAlreadyRegistered();
-    String token = givenInvestorAlreadyAuthenticated();
+    String token = givenAdministratorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
     //@formatter:off
     given()

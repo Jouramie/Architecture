@@ -20,7 +20,7 @@ public interface TransactionResource {
 
   @Path("/users/{email}/transactions")
   @GET
-  @AuthenticationRequiredBinding(acceptedRoles = {UserRole.INVESTOR, UserRole.ADMINISTRATOR})
+  @AuthenticationRequiredBinding(acceptedRoles = {UserRole.ADMINISTRATOR})
   @Operation(
       summary = "Get transactions for a specific user.",
       responses = {
@@ -36,7 +36,7 @@ public interface TransactionResource {
           ),
           @ApiResponse(
               responseCode = "401",
-              description = "User is not logged in."
+              description = "Administrator is not logged in."
           )
       }
   )
