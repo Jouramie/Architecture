@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.infrastructure.notification;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationCoordinates;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.Body;
 import com.amazonaws.services.simpleemail.model.Content;
@@ -10,8 +11,12 @@ import com.amazonaws.services.simpleemail.model.Destination;
 import com.amazonaws.services.simpleemail.model.Message;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class EmailNotificationSender implements NotificationSender {
+public class AwsEmailNotificationSender implements NotificationSender {
+
+  private static final Logger logger = LoggerFactory.getLogger(AwsEmailNotificationSender.class);
 
   private static final String EMAIL_FROM = "invest.ul.2018@gmail.com";
   private static final String UTF_8 = "UTF-8";
@@ -19,7 +24,7 @@ public class EmailNotificationSender implements NotificationSender {
   private final AmazonSimpleEmailService emailService;
 
   @Inject
-  public EmailNotificationSender(AmazonSimpleEmailService emailService) {
+  public AwsEmailNotificationSender(AmazonSimpleEmailService emailService) {
     this.emailService = emailService;
   }
 
@@ -33,8 +38,8 @@ public class EmailNotificationSender implements NotificationSender {
           .withMessage(message)
           .withSource(EMAIL_FROM);
       emailService.sendEmail(request);
-    } catch (Exception ex) {
-      System.out.println("The email was not sent. Error message: " + ex.getMessage());
+    } catch (SdkClientException exception) {
+      logger.error("Could not send email to " + coordinates.email);
     }
   }
 

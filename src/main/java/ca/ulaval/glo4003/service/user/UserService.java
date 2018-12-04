@@ -46,7 +46,7 @@ public class UserService {
 
   private User tryFindUser(String email) {
     try {
-      return userRepository.find(email);
+      return userRepository.findByEmail(email);
     } catch (UserNotFoundException e) {
       throw new UserDoesNotExistException(e);
     }

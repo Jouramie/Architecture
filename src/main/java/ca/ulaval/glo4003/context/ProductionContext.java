@@ -8,7 +8,7 @@ import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.clock.ClockDriver;
 import ca.ulaval.glo4003.infrastructure.config.SimulationSettings;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocatorInitializer;
-import ca.ulaval.glo4003.infrastructure.notification.EmailNotificationSender;
+import ca.ulaval.glo4003.infrastructure.notification.AwsEmailNotificationSender;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
@@ -28,21 +28,19 @@ public class ProductionContext extends AbstractContext {
   }
 
   private void startClockAndMarketsUpdater() {
-    clockDriver = new ClockDriver(
-        serviceLocator.get(Clock.class),
-        SimulationSettings.SIMULATION_UPDATE_FREQUENCY);
-    MarketUpdater marketUpdater = new MarketUpdater(
+    Clock clock = serviceLocator.get(Clock.class);
+    clockDriver = new ClockDriver(clock, SimulationSettings.SIMULATION_UPDATE_FREQUENCY);
+    clock.register(new MarketUpdater(
         serviceLocator.get(MarketRepository.class),
         serviceLocator.get(StockValueRetriever.class)
-    );
-    serviceLocator.get(Clock.class).register(marketUpdater);
+    ));
     clockDriver.start();
   }
 
-  private EmailNotificationSender createAwsSesSender() {
+  private AwsEmailNotificationSender createAwsSesSender() {
     AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
         .withRegion(Regions.US_EAST_1).build();
-    return new EmailNotificationSender(client);
+    return new AwsEmailNotificationSender(client);
   }
 
   @Override

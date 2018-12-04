@@ -32,16 +32,16 @@ public class InMemoryUserRepository implements UserRepository {
   }
 
   @Override
-  public <T extends User> T find(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException {
+  public <T extends User> T findByEmail(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException {
     try {
-      return clazz.cast(find(email));
+      return clazz.cast(findByEmail(email));
     } catch (ClassCastException e) {
       throw new WrongRoleException(e);
     }
   }
 
   @Override
-  public User find(String email) throws UserNotFoundException {
+  public User findByEmail(String email) throws UserNotFoundException {
     return Optional.ofNullable(content.get(email)).orElseThrow(UserNotFoundException::new);
   }
 
