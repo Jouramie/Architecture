@@ -46,6 +46,8 @@ public interface TransactionResource {
           )
       }
   )
-  List<TransactionModelDto> getUserTransactions(@PathParam("email") String email, @QueryParam("scope")
-  @Parameter(description = "History scope. '5_DAYS' or '30_DAYS'") String scope);
+  List<TransactionModelDto> getUserTransactions(
+      @PathParam("email") String email,
+      @QueryParam("scope")
+      @Parameter(description = "History scope. '5_DAYS' or '30_DAYS'") String scope);
 }
