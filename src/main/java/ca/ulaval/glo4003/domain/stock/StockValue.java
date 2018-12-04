@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.domain.stock;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class StockValue {
   private final MoneyAmount latestValue;
@@ -33,5 +34,24 @@ public class StockValue {
     }
 
     return new StockValue(openValue, newLatestValue, maximumValue);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    StockValue that = (StockValue) o;
+    return Objects.equals(latestValue, that.latestValue)
+        && Objects.equals(openValue, that.openValue)
+        && Objects.equals(maximumValue, that.maximumValue);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(latestValue, openValue, maximumValue);
   }
 }

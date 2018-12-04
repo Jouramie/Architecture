@@ -77,10 +77,7 @@ public class Stock {
 
   public synchronized void open() {
     closed = false;
-
-    MoneyAmount startValue = getValue().getLatestValue();
-    StockValue newStockValue = new StockValue(startValue, startValue, startValue);
-    valueHistory.addNextValue(newStockValue);
+    valueHistory.addNextValue();
   }
 
   public synchronized void close() {

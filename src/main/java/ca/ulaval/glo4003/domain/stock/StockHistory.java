@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.domain.stock;
 
 import static java.util.stream.Collectors.toList;
 
+import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -18,9 +19,12 @@ public class StockHistory {
     values.put(date, value);
   }
 
-  public void addNextValue(StockValue value) {
-    LocalDate nextDate = getLatestHistoricalValue().date.plusDays(1);
-    addValue(nextDate, value);
+  public void addNextValue() {
+    LocalDate nextDate = values.lastKey().plusDays(1);
+    MoneyAmount startValue = values.lastEntry().getValue().getLatestValue();
+    StockValue newStockValue = new StockValue(startValue, startValue, startValue);
+
+    values.put(nextDate, newStockValue);
   }
 
   public HistoricalStockValue getLatestHistoricalValue() {
@@ -63,7 +67,9 @@ public class StockHistory {
 
     if (valueOnDay.get().getLatestValue().isGreaterThan(latestValue.value.getLatestValue())) {
       return StockTrend.DECREASING;
-    } else if (valueOnDay.get().getLatestValue().isLessThan(latestValue.value.getLatestValue())) {
+    }
+
+    if (valueOnDay.get().getLatestValue().isLessThan(latestValue.value.getLatestValue())) {
       return StockTrend.INCREASING;
     }
 

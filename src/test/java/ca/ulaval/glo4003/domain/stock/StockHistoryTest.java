@@ -55,14 +55,25 @@ public class StockHistoryTest {
   }
 
   @Test
-  public void givenHistoryWithSingleValue_whenAddNextValue_thenAddValueWithDateSetToNextDay() {
+  public void whenAddNextValue_thenAddValueWithDateSetToNextDay() {
     history.addValue(SOME_DATE, SOME_VALUE);
 
-    history.addNextValue(SOME_OTHER_VALUE);
+    history.addNextValue();
 
     HistoricalStockValue result = history.getLatestHistoricalValue();
     assertThat(result.date).isEqualTo(SOME_DATE.plusDays(1));
-    assertThat(result.value).isEqualTo(SOME_OTHER_VALUE);
+  }
+
+  @Test
+  public void whenAddNextValue_thenAddValueWithStartingValueEqualsToLastDayCloseValue() {
+    history.addValue(SOME_DATE, SOME_VALUE);
+
+    history.addNextValue();
+
+    HistoricalStockValue result = history.getLatestHistoricalValue();
+    MoneyAmount lastDayCloseValue = SOME_VALUE.getLatestValue();
+    StockValue expectedValue = new StockValue(lastDayCloseValue, lastDayCloseValue, lastDayCloseValue);
+    assertThat(result.value).isEqualTo(expectedValue);
   }
 
   @Test
