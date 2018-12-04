@@ -39,8 +39,7 @@ public class CartResource implements DocumentedCartResource {
 
   @Inject
   public CartResource(CartService cartService, CheckoutService checkoutService,
-                      ApiTransactionAssembler apiTransactionAssembler,
-                      ApiCartItemAssembler apiCartItemAssembler) {
+                      ApiTransactionAssembler apiTransactionAssembler, ApiCartItemAssembler apiCartItemAssembler) {
     this.cartService = cartService;
     this.checkoutService = checkoutService;
     this.apiTransactionAssembler = apiTransactionAssembler;
