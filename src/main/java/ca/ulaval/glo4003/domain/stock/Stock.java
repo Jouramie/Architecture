@@ -12,6 +12,7 @@ public class Stock {
   private final String category;
   private final MarketId marketId;
   private final StockHistory valueHistory;
+  private boolean closed;
 
   public Stock(String title, String name, String category, MarketId marketId,
                StockHistory valueHistory) {
@@ -20,6 +21,7 @@ public class Stock {
     this.category = category;
     this.marketId = marketId;
     this.valueHistory = valueHistory;
+    closed = true; // TODO vérifier si c'est legit
   }
 
   public String getTitle() {
@@ -46,6 +48,10 @@ public class Stock {
     return getValue().getLatestValue().getCurrency();
   }
 
+  public boolean isClosed() {
+    return closed;
+  }
+
   public synchronized void updateValue(BigDecimal variation) {
     valueHistory.addValue(valueHistory.getLatestValue().date, getValue().updateValue(variation));
   }
@@ -69,13 +75,14 @@ public class Stock {
   }
 
   public synchronized void saveOpeningPrice() {
+    closed = false;
     MoneyAmount startValue = getValue().getLatestValue();
-    StockValue newStockValue = StockValue.createOpen(startValue);
+    StockValue newStockValue = StockValue.create(startValue);
 
     valueHistory.addNextValue(newStockValue);
   }
 
   public synchronized void saveClosingPrice() {
-    valueHistory.addValue(valueHistory.getLatestValue().date, getValue().close());
+    closed = true;
   }
 }

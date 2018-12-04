@@ -28,7 +28,7 @@ public class TestingMarketBuilder {
 
   public TestingMarketBuilder() {
     StockHistory valueHistory = new StockHistory();
-    valueHistory.addValue(LocalDate.now(), StockValue.createOpen(new MoneyAmount(1)));
+    valueHistory.addValue(LocalDate.now(), StockValue.create(new MoneyAmount(1)));
     stocks = Collections.singletonList(new Stock(DEFAULT_STOCK_TITLE,
         DEFAULT_STOCK_NAME, DEFAULT_STOCK_CATEGORY, new MarketId(DEFAULT_MARKET_NAME), valueHistory));
   }

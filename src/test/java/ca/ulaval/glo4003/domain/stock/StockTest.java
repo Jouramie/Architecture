@@ -33,7 +33,7 @@ public class StockTest {
         .withName(SOME_NAME)
         .withCategory(SOME_CATEGORY)
         .withMarketId(SOME_MARKET_ID)
-        .withHistoricalValue(SOME_HISTORICAL_DATE, StockValue.createOpen(SOME_HISTORICAL_AMOUNT))
+        .withHistoricalValue(SOME_HISTORICAL_DATE, StockValue.create(SOME_HISTORICAL_AMOUNT))
         .withOpenValue(SOME_LAST_OPEN_AMOUNT)
         .withCloseValue(SOME_START_AMOUNT)
         .build();
@@ -90,12 +90,21 @@ public class StockTest {
   }
 
   @Test
+  public void givenStockIsOpen_whenIsStockClosed_thenFalse() {
+    stock.saveOpeningPrice();
+
+    boolean isStockClosed = stock.isClosed();
+
+    assertThat(isStockClosed).isFalse();
+  }
+
+  @Test
   public void givenStockIsOpen_whenSavingClosingPrice_thenCloseStockValue() {
     stock.saveOpeningPrice();
 
     stock.saveClosingPrice();
 
-    assertThat(stock.getValue().isClosed()).isTrue();
+    assertThat(stock.isClosed()).isTrue();
   }
 
   @Test

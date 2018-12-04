@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class StockAssembler {
   public StockDto toDto(Stock stock) {
     BigDecimal closeValue = null;
-    if (stock.getValue().isClosed()) {
+    if (stock.isClosed()) {
       closeValue = stock.getValue().getLatestValue().toUsd();
     }
 

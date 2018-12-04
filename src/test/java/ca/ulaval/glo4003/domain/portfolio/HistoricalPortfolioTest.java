@@ -38,9 +38,9 @@ public class HistoricalPortfolioTest {
     given(stockRepository.exists(FIRST_TITLE)).willReturn(true);
     given(stockRepository.exists(SECOND_TITLE)).willReturn(true);
     given(stockRepository.findByTitle(FIRST_TITLE)).willReturn(
-        new TestStockBuilder().withTitle(FIRST_TITLE).withHistoricalValue(SOME_DATE, StockValue.createOpen(FIRST_HISTORICAL_VALUE)).build());
+        new TestStockBuilder().withTitle(FIRST_TITLE).withHistoricalValue(SOME_DATE, StockValue.create(FIRST_HISTORICAL_VALUE)).build());
     given(stockRepository.findByTitle(SECOND_TITLE)).willReturn(
-        new TestStockBuilder().withTitle(SECOND_TITLE).withHistoricalValue(SOME_DATE, StockValue.createOpen(SECOND_HISTORICAL_VALUE)).build());
+        new TestStockBuilder().withTitle(SECOND_TITLE).withHistoricalValue(SOME_DATE, StockValue.create(SECOND_HISTORICAL_VALUE)).build());
   }
 
   @Test
