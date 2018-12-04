@@ -5,7 +5,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.service.stock.StockService;
-import ca.ulaval.glo4003.ws.api.stock.resources.DocumentedStockCategoryResource;
 import ca.ulaval.glo4003.ws.api.stock.resources.StockCategoryResourceImpl;
 import com.google.common.collect.Lists;
 import java.util.List;
@@ -20,7 +19,7 @@ public class StockCategoryResourceTest {
 
   @Mock
   private StockService stockService;
-  private DocumentedStockCategoryResource stockCategoryResource;
+  private StockCategoryResourceImpl stockCategoryResource;
 
   @Before
   public void setup() {

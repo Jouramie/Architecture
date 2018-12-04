@@ -28,7 +28,7 @@ public class PortfolioResourceTest {
   private ApiPortfolioReportAssembler apiPortfolioReportAssembler;
   @Mock
   private DateService dateService;
-  private DocumentedPortfolioResource portfolioResource;
+  private PortfolioResourceImpl portfolioResource;
 
   @Before
   public void setupPortfolioResource() {

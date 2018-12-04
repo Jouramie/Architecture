@@ -79,7 +79,7 @@ public class PortfolioResourceImpl implements DocumentedPortfolioResource {
       case LAST_YEAR:
         return dateService.getOneYearAgo();
       default:
-        throw new InternalErrorException("Missing enum case in DocumentedPortfolioResource.");
+        throw new InternalErrorException("Missing enum case in PortfolioResource.");
     }
   }
 }
