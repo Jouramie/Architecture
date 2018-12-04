@@ -9,12 +9,19 @@ import ca.ulaval.glo4003.ws.api.authentication.assemblers.ApiAuthenticationRespo
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationResponseDto;
 import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
+import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+@Path("/")
 @Resource
-public class AuthenticationResourceImpl implements AuthenticationResource {
+public class AuthenticationResourceImpl implements DocumentedAuthenticationResource {
 
   private final AuthenticationService authenticationService;
   private final RequestValidator requestValidator;
@@ -29,6 +36,10 @@ public class AuthenticationResourceImpl implements AuthenticationResource {
     this.apiAuthenticationResponseAssembler = apiAuthenticationResponseAssembler;
   }
 
+  @POST
+  @Path("/authenticate")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.APPLICATION_JSON)
   @Override
   public Response authenticate(ApiAuthenticationRequestDto authenticationRequest) {
     requestValidator.validate(authenticationRequest);
@@ -37,6 +48,9 @@ public class AuthenticationResourceImpl implements AuthenticationResource {
     return Response.status(ACCEPTED).entity(apiAuthenticationResponseDto).build();
   }
 
+  @POST()
+  @Path("/logout")
+  @AuthenticationRequiredBinding
   @Override
   public Response logout() {
     authenticationService.revokeToken();

@@ -7,6 +7,9 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.service.stock.StockDto;
 import ca.ulaval.glo4003.service.stock.StockService;
+import ca.ulaval.glo4003.ws.api.stock.assemblers.ApiStockAssembler;
+import ca.ulaval.glo4003.ws.api.stock.dtos.ApiStockDto;
+import ca.ulaval.glo4003.ws.api.stock.resources.StockResourceImpl;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,8 @@
-package ca.ulaval.glo4003.ws.api.stock;
+package ca.ulaval.glo4003.ws.api.stock.assemblers;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.service.stock.StockDto;
+import ca.ulaval.glo4003.ws.api.stock.dtos.ApiStockDto;
 import java.util.List;
 import java.util.stream.Collectors;
 

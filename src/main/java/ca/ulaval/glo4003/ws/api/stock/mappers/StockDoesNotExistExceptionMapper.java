@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.stock;
+package ca.ulaval.glo4003.ws.api.stock.mappers;
 
 import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;

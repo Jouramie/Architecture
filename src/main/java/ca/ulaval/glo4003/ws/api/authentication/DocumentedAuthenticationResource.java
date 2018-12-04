@@ -2,25 +2,14 @@ package ca.ulaval.glo4003.ws.api.authentication;
 
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationResponseDto;
-import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/")
-public interface AuthenticationResource {
+public interface DocumentedAuthenticationResource {
 
-  @POST
-  @Path("/authenticate")
-  @Produces(MediaType.APPLICATION_JSON)
-  @Consumes(MediaType.APPLICATION_JSON)
   @Operation(
       summary = "User login",
       description = "Request a personal identification token.",
@@ -42,9 +31,6 @@ public interface AuthenticationResource {
   )
   Response authenticate(ApiAuthenticationRequestDto authenticationRequest);
 
-  @POST()
-  @Path("/logout")
-  @AuthenticationRequiredBinding
   @Operation(
       summary = "Revoke the current user's authentication token.",
       responses = {

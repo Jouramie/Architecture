@@ -1,33 +1,17 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
-import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
-import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
-@Path("/cart")
-@AuthenticationRequiredBinding(acceptedRoles = UserRole.INVESTOR)
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public interface CartResource {
-  @GET
+public interface DocumentedCartResource {
+
   @Operation(
       summary = "Get the content of the cart.",
       description = "Return every stock in the cart, with their details and quantity.",
@@ -50,8 +34,6 @@ public interface CartResource {
   )
   List<ApiCartItemResponseDto> getCartContent();
 
-  @PUT
-  @Path("/{title}")
   @Operation(
       summary = "Add a stock to the cart.",
       description = "Add quantity of a stock to the cart. "
@@ -78,12 +60,8 @@ public interface CartResource {
           )
       }
   )
-  List<ApiCartItemResponseDto> addStockToCart(
-      @PathParam("title") String title,
-      CartStockRequestDto cartStockRequestDto);
+  List<ApiCartItemResponseDto> addStockToCart(String title, CartStockRequestDto cartStockRequestDto);
 
-  @PATCH
-  @Path("/{title}")
   @Operation(
       summary = "Update a stock in the cart.",
       description = "Update the quantity of a stock. "
@@ -110,12 +88,8 @@ public interface CartResource {
           )
       }
   )
-  List<ApiCartItemResponseDto> updateStockInCart(
-      @PathParam("title") String title,
-      CartStockRequestDto cartStockRequestDto);
+  List<ApiCartItemResponseDto> updateStockInCart(String title, CartStockRequestDto cartStockRequestDto);
 
-  @DELETE
-  @Path("/{title}")
   @Operation(
       summary = "Delete a stock in the cart.",
       description = "Remove a stock from the cart. "
@@ -138,10 +112,8 @@ public interface CartResource {
           )
       }
   )
-  List<ApiCartItemResponseDto> deleteStockInCart(
-      @PathParam("title") String title);
+  List<ApiCartItemResponseDto> deleteStockInCart(String title);
 
-  @DELETE
   @Operation(
       summary = "Empty the cart.",
       description = "Remove all stocks from the cart.",
@@ -158,9 +130,6 @@ public interface CartResource {
   )
   void emptyCart();
 
-  @POST
-  @Path("/checkout")
-  @Consumes(MediaType.WILDCARD)
   @Operation(
       summary = "Check out the cart.",
       description = "Check out the current content of the cart. "

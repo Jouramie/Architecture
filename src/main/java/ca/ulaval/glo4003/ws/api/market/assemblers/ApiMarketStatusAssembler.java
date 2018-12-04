@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.market;
+package ca.ulaval.glo4003.ws.api.market.assemblers;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.service.market.MarketStatusDto;

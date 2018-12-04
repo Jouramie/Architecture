@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.stock.trend;
+package ca.ulaval.glo4003.ws.api.stock.dtos;
 
 import ca.ulaval.glo4003.domain.stock.StockTrend;
 import io.swagger.v3.oas.annotations.media.Schema;

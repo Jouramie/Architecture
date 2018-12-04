@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.stock;
+package ca.ulaval.glo4003.ws.api.stock.resources;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -6,16 +6,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
-@Path("/stock_categories")
-@Produces(MediaType.APPLICATION_JSON)
-public interface StockCategoryResource {
+public interface DocumentedStockCategoryResource {
 
-  @GET
   @Operation(
       summary = "Get stock categories.",
       description = "Return the available categories.",

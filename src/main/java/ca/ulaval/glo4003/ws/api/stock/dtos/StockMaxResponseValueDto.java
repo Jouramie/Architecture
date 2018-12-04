@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.stock.max;
+package ca.ulaval.glo4003.ws.api.stock.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;

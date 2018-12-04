@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.portfolio;
+package ca.ulaval.glo4003.ws.api.portfolio.assemblers;
 
 import static java.util.stream.Collectors.toList;
 

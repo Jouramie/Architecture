@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.stock;
+package ca.ulaval.glo4003.ws.api.stock.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;

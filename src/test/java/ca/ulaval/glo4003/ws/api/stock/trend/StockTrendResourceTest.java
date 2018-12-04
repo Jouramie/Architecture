@@ -6,6 +6,8 @@ import static org.mockito.BDDMockito.given;
 import ca.ulaval.glo4003.domain.stock.StockTrend;
 import ca.ulaval.glo4003.service.stock.trend.StockVariationTrendService;
 import ca.ulaval.glo4003.service.stock.trend.dto.StockVariationSummary;
+import ca.ulaval.glo4003.ws.api.stock.dtos.ApiStockTrendDto;
+import ca.ulaval.glo4003.ws.api.stock.resources.StockTrendResourceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

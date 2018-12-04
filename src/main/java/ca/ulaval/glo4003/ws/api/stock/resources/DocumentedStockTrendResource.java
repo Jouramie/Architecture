@@ -1,23 +1,13 @@
-package ca.ulaval.glo4003.ws.api.stock.trend;
+package ca.ulaval.glo4003.ws.api.stock.resources;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
+import ca.ulaval.glo4003.ws.api.stock.dtos.ApiStockTrendDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 
-@Path("/stocks/{title}/trend")
-@Produces(APPLICATION_JSON)
-@Consumes(APPLICATION_JSON)
-public interface StockTrendResource {
+public interface DocumentedStockTrendResource {
 
-  @GET
   @Operation(
       summary = "Get the variation trend for a given stock title.",
       description = "Return the variation trend for the last 5 days, last 30 days, last year.",
@@ -36,5 +26,5 @@ public interface StockTrendResource {
           )
       }
   )
-  ApiStockTrendDto getStockTrend(@PathParam("title") String title);
+  ApiStockTrendDto getStockTrend(String title);
 }
