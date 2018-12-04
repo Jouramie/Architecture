@@ -49,7 +49,7 @@ public class ClosedMarketStateTest {
 
     MarketState newState = state.update(market, someOpenedTime, stockValueRetriever);
 
-    verify(stockMock).saveOpeningPrice();
+    verify(stockMock).open();
 
     assertThat(newState).isInstanceOf(OpenMarketState.class);
   }

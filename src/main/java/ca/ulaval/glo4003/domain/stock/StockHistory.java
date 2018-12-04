@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.domain.stock;
 
 import static java.util.stream.Collectors.toList;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -18,12 +19,16 @@ public class StockHistory {
   }
 
   public void addNextValue(StockValue value) {
-    LocalDate nextDate = getLatestValue().date.plusDays(1);
+    LocalDate nextDate = getLatestHistoricalValue().date.plusDays(1);
     addValue(nextDate, value);
   }
 
-  public HistoricalStockValue getLatestValue() {
+  public HistoricalStockValue getLatestHistoricalValue() {
     return toHistoricalStockValue(values.lastEntry());
+  }
+
+  public StockValue getLatestValue() {
+    return values.lastEntry().getValue();
   }
 
   public List<HistoricalStockValue> getAllStoredValues() {
@@ -50,7 +55,7 @@ public class StockHistory {
   }
 
   public StockTrend getStockVariationTrendSinceDate(LocalDate date) {
-    HistoricalStockValue latestValue = getLatestValue();
+    HistoricalStockValue latestValue = getLatestHistoricalValue();
     Optional<StockValue> valueOnDay = getValueOnDay(date);
     if (!valueOnDay.isPresent()) {
       return StockTrend.NO_DATA;
@@ -73,5 +78,10 @@ public class StockHistory {
 
   private HistoricalStockValue toHistoricalStockValue(Map.Entry<LocalDate, StockValue> entry) {
     return new HistoricalStockValue(entry.getKey(), entry.getValue());
+  }
+
+  public void updateCurrentValue(BigDecimal variation) {
+    StockValue newCurrentValue = values.lastEntry().getValue().updateCurrentValue(variation);
+    values.put(values.lastKey(), newCurrentValue);
   }
 }

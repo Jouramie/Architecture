@@ -7,6 +7,7 @@ import static ca.ulaval.glo4003.domain.stock.StockTrend.STABLE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Optional;
@@ -47,7 +48,7 @@ public class StockHistoryTest {
     history.addValue(SOME_DATE, SOME_VALUE);
     history.addValue(SOME_MORE_RECENT_DATE, SOME_OTHER_VALUE);
 
-    HistoricalStockValue result = history.getLatestValue();
+    HistoricalStockValue result = history.getLatestHistoricalValue();
 
     assertThat(result.date).isEqualTo(SOME_MORE_RECENT_DATE);
     assertThat(result.value).isEqualTo(SOME_OTHER_VALUE);
@@ -59,7 +60,7 @@ public class StockHistoryTest {
 
     history.addNextValue(SOME_OTHER_VALUE);
 
-    HistoricalStockValue result = history.getLatestValue();
+    HistoricalStockValue result = history.getLatestHistoricalValue();
     assertThat(result.date).isEqualTo(SOME_DATE.plusDays(1));
     assertThat(result.value).isEqualTo(SOME_OTHER_VALUE);
   }
@@ -177,5 +178,14 @@ public class StockHistoryTest {
     StockTrend trend = history.getStockVariationTrendSinceDate(SOME_OLDER_DATE);
 
     assertThat(trend).isSameAs(NO_DATA);
+  }
+
+  @Test
+  public void givenVariation_whenUpdateCurrentValue_thenAddVariationToCurrentValue() {
+    history.addValue(SOME_DATE, new StockValueBuilder().withLatestValue(10).build());
+
+    history.updateCurrentValue(BigDecimal.ONE);
+
+    assertThat(history.getLatestValue().getLatestValue()).isEqualTo(new MoneyAmount(11));
   }
 }

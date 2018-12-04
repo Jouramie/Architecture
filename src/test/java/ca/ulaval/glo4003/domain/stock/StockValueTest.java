@@ -2,73 +2,67 @@ package ca.ulaval.glo4003.domain.stock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
 import org.junit.Test;
 
 public class StockValueTest {
-  private final Currency SOME_CURRENCY = new Currency("CAD", new BigDecimal(0.77));
-  private final MoneyAmount SOME_START_VALUE = new MoneyAmount(100.00, SOME_CURRENCY);
-  private final MoneyAmount SOME_CLOSE_VALUE = new MoneyAmount(110.00, SOME_CURRENCY);
-  private final MoneyAmount SOME_NEW_VALUE = new MoneyAmount(120.00, SOME_CURRENCY);
-  private final MoneyAmount SOME_BIGGER_VALUE = new MoneyAmount(300.00, SOME_CURRENCY);
-  private final MoneyAmount SOME_SMALLER_VALUE = new MoneyAmount(30.00, SOME_CURRENCY);
+  private static final BigDecimal SOME_VARIATION = BigDecimal.TEN;
 
   @Test
-  public void whenCreateOpen_thenAllValuesAreSetToStartValueAndStockIsOpen() {
-    StockValue stockValue = StockValue.create(SOME_START_VALUE);
+  public void whenUpdateCurrentValue_thenDoNotChangeOpenValue() {
+    StockValue stockValue = new StockValueBuilder().build();
 
-    assertThat(stockValue.getOpenValue()).isEqualTo(SOME_START_VALUE);
-    assertThat(stockValue.getLatestValue()).isEqualTo(SOME_START_VALUE);
-    assertThat(stockValue.getMaximumValue()).isEqualTo(SOME_START_VALUE);
+    StockValue newStockValue = stockValue.updateCurrentValue(SOME_VARIATION);
+
+    assertThat(newStockValue.getOpenValue()).isSameAs(StockValueBuilder.DEFAULT_OPEN_VALUE);
   }
 
   @Test
-  public void whenCreateClosedWithExplicitValues_thenValuesAreSetAppropriatelyAndStockIsClosed() {
-    StockValue stockValue = StockValue.create(SOME_START_VALUE, SOME_CLOSE_VALUE, SOME_BIGGER_VALUE);
+  public void givenVariation_whenUpdateCurrentValue_thenStockValueIsIncrementedByTheAmount() {
+    MoneyAmount latestValue = new MoneyAmount(10);
+    BigDecimal variation = BigDecimal.ONE;
+    StockValue stockValue = new StockValueBuilder().withLatestValue(latestValue).build();
 
-    assertThat(stockValue.getOpenValue()).isEqualTo(SOME_START_VALUE);
-    assertThat(stockValue.getLatestValue()).isEqualTo(SOME_CLOSE_VALUE);
-    assertThat(stockValue.getMaximumValue()).isEqualTo(SOME_BIGGER_VALUE);
+    StockValue newStockValue = stockValue.updateCurrentValue(variation);
+
+    MoneyAmount expectedLatestValue = latestValue.add(variation);
+    assertThat(newStockValue.getLatestValue()).isEqualTo(expectedLatestValue);
   }
 
   @Test
-  public void givenOpenStockValue_whenSetValue_thenSetLatestValueOnly() {
-    StockValue stockValue = StockValue.create(SOME_START_VALUE);
+  public void givenVariationSurpassingMaximumValue_whenUpdateCurrentValue_thenUpdateMaximumValue() {
+    MoneyAmount latestValue = new MoneyAmount(10);
+    BigDecimal variation = BigDecimal.TEN;
+    MoneyAmount maximumValue = latestValue.add(BigDecimal.ONE);
+    StockValue stockValue = new StockValueBuilder().withLatestValue(latestValue).withMaximumValue(maximumValue).build();
 
-    StockValue newStockValue = stockValue.setValue(SOME_NEW_VALUE);
+    StockValue newStockValue = stockValue.updateCurrentValue(variation);
 
-    assertThat(newStockValue.getOpenValue()).isEqualTo(SOME_START_VALUE);
-    assertThat(newStockValue.getLatestValue()).isEqualTo(SOME_NEW_VALUE);
+    MoneyAmount expectedMaximumValue = latestValue.add(variation);
+    assertThat(newStockValue.getMaximumValue()).isEqualTo(expectedMaximumValue);
   }
 
   @Test
-  public void whenUpdateValue_thenStockValueIsIncrementedByTheAmount() {
-    StockValue stockValue = StockValue.create(SOME_START_VALUE);
+  public void givenVariationNotSurpassingMaximumValue_whenUpdateCurrentValue_thenDoNotUpdateMaximumValue() {
+    MoneyAmount latestValue = new MoneyAmount(10);
+    BigDecimal variation = BigDecimal.ONE;
+    MoneyAmount maximumValue = latestValue.add(BigDecimal.TEN);
+    StockValue stockValue = new StockValueBuilder().withLatestValue(latestValue).withMaximumValue(maximumValue).build();
 
-    StockValue newStockValue = stockValue.updateValue(new BigDecimal(10.00));
+    StockValue newStockValue = stockValue.updateCurrentValue(variation);
 
-    assertThat(newStockValue.getLatestValue()).isEqualTo(SOME_START_VALUE.add(BigDecimal.valueOf(10)));
+    assertThat(newStockValue.getMaximumValue()).isSameAs(maximumValue);
   }
 
   @Test
-  public void givenOpenStockValue_whenSetValueWithBiggerValue_thenSetUpdateMaximumValue() {
-    StockValue stockValue = StockValue.create(SOME_START_VALUE);
+  public void whenUpdateCurrentValue_thenObjectIsNotModified() {
+    StockValue stockValue = new StockValueBuilder().build();
 
-    StockValue newStockValue = stockValue.setValue(SOME_BIGGER_VALUE);
+    stockValue.updateCurrentValue(SOME_VARIATION);
 
-    assertThat(newStockValue.getMaximumValue()).isEqualTo(SOME_BIGGER_VALUE);
+    assertThat(stockValue.getLatestValue()).isSameAs(StockValueBuilder.DEFAULT_LATEST_VALUE);
+    assertThat(stockValue.getMaximumValue()).isSameAs(StockValueBuilder.DEFAULT_MAXIMUM_VALUE);
+    assertThat(stockValue.getOpenValue()).isSameAs(StockValueBuilder.DEFAULT_OPEN_VALUE);
   }
-
-  @Test
-  public void givenOpenStockValue_whenSetValueWithSmallerValue_thenDoNotUpdateMaximumValue() {
-    StockValue stockValue = StockValue.create(SOME_START_VALUE);
-
-    StockValue newStockValue = stockValue.setValue(SOME_SMALLER_VALUE);
-
-    assertThat(newStockValue.getMaximumValue()).isEqualTo(SOME_START_VALUE);
-  }
-
-  // TODO ajouter tests pour vérifier l'immuabilité
 }

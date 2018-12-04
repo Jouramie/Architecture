@@ -83,7 +83,7 @@ public class StockTest {
 
   @Test
   public void whenSavingOpeningPrice_thenCreateNewStockValueInHistoryWithLatestCloseValue() {
-    stock.saveOpeningPrice();
+    stock.open();
 
     assertThat(stock.getValue().getOpenValue()).isEqualTo(SOME_START_AMOUNT);
     assertThat(stock.getValueHistory().getAllStoredValues()).hasSize(3);
@@ -91,7 +91,7 @@ public class StockTest {
 
   @Test
   public void givenStockIsOpen_whenIsStockClosed_thenFalse() {
-    stock.saveOpeningPrice();
+    stock.open();
 
     boolean isStockClosed = stock.isClosed();
 
@@ -100,9 +100,9 @@ public class StockTest {
 
   @Test
   public void givenStockIsOpen_whenSavingClosingPrice_thenCloseStockValue() {
-    stock.saveOpeningPrice();
+    stock.open();
 
-    stock.saveClosingPrice();
+    stock.close();
 
     assertThat(stock.isClosed()).isTrue();
   }

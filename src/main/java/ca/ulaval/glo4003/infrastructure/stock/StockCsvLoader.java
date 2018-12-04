@@ -43,7 +43,7 @@ public class StockCsvLoader {
       MarketId marketId = new MarketId(record.get("market"));
 
       StockHistory history = getStockHistory(title, marketId);
-      if (!history.getLatestValue().date.isEqual(LAST_STOCK_DATA_DATE)) {
+      if (!history.getLatestHistoricalValue().date.isEqual(LAST_STOCK_DATA_DATE)) {
         continue;
       }
 

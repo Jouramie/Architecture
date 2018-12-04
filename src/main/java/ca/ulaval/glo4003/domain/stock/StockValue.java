@@ -8,7 +8,7 @@ public class StockValue {
   private final MoneyAmount openValue;
   private final MoneyAmount maximumValue;
 
-  private StockValue(MoneyAmount openValue, MoneyAmount latestValue, MoneyAmount maximumValue) {
+  public StockValue(MoneyAmount openValue, MoneyAmount latestValue, MoneyAmount maximumValue) {
     this.openValue = openValue;
     this.latestValue = latestValue;
     this.maximumValue = maximumValue;
@@ -21,7 +21,7 @@ public class StockValue {
   public static StockValue create(MoneyAmount startValue, MoneyAmount latestValue, MoneyAmount closeValue) {
     return new StockValue(startValue, latestValue, closeValue);
   }
-  
+
   public MoneyAmount getLatestValue() {
     return latestValue;
   }
@@ -34,15 +34,12 @@ public class StockValue {
     return maximumValue;
   }
 
-  public StockValue updateValue(BigDecimal variation) {
-    return setValue(getLatestValue().add(variation));
-  }
-
-  public StockValue setValue(MoneyAmount currentValue) {
-    if (currentValue.compareTo(maximumValue) > 0) {
-      return create(openValue, currentValue, currentValue);
+  public StockValue updateCurrentValue(BigDecimal variation) {
+    MoneyAmount newLatestValue = latestValue.add(variation);
+    if (newLatestValue.compareTo(maximumValue) > 0) {
+      return new StockValue(openValue, newLatestValue, newLatestValue);
     }
 
-    return new StockValue(openValue, currentValue, maximumValue);
+    return new StockValue(openValue, newLatestValue, maximumValue);
   }
 }

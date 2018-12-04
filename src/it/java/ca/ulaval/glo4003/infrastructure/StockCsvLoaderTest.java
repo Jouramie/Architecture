@@ -88,7 +88,7 @@ public class StockCsvLoaderTest {
     loader.load();
 
     List<LocalDate> latestDates = stockRepository.findAll().stream().map((stock) ->
-        stock.getValueHistory().getLatestValue().date)
+        stock.getValueHistory().getLatestHistoricalValue().date)
         .collect(toList());
 
     assertThat(latestDates).containsOnly(latestDates.get(0));

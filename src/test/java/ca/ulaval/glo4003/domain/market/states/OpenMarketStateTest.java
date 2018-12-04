@@ -58,6 +58,6 @@ public class OpenMarketStateTest {
 
     state.update(market, someClosedTime, stockValueRetriever);
 
-    verify(stockMock).saveClosingPrice();
+    verify(stockMock).close();
   }
 }
