@@ -19,7 +19,7 @@ public class MoneyAmountLimitCreationDto {
   public final ApplicationPeriod applicationPeriod;
 
   @NotNull
-  @Min(value=0)
+  @Min(value = 0)
   @Schema(
       description = "The maximum money amount the user can spend in a single transaction."
   )
