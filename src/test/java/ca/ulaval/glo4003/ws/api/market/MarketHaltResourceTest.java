@@ -10,7 +10,6 @@ import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.service.market.MarketDoesNotExistException;
 import ca.ulaval.glo4003.service.market.MarketService;
 import ca.ulaval.glo4003.service.market.MarketStatusDto;
-import ca.ulaval.glo4003.ws.api.market.MarketHaltResource;
 import ca.ulaval.glo4003.ws.api.market.assemblers.ApiMarketStatusAssembler;
 import ca.ulaval.glo4003.ws.api.market.dto.MarketStatusResponseDto;
 import org.junit.Before;

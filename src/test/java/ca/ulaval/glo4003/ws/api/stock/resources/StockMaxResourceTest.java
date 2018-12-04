@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.service.stock.max.StockMaxValueService;
 import ca.ulaval.glo4003.service.stock.max.dto.StockMaxValueSummary;
 import ca.ulaval.glo4003.ws.api.stock.assemblers.StockMaxResponseDtoAssembler;
 import ca.ulaval.glo4003.ws.api.stock.dtos.StockMaxResponseDto;
-import ca.ulaval.glo4003.ws.api.stock.resources.StockMaxResource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
