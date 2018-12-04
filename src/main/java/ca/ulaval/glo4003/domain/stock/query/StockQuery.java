@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import java.util.List;
+import java.util.Objects;
 
 public class StockQuery {
   private final List<String> titles;
@@ -79,5 +80,25 @@ public class StockQuery {
 
   public List<String> getCategories() {
     return categories;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    StockQuery that = (StockQuery) o;
+    return Objects.equals(titles, that.titles)
+        && Objects.equals(names, that.names)
+        && Objects.equals(marketIds, that.marketIds)
+        && Objects.equals(categories, that.categories);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(titles, names, marketIds, categories);
   }
 }

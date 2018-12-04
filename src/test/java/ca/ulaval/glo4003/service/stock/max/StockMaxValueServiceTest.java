@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
@@ -12,13 +11,15 @@ import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockHistory;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.query.StockQuery;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import ca.ulaval.glo4003.service.stock.max.dto.StockMaxValueSummary;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,8 +57,9 @@ public class StockMaxValueServiceTest {
 
   @Test
   public void whenGetStockMaxValue_thenSummaryContainsMaxValuesOfCorrespondingDateRanges()
-      throws StockNotFoundException, NoStockValueFitsCriteriaException {
-    given(stockRepository.findByTitle(SOME_TITLE)).willReturn(givenStock);
+      throws NoStockValueFitsCriteriaException {
+    StockQuery stockQuery = new StockQueryBuilder().withTitle(SOME_TITLE).build();
+    given(stockRepository.find(stockQuery)).willReturn(Arrays.asList(givenStock));
     given(clock.getCurrentTime()).willReturn(CURRENT_TIME);
 
     given(dateService.getFiveDaysAgo()).willReturn(FIVE_DAYS_AGO);
@@ -102,9 +104,8 @@ public class StockMaxValueServiceTest {
   }
 
   @Test
-  public void givenStockDoesNotExist_whenGetStockMaxValue_thenStockDoesNotExistExceptionIsThrown()
-      throws StockNotFoundException {
-    doThrow(StockNotFoundException.class).when(stockRepository).findByTitle(any());
+  public void givenStockDoesNotExist_whenGetStockMaxValue_thenStockDoesNotExistExceptionIsThrown() {
+    given(stockRepository.find(any())).willReturn(Arrays.asList());
 
     assertThatThrownBy(() -> stockMaxValueService.getStockMaxValue(SOME_TITLE))
         .isInstanceOf(StockDoesNotExistException.class);

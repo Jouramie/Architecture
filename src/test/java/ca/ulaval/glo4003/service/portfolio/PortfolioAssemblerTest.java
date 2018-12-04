@@ -5,16 +5,17 @@ import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.query.StockQuery;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +43,7 @@ public class PortfolioAssemblerTest {
   private PortfolioAssembler portfolioAssembler;
 
   @Before
-  public void setupPortfolioAssembler() throws StockNotFoundException, InvalidStockInPortfolioException {
+  public void setupPortfolioAssembler() {
     portfolioAssembler = new PortfolioAssembler(someStockRepository);
 
     setupStockRepository();
@@ -57,17 +58,17 @@ public class PortfolioAssemblerTest {
         .build();
   }
 
-  private void setupTestPortfolio() throws StockNotFoundException, InvalidStockInPortfolioException {
+  private void setupTestPortfolio() {
     someStockCollection = new StockCollection().add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
     given(somePortfolio.getStocks()).willReturn(someStockCollection);
     given(somePortfolio.getQuantity(SOME_TITLE)).willReturn(SOME_QUANTITY);
-    given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(someStock);
+    StockQuery someStockQuery = new StockQueryBuilder().withTitle(SOME_TITLE).build();
+    given(someStockRepository.find(someStockQuery)).willReturn(Arrays.asList(someStock));
     given(somePortfolio.getCurrentTotalValue(someStockRepository)).willReturn(SOME_PORTFOLIO_TOTAL);
   }
 
   @Test
-  public void givenEmptyPortfolio_whenToDto_thenPortfolioItemListIsEmpty()
-      throws InvalidStockInPortfolioException {
+  public void givenEmptyPortfolio_whenToDto_thenPortfolioItemListIsEmpty() {
     StockCollection stockCollection = new StockCollection();
     given(somePortfolio.getStocks()).willReturn(stockCollection);
 
@@ -77,8 +78,7 @@ public class PortfolioAssemblerTest {
   }
 
   @Test
-  public void givenPortfolioNotEmpty_whenToDto_thenItemsAreAllPresent()
-      throws InvalidStockInPortfolioException {
+  public void givenPortfolioNotEmpty_whenToDto_thenItemsAreAllPresent() {
     PortfolioDto responseDto = portfolioAssembler.toDto(somePortfolio);
 
     int numberOfStocks = somePortfolio.getStocks().getTitles().size();
@@ -86,8 +86,7 @@ public class PortfolioAssemblerTest {
   }
 
   @Test
-  public void whenToDto_thenPortfolioIsMappedCorrectly()
-      throws InvalidStockInPortfolioException {
+  public void whenToDto_thenPortfolioIsMappedCorrectly() {
     PortfolioDto responseDto = portfolioAssembler.toDto(somePortfolio);
 
     assertThatDtoIsMappedCorrectly(responseDto);

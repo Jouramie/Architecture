@@ -3,12 +3,12 @@ package ca.ulaval.glo4003.service.portfolio;
 import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.domain.Component;
-import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.query.StockQuery;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
@@ -25,7 +25,7 @@ public class PortfolioAssembler {
     this.stockRepository = stockRepository;
   }
 
-  public PortfolioDto toDto(Portfolio portfolio) throws InvalidStockInPortfolioException {
+  public PortfolioDto toDto(Portfolio portfolio) {
     List<PortfolioItemDto> items = stockCollectionToDto(portfolio.getStocks());
     BigDecimal currentTotalValue = portfolio.getCurrentTotalValue(stockRepository).toUsd();
     return new PortfolioDto(items, currentTotalValue);
@@ -43,11 +43,12 @@ public class PortfolioAssembler {
     return new PortfolioItemDto(title, currentValue, quantity);
   }
 
-  private Stock getStock(String title) {
-    try {
-      return stockRepository.findByTitle(title);
-    } catch (StockNotFoundException exception) {
-      throw new InvalidStockTitleException(exception);
+  private Stock getStock(String title) throws InvalidStockTitleException {
+    StockQuery stockQuery = new StockQueryBuilder().withTitle(title).build();
+    List<Stock> stocks = stockRepository.find(stockQuery);
+    if (stocks.isEmpty()) {
+      throw new InvalidStockTitleException(title);
     }
+    return stocks.get(0);
   }
 }

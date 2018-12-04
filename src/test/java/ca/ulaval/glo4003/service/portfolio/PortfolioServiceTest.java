@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
-import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -49,7 +48,7 @@ public class PortfolioServiceTest {
   private PortfolioService portfolioService;
 
   @Before
-  public void setupPortfolioService() throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
+  public void setupPortfolioService() throws NoStockValueFitsCriteriaException {
     CurrentUserSession currentUserSession = new CurrentUserSession();
     currentUserSession.setCurrentUser(someCurrentInvestor);
     portfolioService = new PortfolioService(currentUserSession, somePortfolioAssembler,
@@ -70,7 +69,7 @@ public class PortfolioServiceTest {
   }
 
   @Test
-  public void whenGetPortfolio_thenPortfolioIsConvertedUsingAssembler() throws InvalidStockInPortfolioException {
+  public void whenGetPortfolio_thenPortfolioIsConvertedUsingAssembler() {
     portfolioService.getPortfolio();
 
     verify(somePortfolioAssembler).toDto(any(Portfolio.class));
@@ -92,7 +91,7 @@ public class PortfolioServiceTest {
 
   @Test
   public void whenGetPortfolioReport_thenMostIncreasingStockTitleIsRetrieved()
-      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
+      throws NoStockValueFitsCriteriaException {
     portfolioService.getPortfolioReport(SOME_FROM_DATE);
 
     verify(portfolio).getMostIncreasingStockTitle(SOME_FROM_DATE, someStockRepository);
@@ -100,7 +99,7 @@ public class PortfolioServiceTest {
 
   @Test
   public void whenGetPortfolioReport_thenMostDecreasingStockTitleIsRetrieved()
-      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
+      throws NoStockValueFitsCriteriaException {
     portfolioService.getPortfolioReport(SOME_FROM_DATE);
 
     verify(portfolio).getMostDecreasingStockTitle(SOME_FROM_DATE, someStockRepository);
@@ -128,16 +127,6 @@ public class PortfolioServiceTest {
   public void givenPortfolioAssemblerThrowsCriteriaException_whenGetPortfolioReport_thenExceptionIsThrown()
       throws StockNotFoundException, NoStockValueFitsCriteriaException {
     given(somePortfolioReportAssembler.toDto(any(), any(), any())).willThrow(NoStockValueFitsCriteriaException.class);
-
-    ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_FROM_DATE);
-
-    assertThatThrownBy(getPortfolioReport).isInstanceOf(InvalidPortfolioException.class);
-  }
-
-  @Test
-  public void givenPortfolioThrowsInvalidStockInPortfolioException_whenGetPortfolioReport_thenExceptionIsThrown()
-      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
-    given(portfolio.getMostIncreasingStockTitle(any(), any())).willThrow(InvalidStockInPortfolioException.class);
 
     ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_FROM_DATE);
 

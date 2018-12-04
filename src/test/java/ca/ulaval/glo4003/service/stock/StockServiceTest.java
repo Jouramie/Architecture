@@ -4,14 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
+import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doThrow;
 
 import ca.ulaval.glo4003.domain.stock.Stock;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.query.StockQuery;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import com.google.common.collect.Lists;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert;
@@ -40,17 +42,20 @@ public class StockServiceTest {
   }
 
   @Test
-  public void whenGetStockByTitle_thenStockIsGotFromRepository() throws StockNotFoundException {
+  public void whenGetStockByTitle_thenStockIsGotFromRepository() {
+    given(stockRepository.find(any())).willReturn(Arrays.asList(new TestStockBuilder().build()));
+
     stockService.getStockByTitle(SOME_TITLE);
 
-    verify(stockRepository).findByTitle(SOME_TITLE);
+    StockQuery someStockQuery = new StockQueryBuilder().withTitle(SOME_TITLE).build();
+    verify(stockRepository).find(someStockQuery);
   }
 
   @Test
-  public void whenGetStockByTitle_thenWeHaveCorrespondingDto() throws StockNotFoundException {
+  public void whenGetStockByTitle_thenWeHaveCorrespondingDto() {
     Stock givenStock = new TestStockBuilder().build();
     StockDto expectedDto = new TestStockBuilder().buildDto();
-    given(stockRepository.findByTitle(any())).willReturn(givenStock);
+    given(stockRepository.find(any())).willReturn(Arrays.asList(givenStock));
     given(stockAssembler.toDto(givenStock)).willReturn(expectedDto);
 
     StockDto resultingDto = stockService.getStockByTitle(SOME_TITLE);
@@ -59,10 +64,9 @@ public class StockServiceTest {
   }
 
   @Test
-  public void givenStockNotFound_whenGettingStockByTitle_thenStockDoesNotExistExceptionIsThrown()
-      throws StockNotFoundException {
+  public void givenStockNotFound_whenGettingStockByTitle_thenStockDoesNotExistExceptionIsThrown() {
     String wrongTitle = "wrong";
-    doThrow(StockNotFoundException.class).when(stockRepository).findByTitle(any());
+    willReturn(Arrays.asList()).given(stockRepository).find(any());
 
     ThrowableAssert.ThrowingCallable getStockByTitle =
         () -> stockService.getStockByTitle(wrongTitle);
@@ -71,17 +75,25 @@ public class StockServiceTest {
   }
 
   @Test
+  public void givenNameAndCategoryIsNull_whenQueryStocks_thenQueryAllStocks() {
+    stockService.queryStocks(null, null);
+
+    verify(stockRepository).find(new StockQueryBuilder().build());
+  }
+
+  @Test
   public void whenQueryStocks_thenStockIsGotFromRepository() {
     stockService.queryStocks(SOME_NAME, SOME_CATEGORY);
 
-    verify(stockRepository).queryStocks(SOME_NAME, SOME_CATEGORY);
+    StockQuery someStockQuery = new StockQueryBuilder().withName(SOME_NAME).withCategory(SOME_CATEGORY).build();
+    verify(stockRepository).find(someStockQuery);
   }
 
   @Test
   public void whenQueryStocks_thenWeHaveCorrespondingDto() {
     List<Stock> givenStocks = Collections.singletonList(new TestStockBuilder().build());
     List<StockDto> expectedDtos = Collections.singletonList(new TestStockBuilder().buildDto());
-    given(stockRepository.queryStocks(any(), any())).willReturn(givenStocks);
+    given(stockRepository.find(any())).willReturn(givenStocks);
     given(stockAssembler.toDtoList(givenStocks)).willReturn(expectedDtos);
 
     List<StockDto> resultingDtos = stockService.queryStocks(SOME_NAME, SOME_CATEGORY);

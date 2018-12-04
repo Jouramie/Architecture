@@ -3,9 +3,12 @@ package ca.ulaval.glo4003.domain.transaction;
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.query.StockQuery;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -36,7 +39,17 @@ public class TransactionFactory {
   }
 
   private TransactionItem buildTransactionItem(String title, int quantity) throws StockNotFoundException {
-    MoneyAmount amount = stockRepository.findByTitle(title).getValue().getLatestValue();
+    Stock stock = getStock(title);
+    MoneyAmount amount = stock.getValue().getLatestValue();
     return new TransactionItem(title, quantity, amount);
+  }
+
+  private Stock getStock(String title) throws StockNotFoundException {
+    StockQuery stockQuery = new StockQueryBuilder().withTitle(title).build();
+    List<Stock> stocks = stockRepository.find(stockQuery);
+    if (stocks.isEmpty()) {
+      throw new StockNotFoundException(title);
+    }
+    return stocks.get(0);
   }
 }
