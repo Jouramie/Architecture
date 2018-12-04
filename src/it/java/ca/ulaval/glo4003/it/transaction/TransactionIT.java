@@ -3,9 +3,7 @@ package ca.ulaval.glo4003.it.transaction;
 import static ca.ulaval.glo4003.context.AbstractContext.DEFAULT_INVESTOR_EMAIL;
 import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
-import static javax.ws.rs.core.Response.Status.OK;
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static javax.ws.rs.core.Response.Status.*;
 import static org.assertj.core.util.IterableUtil.iterable;
 import static org.hamcrest.core.Is.is;
 
@@ -18,7 +16,7 @@ import org.junit.Test;
 public class TransactionIT {
 
   @ClassRule
-  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+  public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 
   @Test
   public void whenGettingUserTransactions_thenReturnListOfTransactions() {
@@ -27,6 +25,7 @@ public class TransactionIT {
     //@formatter:off
     given()
         .header(tokenHeader)
+        .queryParam("scope", "5_DAYS")
     .when()
         .get(String.format("/api/users/%s/transactions", DEFAULT_INVESTOR_EMAIL))
     .then()
@@ -36,12 +35,29 @@ public class TransactionIT {
   }
 
   @Test
-  public void givenUnauthenticatedUser_whenGettingTransactions_thenReturn401Unauthorized() {
+  public void givenUnauthenticatedUser_whenGettingUserTransactions_thenReturn401Unauthorized() {
     //@formatter:off
-    when()
+    given()
+        .queryParam("scope", "5_DAYS")
+    .when()
         .get(String.format("/api/users/%s/transactions", DEFAULT_INVESTOR_EMAIL))
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenMalformedScopeParameter_whenGettingUserTransactions_thenReturn400BadRequest() {
+    String token = givenAdministratorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .queryParam("scope", "malformed")
+    .when()
+        .get(String.format("/api/users/%s/transactions", DEFAULT_INVESTOR_EMAIL))
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 }
