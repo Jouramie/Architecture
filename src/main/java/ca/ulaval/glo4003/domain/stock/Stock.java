@@ -46,7 +46,7 @@ public class Stock {
   }
 
   public Currency getCurrency() {
-    return getValue().getLatestValue().getCurrency();
+    return getCurrentValue().getCurrency();
   }
 
   public boolean isClosed() {
@@ -57,8 +57,16 @@ public class Stock {
     valueHistory.updateCurrentValue(variation);
   }
 
-  public synchronized StockValue getValue() {
-    return valueHistory.getLatestValue();
+  public synchronized MoneyAmount getCurrentValue() {
+    return valueHistory.getLatestValue().getLatestValue();
+  }
+
+  public synchronized MoneyAmount getOpenValue() {
+    return valueHistory.getLatestValue().getOpenValue();
+  }
+
+  public synchronized MoneyAmount getTodayMaximumValue() {
+    return valueHistory.getLatestValue().getMaximumValue();
   }
 
   public synchronized Optional<StockValue> getValueOnDate(LocalDate date) {
@@ -71,7 +79,7 @@ public class Stock {
 
   public BigDecimal computeStockValueVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
     MoneyAmount startAmount = getValueOnDate(from).orElseThrow(NoStockValueFitsCriteriaException::new).getLatestValue();
-    MoneyAmount currentAmount = getValue().getLatestValue();
+    MoneyAmount currentAmount = getCurrentValue();
     return currentAmount.divide(startAmount);
   }
 

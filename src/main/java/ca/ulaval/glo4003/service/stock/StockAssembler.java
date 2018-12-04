@@ -11,7 +11,7 @@ public class StockAssembler {
   public StockDto toDto(Stock stock) {
     BigDecimal closeValue = null;
     if (stock.isClosed()) {
-      closeValue = stock.getValue().getLatestValue().toUsd();
+      closeValue = stock.getCurrentValue().toUsd();
     }
 
     return new StockDto(
@@ -19,8 +19,8 @@ public class StockAssembler {
         stock.getName(),
         stock.getCategory(),
         stock.getMarketId().getValue(),
-        stock.getValue().getOpenValue().toUsd(),
-        stock.getValue().getLatestValue().toUsd(),
+        stock.getOpenValue().toUsd(),
+        stock.getCurrentValue().toUsd(),
         closeValue);
   }
 

@@ -31,7 +31,7 @@ public class StockValueTest {
   }
 
   @Test
-  public void givenVariationSurpassingMaximumValue_whenUpdateCurrentValue_thenUpdateMaximumValue() {
+  public void givenVariationExceedingMaximumValue_whenUpdateCurrentValue_thenUpdateMaximumValue() {
     MoneyAmount latestValue = new MoneyAmount(10);
     BigDecimal variation = BigDecimal.TEN;
     MoneyAmount maximumValue = latestValue.add(BigDecimal.ONE);
@@ -44,7 +44,7 @@ public class StockValueTest {
   }
 
   @Test
-  public void givenVariationNotSurpassingMaximumValue_whenUpdateCurrentValue_thenDoNotUpdateMaximumValue() {
+  public void givenVariationNotExceedingMaximumValue_whenUpdateCurrentValue_thenDoNotUpdateMaximumValue() {
     MoneyAmount latestValue = new MoneyAmount(10);
     BigDecimal variation = BigDecimal.ONE;
     MoneyAmount maximumValue = latestValue.add(BigDecimal.TEN);

@@ -10,7 +10,6 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.util.TransactionBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -38,9 +37,6 @@ public class TransactionFactoryTest {
   @Mock
   private Stock stock;
 
-  @Mock
-  private StockValue stockValue;
-
   private StockCollection stocks;
 
   @Before
@@ -48,8 +44,7 @@ public class TransactionFactoryTest {
     given(clock.getCurrentTime()).willReturn(SOME_TIME);
     given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(stock);
-    given(someStockRepository.findByTitle(SOME_TITLE).getValue()).willReturn(stockValue);
-    given(someStockRepository.findByTitle(SOME_TITLE).getValue().getLatestValue()).willReturn(DEFAULT_AMOUNT);
+    given(someStockRepository.findByTitle(SOME_TITLE).getCurrentValue()).willReturn(DEFAULT_AMOUNT);
 
     stocks = new StockCollection();
     stocks = stocks.add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
