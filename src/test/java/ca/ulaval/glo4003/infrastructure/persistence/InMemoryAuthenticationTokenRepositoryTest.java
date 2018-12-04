@@ -13,8 +13,8 @@ import org.junit.Test;
 
 public class InMemoryAuthenticationTokenRepositoryTest {
 
-  private static final String SOME_TOKEN = "00000000-0000-0000-0000-000000000000";
   private static final String SOME_EMAIL = "email";
+  private static final String SOME_TOKEN = "00000000-0000-0000-0000-000000000000";
 
   private InMemoryAuthenticationTokenRepository authenticationTokenRepository;
 
