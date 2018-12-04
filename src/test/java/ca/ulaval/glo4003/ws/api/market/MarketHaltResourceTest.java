@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.market.halt;
+package ca.ulaval.glo4003.ws.api.market;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;

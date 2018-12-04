@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.stock.max;
+package ca.ulaval.glo4003.ws.api.stock.resources;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

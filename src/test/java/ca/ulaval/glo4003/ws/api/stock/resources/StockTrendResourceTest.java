@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.stock.trend;
+package ca.ulaval.glo4003.ws.api.stock.resources;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
