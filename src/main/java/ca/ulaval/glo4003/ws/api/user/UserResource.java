@@ -32,7 +32,7 @@ import javax.ws.rs.core.Response;
 public interface UserResource {
 
   @GET
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Get all users.",
       description = "Return all users, with their information.",
@@ -57,7 +57,7 @@ public interface UserResource {
 
   @GET
   @Path("/{email}")
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Get a user for a given email.",
       description = "Return the details of the user with the corresponding email.",
@@ -111,7 +111,7 @@ public interface UserResource {
 
   @PUT
   @Path("/{email}/limit/stock")
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Set a stock per transaction limit to an investor.",
       responses = {
@@ -143,7 +143,7 @@ public interface UserResource {
 
   @PUT
   @Path("/{email}/limit/money_amount")
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Set a money amount per transaction limit to an investor.",
       responses = {
@@ -175,7 +175,7 @@ public interface UserResource {
 
   @DELETE
   @Path("/{email}/limit")
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Remove a limit from an investor.",
       responses = {

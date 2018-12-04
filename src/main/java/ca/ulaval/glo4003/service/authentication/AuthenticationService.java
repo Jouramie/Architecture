@@ -54,14 +54,14 @@ public class AuthenticationService {
     return responseAssembler.toDto(token);
   }
 
-  public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto, List<UserRole> acceptedRoles)
+  public void validateAuthentication(AuthenticationTokenDto authenticationTokenDto, List<UserRole> authorizedRoles)
       throws InvalidTokenException, UnauthorizedUserException {
     Optional<AuthenticationToken> optionalSavedToken =
         authenticationTokenRepository.findByUUID(UUID.fromString(authenticationTokenDto.token));
     AuthenticationToken savedToken = optionalSavedToken.orElseThrow(InvalidTokenException::new);
 
     User currentUser = getUserByEmail(savedToken.email);
-    if (!currentUser.haveRoleIn(acceptedRoles)) {
+    if (!currentUser.haveRoleIn(authorizedRoles)) {
       throw new UnauthorizedUserException();
     }
 

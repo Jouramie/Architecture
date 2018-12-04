@@ -32,19 +32,19 @@ public class AuthenticationFilterTest {
 
   private static final String SOME_TOKEN = "a-token";
 
-  private AuthenticationFilter authenticationFilter;
-
   @Mock
   private ContainerRequestContext requestContext;
   @Mock
   private AuthenticationService authenticationService;
   @Mock
-  private AcceptedRoleReflectionExtractor acceptedRoleReflectionExtractor;
+  private AuthorizedRoleReflectionExtractor authorizedRoleReflectionExtractor;
+
+  private AuthenticationFilter authenticationFilter;
 
   @Before
   public void setup() {
     ServiceLocator.INSTANCE.registerInstance(AuthenticationService.class, authenticationService);
-    ServiceLocator.INSTANCE.registerInstance(AcceptedRoleReflectionExtractor.class, acceptedRoleReflectionExtractor);
+    ServiceLocator.INSTANCE.registerInstance(AuthorizedRoleReflectionExtractor.class, authorizedRoleReflectionExtractor);
 
     authenticationFilter = new AuthenticationFilter();
   }
@@ -59,11 +59,11 @@ public class AuthenticationFilterTest {
   @Test
   public void whenFiltering_thenRequiredRoleIsExtracted() throws UnauthorizedUserException, InvalidTokenException {
     List<UserRole> someRoles = singletonList(UserRole.INVESTOR);
-    given(acceptedRoleReflectionExtractor.extractAcceptedRoles(any())).willReturn(someRoles);
+    given(authorizedRoleReflectionExtractor.extractAuthorizedRoles(any())).willReturn(someRoles);
 
     authenticationFilter.filter(requestContext);
 
-    verify(acceptedRoleReflectionExtractor).extractAcceptedRoles(any());
+    verify(authorizedRoleReflectionExtractor).extractAuthorizedRoles(any());
     verify(authenticationService).validateAuthentication(any(), eq(someRoles));
   }
 
