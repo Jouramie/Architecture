@@ -3,9 +3,9 @@ package ca.ulaval.glo4003.infrastructure.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import ca.ulaval.glo4003.domain.market.MarketBuilder;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
-import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -14,9 +14,9 @@ import org.junit.Test;
 
 public class InMemoryMarketRepositoryTest {
   private final MarketId SOME_MARKET_ID = new MarketId("NASDAQ");
-  private final Market SOME_MARKET = new TestingMarketBuilder().withId(SOME_MARKET_ID).build();
+  private final Market SOME_MARKET = new MarketBuilder().withId(SOME_MARKET_ID).build();
   private final MarketId SOME_OTHER_MARKET_ID = new MarketId("TMX");
-  private final Market SOME_OTHER_MARKET = new TestingMarketBuilder().withId(SOME_OTHER_MARKET_ID).build();
+  private final Market SOME_OTHER_MARKET = new MarketBuilder().withId(SOME_OTHER_MARKET_ID).build();
 
   private InMemoryMarketRepository repository;
 
@@ -50,7 +50,7 @@ public class InMemoryMarketRepositoryTest {
 
   @Test
   public void whenFindingMarketForStock_thenMarketIsReturned() throws MarketNotFoundException {
-    Market market = repository.findByStock(TestingMarketBuilder.DEFAULT_STOCK_TITLE);
+    Market market = repository.findByStock(MarketBuilder.DEFAULT_STOCK_TITLE);
 
     assertThat(market).isEqualTo(SOME_MARKET);
   }

@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.domain.transaction.TransactionBuilder;
 import ca.ulaval.glo4003.domain.transaction.TransactionItem;
-import ca.ulaval.glo4003.util.TransactionBuilder;
-import ca.ulaval.glo4003.util.TransactionItemBuilder;
+import ca.ulaval.glo4003.domain.transaction.TransactionItemBuilder;
 import java.time.LocalDateTime;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;

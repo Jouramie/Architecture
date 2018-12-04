@@ -22,7 +22,7 @@ public class MarketTest {
 
   @Before
   public void setUp() {
-    market = new TestingMarketBuilder().withState(state).build();
+    market = new MarketBuilder().withState(state).build();
   }
 
   @Test

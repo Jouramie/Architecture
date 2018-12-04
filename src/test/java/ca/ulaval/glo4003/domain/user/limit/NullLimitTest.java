@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.domain.user.limit;
 
 import ca.ulaval.glo4003.domain.transaction.Transaction;
-import ca.ulaval.glo4003.util.TransactionBuilder;
+import ca.ulaval.glo4003.domain.transaction.TransactionBuilder;
 import org.junit.Test;
 
 public class NullLimitTest {
