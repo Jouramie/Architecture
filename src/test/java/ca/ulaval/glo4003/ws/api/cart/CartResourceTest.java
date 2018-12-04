@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.cart.CartStockRequestBuilder;
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
 import ca.ulaval.glo4003.service.cart.dto.CartItemDto;

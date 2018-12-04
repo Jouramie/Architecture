@@ -12,9 +12,9 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
 import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.MarketBuilder;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
@@ -23,13 +23,12 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.domain.transaction.TransactionBuilder;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
+import ca.ulaval.glo4003.domain.transaction.TransactionItemBuilder;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
-import ca.ulaval.glo4003.util.TransactionBuilder;
-import ca.ulaval.glo4003.util.TransactionItemBuilder;
-import ca.ulaval.glo4003.util.UserBuilder;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,7 +74,7 @@ public class InvestorTest {
         .build();
     notification = new Notification("title", "message");
 
-    market = new TestingMarketBuilder().build();
+    market = new MarketBuilder().build();
     given(marketRepository.findByStock(SOME_TITLE)).willReturn(market);
     given(marketRepository.findByStock(SOME_OTHER_TITLE)).willReturn(market);
 

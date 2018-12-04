@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserBuilder;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
@@ -20,7 +21,6 @@ import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
 import ca.ulaval.glo4003.service.user.limit.LimitAssembler;
 import ca.ulaval.glo4003.service.user.limit.LimitDto;
 import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
-import ca.ulaval.glo4003.util.UserBuilder;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;

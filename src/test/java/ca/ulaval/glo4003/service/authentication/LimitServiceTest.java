@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.user.Investor;
+import ca.ulaval.glo4003.domain.user.UserBuilder;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
@@ -18,7 +19,6 @@ import ca.ulaval.glo4003.service.user.limit.LimitDto;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
 import ca.ulaval.glo4003.service.user.limit.MoneyAmountLimitDto;
 import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
-import ca.ulaval.glo4003.util.UserBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import org.junit.Before;
