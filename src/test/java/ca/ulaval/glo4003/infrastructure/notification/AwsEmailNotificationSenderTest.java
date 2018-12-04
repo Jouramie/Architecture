@@ -10,6 +10,7 @@ import ca.ulaval.glo4003.domain.notification.NotificationCoordinates;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -11,8 +11,12 @@ import com.amazonaws.services.simpleemail.model.Destination;
 import com.amazonaws.services.simpleemail.model.Message;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AwsEmailNotificationSender implements NotificationSender {
+
+  private static final Logger logger = LoggerFactory.getLogger(AwsEmailNotificationSender.class);
 
   private static final String EMAIL_FROM = "invest.ul.2018@gmail.com";
   private static final String UTF_8 = "UTF-8";
@@ -35,7 +39,7 @@ public class AwsEmailNotificationSender implements NotificationSender {
           .withSource(EMAIL_FROM);
       emailService.sendEmail(request);
     } catch (SdkClientException exception) {
-      //We continue
+      logger.error("Could not send email to " + coordinates.email);
     }
   }
 
