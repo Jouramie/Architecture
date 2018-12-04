@@ -38,19 +38,23 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
   @Override
   public void filter(ContainerRequestContext containerRequestContext) {
-    try {
-      AuthenticationTokenDto authenticationTokenDto = extractAuthenticationInfo(containerRequestContext.getHeaders());
-      List<UserRole> acceptedRoles = acceptedRolesReflectionExtractor.extractAcceptedRoles(resourceInfo);
+    Optional<String> token = extractAuthenticationInfo(containerRequestContext.getHeaders());
+    if (!token.isPresent()) {
+      containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
+      return;
+    }
 
+    AuthenticationTokenDto authenticationTokenDto = new AuthenticationTokenDto(token.get());
+    List<UserRole> acceptedRoles = acceptedRolesReflectionExtractor.extractAcceptedRoles(resourceInfo);
+
+    try {
       authenticationService.validateAuthentication(authenticationTokenDto, acceptedRoles);
     } catch (InvalidTokenException | UnauthorizedUserException | IllegalArgumentException exception) {
       containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
     }
   }
 
-  private AuthenticationTokenDto extractAuthenticationInfo(MultivaluedMap<String, String> headers) {
-    String token = Optional.ofNullable(headers.getFirst("token"))
-        .orElseThrow(InvalidTokenException::new);
-    return new AuthenticationTokenDto(token);
+  private Optional<String> extractAuthenticationInfo(MultivaluedMap<String, String> headers) {
+    return Optional.ofNullable(headers.getFirst("token"));
   }
 }

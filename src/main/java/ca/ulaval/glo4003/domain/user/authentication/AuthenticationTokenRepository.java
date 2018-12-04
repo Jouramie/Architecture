@@ -1,10 +1,11 @@
 package ca.ulaval.glo4003.domain.user.authentication;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface AuthenticationTokenRepository {
 
-  AuthenticationToken findByUUID(UUID uuid) throws TokenNotFoundException;
+  Optional<AuthenticationToken> findByUUID(UUID uuid);
 
   void add(AuthenticationToken token);
 
