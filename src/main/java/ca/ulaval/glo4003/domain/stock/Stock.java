@@ -58,8 +58,8 @@ public class Stock {
     if (date.isAfter(valueHistory.getLatestValue().date)) {
       return valueHistory.getLatestValue().value;
     }
-    
-    return valueHistory.getValueOnDay(date);
+
+    return valueHistory.getValueOnDay(date).orElseThrow(NoStockValueFitsCriteriaException::new);
   }
 
   public BigDecimal computeStockValueVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
@@ -76,6 +76,6 @@ public class Stock {
   }
 
   public synchronized void saveClosingPrice() {
-    getValue().close();
+    valueHistory.addValue(valueHistory.getLatestValue().date, getValue().close());
   }
 }

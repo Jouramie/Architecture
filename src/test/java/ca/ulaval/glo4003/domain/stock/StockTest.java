@@ -54,7 +54,7 @@ public class StockTest {
   }
 
   @Test
-  public void whenGetName_thenReturnCategory() {
+  public void whenGetCategory_thenReturnCategory() {
     String category = stock.getCategory();
 
     assertThat(category).isEqualTo(SOME_CATEGORY);
@@ -90,7 +90,9 @@ public class StockTest {
   }
 
   @Test
-  public void whenSavingClosingPrice_thenCloseStockValue() {
+  public void givenStockIsOpen_whenSavingClosingPrice_thenCloseStockValue() {
+    stock.saveOpeningPrice();
+
     stock.saveClosingPrice();
 
     assertThat(stock.getValue().isClosed()).isTrue();
@@ -115,9 +117,8 @@ public class StockTest {
   }
 
   @Test
-  public void asdf() throws NoStockValueFitsCriteriaException {
-    // TODO c'est quoi le vrai nom de ce test?
-
+  public void whenStockVariationIsComputed_thenRelativeVariationIsCalculated()
+      throws NoStockValueFitsCriteriaException {
     BigDecimal variation = stock.computeStockValueVariation(SOME_HISTORICAL_DATE);
 
     assertThat(variation).isEqualTo(SOME_START_AMOUNT.divide(SOME_HISTORICAL_AMOUNT));

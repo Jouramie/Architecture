@@ -3,7 +3,6 @@ package ca.ulaval.glo4003.service.stock.max;
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
-import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
@@ -51,10 +50,7 @@ public class StockMaxValueService {
   }
 
   private HistoricalStockValue getStockMaxValueFrom(Stock stock, LocalDate from) {
-    try {
-      return stock.getValueHistory().getMaxValue(from, clock.getCurrentTime().toLocalDate());
-    } catch (NoStockValueFitsCriteriaException e) {
-      throw new InternalErrorException("No stock value fits criteria.");
-    }
+    return stock.getValueHistory().getMaxValue(from, clock.getCurrentTime().toLocalDate())
+        .orElseThrow(() -> new InternalErrorException("No stock value fits criteria."));
   }
 }

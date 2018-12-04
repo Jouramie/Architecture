@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
@@ -22,47 +23,46 @@ public class StockHistory {
   }
 
   public HistoricalStockValue getLatestValue() {
-    return getHistoricalStockValue(values.lastEntry());
+    return toHistoricalStockValue(values.lastEntry());
   }
 
   public List<HistoricalStockValue> getAllStoredValues() {
-    return values.entrySet().stream().map(this::getHistoricalStockValue).collect(toList());
+    return values.entrySet().stream().map(this::toHistoricalStockValue).collect(toList());
   }
 
-  public HistoricalStockValue getMaxValue(LocalDate from, LocalDate to) throws NoStockValueFitsCriteriaException {
+  public Optional<HistoricalStockValue> getMaxValue(LocalDate from, LocalDate to) {
     return getHistoricalValuesBetweenDates(from, to)
         .max(Comparator.comparing(entry -> entry.getValue().getMaximumValue().toUsd()))
-        .map(this::getHistoricalStockValue).orElseThrow(NoStockValueFitsCriteriaException::new);
+        .map(this::toHistoricalStockValue);
   }
 
-  public StockValue getValueOnDay(LocalDate day) throws NoStockValueFitsCriteriaException {
+  public Optional<StockValue> getValueOnDay(LocalDate day) {
     LocalDate currentDay = day;
     for (int i = 0; i < 10; ++i) {
       StockValue value = values.get(currentDay);
       if (value != null) {
-        return value;
+        return Optional.of(value);
       }
       currentDay = currentDay.minusDays(1);
     }
 
-    throw new NoStockValueFitsCriteriaException();
+    return Optional.empty();
   }
 
   public StockTrend getStockVariationTrendSinceDate(LocalDate date) {
-    try {
-      HistoricalStockValue latestValue = getLatestValue();
-      StockValue valueOnDay = getValueOnDay(date);
-
-      if (valueOnDay.getLatestValue().isGreaterThan(latestValue.value.getLatestValue())) {
-        return StockTrend.DECREASING;
-      } else if (valueOnDay.getLatestValue().isLessThan(latestValue.value.getLatestValue())) {
-        return StockTrend.INCREASING;
-      } else {
-        return StockTrend.STABLE;
-      }
-    } catch (NoStockValueFitsCriteriaException e) {
+    HistoricalStockValue latestValue = getLatestValue();
+    Optional<StockValue> valueOnDay = getValueOnDay(date);
+    if (!valueOnDay.isPresent()) {
       return StockTrend.NO_DATA;
     }
+
+    if (valueOnDay.get().getLatestValue().isGreaterThan(latestValue.value.getLatestValue())) {
+      return StockTrend.DECREASING;
+    } else if (valueOnDay.get().getLatestValue().isLessThan(latestValue.value.getLatestValue())) {
+      return StockTrend.INCREASING;
+    }
+
+    return StockTrend.STABLE;
   }
 
   private Stream<Map.Entry<LocalDate, StockValue>> getHistoricalValuesBetweenDates(LocalDate from, LocalDate to) {
@@ -71,7 +71,7 @@ public class StockHistory {
     );
   }
 
-  private HistoricalStockValue getHistoricalStockValue(Map.Entry<LocalDate, StockValue> entry) {
+  private HistoricalStockValue toHistoricalStockValue(Map.Entry<LocalDate, StockValue> entry) {
     return new HistoricalStockValue(entry.getKey(), entry.getValue());
   }
 }

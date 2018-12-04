@@ -5,12 +5,11 @@ import static ca.ulaval.glo4003.domain.stock.StockTrend.INCREASING;
 import static ca.ulaval.glo4003.domain.stock.StockTrend.NO_DATA;
 import static ca.ulaval.glo4003.domain.stock.StockTrend.STABLE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.time.LocalDate;
 import java.time.Month;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,45 +65,42 @@ public class StockHistoryTest {
   }
 
   @Test
-  public void givenHistoryWithMultipleValues_whenGetMaxValue_thenReturnMaxValueInInterval()
-      throws NoStockValueFitsCriteriaException {
+  public void givenHistoryWithMultipleValues_whenGetMaxValue_thenReturnMaxValueInInterval() {
     history.addValue(START_DATE.minusDays(1), SOME_EVEN_HIGHER_VALUE);
     history.addValue(START_DATE, SOME_VALUE);
     history.addValue(MIDDLE_DATE, SOME_HIGHER_VALUE);
     history.addValue(END_DATE, SOME_VALUE);
     history.addValue(END_DATE.plusDays(1), SOME_EVEN_HIGHER_VALUE);
 
-    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE);
+    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE).get();
 
     assertThat(result.date).isSameAs(MIDDLE_DATE);
     assertThat(result.value).isSameAs(SOME_HIGHER_VALUE);
   }
 
   @Test
-  public void givenHistoryWithMaxValueOnStartDate_whenGetMaxValue_thenReturnMaxValueInInterval()
-      throws NoStockValueFitsCriteriaException {
+  public void givenHistoryWithMaxValueOnStartDate_whenGetMaxValue_thenReturnMaxValueInInterval() {
     history.addValue(START_DATE.minusDays(1), SOME_EVEN_HIGHER_VALUE);
     history.addValue(START_DATE, SOME_HIGHER_VALUE);
     history.addValue(MIDDLE_DATE, SOME_VALUE);
     history.addValue(END_DATE, SOME_VALUE);
     history.addValue(END_DATE.plusDays(1), SOME_EVEN_HIGHER_VALUE);
 
-    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE);
+    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE).get();
 
     assertThat(result.date).isSameAs(START_DATE);
     assertThat(result.value).isSameAs(SOME_HIGHER_VALUE);
   }
 
   @Test
-  public void givenHistoryWithMaxValueOnEndDate_whenGetMaxValue_thenReturnMaxValueInInterval()
-      throws NoStockValueFitsCriteriaException {
+  public void givenHistoryWithMaxValueOnEndDate_whenGetMaxValue_thenReturnMaxValueInInterval() {
     history.addValue(START_DATE.minusDays(1), SOME_EVEN_HIGHER_VALUE);
     history.addValue(START_DATE, SOME_VALUE);
     history.addValue(MIDDLE_DATE, SOME_VALUE);
     history.addValue(END_DATE, SOME_HIGHER_VALUE);
     history.addValue(END_DATE.plusDays(1), SOME_EVEN_HIGHER_VALUE);
 
-    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE);
+    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE).get();
 
     assertThat(result.date).isSameAs(END_DATE);
     assertThat(result.value).isSameAs(SOME_HIGHER_VALUE);
@@ -112,36 +108,34 @@ public class StockHistoryTest {
 
   @Test
   public void givenEmptyHistory_whenGetMaxValue_thenExceptionIsThrow() {
-    ThrowingCallable getMaxValue = () -> history.getMaxValue(START_DATE, END_DATE);
+    Optional<HistoricalStockValue> optionalStockValue = history.getMaxValue(START_DATE, END_DATE);
 
-    assertThatThrownBy(getMaxValue).isInstanceOf(NoStockValueFitsCriteriaException.class);
+    assertThat(optionalStockValue).isEmpty();
   }
 
   @Test
-  public void givenNoData_whenGettingValueOnASpecificDay_thenExceptionIsThrow() {
+  public void givenNoData_whenGettingValueOnASpecificDay_thenEmptyOptionalIsReturned() {
     LocalDate missingDate = LocalDate.of(1970, Month.JANUARY, 1);
 
-    ThrowingCallable getValue = () -> history.getValueOnDay(missingDate);
+    Optional<StockValue> optionalStockValue = history.getValueOnDay(missingDate);
 
-    assertThatThrownBy(getValue);
+    assertThat(optionalStockValue).isEmpty();
   }
 
   @Test
-  public void whenGettingValueOnASpecificDay_thenReturnStockValueOnThatDay()
-      throws NoStockValueFitsCriteriaException {
+  public void whenGettingValueOnASpecificDay_thenReturnStockValueOnThatDay() {
     history.addValue(SOME_DATE, SOME_VALUE);
 
-    StockValue valueOnDay = history.getValueOnDay(SOME_DATE);
+    StockValue valueOnDay = history.getValueOnDay(SOME_DATE).get();
 
     assertThat(valueOnDay).isSameAs(SOME_VALUE);
   }
 
   @Test
-  public void givenNoDataOnRequestedDay_whenGettingValueOnASpecificDay_thenReturnPreviousValue()
-      throws NoStockValueFitsCriteriaException {
+  public void givenNoDataOnRequestedDay_whenGettingValueOnASpecificDay_thenReturnPreviousValue() {
     history.addValue(SOME_DATE, SOME_VALUE);
 
-    StockValue valueOnDay = history.getValueOnDay(SOME_DATE.plusDays(1));
+    StockValue valueOnDay = history.getValueOnDay(SOME_DATE.plusDays(1)).get();
 
     assertThat(valueOnDay).isSameAs(SOME_VALUE);
   }
