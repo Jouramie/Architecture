@@ -10,7 +10,7 @@ import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.service.market.MarketDoesNotExistException;
 import ca.ulaval.glo4003.service.market.MarketService;
 import ca.ulaval.glo4003.service.market.MarketStatusDto;
-import ca.ulaval.glo4003.ws.api.market.MarketHaltResourceImpl;
+import ca.ulaval.glo4003.ws.api.market.MarketHaltResource;
 import ca.ulaval.glo4003.ws.api.market.assemblers.ApiMarketStatusAssembler;
 import ca.ulaval.glo4003.ws.api.market.dto.MarketStatusResponseDto;
 import org.junit.Before;
@@ -26,14 +26,14 @@ public class MarketHaltResourceTest {
   public static final Market SOME_MARKET = new MarketBuilder().halted(SOME_MESSAGE).build();
   public static final MarketId SOME_MARKET_ID = SOME_MARKET.getId();
 
-  private MarketHaltResourceImpl marketHaltResource;
+  private MarketHaltResource marketHaltResource;
 
   @Mock
   private MarketService marketServiceMock;
 
   @Before
   public void setUp() throws MarketDoesNotExistException {
-    marketHaltResource = new MarketHaltResourceImpl(marketServiceMock, new ApiMarketStatusAssembler());
+    marketHaltResource = new MarketHaltResource(marketServiceMock, new ApiMarketStatusAssembler());
     when(marketServiceMock.getMarketStatus(SOME_MARKET_ID)).thenReturn(new MarketStatusDto(SOME_MARKET_ID, true, SOME_MESSAGE));
   }
 

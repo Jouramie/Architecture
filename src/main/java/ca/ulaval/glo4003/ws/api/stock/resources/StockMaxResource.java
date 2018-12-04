@@ -17,13 +17,13 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Resource
-public class StockMaxResourceImpl implements DocumentedStockMaxResource {
+public class StockMaxResource implements DocumentedStockMaxResource {
 
   private final StockMaxValueService stockMaxValueService;
   private final StockMaxResponseDtoAssembler assembler;
 
   @Inject
-  public StockMaxResourceImpl(StockMaxValueService stockMaxValueService, StockMaxResponseDtoAssembler assembler) {
+  public StockMaxResource(StockMaxValueService stockMaxValueService, StockMaxResponseDtoAssembler assembler) {
     this.stockMaxValueService = stockMaxValueService;
     this.assembler = assembler;
   }

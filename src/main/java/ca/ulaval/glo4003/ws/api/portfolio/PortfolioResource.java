@@ -28,15 +28,15 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Resource
-public class PortfolioResourceImpl implements DocumentedPortfolioResource {
+public class PortfolioResource implements DocumentedPortfolioResource {
   private final PortfolioService portfolioService;
   private final ApiPortfolioAssembler apiPortfolioAssembler;
   private final ApiPortfolioReportAssembler apiPortfolioReportAssembler;
   private final DateService dateService;
 
   @Inject
-  public PortfolioResourceImpl(PortfolioService portfolioService, ApiPortfolioAssembler apiPortfolioAssembler,
-                               ApiPortfolioReportAssembler apiPortfolioReportAssembler, DateService dateService) {
+  public PortfolioResource(PortfolioService portfolioService, ApiPortfolioAssembler apiPortfolioAssembler,
+                           ApiPortfolioReportAssembler apiPortfolioReportAssembler, DateService dateService) {
     this.portfolioService = portfolioService;
     this.apiPortfolioAssembler = apiPortfolioAssembler;
     this.apiPortfolioReportAssembler = apiPortfolioReportAssembler;

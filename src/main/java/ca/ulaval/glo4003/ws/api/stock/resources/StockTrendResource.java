@@ -16,12 +16,12 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Resource
-public class StockTrendResourceImpl implements DocumentedStockTrendResource {
+public class StockTrendResource implements DocumentedStockTrendResource {
 
   private final StockVariationTrendService stockVariationTrendService;
 
   @Inject
-  public StockTrendResourceImpl(StockVariationTrendService stockVariationTrendService) {
+  public StockTrendResource(StockVariationTrendService stockVariationTrendService) {
     this.stockVariationTrendService = stockVariationTrendService;
   }
 

@@ -34,7 +34,7 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Resource
-public class UserResourceImpl implements DocumentedUserResource {
+public class UserResource implements DocumentedUserResource {
 
   private final UserService userService;
 
@@ -47,11 +47,11 @@ public class UserResourceImpl implements DocumentedUserResource {
   private final ApiLimitAssembler apiLimitAssembler;
 
   @Inject
-  public UserResourceImpl(UserService userService,
-                          LimitService limitService,
-                          RequestValidator requestValidator,
-                          ApiUserAssembler apiUserAssembler,
-                          ApiLimitAssembler apiLimitAssembler) {
+  public UserResource(UserService userService,
+                      LimitService limitService,
+                      RequestValidator requestValidator,
+                      ApiUserAssembler apiUserAssembler,
+                      ApiLimitAssembler apiLimitAssembler) {
     this.userService = userService;
     this.limitService = limitService;
     this.requestValidator = requestValidator;

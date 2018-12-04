@@ -12,12 +12,12 @@ import javax.ws.rs.core.MediaType;
 @Path("/stock_categories")
 @Produces(MediaType.APPLICATION_JSON)
 @Resource
-public class StockCategoryResourceImpl implements DocumentedStockCategoryResource {
+public class StockCategoryResource implements DocumentedStockCategoryResource {
 
   private final StockService stockService;
 
   @Inject
-  public StockCategoryResourceImpl(StockService stockService) {
+  public StockCategoryResource(StockService stockService) {
     this.stockService = stockService;
   }
 

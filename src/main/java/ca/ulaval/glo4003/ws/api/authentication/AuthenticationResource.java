@@ -21,16 +21,16 @@ import javax.ws.rs.core.Response;
 
 @Path("/")
 @Resource
-public class AuthenticationResourceImpl implements DocumentedAuthenticationResource {
+public class AuthenticationResource implements DocumentedAuthenticationResource {
 
   private final AuthenticationService authenticationService;
   private final RequestValidator requestValidator;
   private final ApiAuthenticationResponseAssembler apiAuthenticationResponseAssembler;
 
   @Inject
-  public AuthenticationResourceImpl(AuthenticationService authenticationService,
-                                    RequestValidator requestValidator,
-                                    ApiAuthenticationResponseAssembler apiAuthenticationResponseAssembler) {
+  public AuthenticationResource(AuthenticationService authenticationService,
+                                RequestValidator requestValidator,
+                                ApiAuthenticationResponseAssembler apiAuthenticationResponseAssembler) {
     this.authenticationService = authenticationService;
     this.requestValidator = requestValidator;
     this.apiAuthenticationResponseAssembler = apiAuthenticationResponseAssembler;

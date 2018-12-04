@@ -20,13 +20,13 @@ import javax.ws.rs.core.MediaType;
 @Path("/markets/{market}")
 @Produces(MediaType.APPLICATION_JSON)
 @Resource
-public class MarketHaltResourceImpl implements DocumentedMarketHaltResource {
+public class MarketHaltResource implements DocumentedMarketHaltResource {
 
   private final MarketService marketService;
   private final ApiMarketStatusAssembler apiMarketStatusAssembler;
 
   @Inject
-  public MarketHaltResourceImpl(MarketService marketService, ApiMarketStatusAssembler apiMarketStatusAssembler) {
+  public MarketHaltResource(MarketService marketService, ApiMarketStatusAssembler apiMarketStatusAssembler) {
     this.marketService = marketService;
     this.apiMarketStatusAssembler = apiMarketStatusAssembler;
   }

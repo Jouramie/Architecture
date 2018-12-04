@@ -20,13 +20,13 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Resource
-public class StockResourceImpl implements DocumentedStockResource {
+public class StockResource implements DocumentedStockResource {
 
   private final StockService stockService;
   private final ApiStockAssembler apiStockAssembler;
 
   @Inject
-  public StockResourceImpl(StockService stockService, ApiStockAssembler apiStockAssembler) {
+  public StockResource(StockService stockService, ApiStockAssembler apiStockAssembler) {
     this.stockService = stockService;
     this.apiStockAssembler = apiStockAssembler;
   }

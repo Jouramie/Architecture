@@ -48,13 +48,13 @@ public class AuthenticationResourceTest {
   @Mock
   private ApiAuthenticationResponseAssembler apiAuthenticationResponseAssembler;
 
-  private AuthenticationResourceImpl authenticationResource;
+  private AuthenticationResource authenticationResource;
 
   @Before
   public void setup() {
     requestValidator = new RequestValidator();
     authenticationResource
-        = new AuthenticationResourceImpl(authenticationService, requestValidator, apiAuthenticationResponseAssembler);
+        = new AuthenticationResource(authenticationService, requestValidator, apiAuthenticationResponseAssembler);
   }
 
   @Test

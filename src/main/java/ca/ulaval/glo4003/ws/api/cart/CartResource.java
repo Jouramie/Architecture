@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Resource
-public class CartResourceImpl implements DocumentedCartResource {
+public class CartResource implements DocumentedCartResource {
   private final CartService cartService;
   private final CheckoutService checkoutService;
   private final ApiTransactionAssembler apiTransactionAssembler;
@@ -38,9 +38,9 @@ public class CartResourceImpl implements DocumentedCartResource {
   private final RequestValidator requestValidator;
 
   @Inject
-  public CartResourceImpl(CartService cartService, CheckoutService checkoutService,
-                          ApiTransactionAssembler apiTransactionAssembler,
-                          ApiCartItemAssembler apiCartItemAssembler) {
+  public CartResource(CartService cartService, CheckoutService checkoutService,
+                      ApiTransactionAssembler apiTransactionAssembler,
+                      ApiCartItemAssembler apiCartItemAssembler) {
     this.cartService = cartService;
     this.checkoutService = checkoutService;
     this.apiTransactionAssembler = apiTransactionAssembler;

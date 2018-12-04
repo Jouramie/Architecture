@@ -28,11 +28,11 @@ public class PortfolioResourceTest {
   private ApiPortfolioReportAssembler apiPortfolioReportAssembler;
   @Mock
   private DateService dateService;
-  private PortfolioResourceImpl portfolioResource;
+  private PortfolioResource portfolioResource;
 
   @Before
   public void setupPortfolioResource() {
-    portfolioResource = new PortfolioResourceImpl(portfolioService, apiPortfolioAssembler, apiPortfolioReportAssembler, dateService);
+    portfolioResource = new PortfolioResource(portfolioService, apiPortfolioAssembler, apiPortfolioReportAssembler, dateService);
   }
 
   @Test

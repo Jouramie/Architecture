@@ -9,7 +9,7 @@ import ca.ulaval.glo4003.service.stock.StockDto;
 import ca.ulaval.glo4003.service.stock.StockService;
 import ca.ulaval.glo4003.ws.api.stock.assemblers.ApiStockAssembler;
 import ca.ulaval.glo4003.ws.api.stock.dtos.ApiStockDto;
-import ca.ulaval.glo4003.ws.api.stock.resources.StockResourceImpl;
+import ca.ulaval.glo4003.ws.api.stock.resources.StockResource;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,11 +38,11 @@ public class StockResourceTest {
   @Mock
   private List<StockDto> serviceDtos;
 
-  private StockResourceImpl stockResource;
+  private StockResource stockResource;
 
   @Before
   public void setupStockResource() {
-    stockResource = new StockResourceImpl(stockService, apiStockAssembler);
+    stockResource = new StockResource(stockService, apiStockAssembler);
   }
 
   @Test

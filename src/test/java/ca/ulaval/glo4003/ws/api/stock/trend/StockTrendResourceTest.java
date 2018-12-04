@@ -7,7 +7,7 @@ import ca.ulaval.glo4003.domain.stock.StockTrend;
 import ca.ulaval.glo4003.service.stock.trend.StockVariationTrendService;
 import ca.ulaval.glo4003.service.stock.trend.dto.StockVariationSummary;
 import ca.ulaval.glo4003.ws.api.stock.dtos.ApiStockTrendDto;
-import ca.ulaval.glo4003.ws.api.stock.resources.StockTrendResourceImpl;
+import ca.ulaval.glo4003.ws.api.stock.resources.StockTrendResource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,11 +24,11 @@ public class StockTrendResourceTest {
   @Mock
   private StockVariationTrendService stockVariationTrendService;
 
-  private StockTrendResourceImpl resource;
+  private StockTrendResource resource;
 
   @Before
   public void setupStockTrendResource() {
-    resource = new StockTrendResourceImpl(stockVariationTrendService);
+    resource = new StockTrendResource(stockVariationTrendService);
   }
 
   @Test
