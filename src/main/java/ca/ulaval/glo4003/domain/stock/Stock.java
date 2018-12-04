@@ -5,6 +5,7 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class Stock {
   private final String title;
@@ -57,19 +58,19 @@ public class Stock {
   }
 
   public synchronized StockValue getValue() {
-    return valueHistory.getLatestHistoricalValue().value;
+    return valueHistory.getLatestValue();
   }
 
-  public synchronized StockValue getLatestValueOnDate(LocalDate date) throws NoStockValueFitsCriteriaException {
-    if (date.isAfter(valueHistory.getLatestHistoricalValue().date)) {
-      return valueHistory.getLatestHistoricalValue().value;
+  public synchronized Optional<StockValue> getValueOnDate(LocalDate date) {
+    if (valueHistory.isAfterLatestValue(date)) {
+      return Optional.of(valueHistory.getLatestValue());
     }
 
-    return valueHistory.getValueOnDay(date).orElseThrow(NoStockValueFitsCriteriaException::new);
+    return valueHistory.getValueOnDay(date);
   }
 
   public BigDecimal computeStockValueVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
-    MoneyAmount startAmount = getLatestValueOnDate(from).getLatestValue();
+    MoneyAmount startAmount = getValueOnDate(from).orElseThrow(NoStockValueFitsCriteriaException::new).getLatestValue();
     MoneyAmount currentAmount = getValue().getLatestValue();
     return currentAmount.divide(startAmount);
   }

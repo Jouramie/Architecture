@@ -84,4 +84,8 @@ public class StockHistory {
     StockValue newCurrentValue = values.lastEntry().getValue().updateCurrentValue(variation);
     values.put(values.lastKey(), newCurrentValue);
   }
+
+  public boolean isAfterLatestValue(LocalDate date) {
+    return date.isAfter(values.lastKey());
+  }
 }

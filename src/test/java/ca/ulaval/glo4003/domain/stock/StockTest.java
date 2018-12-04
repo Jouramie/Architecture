@@ -108,19 +108,17 @@ public class StockTest {
   }
 
   @Test
-  public void givenHistoricalDate_whenGetLatestValueOnDate_thenReturnHistoricalValue()
-      throws NoStockValueFitsCriteriaException {
-    StockValue historicalValue = stock.getLatestValueOnDate(SOME_HISTORICAL_DATE);
+  public void givenHistoricalDate_whenGetLatestValueOnDate_thenReturnHistoricalValue() {
+    StockValue historicalValue = stock.getValueOnDate(SOME_HISTORICAL_DATE).get();
 
     assertThat(historicalValue.getLatestValue()).isEqualTo(SOME_HISTORICAL_AMOUNT);
   }
 
   @Test
-  public void givenFutureDate_whenGetLatestValueOnDate_thenReturnLatestKnownValue()
-      throws NoStockValueFitsCriteriaException {
+  public void givenFutureDate_whenGetLatestValueOnDate_thenReturnLatestKnownValue() {
     LocalDate someFutureDate = LocalDate.MAX;
 
-    StockValue latestValue = stock.getLatestValueOnDate(someFutureDate);
+    StockValue latestValue = stock.getValueOnDate(someFutureDate).get();
 
     assertThat(latestValue.getLatestValue()).isEqualTo(SOME_START_AMOUNT);
   }
