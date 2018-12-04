@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.ws.api.user;
 
-import static ca.ulaval.glo4003.util.InputValidationTestUtil.assertThatExceptionContainsErrorFor;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
@@ -24,8 +23,6 @@ import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
-import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
-import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -69,7 +66,7 @@ public class UserResourceTest {
 
   @Before
   public void setup() {
-    userResource = new UserResourceImpl(userService, limitService, new RequestValidator(),
+    userResource = new UserResourceImpl(userService, limitService,
         new ApiUserAssembler(new ApiLimitAssembler()), new ApiLimitAssembler());
   }
 
@@ -91,22 +88,6 @@ public class UserResourceTest {
 
     ApiUserDto expectedUser = new ApiUserDto(SOME_EMAIL, SOME_ROLE, null);
     assertThat(response.getEntity()).isEqualToComparingFieldByField(expectedUser);
-  }
-
-  @Test
-  public void givenInvalidEmail_whenCreatingUser_thenExceptionIsThrown() {
-    ThrowingCallable createUser = () -> userResource.createInvestor(CREATION_REQUEST_WITH_INVALID_EMAIL);
-
-    InvalidInputException exception = catchThrowableOfType(createUser, InvalidInputException.class);
-    assertThatExceptionContainsErrorFor(exception, "email");
-  }
-
-  @Test
-  public void givenInvalidPassword_whenCreatingUser_thenExceptionIsThrown() {
-    ThrowingCallable createUser = () -> userResource.createInvestor(CREATION_REQUEST_WITH_INVALID_PASSWORD);
-
-    InvalidInputException exception = Assertions.catchThrowableOfType(createUser, InvalidInputException.class);
-    assertThatExceptionContainsErrorFor(exception, "password");
   }
 
   @Test

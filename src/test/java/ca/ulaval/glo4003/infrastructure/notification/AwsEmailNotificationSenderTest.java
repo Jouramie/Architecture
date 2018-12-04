@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.infrastructure.notification;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
@@ -10,7 +9,6 @@ import ca.ulaval.glo4003.domain.notification.NotificationCoordinates;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
-import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

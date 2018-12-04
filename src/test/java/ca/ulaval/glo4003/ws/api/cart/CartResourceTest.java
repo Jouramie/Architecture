@@ -1,8 +1,6 @@
 package ca.ulaval.glo4003.ws.api.cart;
 
-import static ca.ulaval.glo4003.util.InputValidationTestUtil.assertThatExceptionContainsErrorFor;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -16,7 +14,6 @@ import ca.ulaval.glo4003.ws.api.cart.assemblers.ApiTransactionAssembler;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
-import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
@@ -81,17 +78,6 @@ public class CartResourceTest {
   }
 
   @Test
-  public void givenNegativeQuantityStockRequest_whenAddStockToCart_thenInvalidInputExceptionShouldBeThrown() {
-    CartStockRequestDto negativeQuantityStockRequest = new CartStockRequestDto(-1);
-
-    Throwable thrown = catchThrowable(() -> cartResource.addStockToCart(SOME_TITLE, negativeQuantityStockRequest));
-
-    assertThat(thrown).isInstanceOf(InvalidInputException.class);
-    InvalidInputException exception = (InvalidInputException) thrown;
-    assertThatExceptionContainsErrorFor(exception, "quantity");
-  }
-
-  @Test
   public void whenUpdateStockInCart_thenStockIsUpdated() {
     cartResource.updateStockInCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
 
@@ -103,17 +89,6 @@ public class CartResourceTest {
     List<ApiCartItemResponseDto> resultingDto = cartResource.updateStockInCart(SOME_TITLE, SOME_CART_STOCK_REQUEST);
 
     assertThat(resultingDto.get(0)).isEqualTo(expectedDto);
-  }
-
-  @Test
-  public void givenNegativeQuantityStockRequest_whenUpdateStockToCart_thenInvalidInputExceptionShouldBeThrown() {
-    CartStockRequestDto negativeQuantityStockRequest = new CartStockRequestDto(-1);
-
-    Throwable thrown = catchThrowable(() -> cartResource.updateStockInCart(SOME_TITLE, negativeQuantityStockRequest));
-
-    assertThat(thrown).isInstanceOf(InvalidInputException.class);
-    InvalidInputException exception = (InvalidInputException) thrown;
-    assertThatExceptionContainsErrorFor(exception, "quantity");
   }
 
   @Test

@@ -8,7 +8,6 @@ import ca.ulaval.glo4003.ws.api.cart.assemblers.ApiTransactionAssembler;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
-import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -19,7 +18,6 @@ public class CartResourceImpl implements CartResource {
   private final CheckoutService checkoutService;
   private final ApiTransactionAssembler apiTransactionAssembler;
   private final ApiCartItemAssembler apiCartItemAssembler;
-  private final RequestValidator requestValidator;
 
   @Inject
   public CartResourceImpl(CartService cartService, CheckoutService checkoutService, ApiTransactionAssembler apiTransactionAssembler, ApiCartItemAssembler apiCartItemAssembler) {
@@ -27,7 +25,6 @@ public class CartResourceImpl implements CartResource {
     this.checkoutService = checkoutService;
     this.apiTransactionAssembler = apiTransactionAssembler;
     this.apiCartItemAssembler = apiCartItemAssembler;
-    requestValidator = new RequestValidator();
   }
 
   @Override
@@ -38,7 +35,6 @@ public class CartResourceImpl implements CartResource {
   @Override
   public List<ApiCartItemResponseDto> addStockToCart(String title,
                                                      CartStockRequestDto cartStockRequestDto) {
-    requestValidator.validate(cartStockRequestDto);
     cartService.addStockToCart(title, cartStockRequestDto.quantity);
 
     return apiCartItemAssembler.toDtoList(cartService.getCartContent());
@@ -47,7 +43,6 @@ public class CartResourceImpl implements CartResource {
   @Override
   public List<ApiCartItemResponseDto> updateStockInCart(String title,
                                                         CartStockRequestDto cartStockRequestDto) {
-    requestValidator.validate(cartStockRequestDto);
     cartService.updateStockInCart(title, cartStockRequestDto.quantity);
     return apiCartItemAssembler.toDtoList(cartService.getCartContent());
   }

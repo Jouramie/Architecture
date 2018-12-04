@@ -1,11 +1,9 @@
 package ca.ulaval.glo4003.ws.api.authentication;
 
 
-import static ca.ulaval.glo4003.util.InputValidationTestUtil.assertThatExceptionContainsErrorFor;
 import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -14,8 +12,6 @@ import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.ws.api.authentication.assemblers.ApiAuthenticationResponseAssembler;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationResponseDto;
-import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
-import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,8 +39,6 @@ public class AuthenticationResourceTest {
   @Mock
   private AuthenticationService authenticationService;
 
-  private RequestValidator requestValidator;
-
   @Mock
   private ApiAuthenticationResponseAssembler apiAuthenticationResponseAssembler;
 
@@ -52,9 +46,8 @@ public class AuthenticationResourceTest {
 
   @Before
   public void setup() {
-    requestValidator = new RequestValidator();
     authenticationResource
-        = new AuthenticationResourceImpl(authenticationService, requestValidator, apiAuthenticationResponseAssembler);
+        = new AuthenticationResourceImpl(authenticationService, apiAuthenticationResponseAssembler);
   }
 
   @Test
@@ -80,26 +73,6 @@ public class AuthenticationResourceTest {
     Response response = authenticationResource.authenticate(SOME_AUTHENTICATION_REQUEST);
 
     assertThat(response.getEntity()).isEqualTo(SOME_AUTHENTICATION_API_RESPONSE);
-  }
-
-  @Test
-  public void givenNullEmail_whenAuthenticatingUser_thenInvalidInputExceptionShouldBeThrown() {
-    Throwable thrown = catchThrowable(
-        () -> authenticationResource.authenticate(AUTHENTICATION_REQUEST_WITHOUT_EMAIL));
-
-    assertThat(thrown).isInstanceOf(InvalidInputException.class);
-    InvalidInputException exception = (InvalidInputException) thrown;
-    assertThatExceptionContainsErrorFor(exception, "email");
-  }
-
-  @Test
-  public void givenNullPassword_whenAuthenticatingUser_thenInvalidInputExceptionShouldBeThrown() {
-    Throwable thrown = catchThrowable(
-        () -> authenticationResource.authenticate(AUTHENTICATION_REQUEST_WITHOUT_PASSWORD));
-
-    assertThat(thrown).isInstanceOf(InvalidInputException.class);
-    InvalidInputException exception = (InvalidInputException) thrown;
-    assertThatExceptionContainsErrorFor(exception, "password");
   }
 
   @Test
