@@ -12,8 +12,7 @@ import javax.validation.constraints.Size;
 )
 public class InvestorCreationDto {
 
-  @NotNull
-  @NotBlank
+  @Size(min=1)
   public final String email;
 
   @NotNull

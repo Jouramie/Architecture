@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
@@ -17,7 +18,7 @@ public class StockLimitCreationDto {
   public final ApplicationPeriod applicationPeriod;
 
   @NotNull
-  @PositiveOrZero
+  @Min(value = 0)
   @Schema(
       description = "The maximum quantity of stock the user can buy in a single transaction."
   )

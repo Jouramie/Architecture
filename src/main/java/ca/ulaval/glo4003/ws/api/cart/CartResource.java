@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -80,7 +81,7 @@ public interface CartResource {
   )
   List<ApiCartItemResponseDto> addStockToCart(
       @PathParam("title") String title,
-      CartStockRequestDto cartStockRequestDto);
+      @Valid CartStockRequestDto cartStockRequestDto);
 
   @PATCH
   @Path("/{title}")
@@ -112,7 +113,7 @@ public interface CartResource {
   )
   List<ApiCartItemResponseDto> updateStockInCart(
       @PathParam("title") String title,
-      CartStockRequestDto cartStockRequestDto);
+      @Valid CartStockRequestDto cartStockRequestDto);
 
   @DELETE
   @Path("/{title}")

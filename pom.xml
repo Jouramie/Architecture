@@ -144,16 +144,6 @@
             <version>${swagger.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.validator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator-annotation-processor</artifactId>
-            <version>${hibernate.validator.version}</version>
-        </dependency>
-        <dependency>
             <groupId>javax.el</groupId>
             <artifactId>javax.el-api</artifactId>
             <version>${javax.el.version}</version>

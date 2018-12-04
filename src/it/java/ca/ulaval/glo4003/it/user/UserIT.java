@@ -107,8 +107,7 @@ public class UserIT {
     .when()
         .post(API_USERS_ROUTE)
     .then()
-        .statusCode(BAD_REQUEST.getStatusCode())
-        .body(INPUT_ERRORS, any(List.class));
+        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 
@@ -121,8 +120,7 @@ public class UserIT {
     .when()
         .post(API_USERS_ROUTE)
     .then()
-        .statusCode(BAD_REQUEST.getStatusCode())
-        .body(INPUT_ERRORS, any(List.class));
+        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 
