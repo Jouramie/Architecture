@@ -4,23 +4,28 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
 
 public class StockValue {
-  private MoneyAmount latestValue;
-  private MoneyAmount openValue;
-  private MoneyAmount maximumValue;
-  private boolean isClosed;
+  private final MoneyAmount latestValue;
+  private final MoneyAmount openValue;
+  private final MoneyAmount maximumValue;
+  private final boolean isClosed;
 
-  public StockValue(MoneyAmount startValue) {
-    latestValue = startValue;
-    openValue = startValue;
-    maximumValue = startValue;
-    isClosed = false;
+  private StockValue(MoneyAmount openValue, MoneyAmount latestValue, MoneyAmount maximumValue, boolean isClosed) {
+    this.openValue = openValue;
+    this.latestValue = latestValue;
+    this.maximumValue = maximumValue;
+    this.isClosed = isClosed;
   }
 
-  public StockValue(MoneyAmount openValue, MoneyAmount closeValue, MoneyAmount maximumValue) {
-    latestValue = closeValue;
-    this.openValue = openValue;
-    this.maximumValue = maximumValue;
-    isClosed = true;
+  public static StockValue createOpen(MoneyAmount startValue) {
+    return new StockValue(startValue, startValue, startValue, false);
+  }
+
+  public static StockValue createOpen(MoneyAmount startValue, MoneyAmount latestValue, MoneyAmount closeValue) {
+    return new StockValue(startValue, latestValue, closeValue, false);
+  }
+
+  public static StockValue createClosed(MoneyAmount startValue, MoneyAmount latestValue, MoneyAmount closeValue) {
+    return new StockValue(startValue, latestValue, closeValue, true);
   }
 
   public MoneyAmount getLatestValue() {
@@ -39,24 +44,23 @@ public class StockValue {
     return isClosed;
   }
 
-  public void updateValue(BigDecimal variation) {
-    setValue(getLatestValue().add(variation));
+  public StockValue updateValue(BigDecimal variation) {
+    return setValue(getLatestValue().add(variation));
   }
 
-  public void setValue(MoneyAmount currentValue) {
+  public StockValue setValue(MoneyAmount currentValue) {
     if (isClosed()) {
-      openValue = currentValue;
-      isClosed = false;
+      return createOpen(currentValue);
     }
 
-    if (currentValue.toUsd().compareTo(maximumValue.toUsd()) > 0) {
-      maximumValue = currentValue;
+    if (currentValue.compareTo(maximumValue) > 0) {
+      return createOpen(openValue, currentValue, currentValue);
     }
 
-    latestValue = currentValue;
+    return new StockValue(openValue, currentValue, maximumValue, false);
   }
 
-  public void close() {
-    isClosed = true;
+  public StockValue close() {
+    return new StockValue(openValue, latestValue, maximumValue, true);
   }
 }

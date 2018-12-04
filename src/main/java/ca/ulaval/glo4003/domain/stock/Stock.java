@@ -47,7 +47,7 @@ public class Stock {
   }
 
   public synchronized void updateValue(BigDecimal variation) {
-    getValue().updateValue(variation);
+    valueHistory.addValue(valueHistory.getLatestValue().date, getValue().updateValue(variation));
   }
 
   public synchronized StockValue getValue() {
@@ -55,14 +55,11 @@ public class Stock {
   }
 
   public synchronized StockValue getLatestValueOnDate(LocalDate date) throws NoStockValueFitsCriteriaException {
-    StockValue latestStockValueOnDate;
     if (date.isAfter(valueHistory.getLatestValue().date)) {
-      latestStockValueOnDate = valueHistory.getLatestValue().value;
-    } else {
-      latestStockValueOnDate = valueHistory.getValueOnDay(date);
+      return valueHistory.getLatestValue().value;
     }
-
-    return latestStockValueOnDate;
+    
+    return valueHistory.getValueOnDay(date);
   }
 
   public BigDecimal computeStockValueVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
@@ -73,7 +70,7 @@ public class Stock {
 
   public synchronized void saveOpeningPrice() {
     MoneyAmount startValue = getValue().getLatestValue();
-    StockValue newStockValue = new StockValue(startValue);
+    StockValue newStockValue = StockValue.createOpen(startValue);
 
     valueHistory.addNextValue(newStockValue);
   }

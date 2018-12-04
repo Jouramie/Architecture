@@ -7,7 +7,7 @@ import static ca.ulaval.glo4003.domain.stock.StockTrend.STABLE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ca.ulaval.glo4003.domain.money.MoneyAmountUtil;
+import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.time.LocalDate;
 import java.time.Month;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -18,11 +18,11 @@ public class StockHistoryTest {
   private static final LocalDate SOME_DATE = LocalDate.now();
   private static final LocalDate SOME_OLDER_DATE = SOME_DATE.minusDays(1);
   private static final LocalDate SOME_MORE_RECENT_DATE = SOME_DATE.plusDays(1);
-  private static final StockValue SOME_VALUE = new StockValue(MoneyAmountUtil.of(12.34));
-  private static final StockValue SOME_OTHER_VALUE = new StockValue(MoneyAmountUtil.of(45.67));
-  private static final StockValue SOME_LOWER_VALUE = new StockValue(MoneyAmountUtil.of(1));
-  private static final StockValue SOME_HIGHER_VALUE = new StockValue(MoneyAmountUtil.of(300.00));
-  private static final StockValue SOME_EVEN_HIGHER_VALUE = new StockValue(MoneyAmountUtil.of(500.00));
+  private static final StockValue SOME_VALUE = StockValue.createOpen(new MoneyAmount(12.34));
+  private static final StockValue SOME_OTHER_VALUE = StockValue.createOpen(new MoneyAmount(45.67));
+  private static final StockValue SOME_LOWER_VALUE = StockValue.createOpen(new MoneyAmount(1));
+  private static final StockValue SOME_HIGHER_VALUE = StockValue.createOpen(new MoneyAmount(300.00));
+  private static final StockValue SOME_EVEN_HIGHER_VALUE = StockValue.createOpen(new MoneyAmount(500.00));
   private static final LocalDate START_DATE = LocalDate.of(2018, 9, 12);
   private static final LocalDate END_DATE = LocalDate.of(2018, 10, 12);
   private static final LocalDate MIDDLE_DATE = LocalDate.of(2018, 10, 1);

@@ -33,7 +33,7 @@ public class StockTest {
         .withName(SOME_NAME)
         .withCategory(SOME_CATEGORY)
         .withMarketId(SOME_MARKET_ID)
-        .withHistoricalValue(SOME_HISTORICAL_DATE, new StockValue(SOME_HISTORICAL_AMOUNT))
+        .withHistoricalValue(SOME_HISTORICAL_DATE, StockValue.createOpen(SOME_HISTORICAL_AMOUNT))
         .withOpenValue(SOME_LAST_OPEN_AMOUNT)
         .withCloseValue(SOME_START_AMOUNT)
         .build();
@@ -78,7 +78,7 @@ public class StockTest {
   public void whenUpdateValue_thenStockValueIsIncrementedByTheAmount() {
     stock.updateValue(new BigDecimal(10.00));
 
-    assertThat(stock.getValue().getLatestValue()).isEqualTo(new MoneyAmount(60.00, SOME_CURRENCY));
+    assertThat(stock.getValue().getLatestValue()).isEqualTo(new MoneyAmount(SOME_START_VALUE + 10, SOME_CURRENCY));
   }
 
   @Test
@@ -116,6 +116,8 @@ public class StockTest {
 
   @Test
   public void asdf() throws NoStockValueFitsCriteriaException {
+    // TODO c'est quoi le vrai nom de ce test?
+
     BigDecimal variation = stock.computeStockValueVariation(SOME_HISTORICAL_DATE);
 
     assertThat(variation).isEqualTo(SOME_START_AMOUNT.divide(SOME_HISTORICAL_AMOUNT));

@@ -73,8 +73,10 @@ public class StockCsvLoader {
       double openValue = Double.parseDouble(record.get("open"));
       double closeValue = Double.parseDouble(record.get("close"));
       double maximumValue = Double.parseDouble(record.get("high"));
-      StockValue value = new StockValue(new MoneyAmount(openValue, currency),
-          new MoneyAmount(closeValue, currency), new MoneyAmount(maximumValue, currency));
+      StockValue value = StockValue.createClosed(
+          new MoneyAmount(openValue, currency),
+          new MoneyAmount(closeValue, currency),
+          new MoneyAmount(maximumValue, currency));
 
       history.addValue(date, value);
     }
