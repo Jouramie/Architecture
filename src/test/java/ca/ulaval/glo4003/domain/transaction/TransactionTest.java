@@ -5,8 +5,6 @@ import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import ca.ulaval.glo4003.util.TransactionBuilder;
-import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;

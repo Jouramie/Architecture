@@ -7,7 +7,8 @@ import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.clock.ClockDriver;
 import ca.ulaval.glo4003.infrastructure.config.SimulationSettings;
-import ca.ulaval.glo4003.infrastructure.notification.EmailNotificationSender;
+import ca.ulaval.glo4003.infrastructure.injection.ServiceLocatorInitializer;
+import ca.ulaval.glo4003.infrastructure.notification.AwsEmailNotificationSender;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
@@ -19,7 +20,11 @@ public class ProductionContext extends AbstractContext {
   public void configureApplication(String apiUrl) {
     super.configureApplication(apiUrl);
     startClockAndMarketsUpdater();
-    serviceLocator.registerInstance(NotificationSender.class, createAwsSesSender());
+  }
+
+  @Override
+  protected ServiceLocatorInitializer createServiceLocatorInitializer() {
+    return super.createServiceLocatorInitializer().registerInstance(NotificationSender.class, createAwsSesSender());
   }
 
   private void startClockAndMarketsUpdater() {
@@ -32,10 +37,10 @@ public class ProductionContext extends AbstractContext {
     clockDriver.start();
   }
 
-  private EmailNotificationSender createAwsSesSender() {
+  private AwsEmailNotificationSender createAwsSesSender() {
     AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
         .withRegion(Regions.US_EAST_1).build();
-    return new EmailNotificationSender(client);
+    return new AwsEmailNotificationSender(client);
   }
 
   @Override

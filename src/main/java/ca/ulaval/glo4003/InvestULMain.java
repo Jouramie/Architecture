@@ -42,7 +42,7 @@ public class InvestULMain {
     }
   }
 
-  static boolean isStarted() {
+  public static boolean isStarted() {
     return server != null && server.isStarted();
   }
 }

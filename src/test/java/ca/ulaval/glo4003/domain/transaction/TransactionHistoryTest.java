@@ -2,7 +2,6 @@ package ca.ulaval.glo4003.domain.transaction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.ulaval.glo4003.util.TransactionBuilder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.TreeSet;
