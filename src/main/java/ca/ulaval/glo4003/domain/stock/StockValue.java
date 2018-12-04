@@ -14,14 +14,6 @@ public class StockValue {
     this.maximumValue = maximumValue;
   }
 
-  public static StockValue create(MoneyAmount startValue) {
-    return new StockValue(startValue, startValue, startValue);
-  }
-
-  public static StockValue create(MoneyAmount startValue, MoneyAmount latestValue, MoneyAmount closeValue) {
-    return new StockValue(startValue, latestValue, closeValue);
-  }
-
   public MoneyAmount getLatestValue() {
     return latestValue;
   }

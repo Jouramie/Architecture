@@ -78,7 +78,7 @@ public class Stock {
     closed = false;
 
     MoneyAmount startValue = getValue().getLatestValue();
-    StockValue newStockValue = StockValue.create(startValue);
+    StockValue newStockValue = new StockValue(startValue, startValue, startValue);
     valueHistory.addNextValue(newStockValue);
   }
 

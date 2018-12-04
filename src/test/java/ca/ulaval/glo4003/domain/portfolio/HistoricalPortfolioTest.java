@@ -9,7 +9,7 @@ import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.stock.StockValue;
+import ca.ulaval.glo4003.domain.stock.StockValueBuilder;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.time.LocalDate;
 import org.junit.Before;
@@ -38,9 +38,15 @@ public class HistoricalPortfolioTest {
     given(stockRepository.exists(FIRST_TITLE)).willReturn(true);
     given(stockRepository.exists(SECOND_TITLE)).willReturn(true);
     given(stockRepository.findByTitle(FIRST_TITLE)).willReturn(
-        new TestStockBuilder().withTitle(FIRST_TITLE).withHistoricalValue(SOME_DATE, StockValue.create(FIRST_HISTORICAL_VALUE)).build());
+        new TestStockBuilder()
+            .withTitle(FIRST_TITLE)
+            .withHistoricalValue(SOME_DATE, new StockValueBuilder().withLatestValue(FIRST_HISTORICAL_VALUE).build())
+            .build());
     given(stockRepository.findByTitle(SECOND_TITLE)).willReturn(
-        new TestStockBuilder().withTitle(SECOND_TITLE).withHistoricalValue(SOME_DATE, StockValue.create(SECOND_HISTORICAL_VALUE)).build());
+        new TestStockBuilder()
+            .withTitle(SECOND_TITLE)
+            .withHistoricalValue(SOME_DATE, new StockValueBuilder().withLatestValue(SECOND_HISTORICAL_VALUE).build())
+            .build());
   }
 
   @Test

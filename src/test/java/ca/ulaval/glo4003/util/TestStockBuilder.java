@@ -59,7 +59,7 @@ public class TestStockBuilder {
   }
 
   public Stock build() {
-    history.addValue(LocalDate.now(), StockValue.create(openValue, closeValue, closeValue));
+    history.addValue(LocalDate.now(), new StockValue(openValue, closeValue, closeValue));
     return new Stock(title, name, category, marketId, history);
   }
 

@@ -33,7 +33,7 @@ public class StockTest {
         .withName(SOME_NAME)
         .withCategory(SOME_CATEGORY)
         .withMarketId(SOME_MARKET_ID)
-        .withHistoricalValue(SOME_HISTORICAL_DATE, StockValue.create(SOME_HISTORICAL_AMOUNT))
+        .withHistoricalValue(SOME_HISTORICAL_DATE, new StockValueBuilder().withAllValue(SOME_HISTORICAL_AMOUNT).build())
         .withOpenValue(SOME_LAST_OPEN_AMOUNT)
         .withCloseValue(SOME_START_AMOUNT)
         .build();

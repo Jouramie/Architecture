@@ -14,6 +14,7 @@ import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
+import ca.ulaval.glo4003.domain.stock.StockValueBuilder;
 import ca.ulaval.glo4003.service.portfolio.dto.HistoricalPortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
@@ -35,10 +36,10 @@ public class PortfolioReportAssemblerTest {
   private static final int SOME_QUANTITY = 45;
   private static final MoneyAmount SOME_FIRST_HISTORICAL_MONEY_AMOUNT = new MoneyAmount(66.66);
   private static final StockValue SOME_FIRST_HISTORICAL_STOCK_VALUE =
-      StockValue.create(SOME_FIRST_HISTORICAL_MONEY_AMOUNT);
+      new StockValueBuilder().withLatestValue(SOME_FIRST_HISTORICAL_MONEY_AMOUNT).build();
   private static final MoneyAmount SOME_SECOND_HISTORICAL_MONEY_AMOUNT = new MoneyAmount(77.77);
   private static final StockValue SOME_SECOND_HISTORICAL_STOCK_VALUE =
-      StockValue.create(SOME_SECOND_HISTORICAL_MONEY_AMOUNT);
+      new StockValueBuilder().withLatestValue(SOME_SECOND_HISTORICAL_MONEY_AMOUNT).build();
   private static final MoneyAmount SOME_FIRST_PORTFOLIO_TOTAL =
       SOME_FIRST_HISTORICAL_MONEY_AMOUNT.multiply(SOME_QUANTITY);
   private static final LocalDate SOME_FIRST_DATE = LocalDate.now().minusDays(5);

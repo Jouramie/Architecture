@@ -36,6 +36,20 @@ public class StockValueBuilder {
     return this;
   }
 
+  public StockValueBuilder withAllValue(double value) {
+    this.openValue = new MoneyAmount(value);
+    this.latestValue = new MoneyAmount(value);
+    this.maximumValue = new MoneyAmount(value);
+    return this;
+  }
+
+  public StockValueBuilder withAllValue(MoneyAmount value) {
+    this.openValue = value;
+    this.latestValue = value;
+    this.maximumValue = value;
+    return this;
+  }
+
   public StockValue build() {
     return new StockValue(openValue, latestValue, maximumValue);
   }
