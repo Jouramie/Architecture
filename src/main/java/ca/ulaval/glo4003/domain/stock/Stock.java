@@ -22,7 +22,7 @@ public class Stock {
     this.category = category;
     this.marketId = marketId;
     this.valueHistory = valueHistory;
-    closed = true; // TODO vérifier si c'est legit
+    closed = true;
   }
 
   public String getTitle() {
