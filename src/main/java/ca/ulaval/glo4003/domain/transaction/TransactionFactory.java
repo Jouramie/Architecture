@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.domain.transaction;
 
 import ca.ulaval.glo4003.domain.Component;
-import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -12,11 +12,11 @@ import javax.inject.Inject;
 
 @Component
 public class TransactionFactory {
-  private final Clock clock;
+  private final ReadableClock clock;
   private final StockRepository stockRepository;
 
   @Inject
-  public TransactionFactory(Clock clock, StockRepository stockRepository) {
+  public TransactionFactory(ReadableClock clock, StockRepository stockRepository) {
     this.clock = clock;
     this.stockRepository = stockRepository;
   }
@@ -36,7 +36,7 @@ public class TransactionFactory {
   }
 
   private TransactionItem buildTransactionItem(String title, int quantity) throws StockNotFoundException {
-    MoneyAmount amount = stockRepository.findByTitle(title).getValue().getLatestValue();
+    MoneyAmount amount = stockRepository.findByTitle(title).getCurrentValue();
     return new TransactionItem(title, quantity, amount);
   }
 }
