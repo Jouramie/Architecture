@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.service.stock.max;
 
 import ca.ulaval.glo4003.domain.Component;
-import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.domain.stock.HistoricalStockValue;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
@@ -17,12 +17,12 @@ import javax.inject.Inject;
 public class StockMaxValueService {
   private final StockRepository stockRepository;
   private final DateService dateService;
-  private final Clock clock;
+  private final ReadableClock clock;
 
   @Inject
   public StockMaxValueService(StockRepository stockRepository,
                               DateService dateService,
-                              Clock clock) {
+                              ReadableClock clock) {
     this.stockRepository = stockRepository;
     this.dateService = dateService;
     this.clock = clock;
@@ -50,7 +50,7 @@ public class StockMaxValueService {
   }
 
   private HistoricalStockValue getStockMaxValueFrom(Stock stock, LocalDate from) {
-    return stock.getValueHistory().getMaxValue(from, clock.getCurrentTime().toLocalDate())
+    return stock.getValueHistory().getMaxValue(from, clock.getCurrentDate())
         .orElseThrow(() -> new InternalErrorException("No stock value fits criteria."));
   }
 }
