@@ -1,8 +1,7 @@
 package ca.ulaval.glo4003.domain.stock.query;
 
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.util.TestStockBuilder;
@@ -32,7 +31,7 @@ public class StockQueryByNameAndCategoryTest {
 
     List<Stock> filteredStocks = ALL_STOCKS.stream().filter(stockQuery).collect(toList());
 
-    assertThat(filteredStocks, containsInAnyOrder(ALL_STOCKS.toArray()));
+    assertThat(filteredStocks).asList().containsExactlyInAnyOrder(ALL_STOCKS.toArray());
   }
 
   @Test
@@ -41,7 +40,7 @@ public class StockQueryByNameAndCategoryTest {
 
     List<Stock> filteredStocks = ALL_STOCKS.stream().filter(stockQuery).collect(toList());
 
-    assertThat(filteredStocks, containsInAnyOrder(thirdStock));
+    assertThat(filteredStocks).containsExactlyInAnyOrder(thirdStock);
   }
 
   @Test
@@ -50,7 +49,7 @@ public class StockQueryByNameAndCategoryTest {
 
     List<Stock> filteredStocks = ALL_STOCKS.stream().filter(stockQuery).collect(toList());
 
-    assertThat(filteredStocks, containsInAnyOrder(firstStock));
+    assertThat(filteredStocks).containsExactlyInAnyOrder(firstStock);
   }
 
   @Test
@@ -59,6 +58,6 @@ public class StockQueryByNameAndCategoryTest {
 
     List<Stock> filteredStocks = ALL_STOCKS.stream().filter(stockQuery).collect(toList());
 
-    assertThat(filteredStocks, containsInAnyOrder(thirdStock));
+    assertThat(filteredStocks).containsExactlyInAnyOrder(thirdStock);
   }
 }
