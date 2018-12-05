@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
 
-public class StockQueryTest {
+public class StockQueryByNameAndCategoryTest {
   private static final String FIRST_STOCK_NAME = "firstName";
   private static final String SECOND_STOCK_NAME = "secondName";
   private static final String THIRD_STOCK_NAME = "thirdName";
@@ -27,9 +27,8 @@ public class StockQueryTest {
   private final List<Stock> ALL_STOCKS = Arrays.asList(firstStock, secondStock, thirdStock);
 
   @Test
-  public void givenQueryWithNullNameList_whenFilteringStocks_thenReturnAllStocks() {
-    StockQuery stockQuery = new StockQuery(
-        null, Arrays.asList(FIRST_STOCK_CATEGORY, SECOND_STOCK_CATEGORY, THIRD_STOCK_CATEGORY));
+  public void givenQueryWithNullNameAndCategory_whenFilteringStocks_thenReturnAllStocks() {
+    StockQueryByNameAndCategory stockQuery = new StockQueryByNameAndCategory(null, null);
 
     List<Stock> filteredStocks = ALL_STOCKS.stream().filter(stockQuery).collect(toList());
 
@@ -37,37 +36,26 @@ public class StockQueryTest {
   }
 
   @Test
-  public void givenQueryWithNullCategoryList_whenFilteringStocks_thenReturnAllStocks() {
-    StockQuery stockQuery = new StockQuery(
-        Arrays.asList(FIRST_STOCK_NAME, SECOND_STOCK_NAME, THIRD_STOCK_NAME), null);
+  public void givenQueryWithName_whenFilteringStocks_thenReturnStocksWithGivenName() {
+    StockQueryByNameAndCategory stockQuery = new StockQueryByNameAndCategory(THIRD_STOCK_NAME, null);
 
     List<Stock> filteredStocks = ALL_STOCKS.stream().filter(stockQuery).collect(toList());
 
-    assertThat(filteredStocks, containsInAnyOrder(ALL_STOCKS.toArray()));
+    assertThat(filteredStocks, containsInAnyOrder(thirdStock));
   }
 
   @Test
-  public void givenQueryWithMultipleNames_whenFilteringStocks_thenReturnStocksWithNameInList() {
-    StockQuery stockQuery = new StockQuery(Arrays.asList(THIRD_STOCK_NAME, FIRST_STOCK_NAME), null);
+  public void givenQueryWithCategory_whenFilteringStocks_thenReturnStocksWithGivenCategory() {
+    StockQueryByNameAndCategory stockQuery = new StockQueryByNameAndCategory(null, FIRST_STOCK_CATEGORY);
 
     List<Stock> filteredStocks = ALL_STOCKS.stream().filter(stockQuery).collect(toList());
 
-    assertThat(filteredStocks, containsInAnyOrder(firstStock, thirdStock));
+    assertThat(filteredStocks, containsInAnyOrder(firstStock));
   }
 
   @Test
-  public void givenQueryWithMultipleCategories_whenFilteringStocks_thenReturnStocksWithCategoryInList() {
-    StockQuery stockQuery = new StockQuery(null, Arrays.asList(FIRST_STOCK_CATEGORY, THIRD_STOCK_CATEGORY));
-
-    List<Stock> filteredStocks = ALL_STOCKS.stream().filter(stockQuery).collect(toList());
-
-    assertThat(filteredStocks, containsInAnyOrder(firstStock, thirdStock));
-  }
-
-  @Test
-  public void givenQueryWithMultipleNamesAndCategories_whenFilteringStocks_thenReturnStocksMatchingBothLists() {
-    StockQuery stockQuery = new StockQuery(Arrays.asList(THIRD_STOCK_NAME, SECOND_STOCK_NAME),
-        Arrays.asList(FIRST_STOCK_CATEGORY, THIRD_STOCK_CATEGORY));
+  public void givenQueryWithNameAndCategory_whenFilteringStocks_thenReturnStocksMatchingBoth() {
+    StockQueryByNameAndCategory stockQuery = new StockQueryByNameAndCategory(THIRD_STOCK_NAME, THIRD_STOCK_CATEGORY);
 
     List<Stock> filteredStocks = ALL_STOCKS.stream().filter(stockQuery).collect(toList());
 

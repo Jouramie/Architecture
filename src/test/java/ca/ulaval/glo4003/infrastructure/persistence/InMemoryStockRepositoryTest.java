@@ -3,15 +3,13 @@ package ca.ulaval.glo4003.infrastructure.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
-import ca.ulaval.glo4003.domain.stock.query.StockQuery;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategory;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.util.Arrays;
 import java.util.List;
@@ -82,12 +80,11 @@ public class InMemoryStockRepositoryTest {
 
   @Test
   public void whenQueryStocks_thenQueryTestIsCalledWithEachStock() {
-    StockQuery stockQuery = mock(StockQuery.class);
-    int numberOfStocks = repository.findAll().size();
+    StockQueryByNameAndCategory stockQuery = mock(StockQueryByNameAndCategory.class);
 
     repository.queryStocks(stockQuery);
 
-    verify(stockQuery, times(numberOfStocks)).test(any());
+    repository.findAll().forEach((stock) -> verify(stockQuery).test(stock));
   }
 
   @Test

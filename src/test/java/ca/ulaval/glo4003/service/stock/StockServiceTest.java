@@ -10,8 +10,8 @@ import static org.mockito.Mockito.doThrow;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.stock.query.StockQuery;
-import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategory;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategoryBuilder;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import com.google.common.collect.Lists;
 import java.util.Collections;
@@ -76,7 +76,7 @@ public class StockServiceTest {
   public void whenQueryStocks_thenStockIsGotFromRepository() {
     stockService.queryStocks(SOME_NAME, SOME_CATEGORY);
 
-    StockQuery stockQuery = new StockQueryBuilder().withName(SOME_NAME).withCategory(SOME_CATEGORY).build();
+    StockQueryByNameAndCategory stockQuery = new StockQueryByNameAndCategoryBuilder().withName(SOME_NAME).withCategory(SOME_CATEGORY).build();
     verify(stockRepository).queryStocks(stockQuery);
   }
 

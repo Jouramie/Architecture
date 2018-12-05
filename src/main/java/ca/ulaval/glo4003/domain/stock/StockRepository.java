@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.domain.stock;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
-import ca.ulaval.glo4003.domain.stock.query.StockQuery;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategory;
 import java.util.List;
 
 public interface StockRepository {
@@ -19,5 +19,5 @@ public interface StockRepository {
 
   List<String> findAllCategories();
 
-  List<Stock> queryStocks(StockQuery stockQuery);
+  List<Stock> queryStocks(StockQueryByNameAndCategory stockQuery);
 }
