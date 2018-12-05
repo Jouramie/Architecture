@@ -1,27 +1,11 @@
 package ca.ulaval.glo4003.domain.stock.query;
 
-import ca.ulaval.glo4003.domain.market.MarketId;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StockQueryBuilder {
-  private List<String> titles = null;
   private List<String> names = null;
-  private List<MarketId> marketIds = null;
   private List<String> categories = null;
-
-  public StockQueryBuilder withTitles(List<String> titles) {
-    this.titles = titles;
-    return this;
-  }
-
-  public StockQueryBuilder withTitle(String title) {
-    if (titles == null) {
-      titles = new ArrayList<>();
-    }
-    titles.add(title);
-    return this;
-  }
 
   public StockQueryBuilder withNames(List<String> names) {
     this.names = names;
@@ -33,19 +17,6 @@ public class StockQueryBuilder {
       names = new ArrayList<>();
     }
     names.add(name);
-    return this;
-  }
-
-  public StockQueryBuilder withMarketIds(List<MarketId> marketIds) {
-    this.marketIds = marketIds;
-    return this;
-  }
-
-  public StockQueryBuilder withMarketId(MarketId marketId) {
-    if (marketIds == null) {
-      marketIds = new ArrayList<>();
-    }
-    marketIds.add(marketId);
     return this;
   }
 
@@ -63,6 +34,6 @@ public class StockQueryBuilder {
   }
 
   public StockQuery build() {
-    return new StockQuery(titles, names, marketIds, categories);
+    return new StockQuery(names, categories);
   }
 }

@@ -3,7 +3,6 @@ package ca.ulaval.glo4003.domain.stock.query;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 
-import ca.ulaval.glo4003.domain.market.MarketId;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Assert;
@@ -16,33 +15,6 @@ public class StockQueryBuilderTest {
   @Before
   public void setupStockQueryBuilder() {
     stockQueryBuilder = new StockQueryBuilder();
-  }
-
-  @Test
-  public void givenTitleListIsNotSet_whenBuilding_thenQueryTitleListIsNull() {
-    StockQuery stockQuery = stockQueryBuilder.build();
-
-    assertThat(stockQuery.getTitles()).isNull();
-  }
-
-  @Test
-  public void givenTitleListIsSet_whenBuilding_thenQueryTitleListIsGivenList() {
-    List<String> someTitles = Arrays.asList("title1", "title2");
-    stockQueryBuilder = stockQueryBuilder.withTitles(someTitles);
-
-    StockQuery stockQuery = stockQueryBuilder.build();
-
-    Assert.assertThat(stockQuery.getTitles(), containsInAnyOrder(someTitles.toArray()));
-  }
-
-  @Test
-  public void givenSingleTitleIsPassed_whenBuilding_thenTitleIsInQueryTitleList() {
-    String aTitle = "title";
-    stockQueryBuilder = stockQueryBuilder.withTitle(aTitle);
-
-    StockQuery stockQuery = stockQueryBuilder.build();
-
-    Assert.assertThat(stockQuery.getTitles(), containsInAnyOrder(aTitle));
   }
 
   @Test
@@ -70,33 +42,6 @@ public class StockQueryBuilderTest {
     StockQuery stockQuery = stockQueryBuilder.build();
 
     Assert.assertThat(stockQuery.getNames(), containsInAnyOrder(aName));
-  }
-
-  @Test
-  public void givenMarketIdListIsNotSet_whenBuilding_thenQueryMarketIdListIsNull() {
-    StockQuery stockQuery = stockQueryBuilder.build();
-
-    assertThat(stockQuery.getMarketIds()).isNull();
-  }
-
-  @Test
-  public void givenMarketIdListIsSet_whenBuilding_thenQueryMarketIdListIsGivenList() {
-    List<MarketId> someMarketIds = Arrays.asList(new MarketId("id1"), new MarketId("id2"));
-    stockQueryBuilder = stockQueryBuilder.withMarketIds(someMarketIds);
-
-    StockQuery stockQuery = stockQueryBuilder.build();
-
-    Assert.assertThat(stockQuery.getMarketIds(), containsInAnyOrder(someMarketIds.toArray()));
-  }
-
-  @Test
-  public void givenSingleMarketIdIsPassed_whenBuilding_thenMarketIdIsInQueryMarketIdList() {
-    MarketId aMarketId = new MarketId("anId");
-    stockQueryBuilder = stockQueryBuilder.withMarketId(aMarketId);
-
-    StockQuery stockQuery = stockQueryBuilder.build();
-
-    Assert.assertThat(stockQuery.getMarketIds(), containsInAnyOrder(aMarketId));
   }
 
   @Test
