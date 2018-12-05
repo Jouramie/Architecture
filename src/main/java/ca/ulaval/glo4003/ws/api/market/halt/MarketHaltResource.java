@@ -42,7 +42,7 @@ public interface MarketHaltResource {
           )
       }
   )
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   MarketStatusResponseDto haltMarket(@PathParam("market") String market, @QueryParam("message") String message) throws MarketDoesNotExistException;
 
   @POST
@@ -68,6 +68,6 @@ public interface MarketHaltResource {
           )
       }
   )
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   MarketStatusResponseDto resumeMarket(@PathParam("market") String market) throws MarketDoesNotExistException;
 }
