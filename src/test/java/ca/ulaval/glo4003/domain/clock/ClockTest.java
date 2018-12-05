@@ -27,12 +27,17 @@ public class ClockTest {
 
     assertThat(currentTime).isEqualTo(SOME_START_TIME);
   }
-  
+
   @Test
   public void whenTick_thenTimeIsAdvancedByConfiguredTickStep() {
     clock.tick();
 
     assertThat(clock.getCurrentTime()).isEqualTo(SOME_START_TIME.plus(SOME_TICK_STEP));
+  }
+
+  @Test
+  public void whenGetCurrentDate_thenReturnCurrentDate() {
+    assertThat(clock.getCurrentDate()).isEqualTo(SOME_START_TIME.toLocalDate());
   }
 
   @Test
