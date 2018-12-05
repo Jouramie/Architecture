@@ -19,6 +19,35 @@ import javax.ws.rs.core.MediaType;
 
 @Produces(MediaType.APPLICATION_JSON)
 public interface TransactionResource {
+  @Path("/transactions")
+  @GET
+  @AuthenticationRequiredBinding(acceptedRoles = {UserRole.ADMINISTRATOR})
+  @Operation(
+      summary = "Get transactions for all users.",
+      responses = {
+          @ApiResponse(
+              responseCode = "200",
+              content = @Content(
+                  array = @ArraySchema(
+                      schema = @Schema(
+                          implementation = TransactionModelDto.class
+                      )
+                  )
+              )
+          ),
+          @ApiResponse(
+              responseCode = "401",
+              description = "Administrator is not logged in."
+          ),
+          @ApiResponse(
+              responseCode = "400",
+              description = "Malformed since parameter. Should be 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'."
+          )
+      }
+  )
+  List<TransactionModelDto> getTransactions(
+      @QueryParam("since")
+      @Parameter(description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String since);
 
   @Path("/users/{email}/transactions")
   @GET

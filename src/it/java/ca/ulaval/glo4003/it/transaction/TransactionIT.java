@@ -21,6 +21,49 @@ public class TransactionIT {
   public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
 
   @Test
+  public void whenGettingTransactions_thenReturnListOfTransactions() {
+    String token = givenAdministratorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .queryParam("since", "LAST_FIVE_DAYS")
+    .when()
+        .get("/api/transactions", DEFAULT_ADMIN_EMAIL)
+    .then()
+        .statusCode(OK.getStatusCode())
+        .body("$", is(iterable(TransactionModelDto.class)));
+    //@formatter:on
+  }
+
+  @Test
+  public void givenUnauthenticatedUser_whenGettingTransactions_thenReturn401Unauthorized() {
+    //@formatter:off
+    given()
+        .queryParam("since", "LAST_THIRTY_DAYS")
+    .when()
+        .get("/api/transactions", DEFAULT_ADMIN_EMAIL)
+    .then()
+        .statusCode(UNAUTHORIZED.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenMalformedScopeParameter_whenGettingTransactions_thenReturn400BadRequest() {
+    String token = givenAdministratorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .queryParam("since", "malformed")
+    .when()
+        .get("/api/transactions", DEFAULT_ADMIN_EMAIL)
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
   public void whenGettingUserTransactions_thenReturnListOfTransactions() {
     String token = givenAdministratorAlreadyAuthenticated();
     Header tokenHeader = new Header("token", token);
