@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.domain.stock.query;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class StockQuery implements Predicate<Stock> {
@@ -44,5 +45,22 @@ public class StockQuery implements Predicate<Stock> {
 
   public List<String> getCategories() {
     return categories;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    StockQuery that = (StockQuery) o;
+    return Objects.equals(names, that.names) && Objects.equals(categories, that.categories);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(names, categories);
   }
 }

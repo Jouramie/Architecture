@@ -6,11 +6,11 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.query.StockQuery;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class InMemoryStockRepository implements StockRepository {
   private final Map<String, Stock> stocks = new HashMap<>();
@@ -61,17 +61,7 @@ public class InMemoryStockRepository implements StockRepository {
   }
 
   @Override
-  public List<Stock> queryStocks(String name, String category) {
-    Stream<Stock> stockStream = stocks.values().stream();
-
-    if (name != null) {
-      stockStream = stockStream.filter((stock) -> stock.getName().equals(name));
-    }
-
-    if (category != null) {
-      stockStream = stockStream.filter((stock) -> stock.getCategory().equals(category));
-    }
-
-    return stockStream.collect(toList());
+  public List<Stock> queryStocks(StockQuery stockQuery) {
+    return stocks.values().stream().filter(stockQuery).collect(toList());
   }
 }
