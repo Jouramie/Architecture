@@ -21,6 +21,7 @@ import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepositor
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.infrastructure.config.SimulationSettings;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
+import ca.ulaval.glo4003.infrastructure.injection.ServiceLocatorInitializer;
 import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryAuthenticationTokenRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
@@ -43,8 +44,10 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -57,6 +60,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.reflections.Reflections;
 
 public abstract class AbstractContext {
   public static final String DEFAULT_ADMIN_EMAIL = "Archi.test.43@gmail.com";
@@ -83,36 +87,44 @@ public abstract class AbstractContext {
   }
 
   public void configureApplication(String apiUrl) {
-    initializeServiceLocator();
+    createServiceLocatorInitializer().configure();
     loadData();
-    initializeClock();
     createSwaggerApi(apiUrl);
   }
 
-  protected void initializeServiceLocator() {
-    serviceLocator.discoverPackage(WEB_SERVICE_PACKAGE_PREFIX, Resource.class, ErrorMapper.class,
-        Component.class, FilterRegistration.class);
-    serviceLocator.registerInstance(OpenApiResource.class, new OpenApiResource());
-    serviceLocator.registerInstance(StockSimulator.class, new StockSimulator());
-    serviceLocator.registerSingleton(UserRepository.class, InMemoryUserRepository.class);
-    serviceLocator.registerSingleton(AuthenticationTokenRepository.class,
-        InMemoryAuthenticationTokenRepository.class);
-    serviceLocator.registerSingleton(StockRepository.class, InMemoryStockRepository.class);
-    serviceLocator.registerSingleton(MarketRepository.class, InMemoryMarketRepository.class);
-    serviceLocator.registerSingleton(StockValueRetriever.class, SimulatedStockValueRetriever.class);
-    serviceLocator.registerSingleton(PaymentProcessor.class, NullPaymentProcessor.class);
-    serviceLocator.registerSingleton(CurrentUserSession.class, CurrentUserSession.class);
+  protected ServiceLocatorInitializer createServiceLocatorInitializer() {
+    Clock clock = createClock();
+
+    return new ServiceLocatorInitializer(serviceLocator).discoverPackage(WEB_SERVICE_PACKAGE_PREFIX,
+        Resource.class, ErrorMapper.class, Component.class)
+
+        .registerInstance(OpenApiResource.class, new OpenApiResource())
+        .registerInstance(StockSimulator.class, new StockSimulator())
+        .register(UserRepository.class, InMemoryUserRepository.class)
+        .register(AuthenticationTokenRepository.class, InMemoryAuthenticationTokenRepository.class)
+        .register(StockRepository.class, InMemoryStockRepository.class)
+        .register(MarketRepository.class, InMemoryMarketRepository.class)
+        .register(StockValueRetriever.class, SimulatedStockValueRetriever.class)
+        .register(PaymentProcessor.class, NullPaymentProcessor.class)
+        .register(CurrentUserSession.class, CurrentUserSession.class)
+        .registerInstance(ReadableClock.class, clock)
+        .registerInstance(Clock.class, clock);
   }
 
   protected Set<Object> createRegisteredComponentInstances() {
     List<Class<?>> registeredClasses = Stream.of(Resource.class, ErrorMapper.class, Component.class)
-        .map(annotation -> serviceLocator.getClassesForAnnotation(WEB_SERVICE_PACKAGE_PREFIX, annotation))
+        .map(annotation -> getClassesForAnnotation(WEB_SERVICE_PACKAGE_PREFIX, annotation))
         .flatMap(Collection::stream).collect(toList());
     registeredClasses.add(OpenApiResource.class);
 
     return registeredClasses.stream()
         .map(serviceLocator::get)
         .collect(toSet());
+  }
+
+  private Set<Class<?>> getClassesForAnnotation(String packagePrefix,
+                                                Class<? extends Annotation> annotation) {
+    return new HashSet<>(new Reflections(packagePrefix).getTypesAnnotatedWith(annotation));
   }
 
   protected void loadData() {
@@ -152,12 +164,9 @@ public abstract class AbstractContext {
     stockLoader.load();
   }
 
-  private void initializeClock() {
+  private Clock createClock() {
     LocalDate startDate = StockCsvLoader.LAST_STOCK_DATA_DATE;
-    Clock clock = new Clock(startDate.atTime(0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION);
-
-    serviceLocator.registerInstance(ReadableClock.class, clock);
-    serviceLocator.registerInstance(Clock.class, clock);
+    return new Clock(startDate.atTime(0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION);
   }
 
   public void configureDestruction() {
@@ -185,7 +194,7 @@ public abstract class AbstractContext {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     setupJacksonJavaTimeModule(resourceConfig);
-    serviceLocator.getClassesForAnnotation(
+    getClassesForAnnotation(
         WEB_SERVICE_PACKAGE_PREFIX,
         FilterRegistration.class)
         .forEach(resourceConfig::register);
