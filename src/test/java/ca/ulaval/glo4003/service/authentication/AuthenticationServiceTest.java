@@ -197,7 +197,7 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenInvalidToken_whenRevokingToken_thenTokenIsRemovedFromTokenRepository()
+  public void givenInvalidToken_whenRevokingToken_thenNoExceptionIsThrown()
       throws TokenNotFoundException {
     doThrow(TokenNotFoundException.class).when(tokenRepository).remove(any());
 
