@@ -18,6 +18,7 @@ import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import ca.ulaval.glo4003.service.stock.max.dto.StockMaxValueSummary;
 import java.time.LocalDate;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,35 +70,35 @@ public class StockMaxValueServiceTest {
     given(givenStock.getValueHistory()).willReturn(givenStockHistory);
     HistoricalStockValue lastFiveDaysValue = mock(HistoricalStockValue.class);
     given(givenStockHistory.getMaxValue(FIVE_DAYS_AGO, CURRENT_DATE))
-        .willReturn(lastFiveDaysValue);
+        .willReturn(Optional.of(lastFiveDaysValue));
     HistoricalStockValue currentMonthValue = mock(HistoricalStockValue.class);
     given(givenStockHistory.getMaxValue(START_OF_MONTH, CURRENT_DATE))
-        .willReturn(currentMonthValue);
+        .willReturn(Optional.of(currentMonthValue));
     HistoricalStockValue lastMonthValue = mock(HistoricalStockValue.class);
     given(givenStockHistory.getMaxValue(THIRTY_DAYS_AGO, CURRENT_DATE))
-        .willReturn(lastMonthValue);
+        .willReturn(Optional.of(lastMonthValue));
     HistoricalStockValue lastYearValue = mock(HistoricalStockValue.class);
     given(givenStockHistory.getMaxValue(ONE_YEAR_AGO, CURRENT_DATE))
-        .willReturn(lastYearValue);
+        .willReturn(Optional.of(lastYearValue));
     HistoricalStockValue lastFiveYearsValue = mock(HistoricalStockValue.class);
     given(givenStockHistory.getMaxValue(FIVE_YEARS_AGO, CURRENT_DATE))
-        .willReturn(lastFiveYearsValue);
+        .willReturn(Optional.of(lastFiveYearsValue));
     HistoricalStockValue lastTenYearsValue = mock(HistoricalStockValue.class);
     given(givenStockHistory.getMaxValue(TEN_YEARS_AGO, CURRENT_DATE))
-        .willReturn(lastTenYearsValue);
+        .willReturn(Optional.of(lastTenYearsValue));
     HistoricalStockValue allTimeValue = mock(HistoricalStockValue.class);
     given(givenStockHistory.getMaxValue(LocalDate.MIN, CURRENT_DATE))
-        .willReturn(allTimeValue);
+        .willReturn(Optional.of(allTimeValue));
 
     StockMaxValueSummary summary = stockMaxValueService.getStockMaxValue(SOME_TITLE);
 
-    assertThat(summary.lastFiveDays).isEqualTo(lastFiveDaysValue);
-    assertThat(summary.currentMonth).isEqualTo(currentMonthValue);
-    assertThat(summary.lastMonth).isEqualTo(lastMonthValue);
-    assertThat(summary.lastYear).isEqualTo(lastYearValue);
-    assertThat(summary.lastFiveYears).isEqualTo(lastFiveYearsValue);
-    assertThat(summary.lastTenYears).isEqualTo(lastTenYearsValue);
-    assertThat(summary.allTime).isEqualTo(allTimeValue);
+    assertThat(summary.lastFiveDays).isSameAs(lastFiveDaysValue);
+    assertThat(summary.currentMonth).isSameAs(currentMonthValue);
+    assertThat(summary.lastMonth).isSameAs(lastMonthValue);
+    assertThat(summary.lastYear).isSameAs(lastYearValue);
+    assertThat(summary.lastFiveYears).isSameAs(lastFiveYearsValue);
+    assertThat(summary.lastTenYears).isSameAs(lastTenYearsValue);
+    assertThat(summary.allTime).isSameAs(allTimeValue);
   }
 
   @Test

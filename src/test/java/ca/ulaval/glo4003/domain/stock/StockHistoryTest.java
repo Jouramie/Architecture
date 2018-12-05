@@ -1,27 +1,31 @@
 package ca.ulaval.glo4003.domain.stock;
 
+import static ca.ulaval.glo4003.domain.stock.StockTrend.DECREASING;
+import static ca.ulaval.glo4003.domain.stock.StockTrend.INCREASING;
+import static ca.ulaval.glo4003.domain.stock.StockTrend.NO_DATA;
+import static ca.ulaval.glo4003.domain.stock.StockTrend.STABLE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
 public class StockHistoryTest {
-  private final Currency SOME_CURRENCY = Currency.USD;
-  private final double SOME_AMOUNT = 12.34;
-  private final double SOME_OTHER_AMOUNT = 45.67;
-  private final double SOME_BIGGER_AMOUNT = 300.00;
-  private final double SOME_EVEN_BIGGER_AMOUNT = 500.00;
-  private final LocalDate SOME_DATE = LocalDate.now();
-  private final LocalDate SOME_MORE_RECENT_DATE = LocalDate.now().plusDays(1);
-  private final LocalDate START_DATE = LocalDate.of(2018, 9, 12);
-  private final LocalDate END_DATE = LocalDate.of(2018, 10, 12);
-  private final LocalDate MIDDLE_DATE = LocalDate.of(2018, 10, 1);
+  private static final LocalDate SOME_DATE = LocalDate.now();
+  private static final LocalDate SOME_OLDER_DATE = SOME_DATE.minusDays(1);
+  private static final LocalDate SOME_MORE_RECENT_DATE = SOME_DATE.plusDays(1);
+  private static final StockValue SOME_VALUE = new StockValueBuilder().withAllValue(12.34).build();
+  private static final StockValue SOME_OTHER_VALUE = new StockValueBuilder().withAllValue(45.67).build();
+  private static final StockValue SOME_LOWER_VALUE = new StockValueBuilder().withAllValue(1).build();
+  private static final StockValue SOME_HIGHER_VALUE = new StockValueBuilder().withAllValue(300.00).build();
+  private static final StockValue SOME_EVEN_HIGHER_VALUE = new StockValueBuilder().withAllValue(500.00).build();
+  private static final LocalDate START_DATE = LocalDate.of(2018, 9, 12);
+  private static final LocalDate END_DATE = LocalDate.of(2018, 10, 12);
+  private static final LocalDate MIDDLE_DATE = LocalDate.of(2018, 10, 1);
 
   private StockHistory history;
 
@@ -32,122 +36,167 @@ public class StockHistoryTest {
 
   @Test
   public void whenAddValue_thenAddValueToTheHistory() {
-    StockValue value = buildStockValue(SOME_AMOUNT);
+    history.addValue(SOME_DATE, SOME_VALUE);
 
-    history.addValue(SOME_DATE, value);
-
+    HistoricalStockValue expectedHistoricalValue = new HistoricalStockValue(SOME_DATE, SOME_VALUE);
     assertThat(history.getAllStoredValues()).hasSize(1);
-    assertThat(history.getAllStoredValues()).first().extracting("value", "date")
-        .contains(value, SOME_DATE);
+    assertThat(history.getAllStoredValues()).first().isEqualToComparingFieldByField(expectedHistoricalValue);
   }
 
   @Test
   public void givenHistoryWithTwoValues_whenGetLatestValue_thenReturnMostRecentValue() {
-    StockValue mostRecentValue = buildStockValue(SOME_AMOUNT);
-    StockValue oldValue = buildStockValue(SOME_OTHER_AMOUNT);
-    history.addValue(SOME_MORE_RECENT_DATE, mostRecentValue);
-    history.addValue(SOME_DATE, oldValue);
+    history.addValue(SOME_DATE, SOME_VALUE);
+    history.addValue(SOME_MORE_RECENT_DATE, SOME_OTHER_VALUE);
 
-    HistoricalStockValue result = history.getLatestValue();
+    HistoricalStockValue result = history.getLatestHistoricalValue();
 
     assertThat(result.date).isEqualTo(SOME_MORE_RECENT_DATE);
-    assertThat(result.value).isEqualTo(mostRecentValue);
+    assertThat(result.value).isEqualTo(SOME_OTHER_VALUE);
   }
 
   @Test
-  public void givenHistoryWithSingleValue_whenAddNextValue_thenAddValueWithDateSetToNextDay() {
-    StockValue oldValue = buildStockValue(SOME_AMOUNT);
-    history.addValue(SOME_DATE, oldValue);
+  public void whenAddNextValue_thenAddValueWithDateSetToNextDay() {
+    history.addValue(SOME_DATE, SOME_VALUE);
 
-    StockValue newValue = buildStockValue(SOME_OTHER_AMOUNT);
-    history.addNextValue(newValue);
+    history.addNextValue();
 
-    HistoricalStockValue result = history.getLatestValue();
+    HistoricalStockValue result = history.getLatestHistoricalValue();
     assertThat(result.date).isEqualTo(SOME_DATE.plusDays(1));
-    assertThat(result.value).isEqualTo(newValue);
   }
 
   @Test
-  public void givenHistoryWithMultipleValues_whenGetMaxValue_thenReturnMaxValueInInterval() throws NoStockValueFitsCriteriaException {
-    StockValue maxValue = buildStockValue(SOME_BIGGER_AMOUNT);
-    history.addValue(START_DATE.minusDays(1), buildStockValue(SOME_EVEN_BIGGER_AMOUNT));
-    history.addValue(START_DATE, buildStockValue(SOME_AMOUNT));
-    history.addValue(MIDDLE_DATE, maxValue);
-    history.addValue(END_DATE, buildStockValue(SOME_AMOUNT));
-    history.addValue(END_DATE.plusDays(1), buildStockValue(SOME_EVEN_BIGGER_AMOUNT));
+  public void whenAddNextValue_thenAddValueWithStartingValueEqualsToLastDayCloseValue() {
+    history.addValue(SOME_DATE, SOME_VALUE);
 
-    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE);
+    history.addNextValue();
 
-    assertThat(result.date).isEqualTo(MIDDLE_DATE);
-    assertThat(result.value).isEqualTo(maxValue);
+    HistoricalStockValue result = history.getLatestHistoricalValue();
+    MoneyAmount lastDayCloseValue = SOME_VALUE.getLatestValue();
+    StockValue expectedValue = new StockValue(lastDayCloseValue, lastDayCloseValue, lastDayCloseValue);
+    assertThat(result.value).isEqualTo(expectedValue);
   }
 
   @Test
-  public void givenHistoryWithMaxValueOnStartDate_whenGetMaxValue_thenReturnMaxValueInInterval() throws NoStockValueFitsCriteriaException {
-    StockValue maxValue = buildStockValue(SOME_BIGGER_AMOUNT);
-    history.addValue(START_DATE.minusDays(1), buildStockValue(SOME_EVEN_BIGGER_AMOUNT));
-    history.addValue(START_DATE, maxValue);
-    history.addValue(MIDDLE_DATE, buildStockValue(SOME_AMOUNT));
-    history.addValue(END_DATE, buildStockValue(SOME_AMOUNT));
-    history.addValue(END_DATE.plusDays(1), buildStockValue(SOME_EVEN_BIGGER_AMOUNT));
+  public void givenHistoryWithMultipleValues_whenGetMaxValue_thenReturnMaxValueInInterval() {
+    history.addValue(START_DATE.minusDays(1), SOME_EVEN_HIGHER_VALUE);
+    history.addValue(START_DATE, SOME_VALUE);
+    history.addValue(MIDDLE_DATE, SOME_HIGHER_VALUE);
+    history.addValue(END_DATE, SOME_VALUE);
+    history.addValue(END_DATE.plusDays(1), SOME_EVEN_HIGHER_VALUE);
 
-    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE);
+    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE).get();
 
-    assertThat(result.date).isEqualTo(START_DATE);
-    assertThat(result.value).isEqualTo(maxValue);
+    assertThat(result.date).isSameAs(MIDDLE_DATE);
+    assertThat(result.value).isSameAs(SOME_HIGHER_VALUE);
   }
 
   @Test
-  public void givenHistoryWithMaxValueOnEndDate_whenGetMaxValue_thenReturnMaxValueInInterval() throws NoStockValueFitsCriteriaException {
-    StockValue maxValue = buildStockValue(SOME_BIGGER_AMOUNT);
-    history.addValue(START_DATE.minusDays(1), buildStockValue(SOME_EVEN_BIGGER_AMOUNT));
-    history.addValue(START_DATE, buildStockValue(SOME_AMOUNT));
-    history.addValue(MIDDLE_DATE, buildStockValue(SOME_AMOUNT));
-    history.addValue(END_DATE, maxValue);
-    history.addValue(END_DATE.plusDays(1), buildStockValue(SOME_EVEN_BIGGER_AMOUNT));
+  public void givenHistoryWithMaxValueOnStartDate_whenGetMaxValue_thenReturnMaxValueInInterval() {
+    history.addValue(START_DATE.minusDays(1), SOME_EVEN_HIGHER_VALUE);
+    history.addValue(START_DATE, SOME_HIGHER_VALUE);
+    history.addValue(MIDDLE_DATE, SOME_VALUE);
+    history.addValue(END_DATE, SOME_VALUE);
+    history.addValue(END_DATE.plusDays(1), SOME_EVEN_HIGHER_VALUE);
 
-    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE);
+    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE).get();
 
-    assertThat(result.date).isEqualTo(END_DATE);
-    assertThat(result.value).isEqualTo(maxValue);
+    assertThat(result.date).isSameAs(START_DATE);
+    assertThat(result.value).isSameAs(SOME_HIGHER_VALUE);
+  }
+
+  @Test
+  public void givenHistoryWithMaxValueOnEndDate_whenGetMaxValue_thenReturnMaxValueInInterval() {
+    history.addValue(START_DATE.minusDays(1), SOME_EVEN_HIGHER_VALUE);
+    history.addValue(START_DATE, SOME_VALUE);
+    history.addValue(MIDDLE_DATE, SOME_VALUE);
+    history.addValue(END_DATE, SOME_HIGHER_VALUE);
+    history.addValue(END_DATE.plusDays(1), SOME_EVEN_HIGHER_VALUE);
+
+    HistoricalStockValue result = history.getMaxValue(START_DATE, END_DATE).get();
+
+    assertThat(result.date).isSameAs(END_DATE);
+    assertThat(result.value).isSameAs(SOME_HIGHER_VALUE);
   }
 
   @Test
   public void givenEmptyHistory_whenGetMaxValue_thenExceptionIsThrow() {
-    ThrowingCallable getMaxValue = () -> history.getMaxValue(START_DATE, END_DATE);
+    Optional<HistoricalStockValue> optionalStockValue = history.getMaxValue(START_DATE, END_DATE);
 
-    assertThatThrownBy(getMaxValue).isInstanceOf(NoStockValueFitsCriteriaException.class);
-  }
-
-  private StockValue buildStockValue(double value) {
-    MoneyAmount amount = new MoneyAmount(value, SOME_CURRENCY);
-    return new StockValue(amount);
+    assertThat(optionalStockValue).isEmpty();
   }
 
   @Test
-  public void givenNoData_whenGettingValueOnASpecificDay_thenExceptionIsThrow() {
+  public void givenNoData_whenGettingValueOnASpecificDay_thenEmptyOptionalIsReturned() {
     LocalDate missingDate = LocalDate.of(1970, Month.JANUARY, 1);
 
-    ThrowingCallable getValue = () -> history.getValueOnDay(missingDate);
+    Optional<StockValue> optionalStockValue = history.getValueOnDay(missingDate);
 
-    assertThatThrownBy(getValue);
+    assertThat(optionalStockValue).isEmpty();
   }
 
   @Test
-  public void givenNoDataOnRequestedDay_whenGettingValueOnASpecificDay_thenReturnPreviousValue()
-      throws NoStockValueFitsCriteriaException {
-    history.addValue(SOME_DATE, buildStockValue(SOME_AMOUNT));
+  public void whenGettingValueOnASpecificDay_thenReturnStockValueOnThatDay() {
+    history.addValue(SOME_DATE, SOME_VALUE);
 
-    StockValue valueOnDay = history.getValueOnDay(SOME_DATE.plusDays(1));
-    assertThat(valueOnDay.getLatestValue().getAmount().doubleValue()).isEqualTo(SOME_AMOUNT);
+    StockValue valueOnDay = history.getValueOnDay(SOME_DATE).get();
+
+    assertThat(valueOnDay).isSameAs(SOME_VALUE);
   }
 
   @Test
-  public void whenGettingValueOnASpecificDay_thenReturnStockValueOnThatDay()
-      throws NoStockValueFitsCriteriaException {
-    history.addValue(SOME_DATE, buildStockValue(SOME_AMOUNT));
+  public void givenNoDataOnRequestedDay_whenGettingValueOnASpecificDay_thenReturnPreviousValue() {
+    history.addValue(SOME_DATE, SOME_VALUE);
 
-    StockValue valueOnDay = history.getValueOnDay(SOME_DATE);
-    assertThat(valueOnDay.getLatestValue().getAmount().doubleValue()).isEqualTo(SOME_AMOUNT);
+    StockValue valueOnDay = history.getValueOnDay(SOME_DATE.plusDays(1)).get();
+
+    assertThat(valueOnDay).isSameAs(SOME_VALUE);
+  }
+
+  @Test
+  public void givenAPastValueGreaterThanPresentValue_whenGettingTrend_thenReturnDecreasing() {
+    history.addValue(SOME_OLDER_DATE, SOME_VALUE);
+    history.addValue(SOME_DATE, SOME_LOWER_VALUE);
+
+    StockTrend trend = history.getStockVariationTrendSinceDate(SOME_OLDER_DATE);
+
+    assertThat(trend).isSameAs(DECREASING);
+  }
+
+  @Test
+  public void givenAPastValueLessThanPresentValue_whenGettingTrend_thenReturnIncreasing() {
+    history.addValue(SOME_OLDER_DATE, SOME_VALUE);
+    history.addValue(SOME_DATE, SOME_HIGHER_VALUE);
+
+    StockTrend trend = history.getStockVariationTrendSinceDate(SOME_OLDER_DATE);
+
+    assertThat(trend).isSameAs(INCREASING);
+  }
+
+  @Test
+  public void givenAPastValueEqualToThePresentValue_whenGettingTrend_thenReturnStable() {
+    history.addValue(SOME_OLDER_DATE, SOME_VALUE);
+    history.addValue(SOME_DATE, SOME_VALUE);
+
+    StockTrend trend = history.getStockVariationTrendSinceDate(SOME_OLDER_DATE);
+
+    assertThat(trend).isSameAs(STABLE);
+  }
+
+  @Test
+  public void givenAMissingPastValue_whenGettingTrend_thenReturnNoData() {
+    history.addValue(SOME_DATE, SOME_VALUE);
+
+    StockTrend trend = history.getStockVariationTrendSinceDate(SOME_OLDER_DATE);
+
+    assertThat(trend).isSameAs(NO_DATA);
+  }
+
+  @Test
+  public void givenVariation_whenUpdateCurrentValue_thenAddVariationToCurrentValue() {
+    history.addValue(SOME_DATE, new StockValueBuilder().withLatestValue(10).build());
+
+    history.updateCurrentValue(BigDecimal.ONE);
+
+    assertThat(history.getLatestValue().getLatestValue()).isEqualTo(new MoneyAmount(11));
   }
 }
