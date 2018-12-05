@@ -42,12 +42,12 @@ public interface TransactionResource {
           ),
           @ApiResponse(
               responseCode = "400",
-              description = "Malformed scope parameter. Should be 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'."
+              description = "Malformed since parameter. Should be 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'."
           )
       }
   )
   List<TransactionModelDto> getUserTransactions(
       @PathParam("email") String email,
-      @QueryParam("scope")
-      @Parameter(description = "History scope. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String scope);
+      @QueryParam("since")
+      @Parameter(description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String since);
 }
