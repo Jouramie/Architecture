@@ -1,9 +1,11 @@
 package ca.ulaval.glo4003.it.transaction;
 
-import static ca.ulaval.glo4003.context.AbstractContext.DEFAULT_INVESTOR_EMAIL;
+import static ca.ulaval.glo4003.context.AbstractContext.DEFAULT_ADMIN_EMAIL;
 import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
 import static io.restassured.RestAssured.given;
-import static javax.ws.rs.core.Response.Status.*;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.OK;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.assertj.core.util.IterableUtil.iterable;
 import static org.hamcrest.core.Is.is;
 
@@ -25,9 +27,9 @@ public class TransactionIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .queryParam("scope", "5_DAYS")
+        .queryParam("since", "LAST_FIVE_DAYS")
     .when()
-        .get(String.format("/api/users/%s/transactions", DEFAULT_INVESTOR_EMAIL))
+        .get("/api/users/{email}/transactions", DEFAULT_ADMIN_EMAIL)
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", is(iterable(TransactionModelDto.class)));
@@ -38,9 +40,9 @@ public class TransactionIT {
   public void givenUnauthenticatedUser_whenGettingUserTransactions_thenReturn401Unauthorized() {
     //@formatter:off
     given()
-        .queryParam("scope", "5_DAYS")
+        .queryParam("since", "LAST_THIRTY_DAYS")
     .when()
-        .get(String.format("/api/users/%s/transactions", DEFAULT_INVESTOR_EMAIL))
+        .get("/api/users/{email}/transactions", DEFAULT_ADMIN_EMAIL)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
@@ -53,9 +55,9 @@ public class TransactionIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .queryParam("scope", "malformed")
+        .queryParam("since", "malformed")
     .when()
-        .get(String.format("/api/users/%s/transactions", DEFAULT_INVESTOR_EMAIL))
+        .get("/api/users/{email}/transactions", DEFAULT_ADMIN_EMAIL)
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
