@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.domain.money;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class MoneyAmount implements Comparable<MoneyAmount> {
+public class MoneyAmount {
 
   public static final MoneyAmount ZERO = zero(Currency.USD);
 
@@ -92,10 +92,5 @@ public class MoneyAmount implements Comparable<MoneyAmount> {
 
   public boolean isLessThan(MoneyAmount other) {
     return toUsd().compareTo(other.toUsd()) < 0;
-  }
-
-  @Override
-  public int compareTo(MoneyAmount maximumValue) {
-    return toUsd().compareTo(maximumValue.toUsd());
   }
 }

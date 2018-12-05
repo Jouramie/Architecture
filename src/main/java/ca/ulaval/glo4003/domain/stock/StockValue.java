@@ -29,7 +29,7 @@ public class StockValue {
 
   public StockValue updateCurrentValue(BigDecimal variation) {
     MoneyAmount newLatestValue = latestValue.add(variation);
-    if (newLatestValue.compareTo(maximumValue) > 0) {
+    if (newLatestValue.isGreaterThan(maximumValue)) {
       return new StockValue(openValue, newLatestValue, newLatestValue);
     }
 
