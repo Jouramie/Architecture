@@ -15,14 +15,11 @@ import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
-import ca.ulaval.glo4003.domain.stock.query.StockQuery;
-import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import ca.ulaval.glo4003.service.portfolio.dto.HistoricalPortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
 import org.junit.Before;
@@ -63,7 +60,7 @@ public class PortfolioReportAssemblerTest {
     setupHistoricalPortfolios();
   }
 
-  private void setupStockRepository() {
+  private void setupStockRepository() throws StockNotFoundException {
     given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     someStockCollection = new StockCollection().add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
     someStock = new TestStockBuilder()
@@ -71,8 +68,7 @@ public class PortfolioReportAssemblerTest {
         .withHistoricalValue(SOME_FIRST_DATE, SOME_FIRST_HISTORICAL_STOCK_VALUE)
         .withHistoricalValue(SOME_SECOND_DATE, SOME_SECOND_HISTORICAL_STOCK_VALUE)
         .build();
-    StockQuery stockQuery = new StockQueryBuilder().withTitle(SOME_TITLE).build();
-    given(someStockRepository.find(stockQuery)).willReturn(Arrays.asList(someStock));
+    given(someStockRepository.findByTitle(SOME_TITLE)).willReturn(someStock);
   }
 
   private void setupHistoricalPortfolios() throws StockNotFoundException, NoStockValueFitsCriteriaException {
@@ -140,7 +136,7 @@ public class PortfolioReportAssemblerTest {
   @Test
   public void whenToDto_thenMostVolatileStocksAreMappedCorrectly() throws StockNotFoundException, NoStockValueFitsCriteriaException {
     TreeSet<HistoricalPortfolio> portfolios = new TreeSet<>();
-
+    
     PortfolioReportDto dto = assembler.toDto(portfolios, SOME_INCREASING_STOCK_TITLE, SOME_DECREASING_STOCK_TITLE);
 
     assertThat(dto.mostIncreasingStock).isEqualTo(SOME_INCREASING_STOCK_TITLE);

@@ -5,9 +5,8 @@ import static java.util.stream.Collectors.toList;
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.stock.query.StockQuery;
-import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
 import java.util.List;
@@ -36,11 +35,10 @@ public class CartItemAssembler {
   }
 
   private Stock getStock(String title) {
-    StockQuery stockQuery = new StockQueryBuilder().withTitle(title).build();
-    List<Stock> stocks = stockRepository.find(stockQuery);
-    if (stocks.isEmpty()) {
-      throw new InvalidStockTitleException(title);
+    try {
+      return stockRepository.findByTitle(title);
+    } catch (StockNotFoundException exception) {
+      throw new InvalidStockTitleException(exception);
     }
-    return stocks.get(0);
   }
 }

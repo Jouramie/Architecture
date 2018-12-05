@@ -4,18 +4,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.stock.query.StockQuery;
-import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import ca.ulaval.glo4003.service.cart.assemblers.CartItemAssembler;
 import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
 import ca.ulaval.glo4003.util.TestStockBuilder;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,15 +49,13 @@ public class CartItemAssemblerTest {
   private CartItemAssembler assembler;
 
   @Before
-  public void setupCartItemAssembler() {
+  public void setupCartItemAssembler() throws StockNotFoundException {
     assembler = new CartItemAssembler(stockRepository);
 
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
-    StockQuery someStockQuery = new StockQueryBuilder().withTitle(SOME_TITLE).build();
-    given(stockRepository.find(someStockQuery)).willReturn(Arrays.asList(SOME_STOCK));
-    StockQuery someOtherStockQuery = new StockQueryBuilder().withTitle(SOME_OTHER_TITLE).build();
-    given(stockRepository.find(someOtherStockQuery)).willReturn(Arrays.asList(SOME_OTHER_STOCK));
+    given(stockRepository.findByTitle(SOME_TITLE)).willReturn(SOME_STOCK);
+    given(stockRepository.findByTitle(SOME_OTHER_TITLE)).willReturn(SOME_OTHER_STOCK);
   }
 
   @Test
@@ -69,8 +66,9 @@ public class CartItemAssemblerTest {
   }
 
   @Test
-  public void givenInvalidStockTitle_whenToDto_thenExceptionIsThrown() {
-    given(stockRepository.find(any())).willReturn(Arrays.asList());
+  public void givenInvalidStockTitle_whenToDto_thenInvalidStockTitleExceptionIsThrown()
+      throws StockNotFoundException {
+    doThrow(StockNotFoundException.class).when(stockRepository).findByTitle(any());
 
     assertThatThrownBy(() -> assembler.toDto(SOME_TITLE, SOME_QUANTITY))
         .isInstanceOf(InvalidStockTitleException.class);

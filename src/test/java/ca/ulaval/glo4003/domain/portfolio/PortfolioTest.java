@@ -81,7 +81,8 @@ public class PortfolioTest {
   }
 
   @Test
-  public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues() {
+  public void givenPortfolioNotEmpty_whenGetCurrentTotalValue_thenReturnSumOfItemValues()
+      throws InvalidStockInPortfolioException {
     Transaction transaction = new TransactionBuilder()
         .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
         .build();
@@ -92,7 +93,7 @@ public class PortfolioTest {
   }
 
   @Test
-  public void givenPortfolioIsEmpty_whenGetCurrentTotalValue_thenReturnZero() {
+  public void givenPortfolioIsEmpty_whenGetCurrentTotalValue_thenReturnZero() throws InvalidStockInPortfolioException {
     BigDecimal currentTotal = new BigDecimal(0).setScale(2, RoundingMode.HALF_EVEN);
     assertThat(portfolio.getCurrentTotalValue(someStockRepository).getAmount()).isEqualTo(currentTotal);
   }
@@ -151,7 +152,7 @@ public class PortfolioTest {
 
   @Test
   public void givenStocksInPortfolio_whenGetMostIncreasingStock_thenMostIncreasingStockIsReturned()
-      throws NoStockValueFitsCriteriaException {
+      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
     setupPortfolioWithDifferentStocksOnSameDate(NOW.minusDays(5));
     setupStockWithLowestVariation(NOW.minusDays(5));
     setupStockWithHighestVariation(NOW.minusDays(5));
@@ -163,7 +164,7 @@ public class PortfolioTest {
 
   @Test
   public void givenEmptyPortfolio_whenGetMostIncreasingStock_thenReturnNull()
-      throws NoStockValueFitsCriteriaException {
+      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
     String mostIncreasingStockTitle = portfolio.getMostIncreasingStockTitle(NOW.minusDays(5), someStockRepository);
 
     assertThat(mostIncreasingStockTitle).isNull();
@@ -171,7 +172,7 @@ public class PortfolioTest {
 
   @Test
   public void givenStocksInPortfolio_whenGetMostDecreasingStock_thenMostDecreasingStockIsReturned()
-      throws NoStockValueFitsCriteriaException {
+      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
     setupPortfolioWithDifferentStocksOnSameDate(NOW.minusDays(5));
     setupStockWithLowestVariation(NOW.minusDays(5));
     setupStockWithHighestVariation(NOW.minusDays(5));
@@ -183,7 +184,7 @@ public class PortfolioTest {
 
   @Test
   public void givenEmptyPortfolio_whenGetMostDecreasingStock_thenReturnNull()
-      throws NoStockValueFitsCriteriaException {
+      throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
     String mostDecreasingStockTitle = portfolio.getMostDecreasingStockTitle(NOW.minusDays(5), someStockRepository);
 
     assertThat(mostDecreasingStockTitle).isNull();

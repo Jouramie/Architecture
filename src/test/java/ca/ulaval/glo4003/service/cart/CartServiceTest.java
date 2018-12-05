@@ -20,7 +20,6 @@ import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
 import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
 import ca.ulaval.glo4003.service.cart.exceptions.StockNotInCartException;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert;
@@ -95,9 +94,10 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenInvalidStockTitle_whenAddStockToCart_thenInvalidStockTitleException() {
+  public void givenInvalidStockTitle_whenAddStockToCart_thenInvalidStockTitleException()
+      throws StockNotFoundException {
     String invalidTitle = "invalid title";
-    given(stockRepository.find(any())).willReturn(Arrays.asList());
+    given(stockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
     ThrowableAssert.ThrowingCallable addStockToCart
         = () -> cartService.addStockToCart(invalidTitle, SOME_QUANTITY);
@@ -115,9 +115,10 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenInvalidStockTitle_whenUpdateStockQuantityInCart_thenInvalidStockTitleException() {
+  public void givenInvalidStockTitle_whenUpdateStockQuantityInCart_thenInvalidStockTitleException()
+      throws StockNotFoundException {
     String invalidTitle = "invalid title";
-    given(stockRepository.find(any())).willReturn(Arrays.asList());
+    given(stockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.updateStockInCart(invalidTitle, SOME_QUANTITY);
@@ -147,9 +148,10 @@ public class CartServiceTest {
   }
 
   @Test
-  public void givenInvalidStockTitle_whenRemoveStockFromCart_thenInvalidStockTitleException() {
+  public void givenInvalidStockTitle_whenRemoveStockFromCart_thenInvalidStockTitleException()
+      throws StockNotFoundException {
     String invalidTitle = "invalid title";
-    given(stockRepository.find(any())).willReturn(Arrays.asList());
+    given(stockRepository.findByTitle(invalidTitle)).willThrow(new StockNotFoundException(invalidTitle));
 
     ThrowableAssert.ThrowingCallable updateStockInCart
         = () -> cartService.removeStockFromCart(invalidTitle);

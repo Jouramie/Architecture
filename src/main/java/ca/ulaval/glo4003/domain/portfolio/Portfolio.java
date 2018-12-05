@@ -5,9 +5,8 @@ import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.stock.query.StockQuery;
-import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionHistory;
 import ca.ulaval.glo4003.domain.transaction.TransactionItem;
@@ -53,7 +52,7 @@ public class Portfolio {
     return stocks.getQuantity(title);
   }
 
-  public MoneyAmount getCurrentTotalValue(StockRepository stockRepository) {
+  public MoneyAmount getCurrentTotalValue(StockRepository stockRepository) throws InvalidStockInPortfolioException {
     return getStockList(stockRepository).stream().map(this::getSubtotal)
         .reduce(MoneyAmount.zero(Currency.USD), MoneyAmount::add);
   }
@@ -63,7 +62,7 @@ public class Portfolio {
   }
 
   public String getMostIncreasingStockTitle(LocalDate from, StockRepository stockRepository)
-      throws NoStockValueFitsCriteriaException {
+      throws InvalidStockInPortfolioException, NoStockValueFitsCriteriaException {
     List<Stock> stockList = getStockList(stockRepository);
     BigDecimal highestVariation = BigDecimal.ZERO;
     String mostIncreasingStockTitle = null;
@@ -78,7 +77,7 @@ public class Portfolio {
   }
 
   public String getMostDecreasingStockTitle(LocalDate from, StockRepository stockRepository)
-      throws NoStockValueFitsCriteriaException {
+      throws InvalidStockInPortfolioException, NoStockValueFitsCriteriaException {
     List<Stock> stockList = getStockList(stockRepository);
     BigDecimal lowestVariation = new BigDecimal(Double.MAX_VALUE);
     String mostDecreasingStockTitle = null;
@@ -98,9 +97,12 @@ public class Portfolio {
     return currentValue.multiply(quantity);
   }
 
-  private List<Stock> getStockList(StockRepository stockRepository) {
-    StockQuery stockQuery = new StockQueryBuilder().withTitles(stocks.getTitles()).build();
-    return stockRepository.find(stockQuery);
+  private List<Stock> getStockList(StockRepository stockRepository) throws InvalidStockInPortfolioException {
+    try {
+      return stockRepository.findByTitles(stocks.getTitles());
+    } catch (StockNotFoundException e) {
+      throw new InvalidStockInPortfolioException("Portfolio contains invalid stock with title " + e.title);
+    }
   }
 
   private StockCollection rollbackTransactionsForDay(LocalDate date, StockCollection currentStockCollection) {

@@ -8,14 +8,12 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.stock.Stock;
+import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.stock.query.StockQuery;
-import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import ca.ulaval.glo4003.service.date.DateService;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,13 +39,12 @@ public class StockVariationTrendServiceTest {
   }
 
   @Test
-  public void whenGettingStockVariationSummary_thenFetchStockAndSendsToCalculator() {
-    StockQuery stockQuery = new StockQueryBuilder().withTitle(STOCK_TITLE).build();
-    given(stockRepositoryMock.find(stockQuery)).willReturn(Arrays.asList(mock(Stock.class)));
+  public void whenGettingStockVariationSummary_thenFetchStockAndSendsToCalculator() throws StockNotFoundException {
+    given(stockRepositoryMock.findByTitle(STOCK_TITLE)).willReturn(mock(Stock.class));
 
     stockVariationTrendService.getStockVariationSummary(STOCK_TITLE);
 
-    verify(stockRepositoryMock).find(stockQuery);
+    verify(stockRepositoryMock).findByTitle(STOCK_TITLE);
     verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(dateService.getFiveDaysAgo()));
     verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(dateService.getThirtyDaysAgo()));
     verify(stockVariationCalculatorMock).getStockVariationTrendSinceDate(any(), eq(dateService.getOneYearAgo()));
