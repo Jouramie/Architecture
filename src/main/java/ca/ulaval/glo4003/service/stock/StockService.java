@@ -4,6 +4,7 @@ import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.query.StockQuery;
 import ca.ulaval.glo4003.domain.stock.query.StockQueryBuilder;
 import java.util.List;
 import javax.inject.Inject;
@@ -34,14 +35,8 @@ public class StockService {
   }
 
   public List<StockDto> queryStocks(String name, String category) {
-    StockQueryBuilder stockQueryBuilder = new StockQueryBuilder();
-    if (name != null) {
-      stockQueryBuilder = stockQueryBuilder.withName(name);
-    }
-    if (category != null) {
-      stockQueryBuilder = stockQueryBuilder.withCategory(category);
-    }
-    List<Stock> stocks = stockRepository.queryStocks(stockQueryBuilder.build());
+    StockQuery stockQuery = new StockQueryBuilder().withName(name).withCategory(category).build();
+    List<Stock> stocks = stockRepository.queryStocks(stockQuery);
     return stockAssembler.toDtoList(stocks);
   }
 

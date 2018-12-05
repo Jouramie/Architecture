@@ -73,13 +73,6 @@ public class StockServiceTest {
   }
 
   @Test
-  public void givenNameAndCategoryIsNull_whenQueryStocks_thenQueryAllStocks() {
-    stockService.queryStocks(null, null);
-
-    verify(stockRepository).queryStocks(new StockQueryBuilder().build());
-  }
-
-  @Test
   public void whenQueryStocks_thenStockIsGotFromRepository() {
     stockService.queryStocks(SOME_NAME, SOME_CATEGORY);
 

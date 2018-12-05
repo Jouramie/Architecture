@@ -13,10 +13,12 @@ public class StockQueryBuilder {
   }
 
   public StockQueryBuilder withName(String name) {
-    if (names == null) {
-      names = new ArrayList<>();
+    if (name != null) {
+      if (names == null) {
+        names = new ArrayList<>();
+      }
+      names.add(name);
     }
-    names.add(name);
     return this;
   }
 
@@ -26,10 +28,12 @@ public class StockQueryBuilder {
   }
 
   public StockQueryBuilder withCategory(String category) {
-    if (categories == null) {
-      categories = new ArrayList<>();
+    if (category != null) {
+      if (categories == null) {
+        categories = new ArrayList<>();
+      }
+      categories.add(category);
     }
-    categories.add(category);
     return this;
   }
 

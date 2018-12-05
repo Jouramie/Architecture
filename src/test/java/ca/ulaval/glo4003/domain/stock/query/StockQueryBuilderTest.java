@@ -2,6 +2,8 @@ package ca.ulaval.glo4003.domain.stock.query;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,6 +47,15 @@ public class StockQueryBuilderTest {
   }
 
   @Test
+  public void givenNullIsPassedAsName_whenBuilding_thenNullIsNotAddedToQueryNameList() {
+    stockQueryBuilder = stockQueryBuilder.withName(null);
+
+    StockQuery stockQuery = stockQueryBuilder.build();
+
+    Assert.assertThat(stockQuery.getNames(), not(hasItem(null)));
+  }
+
+  @Test
   public void givenCategoryListIsNotSet_whenBuilding_thenQueryCategoryListIsNull() {
     StockQuery stockQuery = stockQueryBuilder.build();
 
@@ -69,5 +80,14 @@ public class StockQueryBuilderTest {
     StockQuery stockQuery = stockQueryBuilder.build();
 
     Assert.assertThat(stockQuery.getCategories(), containsInAnyOrder(aCategory));
+  }
+
+  @Test
+  public void givenNullIsPassedAsCategory_whenBuilding_thenNullIsNotAddedToQueryCategoryList() {
+    stockQueryBuilder = stockQueryBuilder.withCategory(null);
+
+    StockQuery stockQuery = stockQueryBuilder.build();
+
+    Assert.assertThat(stockQuery.getCategories(), not(hasItem(null)));
   }
 }
