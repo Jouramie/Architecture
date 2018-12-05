@@ -8,9 +8,9 @@ import java.util.List;
 import javax.ws.rs.container.ResourceInfo;
 
 @Component
-public class AcceptedRoleReflectionExtractor {
+public class AuthorizedRoleReflectionExtractor {
 
-  public List<UserRole> extractAcceptedRoles(ResourceInfo resourceInfo) {
+  public List<UserRole> extractAuthorizedRoles(ResourceInfo resourceInfo) {
     AuthenticationRequiredBinding binding;
 
     Class<?> clazz = resourceInfo.getResourceClass();
@@ -20,7 +20,7 @@ public class AcceptedRoleReflectionExtractor {
 
     binding = clazz.getAnnotation(AuthenticationRequiredBinding.class);
     if (binding != null) {
-      return Arrays.asList(binding.acceptedRoles());
+      return Arrays.asList(binding.authorizedRoles());
     }
 
     Method method = resourceInfo.getResourceMethod();
@@ -30,21 +30,21 @@ public class AcceptedRoleReflectionExtractor {
 
     binding = method.getAnnotation(AuthenticationRequiredBinding.class);
     if (binding != null) {
-      return Arrays.asList(binding.acceptedRoles());
+      return Arrays.asList(binding.authorizedRoles());
     }
 
     Class<?>[] interfaces = clazz.getInterfaces();
     for (Class<?> interfaceClass : interfaces) {
       binding = interfaceClass.getAnnotation(AuthenticationRequiredBinding.class);
       if (binding != null) {
-        return Arrays.asList(binding.acceptedRoles());
+        return Arrays.asList(binding.authorizedRoles());
       }
 
       try {
         Method interfaceMethod = interfaceClass.getDeclaredMethod(method.getName(), method.getParameterTypes());
         binding = interfaceMethod.getAnnotation(AuthenticationRequiredBinding.class);
         if (binding != null) {
-          return Arrays.asList(binding.acceptedRoles());
+          return Arrays.asList(binding.authorizedRoles());
         }
       } catch (NoSuchMethodException e) {
         // Interface does not contain the searched method, skipped.
