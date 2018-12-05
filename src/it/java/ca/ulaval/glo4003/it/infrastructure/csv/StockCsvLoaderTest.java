@@ -68,7 +68,7 @@ public class StockCsvLoaderTest {
     loader.load();
 
     Stock mmmStock = stockRepository.findByTitle("MMM");
-    assertThat(mmmStock.getValue().getLatestValue().getCurrency()).isEqualTo(SOME_CURRENCY);
+    assertThat(mmmStock.getCurrentValue().getCurrency()).isEqualTo(SOME_CURRENCY);
   }
 
   @Test
@@ -77,9 +77,9 @@ public class StockCsvLoaderTest {
     loader.load();
 
     Stock msftStock = stockRepository.findByTitle("MSFT");
-    assertThat(msftStock.getValue().getOpenValue().getAmount().doubleValue()).isEqualTo(107.08);
-    assertThat(msftStock.getValue().getLatestValue().getAmount().doubleValue()).isEqualTo(108.29);
-    assertThat(msftStock.getValue().getMaximumValue().getAmount().doubleValue()).isEqualTo(108.88);
+    assertThat(msftStock.getOpenValue().getAmount().doubleValue()).isEqualTo(107.08);
+    assertThat(msftStock.getCurrentValue().getAmount().doubleValue()).isEqualTo(108.29);
+    assertThat(msftStock.getTodayMaximumValue().getAmount().doubleValue()).isEqualTo(108.88);
     assertThat(msftStock.getValueHistory().getAllStoredValues()).hasSize(5255);
   }
 
@@ -88,7 +88,7 @@ public class StockCsvLoaderTest {
     loader.load();
 
     List<LocalDate> latestDates = stockRepository.findAll().stream().map((stock) ->
-        stock.getValueHistory().getLatestValue().date)
+        stock.getValueHistory().getLatestHistoricalValue().date)
         .collect(toList());
 
     assertThat(latestDates).containsOnly(latestDates.get(0));

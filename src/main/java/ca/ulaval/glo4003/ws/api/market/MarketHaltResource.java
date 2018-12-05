@@ -33,7 +33,7 @@ public class MarketHaltResource implements DocumentedMarketHaltResource {
 
   @POST
   @Path("/halt")
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public MarketStatusResponseDto haltMarket(@PathParam("market") String market, @QueryParam("message") String message)
       throws MarketDoesNotExistException {
@@ -45,7 +45,7 @@ public class MarketHaltResource implements DocumentedMarketHaltResource {
 
   @POST
   @Path("/resume")
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public MarketStatusResponseDto resumeMarket(@PathParam("market") String market) throws MarketDoesNotExistException {
     MarketId marketId = new MarketId(market);

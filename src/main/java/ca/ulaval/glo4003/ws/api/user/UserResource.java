@@ -60,7 +60,7 @@ public class UserResource implements DocumentedUserResource {
   }
 
   @GET
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public List<ApiUserDto> getUsers() {
     List<UserDto> users = userService.getUsers();
@@ -69,7 +69,7 @@ public class UserResource implements DocumentedUserResource {
 
   @GET
   @Path("/{email}")
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public ApiUserDto getUserByEmail(@PathParam("email") String email) {
     UserDto user = userService.getUser(email);
@@ -88,7 +88,7 @@ public class UserResource implements DocumentedUserResource {
 
   @PUT
   @Path("/{email}/limit/stock")
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public Response setUserStockLimit(@PathParam("email") String email,
                                     StockLimitCreationDto stockLimitCreationDto) {
@@ -102,7 +102,7 @@ public class UserResource implements DocumentedUserResource {
 
   @PUT
   @Path("/{email}/limit/money_amount")
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public Response setUserMoneyAmountLimit(@PathParam("email") String email,
                                           MoneyAmountLimitCreationDto moneyAmountLimitCreationDto) {
@@ -116,7 +116,7 @@ public class UserResource implements DocumentedUserResource {
 
   @DELETE
   @Path("/{email}/limit")
-  @AuthenticationRequiredBinding(acceptedRoles = UserRole.ADMINISTRATOR)
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public Response removeUserLimit(@PathParam("email") String email) {
     limitService.removeUserLimit(email);

@@ -11,7 +11,7 @@ public class ClosedMarketState implements MarketState {
   public MarketState update(Market market, LocalDateTime currentTime, StockValueRetriever stockValueRetriever) {
     LocalTime time = currentTime.toLocalTime();
     if (shouldOpen(market, time)) {
-      market.stocks.forEach(Stock::saveOpeningPrice);
+      market.stocks.forEach(Stock::open);
       return new OpenMarketState();
     }
     return this;

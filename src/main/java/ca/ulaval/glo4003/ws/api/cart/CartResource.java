@@ -26,7 +26,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/cart")
-@AuthenticationRequiredBinding(acceptedRoles = UserRole.INVESTOR)
+@AuthenticationRequiredBinding(authorizedRoles = UserRole.INVESTOR)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Resource
