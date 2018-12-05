@@ -18,7 +18,6 @@ import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
 import ca.ulaval.glo4003.service.stock.max.dto.StockMaxValueSummary;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
