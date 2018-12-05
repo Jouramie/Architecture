@@ -38,8 +38,10 @@ public class CartResource implements DocumentedCartResource {
   private final RequestValidator requestValidator;
 
   @Inject
-  public CartResource(CartService cartService, CheckoutService checkoutService,
-                      ApiTransactionAssembler apiTransactionAssembler, ApiCartItemAssembler apiCartItemAssembler) {
+  public CartResource(CartService cartService,
+                      CheckoutService checkoutService,
+                      ApiTransactionAssembler apiTransactionAssembler,
+                      ApiCartItemAssembler apiCartItemAssembler) {
     this.cartService = cartService;
     this.checkoutService = checkoutService;
     this.apiTransactionAssembler = apiTransactionAssembler;
