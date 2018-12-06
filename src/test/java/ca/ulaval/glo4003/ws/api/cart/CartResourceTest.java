@@ -47,14 +47,14 @@ public class CartResourceTest {
   @Mock
   private ApiCartItemAssembler apiCartItemAssembler;
 
-  private CartResourceImpl cartResource;
+  private CartResource cartResource;
 
   @Before
   public void setup() {
     given(cartService.getCartContent()).willReturn(Collections.singletonList(serviceDto));
     given(apiCartItemAssembler.toDtoList(Collections.singletonList(serviceDto)))
         .willReturn(Collections.singletonList(expectedDto));
-    cartResource = new CartResourceImpl(cartService, checkoutService,
+    cartResource = new CartResource(cartService, checkoutService,
         apiTransactionAssembler, apiCartItemAssembler);
   }
 
