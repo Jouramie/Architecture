@@ -23,7 +23,7 @@ public interface TransactionResource {
 
   @Path("/users/{email}/transactions")
   @GET
-  @AuthenticationRequiredBinding(acceptedRoles = {UserRole.ADMINISTRATOR})
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Operation(
       summary = "Get transactions for a specific user.",
       responses = {

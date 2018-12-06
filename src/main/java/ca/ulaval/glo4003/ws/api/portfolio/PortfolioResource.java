@@ -18,7 +18,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/portfolio")
-@AuthenticationRequiredBinding(acceptedRoles = UserRole.INVESTOR)
+@AuthenticationRequiredBinding(authorizedRoles = UserRole.INVESTOR)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface PortfolioResource {
