@@ -10,6 +10,8 @@ import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.Investor;
+import ca.ulaval.glo4003.service.date.DateService;
+import ca.ulaval.glo4003.service.date.Since;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
 import java.time.LocalDate;
@@ -23,18 +25,21 @@ public class PortfolioService {
   private final PortfolioReportAssembler portfolioReportAssembler;
   private final ReadableClock clock;
   private final StockRepository stockRepository;
+  private final DateService dateService;
 
   @Inject
   public PortfolioService(CurrentUserSession currentUserSession,
                           PortfolioAssembler portfolioAssembler,
                           PortfolioReportAssembler portfolioReportAssembler,
                           ReadableClock clock,
-                          StockRepository stockRepository) {
+                          StockRepository stockRepository,
+                          DateService dateService) {
     this.currentUserSession = currentUserSession;
     this.portfolioAssembler = portfolioAssembler;
     this.portfolioReportAssembler = portfolioReportAssembler;
     this.clock = clock;
     this.stockRepository = stockRepository;
+    this.dateService = dateService;
   }
 
   public PortfolioDto getPortfolio() throws InvalidPortfolioException {
@@ -48,8 +53,9 @@ public class PortfolioService {
     return dto;
   }
 
-  public PortfolioReportDto getPortfolioReport(LocalDate from) {
+  public PortfolioReportDto getPortfolioReport(Since since) {
     try {
+      LocalDate from = dateService.getDateSince(since);
       Investor investor = currentUserSession.getCurrentUser(Investor.class);
       Portfolio portfolio = investor.getPortfolio();
       TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(from, clock.getCurrentDate());

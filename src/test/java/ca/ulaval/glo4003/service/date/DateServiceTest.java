@@ -75,4 +75,34 @@ public class DateServiceTest {
 
     assertEquals(expected, tenYearsAgo);
   }
+
+  @Test
+  public void whenGettingDateSinceFiveDays_thenReturnADurationEarlierDate() {
+    LocalDate expected = START_DATE.minusDays(5);
+    Since sinceFiveDays = Since.LAST_FIVE_DAYS;
+
+    LocalDate dateSince = dateService.getDateSince(sinceFiveDays);
+
+    assertEquals(expected, dateSince);
+  }
+
+  @Test
+  public void whenGettingDateSinceThirtyDays_thenReturnADurationEarlierDate() {
+    LocalDate expected = START_DATE.minusDays(30);
+    Since sinceThirtyDays = Since.LAST_THIRTY_DAYS;
+
+    LocalDate dateSince = dateService.getDateSince(sinceThirtyDays);
+
+    assertEquals(expected, dateSince);
+  }
+
+  @Test
+  public void whenGettingDateSinceOneYear_thenReturnADurationEarlierDate() {
+    LocalDate expected = START_DATE.minusYears(1);
+    Since sinceOneYear = Since.LAST_YEAR;
+
+    LocalDate dateSince = dateService.getDateSince(sinceOneYear);
+
+    assertEquals(expected, dateSince);
+  }
 }

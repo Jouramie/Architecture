@@ -38,4 +38,8 @@ public class DateService {
   public LocalDate getTenYearsAgo() {
     return clock.getCurrentDate().minusYears(10);
   }
+
+  public LocalDate getDateSince(Since since) {
+    return clock.getCurrentDate().minusDays(since.toDays());
+  }
 }

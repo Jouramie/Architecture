@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.ws.api.transaction;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.service.date.Since;
 import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,5 +50,10 @@ public interface TransactionResource {
   List<TransactionModelDto> getUserTransactions(
       @PathParam("email") String email,
       @QueryParam("since")
-      @Parameter(description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String since);
+      @Parameter(
+          description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'",
+          content = @Content(
+              schema = @Schema(implementation = Since.class)
+          )
+      ) String since);
 }

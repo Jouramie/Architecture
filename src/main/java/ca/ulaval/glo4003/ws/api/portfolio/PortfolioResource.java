@@ -1,9 +1,9 @@
 package ca.ulaval.glo4003.ws.api.portfolio;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.service.date.Since;
 import ca.ulaval.glo4003.ws.api.portfolio.dto.ApiPortfolioReportResponseDto;
 import ca.ulaval.glo4003.ws.api.portfolio.dto.ApiPortfolioResponseDto;
-import ca.ulaval.glo4003.ws.api.portfolio.dto.SinceParameter;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -71,7 +71,7 @@ public interface PortfolioResource {
       @QueryParam("since")
       @Parameter(
           content = @Content(
-              schema = @Schema(implementation = SinceParameter.class)
+              schema = @Schema(implementation = Since.class)
           )
       )
           String since

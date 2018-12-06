@@ -30,7 +30,7 @@ public class PortfolioResourceTest {
 
   @Before
   public void setupPortfolioResource() {
-    portfolioResource = new PortfolioResourceImpl(portfolioService, apiPortfolioAssembler, apiPortfolioReportAssembler, dateService);
+    portfolioResource = new PortfolioResourceImpl(portfolioService, apiPortfolioAssembler, apiPortfolioReportAssembler);
   }
 
   @Test
