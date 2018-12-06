@@ -13,6 +13,7 @@ import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -56,7 +57,7 @@ public class CartResource implements DocumentedCartResource {
   @Path("/{title}")
   @Override
   public List<ApiCartItemResponseDto> addStockToCart(@PathParam("title") String title,
-                                                     CartStockRequestDto cartStockRequestDto){
+                                                     CartStockRequestDto cartStockRequestDto) {
     cartService.addStockToCart(title, cartStockRequestDto.quantity);
 
     return apiCartItemAssembler.toDtoList(cartService.getCartContent());
@@ -66,7 +67,7 @@ public class CartResource implements DocumentedCartResource {
   @Path("/{title}")
   @Override
   public List<ApiCartItemResponseDto> updateStockInCart(@PathParam("title") String title,
-                                                        CartStockRequestDto cartStockRequestDto){
+                                                        CartStockRequestDto cartStockRequestDto) {
     cartService.updateStockInCart(title, cartStockRequestDto.quantity);
     return apiCartItemAssembler.toDtoList(cartService.getCartContent());
   }
