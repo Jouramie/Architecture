@@ -9,6 +9,7 @@ import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
+import ca.ulaval.glo4003.domain.stock.StockValueBuilder;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionBuilder;
 import ca.ulaval.glo4003.domain.transaction.TransactionItemBuilder;
@@ -35,7 +36,7 @@ public class PortfolioTest {
   private final BigDecimal SOME_RATE_TO_USD = new BigDecimal(12);
   private final Currency SOME_CURRENCY = new Currency(SOME_CURRENCY_NAME, SOME_RATE_TO_USD);
   private final MoneyAmount SOME_VALUE = new MoneyAmount(12.2, SOME_CURRENCY);
-  private final StockValue SOME_STOCK_VALUE = new StockValue(SOME_VALUE, SOME_VALUE, SOME_VALUE);
+  private final StockValue SOME_STOCK_VALUE = new StockValueBuilder().withLatestValue(SOME_VALUE).build();
   private final LocalDate NOW = LocalDate.now();
 
   private Stock someStock;
@@ -235,7 +236,7 @@ public class PortfolioTest {
 
   private void setupStockWithHighestVariation(LocalDate from) {
     MoneyAmount someOtherValue = new MoneyAmount(SOME_VALUE.getAmount().multiply(new BigDecimal(0.5)), SOME_CURRENCY);
-    StockValue someOtherStockValue = new StockValue(someOtherValue, someOtherValue, someOtherValue);
+    StockValue someOtherStockValue = new StockValueBuilder().withAllValue(someOtherValue).build();
     someOtherStock.getValueHistory().addValue(from, someOtherStockValue);
   }
 }

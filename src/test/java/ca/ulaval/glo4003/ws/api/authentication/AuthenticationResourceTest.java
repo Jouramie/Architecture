@@ -42,12 +42,12 @@ public class AuthenticationResourceTest {
   @Mock
   private ApiAuthenticationResponseAssembler apiAuthenticationResponseAssembler;
 
-  private AuthenticationResourceImpl authenticationResource;
+  private AuthenticationResource authenticationResource;
 
   @Before
   public void setup() {
     authenticationResource
-        = new AuthenticationResourceImpl(authenticationService, apiAuthenticationResponseAssembler);
+        = new AuthenticationResource(authenticationService, apiAuthenticationResponseAssembler);
   }
 
   @Test

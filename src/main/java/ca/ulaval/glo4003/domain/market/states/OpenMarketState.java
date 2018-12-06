@@ -12,7 +12,7 @@ public class OpenMarketState implements MarketState {
     market.stocks.forEach(stockValueRetriever::updateStockValue);
     LocalTime time = currentTime.toLocalTime();
     if (shouldClose(market, time)) {
-      market.stocks.forEach(Stock::saveClosingPrice);
+      market.stocks.forEach(Stock::close);
       return new ClosedMarketState();
     }
     return this;

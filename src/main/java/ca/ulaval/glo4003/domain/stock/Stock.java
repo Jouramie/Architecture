@@ -5,6 +5,7 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class Stock {
   private final String title;
@@ -12,6 +13,7 @@ public class Stock {
   private final String category;
   private final MarketId marketId;
   private final StockHistory valueHistory;
+  private boolean closed;
 
   public Stock(String title, String name, String category, MarketId marketId,
                StockHistory valueHistory) {
@@ -20,6 +22,7 @@ public class Stock {
     this.category = category;
     this.marketId = marketId;
     this.valueHistory = valueHistory;
+    closed = true;
   }
 
   public String getTitle() {
@@ -43,42 +46,49 @@ public class Stock {
   }
 
   public Currency getCurrency() {
-    return getValue().getLatestValue().getCurrency();
+    return getCurrentValue().getCurrency();
+  }
+
+  public boolean isClosed() {
+    return closed;
   }
 
   public synchronized void updateValue(BigDecimal variation) {
-    getValue().updateValue(variation);
+    valueHistory.updateCurrentValue(variation);
   }
 
-  public synchronized StockValue getValue() {
-    return valueHistory.getLatestValue().value;
+  public synchronized MoneyAmount getCurrentValue() {
+    return valueHistory.getLatestValue().getLatestValue();
   }
 
-  public synchronized StockValue getLatestValueOnDate(LocalDate date) throws NoStockValueFitsCriteriaException {
-    StockValue latestStockValueOnDate;
-    if (date.isAfter(valueHistory.getLatestValue().date)) {
-      latestStockValueOnDate = valueHistory.getLatestValue().value;
-    } else {
-      latestStockValueOnDate = valueHistory.getValueOnDay(date);
+  public synchronized MoneyAmount getOpenValue() {
+    return valueHistory.getLatestValue().getOpenValue();
+  }
+
+  public synchronized MoneyAmount getTodayMaximumValue() {
+    return valueHistory.getLatestValue().getMaximumValue();
+  }
+
+  public synchronized Optional<StockValue> getValueOnDate(LocalDate date) {
+    if (valueHistory.isAfterLatestValue(date)) {
+      return Optional.of(valueHistory.getLatestValue());
     }
 
-    return latestStockValueOnDate;
+    return valueHistory.getValueOnDay(date);
   }
 
   public BigDecimal computeStockValueVariation(LocalDate from) throws NoStockValueFitsCriteriaException {
-    MoneyAmount startAmount = getLatestValueOnDate(from).getLatestValue();
-    MoneyAmount currentAmount = getValue().getLatestValue();
+    MoneyAmount startAmount = getValueOnDate(from).orElseThrow(NoStockValueFitsCriteriaException::new).getLatestValue();
+    MoneyAmount currentAmount = getCurrentValue();
     return currentAmount.divide(startAmount);
   }
 
-  public synchronized void saveOpeningPrice() {
-    MoneyAmount startValue = getValue().getLatestValue();
-    StockValue newStockValue = new StockValue(startValue);
-
-    valueHistory.addNextValue(newStockValue);
+  public synchronized void open() {
+    closed = false;
+    valueHistory.addNextValue();
   }
 
-  public synchronized void saveClosingPrice() {
-    getValue().close();
+  public synchronized void close() {
+    closed = true;
   }
 }

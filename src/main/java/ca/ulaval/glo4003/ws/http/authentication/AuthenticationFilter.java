@@ -26,31 +26,35 @@ import javax.ws.rs.core.Response;
 public class AuthenticationFilter implements ContainerRequestFilter {
 
   private final AuthenticationService authenticationService;
-  private final AcceptedRoleReflectionExtractor acceptedRolesReflectionExtractor;
+  private final AuthorizedRoleReflectionExtractor authorizedRolesReflectionExtractor;
 
   @Context
   private ResourceInfo resourceInfo;
 
   public AuthenticationFilter() {
     authenticationService = ServiceLocator.INSTANCE.get(AuthenticationService.class);
-    acceptedRolesReflectionExtractor = ServiceLocator.INSTANCE.get(AcceptedRoleReflectionExtractor.class);
+    authorizedRolesReflectionExtractor = ServiceLocator.INSTANCE.get(AuthorizedRoleReflectionExtractor.class);
   }
 
   @Override
   public void filter(ContainerRequestContext containerRequestContext) {
-    try {
-      AuthenticationTokenDto authenticationTokenDto = extractAuthenticationInfo(containerRequestContext.getHeaders());
-      List<UserRole> acceptedRoles = acceptedRolesReflectionExtractor.extractAcceptedRoles(resourceInfo);
+    Optional<String> token = extractAuthenticationInfo(containerRequestContext.getHeaders());
+    if (!token.isPresent()) {
+      containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
+      return;
+    }
 
-      authenticationService.validateAuthentication(authenticationTokenDto, acceptedRoles);
+    AuthenticationTokenDto authenticationTokenDto = new AuthenticationTokenDto(token.get());
+    List<UserRole> authorizedRoles = authorizedRolesReflectionExtractor.extractAuthorizedRoles(resourceInfo);
+
+    try {
+      authenticationService.validateAuthentication(authenticationTokenDto, authorizedRoles);
     } catch (InvalidTokenException | UnauthorizedUserException | IllegalArgumentException exception) {
       containerRequestContext.abortWith(Response.status(UNAUTHORIZED).build());
     }
   }
 
-  private AuthenticationTokenDto extractAuthenticationInfo(MultivaluedMap<String, String> headers) {
-    String token = Optional.ofNullable(headers.getFirst("token"))
-        .orElseThrow(InvalidTokenException::new);
-    return new AuthenticationTokenDto(token);
+  private Optional<String> extractAuthenticationInfo(MultivaluedMap<String, String> headers) {
+    return Optional.ofNullable(headers.getFirst("token"));
   }
 }

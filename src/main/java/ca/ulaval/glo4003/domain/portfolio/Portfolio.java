@@ -92,7 +92,7 @@ public class Portfolio {
   }
 
   private MoneyAmount getSubtotal(Stock stock) {
-    MoneyAmount currentValue = stock.getValue().getLatestValue();
+    MoneyAmount currentValue = stock.getCurrentValue();
     int quantity = stocks.getQuantity(stock.getTitle());
     return currentValue.multiply(quantity);
   }

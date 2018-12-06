@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "25a5e9f3-7c7a-410a-b401-3177d1ccb67d",
+		"_postman_id": "b6a70999-e92d-4a34-acfa-ff6158c5e3f9",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -837,6 +837,47 @@
 								"markets",
 								"London",
 								"resume"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "GetUserTransactions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/users/Archi.test.42%40gmail.com/transactions?since=LAST_FIVE_DAYS",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"Archi.test.42%40gmail.com",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "since",
+									"value": "LAST_FIVE_DAYS"
+								}
 							]
 						}
 					},

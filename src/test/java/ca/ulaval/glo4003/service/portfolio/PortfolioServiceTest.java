@@ -15,7 +15,6 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.Investor;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.TreeSet;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
@@ -26,8 +25,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PortfolioServiceTest {
-  private final LocalDateTime SOME_CURRENT_DATETIME = LocalDateTime.now();
-  private final LocalDate SOME_FROM_DATE = SOME_CURRENT_DATETIME.toLocalDate().minusDays(5);
+  private final LocalDate SOME_CURRENT_DATE = LocalDate.now();
+  private final LocalDate SOME_FROM_DATE = SOME_CURRENT_DATE.minusDays(5);
   private final String SOME_MOST_INCREASING_STOCK = "MSFT";
   private final String SOME_MOST_DECREASING_STOCK = "AAPL";
 
@@ -56,10 +55,10 @@ public class PortfolioServiceTest {
         somePortfolioReportAssembler, clock, someStockRepository);
 
     given(someCurrentInvestor.getPortfolio()).willReturn(portfolio);
-    given(portfolio.getHistory(SOME_FROM_DATE, SOME_CURRENT_DATETIME.toLocalDate())).willReturn(somePortfolioHistory);
+    given(portfolio.getHistory(SOME_FROM_DATE, SOME_CURRENT_DATE)).willReturn(somePortfolioHistory);
     given(portfolio.getMostIncreasingStockTitle(SOME_FROM_DATE, someStockRepository)).willReturn(SOME_MOST_INCREASING_STOCK);
     given(portfolio.getMostDecreasingStockTitle(SOME_FROM_DATE, someStockRepository)).willReturn(SOME_MOST_DECREASING_STOCK);
-    given(clock.getCurrentTime()).willReturn(SOME_CURRENT_DATETIME);
+    given(clock.getCurrentDate()).willReturn(SOME_CURRENT_DATE);
   }
 
   @Test
@@ -87,7 +86,7 @@ public class PortfolioServiceTest {
   public void whenGetPortfolioReport_thenHistoryFromDateToCurrentDateIsRetrieved() {
     portfolioService.getPortfolioReport(SOME_FROM_DATE);
 
-    verify(portfolio).getHistory(SOME_FROM_DATE, SOME_CURRENT_DATETIME.toLocalDate());
+    verify(portfolio).getHistory(SOME_FROM_DATE, SOME_CURRENT_DATE);
   }
 
   @Test

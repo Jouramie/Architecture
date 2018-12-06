@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toSet;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
@@ -93,6 +94,8 @@ public abstract class AbstractContext {
   }
 
   protected ServiceLocatorInitializer createServiceLocatorInitializer() {
+    Clock clock = createClock();
+
     return new ServiceLocatorInitializer(serviceLocator).discoverPackage(WEB_SERVICE_PACKAGE_PREFIX,
         Resource.class, ErrorMapper.class, Component.class)
 
@@ -105,7 +108,8 @@ public abstract class AbstractContext {
         .register(StockValueRetriever.class, SimulatedStockValueRetriever.class)
         .register(PaymentProcessor.class, NullPaymentProcessor.class)
         .register(CurrentUserSession.class, CurrentUserSession.class)
-        .registerInstance(Clock.class, createClock());
+        .registerInstance(ReadableClock.class, clock)
+        .registerInstance(Clock.class, clock);
   }
 
   protected Set<Object> createRegisteredComponentInstances() {
@@ -163,9 +167,7 @@ public abstract class AbstractContext {
 
   private Clock createClock() {
     LocalDate startDate = StockCsvLoader.LAST_STOCK_DATA_DATE;
-
-    return new Clock(startDate.atTime(0, 0, 0),
-        SimulationSettings.CLOCK_TICK_DURATION);
+    return new Clock(startDate.atTime(0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION);
   }
 
   public void configureDestruction() {

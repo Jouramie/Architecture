@@ -8,5 +8,5 @@ import javax.ws.rs.NameBinding;
 @NameBinding
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthenticationRequiredBinding {
-  UserRole[] acceptedRoles() default {UserRole.INVESTOR, UserRole.ADMINISTRATOR};
+  UserRole[] authorizedRoles() default {UserRole.INVESTOR, UserRole.ADMINISTRATOR};
 }

@@ -2,25 +2,17 @@ package ca.ulaval.glo4003.domain.stock;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class StockValue {
-  private MoneyAmount latestValue;
-  private MoneyAmount openValue;
-  private MoneyAmount maximumValue;
-  private boolean isClosed;
+  private final MoneyAmount latestValue;
+  private final MoneyAmount openValue;
+  private final MoneyAmount maximumValue;
 
-  public StockValue(MoneyAmount startValue) {
-    latestValue = startValue;
-    openValue = startValue;
-    maximumValue = startValue;
-    isClosed = false;
-  }
-
-  public StockValue(MoneyAmount openValue, MoneyAmount closeValue, MoneyAmount maximumValue) {
-    latestValue = closeValue;
+  public StockValue(MoneyAmount openValue, MoneyAmount latestValue, MoneyAmount maximumValue) {
     this.openValue = openValue;
+    this.latestValue = latestValue;
     this.maximumValue = maximumValue;
-    isClosed = true;
   }
 
   public MoneyAmount getLatestValue() {
@@ -35,28 +27,31 @@ public class StockValue {
     return maximumValue;
   }
 
-  public boolean isClosed() {
-    return isClosed;
-  }
-
-  public void updateValue(BigDecimal variation) {
-    setValue(getLatestValue().add(variation));
-  }
-
-  public void setValue(MoneyAmount currentValue) {
-    if (isClosed()) {
-      openValue = currentValue;
-      isClosed = false;
+  public StockValue updateCurrentValue(BigDecimal variation) {
+    MoneyAmount newLatestValue = latestValue.add(variation);
+    if (newLatestValue.isGreaterThan(maximumValue)) {
+      return new StockValue(openValue, newLatestValue, newLatestValue);
     }
 
-    if (currentValue.toUsd().compareTo(maximumValue.toUsd()) > 0) {
-      maximumValue = currentValue;
-    }
-
-    latestValue = currentValue;
+    return new StockValue(openValue, newLatestValue, maximumValue);
   }
 
-  public void close() {
-    isClosed = true;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    StockValue that = (StockValue) o;
+    return Objects.equals(latestValue, that.latestValue)
+        && Objects.equals(openValue, that.openValue)
+        && Objects.equals(maximumValue, that.maximumValue);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(latestValue, openValue, maximumValue);
   }
 }

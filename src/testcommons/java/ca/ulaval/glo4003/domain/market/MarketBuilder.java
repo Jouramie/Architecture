@@ -3,10 +3,9 @@ package ca.ulaval.glo4003.domain.market;
 import ca.ulaval.glo4003.domain.market.states.ClosedMarketState;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.money.Currency;
-import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockHistory;
-import ca.ulaval.glo4003.domain.stock.StockValue;
+import ca.ulaval.glo4003.domain.stock.StockValueBuilder;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
@@ -28,7 +27,7 @@ public class MarketBuilder {
 
   public MarketBuilder() {
     StockHistory valueHistory = new StockHistory();
-    valueHistory.addValue(LocalDate.now(), new StockValue(new MoneyAmount(1)));
+    valueHistory.addValue(LocalDate.now(), new StockValueBuilder().build());
     stocks = Collections.singletonList(new Stock(DEFAULT_STOCK_TITLE,
         DEFAULT_STOCK_NAME, DEFAULT_STOCK_CATEGORY, new MarketId(DEFAULT_MARKET_NAME), valueHistory));
   }
