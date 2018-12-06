@@ -1,20 +1,24 @@
 package ca.ulaval.glo4003.ws.api.user;
 
+import static javax.ws.rs.core.Response.Status.CREATED;
+
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.service.user.UserDto;
+import ca.ulaval.glo4003.service.user.UserService;
+import ca.ulaval.glo4003.service.user.limit.LimitDto;
+import ca.ulaval.glo4003.service.user.limit.LimitService;
+import ca.ulaval.glo4003.ws.api.user.assemblers.ApiLimitAssembler;
+import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
-import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
+import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
-import javax.validation.Valid;
+import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -29,168 +33,93 @@ import javax.ws.rs.core.Response;
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface UserResource {
+@Resource
+public class UserResource implements DocumentedUserResource {
+
+  private final UserService userService;
+
+  private final LimitService limitService;
+
+  private final RequestValidator requestValidator;
+
+  private final ApiUserAssembler apiUserAssembler;
+
+  private final ApiLimitAssembler apiLimitAssembler;
+
+  @Inject
+  public UserResource(UserService userService,
+                      LimitService limitService,
+                      RequestValidator requestValidator,
+                      ApiUserAssembler apiUserAssembler,
+                      ApiLimitAssembler apiLimitAssembler) {
+    this.userService = userService;
+    this.limitService = limitService;
+    this.requestValidator = requestValidator;
+    this.apiUserAssembler = apiUserAssembler;
+    this.apiLimitAssembler = apiLimitAssembler;
+  }
 
   @GET
   @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
-  @Operation(
-      summary = "Get all users.",
-      description = "Return all users, with their information.",
-      responses = {
-          @ApiResponse(
-              responseCode = "200",
-              content = @Content(
-                  array = @ArraySchema(
-                      schema = @Schema(
-                          implementation = ApiUserDto.class
-                      )
-                  )
-              )
-          ),
-          @ApiResponse(
-              responseCode = "401",
-              description = "Administrator is not logged in."
-          )
-      }
-  )
-  List<ApiUserDto> getUsers();
+  @Override
+  public List<ApiUserDto> getUsers() {
+    List<UserDto> users = userService.getUsers();
+    return apiUserAssembler.toDtoList(users);
+  }
 
   @GET
   @Path("/{email}")
   @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
-  @Operation(
-      summary = "Get a user for a given email.",
-      description = "Return the details of the user with the corresponding email.",
-      responses = {
-          @ApiResponse(
-              responseCode = "200",
-              content = @Content(
-                  schema = @Schema(
-                      implementation = ApiUserDto.class
-                  )
-              )
-          ),
-          @ApiResponse(
-              responseCode = "401",
-              description = "Administrator is not logged in."
-          ),
-          @ApiResponse(
-              responseCode = "404",
-              description = "User does not exist."
-          )
-      }
-  )
-  ApiUserDto getUserByEmail(@PathParam("email") String email);
+  @Override
+  public ApiUserDto getUserByEmail(@PathParam("email") String email) {
+    UserDto user = userService.getUser(email);
+    return apiUserAssembler.toDto(user);
+  }
 
   @POST
-  @Operation(
-      summary = "Create an investor",
-      description = "Register a new investor",
-      responses = {
-          @ApiResponse(
-              responseCode = "201",
-              description = "Investor successfully created.",
-              content = @Content(
-                  schema = @Schema(
-                      implementation = InvestorCreationDto.class
-                  )
-              )
-          ),
-          @ApiResponse(
-              responseCode = "400",
-              description = "Email already exists, email and password should not be empty",
-              content = @Content(
-                  schema = @Schema(
-                      implementation = InputErrorResponse.class
-                  )
-              )
-          )
-      }
-  )
-  Response createInvestor(@Valid InvestorCreationDto investorCreationDto);
+  @Override
+  public Response createInvestor(InvestorCreationDto investorCreationDto) {
+    requestValidator.validate(investorCreationDto);
+    UserDto createdUser = userService.createInvestorUser(investorCreationDto.email, investorCreationDto.password);
+
+    ApiUserDto apiCreatedUser = apiUserAssembler.toDto(createdUser);
+    return Response.status(CREATED).entity(apiCreatedUser).build();
+  }
 
   @PUT
   @Path("/{email}/limit/stock")
   @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
-  @Operation(
-      summary = "Set a stock per transaction limit to an investor.",
-      responses = {
-          @ApiResponse(
-              responseCode = "201",
-              content = @Content(
-                  schema = @Schema(
-                      implementation = ApiLimitDto.class
-                  )
-              )
-          ),
-          @ApiResponse(
-              responseCode = "400",
-              description = "Invalid limit."
-          ),
-          @ApiResponse(
-              responseCode = "401",
-              description = "Administrator is not logged in."
-          ),
-          @ApiResponse(
-              responseCode = "404",
-              description = "Investor does not exist."
-          )
-      }
-  )
-  Response setUserStockLimit(
-      @PathParam("email") String email,
-      @Valid StockLimitCreationDto stockLimitCreationDto);
+  @Override
+  public Response setUserStockLimit(@PathParam("email") String email,
+                                    StockLimitCreationDto stockLimitCreationDto) {
+    requestValidator.validate(stockLimitCreationDto);
+    LimitDto limit = limitService.createStockQuantityLimit(email,
+        stockLimitCreationDto.applicationPeriod, stockLimitCreationDto.stockQuantity);
+
+    ApiLimitDto apiLimitDto = apiLimitAssembler.toDto(limit);
+    return Response.status(CREATED).entity(apiLimitDto).build();
+  }
 
   @PUT
   @Path("/{email}/limit/money_amount")
   @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
-  @Operation(
-      summary = "Set a money amount per transaction limit to an investor.",
-      responses = {
-          @ApiResponse(
-              responseCode = "201",
-              content = @Content(
-                  schema = @Schema(
-                      implementation = ApiLimitDto.class
-                  )
-              )
-          ),
-          @ApiResponse(
-              responseCode = "400",
-              description = "Invalid limit."
-          ),
-          @ApiResponse(
-              responseCode = "401",
-              description = "Administrator is not logged in."
-          ),
-          @ApiResponse(
-              responseCode = "404",
-              description = "Investor does not exist."
-          )
-      }
-  )
-  Response setUserMoneyAmountLimit(
-      @PathParam("email") String email,
-      @Valid MoneyAmountLimitCreationDto moneyAmountLimitCreationDto);
+  @Override
+  public Response setUserMoneyAmountLimit(@PathParam("email") String email,
+                                          MoneyAmountLimitCreationDto moneyAmountLimitCreationDto) {
+    requestValidator.validate(moneyAmountLimitCreationDto);
+    LimitDto limit = limitService.createMoneyAmountLimit(email,
+        moneyAmountLimitCreationDto.applicationPeriod, moneyAmountLimitCreationDto.moneyAmount);
+
+    ApiLimitDto apiLimitDto = apiLimitAssembler.toDto(limit);
+    return Response.status(CREATED).entity(apiLimitDto).build();
+  }
 
   @DELETE
   @Path("/{email}/limit")
   @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
-  @Operation(
-      summary = "Remove a limit from an investor.",
-      responses = {
-          @ApiResponse(
-              responseCode = "204"
-          ),
-          @ApiResponse(
-              responseCode = "401",
-              description = "Administrator is not logged in."
-          ),
-          @ApiResponse(
-              responseCode = "404",
-              description = "Investor does not exist."
-          )
-      }
-  )
-  Response removeUserLimit(@PathParam("email") String email);
+  @Override
+  public Response removeUserLimit(@PathParam("email") String email) {
+    limitService.removeUserLimit(email);
+    return Response.noContent().build();
+  }
 }
