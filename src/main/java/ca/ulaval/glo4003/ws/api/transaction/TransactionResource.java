@@ -32,4 +32,13 @@ public class TransactionResource implements DocumentedTransactionResource {
                                                        @QueryParam("since") String since) {
     return null;
   }
+
+  @GET
+  @Path("/stocks/{title}/transactions")
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
+  @Override
+  public List<TransactionModelDto> getStockTransactions(@PathParam("title") String title,
+                                                        @QueryParam("since") String since) {
+    return null;
+  }
 }

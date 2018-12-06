@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7085d572-2c77-49db-b0ae-398f434f52c0",
+		"_postman_id": "2985599c-b736-4b84-92d1-e00e99070639",
 		"name": "Invest-UL",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -911,6 +911,42 @@
 								{
 									"key": "since",
 									"value": "LAST_THIRTY_DAYS"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetStockTransactions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "00000000-0000-0000-0000-000000000000"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/api/stocks/RBS.l/transactions?since=LAST_FIVE_DAYS",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"stocks",
+								"RBS.l",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "since",
+									"value": "LAST_FIVE_DAYS"
 								}
 							]
 						}
