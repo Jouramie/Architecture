@@ -1,4 +1,4 @@
-/*
+
 package ca.ulaval.glo4003.it.user;
 
 import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
@@ -21,7 +21,8 @@ import static org.hamcrest.Matchers.not;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.it.ResetServerBetweenTest;
-
+import ca.ulaval.glo4003.ws.api.user.MoneyAmountLimitCreationRequestBuilder;
+import ca.ulaval.glo4003.ws.api.user.StockLimitCreationRequestBuilder;
 import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import io.restassured.http.Header;
@@ -30,9 +31,9 @@ import java.util.List;
 import javax.ws.rs.core.MediaType;
 import org.junit.Rule;
 import org.junit.Test;
-*/
+
 public class UserIT {
-/*
+
   private static final String SOME_EMAIL = "john.smith@investul.com";
   private static final String SOME_PASSWORD = "password";
   private static final InvestorCreationDto SOME_USER_CREATION_REQUEST = new InvestorCreationDto(SOME_EMAIL, SOME_PASSWORD);
@@ -440,5 +441,5 @@ public class UserIT {
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
-*/}
+}
 
