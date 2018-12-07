@@ -29,7 +29,7 @@ public class PortfolioResource implements DocumentedPortfolioResource {
   private final PortfolioService portfolioService;
   private final ApiPortfolioAssembler apiPortfolioAssembler;
   private final ApiPortfolioReportAssembler apiPortfolioReportAssembler;
-  private SinceParameterConverter sinceParameterConverter;
+  private final SinceParameterConverter sinceParameterConverter;
 
   @Inject
   public PortfolioResource(PortfolioService portfolioService,
