@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.service.portfolio.PortfolioService;
 import ca.ulaval.glo4003.ws.api.portfolio.assemblers.ApiPortfolioAssembler;
 import ca.ulaval.glo4003.ws.api.portfolio.assemblers.ApiPortfolioReportAssembler;
+import ca.ulaval.glo4003.ws.api.util.SinceParameterConverter;
 import javax.ws.rs.BadRequestException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
@@ -18,7 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class PortfolioResourceTest {
   private final String SOME_SINCE_PARAMETER = "LAST_FIVE_DAYS";
-
+  private final SinceParameterConverter sinceParameterConverter = new SinceParameterConverter();
   @Mock
   private PortfolioService portfolioService;
   @Mock
@@ -26,6 +27,7 @@ public class PortfolioResourceTest {
   @Mock
   private ApiPortfolioReportAssembler apiPortfolioReportAssembler;
   private PortfolioResource portfolioResource;
+
 
   @Before
   public void setupPortfolioResource() {
