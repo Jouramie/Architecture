@@ -124,4 +124,8 @@ public class Portfolio {
 
     return currentCollection;
   }
+
+  public List<Transaction> getTransactions() {
+    return transactionHistory.getTransactions();
+  }
 }

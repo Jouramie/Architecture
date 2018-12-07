@@ -15,4 +15,6 @@ public interface UserRepository {
   <T extends User> T findByEmail(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException;
 
   List<User> findAll();
+
+  List<Investor> findInvestor();
 }

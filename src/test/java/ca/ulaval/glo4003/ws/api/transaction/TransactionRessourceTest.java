@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.transaction;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
@@ -31,7 +32,7 @@ public class TransactionRessourceTest {
 
   @Test
   public void whenGetTransactions_thenReturnAllTransactionsForAllUsers() {
-    //List<TransactionModelDto> resultingTransactionsDtos = transactionResource.getTransactions();
-    //assertThat(resultingTransactionsDtos.get(0)).isSameAs(expectedDtos);
+    List<TransactionModelDto> resultingTransactionsDtos = transactionResource.getTransactions("since");
+    assertThat(resultingTransactionsDtos.get(0)).isSameAs(expectedDtos);
   }
 }

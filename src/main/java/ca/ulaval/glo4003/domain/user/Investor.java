@@ -16,6 +16,7 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
+import java.util.List;
 
 public class Investor extends User {
   private final Cart cart;
@@ -80,5 +81,9 @@ public class Investor extends User {
                                            Transaction transaction) {
     Notification notification = notificationFactory.create(transaction);
     notificationSender.sendNotification(notification, new NotificationCoordinates(email));
+  }
+
+  public List<Transaction> getTransactions() {
+    return portfolio.getTransactions();
   }
 }
