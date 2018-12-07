@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.ws.api.stock.resources;
 
 import ca.ulaval.glo4003.ws.api.stock.dtos.ApiStockDto;
+import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;
@@ -73,4 +74,35 @@ public interface DocumentedStockResource {
           )
       )
           int perPage);
+
+  @Operation(
+      summary = "Get transactions for a specific stock.",
+      responses = {
+          @ApiResponse(
+              responseCode = "200",
+              content = @Content(
+                  array = @ArraySchema(
+                      schema = @Schema(
+                          implementation = TransactionModelDto.class
+                      )
+                  )
+              )
+          ),
+          @ApiResponse(
+              responseCode = "404",
+              description = "Stock title does not exist."
+          ),
+          @ApiResponse(
+              responseCode = "401",
+              description = "Administrator is not logged in."
+          ),
+          @ApiResponse(
+              responseCode = "400",
+              description = "Malformed since parameter. Should be 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'."
+          )
+      }
+  )
+  List<TransactionModelDto> getStockTransactions(
+      @Parameter(description = "Stock title") String title,
+      @Parameter(description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String since);
 }
