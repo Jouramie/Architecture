@@ -20,6 +20,7 @@ import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.infrastructure.config.SimulationSettings;
+import ca.ulaval.glo4003.infrastructure.config.StocksDataSettings;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocatorInitializer;
 import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
@@ -156,16 +157,16 @@ public abstract class AbstractContext {
     MarketCsvLoader marketLoader = new MarketCsvLoader(
         serviceLocator.get(MarketRepository.class),
         serviceLocator.get(StockRepository.class));
-    marketLoader.load();
+    marketLoader.load(StocksDataSettings.STOCKS_DATA_PATH);
 
     StockCsvLoader stockLoader = new StockCsvLoader(
         serviceLocator.get(StockRepository.class),
         serviceLocator.get(MarketRepository.class));
-    stockLoader.load();
+    stockLoader.load(StocksDataSettings.STOCKS_DATA_PATH, StocksDataSettings.LAST_STOCK_DATA_DATE);
   }
 
   private Clock createClock() {
-    LocalDate startDate = StockCsvLoader.LAST_STOCK_DATA_DATE;
+    LocalDate startDate = StocksDataSettings.LAST_STOCK_DATA_DATE;
     return new Clock(startDate.atTime(0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION);
   }
 

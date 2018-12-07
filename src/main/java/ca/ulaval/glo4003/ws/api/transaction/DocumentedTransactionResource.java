@@ -10,9 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 
 public interface DocumentedTransactionResource {
-
   @Operation(
-      summary = "Get transactions for a specific user.",
+      summary = "Get transactions for all users.",
       responses = {
           @ApiResponse(
               responseCode = "200",
@@ -34,7 +33,6 @@ public interface DocumentedTransactionResource {
           )
       }
   )
-  List<TransactionModelDto> getUserTransactions(
-      String email,
+  List<TransactionModelDto> getTransactions(
       @Parameter(description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String since);
 }
