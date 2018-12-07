@@ -11,7 +11,7 @@ import static org.assertj.core.util.IterableUtil.iterable;
 import static org.hamcrest.core.Is.is;
 
 import ca.ulaval.glo4003.it.ResetServerBetweenTest;
-import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
+import ca.ulaval.glo4003.ws.api.transaction.dto.ApiTransactionDto;
 import io.restassured.http.Header;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class TransactionIT {
         .get("/api/transactions")
     .then()
         .statusCode(OK.getStatusCode())
-        .body("$", is(iterable(TransactionModelDto.class)));
+        .body("$", is(iterable(ApiTransactionDto.class)));
     //@formatter:on
   }
 
@@ -80,7 +80,7 @@ public class TransactionIT {
         .get("/api/users/{email}/transactions", DEFAULT_INVESTOR_EMAIL)
     .then()
         .statusCode(OK.getStatusCode())
-        .body("$", is(iterable(TransactionModelDto.class)));
+        .body("$", is(iterable(ApiTransactionDto.class)));
     //@formatter:on
   }
 
@@ -138,7 +138,7 @@ public class TransactionIT {
         .get("/api/stocks/{title}/transactions", STOCK_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
-        .body("$", is(iterable(TransactionModelDto.class)));
+        .body("$", is(iterable(ApiTransactionDto.class)));
     //@formatter:on
   }
 

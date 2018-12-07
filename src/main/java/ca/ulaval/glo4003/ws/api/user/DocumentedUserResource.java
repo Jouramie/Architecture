@@ -1,7 +1,5 @@
 package ca.ulaval.glo4003.ws.api.user;
 
-import ca.ulaval.glo4003.service.date.SinceParameter;
-import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
@@ -9,7 +7,6 @@ import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -163,38 +160,4 @@ public interface DocumentedUserResource {
       }
   )
   Response removeUserLimit(String email);
-
-  @Operation(
-      summary = "Get transactions for a specific user.",
-      responses = {
-          @ApiResponse(
-              responseCode = "200",
-              content = @Content(
-                  array = @ArraySchema(
-                      schema = @Schema(
-                          implementation = TransactionModelDto.class
-                      )
-                  )
-              )
-          ),
-          @ApiResponse(
-              responseCode = "404",
-              description = "User does not exist."
-          ),
-          @ApiResponse(
-              responseCode = "401",
-              description = "Administrator is not logged in."
-          ),
-          @ApiResponse(
-              responseCode = "400",
-              description = "Malformed since parameter. Should be 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'."
-          )
-      }
-  )
-  List<TransactionModelDto> getUserTransactions(
-      @Parameter(description = "User's email") String email,
-      @Parameter(
-          schema = @Schema(implementation = SinceParameter.class)
-      )
-          String since);
 }
