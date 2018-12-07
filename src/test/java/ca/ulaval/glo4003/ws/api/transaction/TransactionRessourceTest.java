@@ -22,6 +22,7 @@ public class TransactionRessourceTest {
   TransactionModelDto serviceDto;
 
   private TransactionResource transactionResource;
+
   //@Before
  /* public void setUp(){
     given(transactionService.getTransactions).willReturn(Collections.singletonList(serviceDto));

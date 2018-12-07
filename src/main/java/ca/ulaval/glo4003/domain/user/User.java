@@ -26,6 +26,7 @@ public abstract class User {
   public final boolean haveRoleIn(List<UserRole> roles) {
     return roles.contains(getRole());
   }
+
   /* public List<Transaction> getAllTransaction(LocalDate from, LocalDate to){
   }*/
 }
