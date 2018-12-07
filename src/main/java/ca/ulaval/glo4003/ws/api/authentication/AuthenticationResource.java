@@ -8,7 +8,6 @@ import ca.ulaval.glo4003.service.authentication.AuthenticationService;
 import ca.ulaval.glo4003.ws.api.authentication.assemblers.ApiAuthenticationResponseAssembler;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationResponseDto;
-import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -24,15 +23,12 @@ import javax.ws.rs.core.Response;
 public class AuthenticationResource implements DocumentedAuthenticationResource {
 
   private final AuthenticationService authenticationService;
-  private final RequestValidator requestValidator;
   private final ApiAuthenticationResponseAssembler apiAuthenticationResponseAssembler;
 
   @Inject
   public AuthenticationResource(AuthenticationService authenticationService,
-                                RequestValidator requestValidator,
                                 ApiAuthenticationResponseAssembler apiAuthenticationResponseAssembler) {
     this.authenticationService = authenticationService;
-    this.requestValidator = requestValidator;
     this.apiAuthenticationResponseAssembler = apiAuthenticationResponseAssembler;
   }
 
@@ -42,7 +38,6 @@ public class AuthenticationResource implements DocumentedAuthenticationResource 
   @Consumes(MediaType.APPLICATION_JSON)
   @Override
   public Response authenticate(ApiAuthenticationRequestDto authenticationRequest) {
-    requestValidator.validate(authenticationRequest);
     AuthenticationResponseDto authenticationResponse = authenticationService.authenticate(authenticationRequest);
     ApiAuthenticationResponseDto apiAuthenticationResponseDto = apiAuthenticationResponseAssembler.toDto(authenticationResponse);
     return Response.status(ACCEPTED).entity(apiAuthenticationResponseDto).build();

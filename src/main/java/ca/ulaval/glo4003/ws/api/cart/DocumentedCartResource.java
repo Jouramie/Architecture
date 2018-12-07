@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
+import javax.validation.Valid;
 
 public interface DocumentedCartResource {
 
@@ -60,7 +61,7 @@ public interface DocumentedCartResource {
           )
       }
   )
-  List<ApiCartItemResponseDto> addStockToCart(String title, CartStockRequestDto cartStockRequestDto);
+  List<ApiCartItemResponseDto> addStockToCart(String title, @Valid CartStockRequestDto cartStockRequestDto);
 
   @Operation(
       summary = "Update a stock in the cart.",
@@ -88,7 +89,7 @@ public interface DocumentedCartResource {
           )
       }
   )
-  List<ApiCartItemResponseDto> updateStockInCart(String title, CartStockRequestDto cartStockRequestDto);
+  List<ApiCartItemResponseDto> updateStockInCart(String title, @Valid CartStockRequestDto cartStockRequestDto);
 
   @Operation(
       summary = "Delete a stock in the cart.",

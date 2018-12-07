@@ -99,8 +99,7 @@ public class AuthenticationIT {
     .when()
         .post(AUTHENTICATION_ROUTE)
     .then()
-        .statusCode(BAD_REQUEST.getStatusCode())
-        .body("inputErrors", any(List.class));
+        .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on
   }
 
