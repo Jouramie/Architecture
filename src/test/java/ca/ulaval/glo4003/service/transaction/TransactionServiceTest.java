@@ -4,6 +4,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.transaction.TransactionNoName;
+import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
 import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.date.SinceParameter;
@@ -44,7 +45,7 @@ public class TransactionServiceTest {
   }
 
   @Test
-  public void whenGetTransactionsByEmail_thenTransactionByEmailBetweenFromAndCurrentAreGotten() {
+  public void whenGetTransactionsByEmail_thenTransactionByEmailBetweenFromAndCurrentAreGotten() throws UserNotFoundException {
     transactionService.getTransactionsByEmail(SOME_EMAIL, SOME_SINCE_PARAMETER);
 
     verify(transactionNoName).getTransactionsByEmail(SOME_EMAIL, SOME_FROM_DATE, SOME_CURRENT_DATE);

@@ -26,12 +26,12 @@ public class TransactionNoName {
     return transactions;
   }
 
-  public List<Transaction> getTransactionByEmail(String email, LocalDate from, LocalDate to) throws UserNotFoundException {
+  public List<Transaction> getTransactionsByEmail(String email, LocalDate from, LocalDate to) throws UserNotFoundException {
     Investor user = (Investor) userRepository.findByEmail(email);
     return user.getTransactions();
   }
 
-  public List<Transaction> getTransactionByTitle(String title, LocalDate from, LocalDate to) {
+  public List<Transaction> getTransactionsByTitle(String title, LocalDate from, LocalDate to) {
     List<Transaction> transactions = new ArrayList<>();
 
     for (Transaction transaction : getAllTransactions()) {
