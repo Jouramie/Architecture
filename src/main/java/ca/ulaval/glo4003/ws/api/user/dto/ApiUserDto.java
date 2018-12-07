@@ -1,6 +1,8 @@
 package ca.ulaval.glo4003.ws.api.user.dto;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.service.user.limit.MoneyAmountLimitDto;
+import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
@@ -17,6 +19,7 @@ public class ApiUserDto {
 
   @Schema(
       description = "Trade limit of the user",
+      anyOf = {MoneyAmountLimitDto.class, StockQuantityLimitDto.class},
       nullable = true
   )
   public final ApiLimitDto limit;
