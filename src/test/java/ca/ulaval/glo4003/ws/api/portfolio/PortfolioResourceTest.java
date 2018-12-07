@@ -4,8 +4,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.portfolio.PortfolioService;
+import ca.ulaval.glo4003.ws.api.portfolio.assemblers.ApiPortfolioAssembler;
+import ca.ulaval.glo4003.ws.api.portfolio.assemblers.ApiPortfolioReportAssembler;
 import javax.ws.rs.BadRequestException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
@@ -24,13 +25,11 @@ public class PortfolioResourceTest {
   private ApiPortfolioAssembler apiPortfolioAssembler;
   @Mock
   private ApiPortfolioReportAssembler apiPortfolioReportAssembler;
-  @Mock
-  private DateService dateService;
   private PortfolioResource portfolioResource;
 
   @Before
   public void setupPortfolioResource() {
-    portfolioResource = new PortfolioResourceImpl(portfolioService, apiPortfolioAssembler, apiPortfolioReportAssembler);
+    portfolioResource = new PortfolioResource(portfolioService, apiPortfolioAssembler, apiPortfolioReportAssembler);
   }
 
   @Test

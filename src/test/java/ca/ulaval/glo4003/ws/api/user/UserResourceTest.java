@@ -65,11 +65,11 @@ public class UserResourceTest {
   @Mock
   private LimitService limitService;
 
-  private UserResourceImpl userResource;
+  private UserResource userResource;
 
   @Before
   public void setup() {
-    userResource = new UserResourceImpl(userService, limitService, new RequestValidator(),
+    userResource = new UserResource(userService, limitService, new RequestValidator(),
         new ApiUserAssembler(new ApiLimitAssembler()), new ApiLimitAssembler());
   }
 
