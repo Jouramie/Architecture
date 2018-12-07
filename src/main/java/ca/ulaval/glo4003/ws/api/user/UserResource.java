@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.service.user.UserDto;
 import ca.ulaval.glo4003.service.user.UserService;
 import ca.ulaval.glo4003.service.user.limit.LimitDto;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
+import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiLimitAssembler;
 import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiLimitDto;
@@ -27,6 +28,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -121,5 +123,14 @@ public class UserResource implements DocumentedUserResource {
   public Response removeUserLimit(@PathParam("email") String email) {
     limitService.removeUserLimit(email);
     return Response.noContent().build();
+  }
+
+  @GET
+  @Path("{email}/transactions")
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
+  @Override
+  public List<TransactionModelDto> getUserTransactions(@PathParam("email") String email,
+                                                       @QueryParam("since") String since) {
+    return null;
   }
 }

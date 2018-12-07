@@ -35,31 +35,4 @@ public interface DocumentedTransactionResource {
   )
   List<TransactionModelDto> getTransactions(
       @Parameter(description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String since);
-
-  @Operation(
-      summary = "Get transactions for a specific user.",
-      responses = {
-          @ApiResponse(
-              responseCode = "200",
-              content = @Content(
-                  array = @ArraySchema(
-                      schema = @Schema(
-                          implementation = TransactionModelDto.class
-                      )
-                  )
-              )
-          ),
-          @ApiResponse(
-              responseCode = "401",
-              description = "Administrator is not logged in."
-          ),
-          @ApiResponse(
-              responseCode = "400",
-              description = "Malformed since parameter. Should be 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'."
-          )
-      }
-  )
-  List<TransactionModelDto> getUserTransactions(
-      String email,
-      @Parameter(description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String since);
 }

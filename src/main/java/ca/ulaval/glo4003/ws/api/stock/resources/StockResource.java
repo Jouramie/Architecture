@@ -1,9 +1,12 @@
 package ca.ulaval.glo4003.ws.api.stock.resources;
 
+import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.stock.StockDto;
 import ca.ulaval.glo4003.service.stock.StockService;
 import ca.ulaval.glo4003.ws.api.stock.assemblers.ApiStockAssembler;
 import ca.ulaval.glo4003.ws.api.stock.dtos.ApiStockDto;
+import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
+import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import ca.ulaval.glo4003.ws.http.pagination.PaginationBinding;
 import java.util.List;
 import javax.annotation.Resource;
@@ -46,5 +49,14 @@ public class StockResource implements DocumentedStockResource {
                                      @QueryParam("page") int page, @QueryParam("per_page") int perPage) {
     List<StockDto> stockDtos = stockService.queryStocks(name, category);
     return apiStockAssembler.toDtoList(stockDtos);
+  }
+
+  @GET
+  @Path("/{title}/transactions")
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
+  @Override
+  public List<TransactionModelDto> getStockTransactions(@PathParam("title") String title,
+                                                        @QueryParam("since") String since) {
+    return null;
   }
 }
