@@ -28,8 +28,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class PortfolioServiceTest {
   private final LocalDate SOME_CURRENT_DATE = LocalDate.now();
-  private final Since SOME_SINCE = Since.LAST_FIVE_DAYS;
-  private final LocalDate SOME_FROM_DATE = SOME_CURRENT_DATE.minusDays(SOME_SINCE.toDays());
+  private final Since SOME_SINCE_PARAMETER = Since.LAST_FIVE_DAYS;
+  private final LocalDate SOME_FROM_DATE = SOME_CURRENT_DATE.minusDays(SOME_SINCE_PARAMETER.toDays());
   private final String SOME_MOST_INCREASING_STOCK = "MSFT";
   private final String SOME_MOST_DECREASING_STOCK = "AAPL";
 
@@ -64,7 +64,7 @@ public class PortfolioServiceTest {
     given(portfolio.getMostIncreasingStockTitle(SOME_FROM_DATE, someStockRepository)).willReturn(SOME_MOST_INCREASING_STOCK);
     given(portfolio.getMostDecreasingStockTitle(SOME_FROM_DATE, someStockRepository)).willReturn(SOME_MOST_DECREASING_STOCK);
     given(clock.getCurrentDate()).willReturn(SOME_CURRENT_DATE);
-    given(dateService.getDateSince(SOME_SINCE)).willReturn(SOME_FROM_DATE);
+    given(dateService.getDateSince(SOME_SINCE_PARAMETER)).willReturn(SOME_FROM_DATE);
   }
 
   @Test
@@ -83,14 +83,14 @@ public class PortfolioServiceTest {
 
   @Test
   public void whenGetPortfolioReport_thenPortfolioOfCurrentUserIsRetrieved() {
-    portfolioService.getPortfolioReport(SOME_SINCE);
+    portfolioService.getPortfolioReport(SOME_SINCE_PARAMETER);
 
     verify(someCurrentInvestor).getPortfolio();
   }
 
   @Test
   public void whenGetPortfolioReport_thenHistoryFromDateToCurrentDateIsRetrieved() {
-    portfolioService.getPortfolioReport(SOME_SINCE);
+    portfolioService.getPortfolioReport(SOME_SINCE_PARAMETER);
 
     verify(portfolio).getHistory(SOME_FROM_DATE, SOME_CURRENT_DATE);
   }
@@ -98,7 +98,7 @@ public class PortfolioServiceTest {
   @Test
   public void whenGetPortfolioReport_thenMostIncreasingStockTitleIsRetrieved()
       throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
-    portfolioService.getPortfolioReport(SOME_SINCE);
+    portfolioService.getPortfolioReport(SOME_SINCE_PARAMETER);
 
     verify(portfolio).getMostIncreasingStockTitle(SOME_FROM_DATE, someStockRepository);
   }
@@ -106,7 +106,7 @@ public class PortfolioServiceTest {
   @Test
   public void whenGetPortfolioReport_thenMostDecreasingStockTitleIsRetrieved()
       throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
-    portfolioService.getPortfolioReport(SOME_SINCE);
+    portfolioService.getPortfolioReport(SOME_SINCE_PARAMETER);
 
     verify(portfolio).getMostDecreasingStockTitle(SOME_FROM_DATE, someStockRepository);
   }
@@ -114,7 +114,7 @@ public class PortfolioServiceTest {
   @Test
   public void whenGetPortfolioReport_thenReportIsConvertedUsingAssembler()
       throws StockNotFoundException, NoStockValueFitsCriteriaException {
-    portfolioService.getPortfolioReport(SOME_SINCE);
+    portfolioService.getPortfolioReport(SOME_SINCE_PARAMETER);
 
     verify(somePortfolioReportAssembler).toDto(somePortfolioHistory, SOME_MOST_INCREASING_STOCK, SOME_MOST_DECREASING_STOCK);
   }
@@ -124,7 +124,7 @@ public class PortfolioServiceTest {
       throws StockNotFoundException, NoStockValueFitsCriteriaException {
     given(somePortfolioReportAssembler.toDto(any(), any(), any())).willThrow(StockNotFoundException.class);
 
-    ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_SINCE);
+    ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_SINCE_PARAMETER);
 
     assertThatThrownBy(getPortfolioReport).isInstanceOf(InvalidPortfolioException.class);
   }
@@ -134,7 +134,7 @@ public class PortfolioServiceTest {
       throws StockNotFoundException, NoStockValueFitsCriteriaException {
     given(somePortfolioReportAssembler.toDto(any(), any(), any())).willThrow(NoStockValueFitsCriteriaException.class);
 
-    ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_SINCE);
+    ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_SINCE_PARAMETER);
 
     assertThatThrownBy(getPortfolioReport).isInstanceOf(InvalidPortfolioException.class);
   }
@@ -144,7 +144,7 @@ public class PortfolioServiceTest {
       throws NoStockValueFitsCriteriaException, InvalidStockInPortfolioException {
     given(portfolio.getMostIncreasingStockTitle(any(), any())).willThrow(InvalidStockInPortfolioException.class);
 
-    ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_SINCE);
+    ThrowingCallable getPortfolioReport = () -> portfolioService.getPortfolioReport(SOME_SINCE_PARAMETER);
 
     assertThatThrownBy(getPortfolioReport).isInstanceOf(InvalidPortfolioException.class);
   }
