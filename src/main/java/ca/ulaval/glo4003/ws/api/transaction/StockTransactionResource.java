@@ -36,6 +36,6 @@ public class StockTransactionResource implements DocumentedStockTransactionResou
   public List<ApiTransactionDto> getStockTransactions(@PathParam("title") String title,
                                                       @QueryParam("since") String since) {
     SinceParameter sinceParameter = sinceParameterConverter.convertSinceParameter(since);
-    return transactionAssembler.toDtoList(transactionService.getAllTransactions(sinceParameter));
+    return transactionAssembler.toDtoList(transactionService.getTransactionsByTitle(title, sinceParameter));
   }
 }

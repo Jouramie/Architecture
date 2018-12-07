@@ -15,12 +15,12 @@ public class TransactionNoName {
     return null;
   }
 
-  public List<Transaction> getTransactionByEmail(LocalDate from, LocalDate to, String email) {
+  public List<Transaction> getTransactionsByEmail(String email, LocalDate from, LocalDate to) {
     //List<Transaction> transactions = userRepository.
     return null;
   }
 
-  public List<Transaction> getTransactionByTitle(LocalDate from, LocalDate to, String title) {
+  public List<Transaction> getTransactionsByTitle(String title, LocalDate from, LocalDate to) {
     return null;
   }
 

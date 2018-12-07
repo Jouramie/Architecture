@@ -36,6 +36,6 @@ public class UserTransactionResource implements DocumentedUserTransactionResourc
   public List<ApiTransactionDto> getUserTransactions(@PathParam("email") String email,
                                                      @QueryParam("since") String since) {
     SinceParameter sinceParameter = sinceParameterConverter.convertSinceParameter(since);
-    return transactionAssembler.toDtoList(transactionService.getAllTransactions(sinceParameter));
+    return transactionAssembler.toDtoList(transactionService.getTransactionsByEmail(email, sinceParameter));
   }
 }

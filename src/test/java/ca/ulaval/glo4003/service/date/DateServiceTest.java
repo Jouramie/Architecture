@@ -23,6 +23,13 @@ public class DateServiceTest {
   }
 
   @Test
+  public void whenGetCurrentDate_thenCurrentDateIsGottenFromTheClock() {
+    LocalDate expected = dateService.getCurrentDate();
+
+    assertEquals(expected, SOME_START_DATE);
+  }
+
+  @Test
   public void whenGettingDateFiveDaysAgo_thenReturnAFiveDayEarlierDate() {
     LocalDate expected = SOME_START_DATE.minusDays(5);
 
