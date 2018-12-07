@@ -10,7 +10,6 @@ public enum Since {
   private final Duration since;
 
   Since(Duration since) {
-
     this.since = since;
   }
 
