@@ -4,8 +4,4 @@ public class InvalidTokenException extends Exception {
 
   public InvalidTokenException() {
   }
-
-  public InvalidTokenException(Exception cause) {
-    super(cause);
-  }
 }
