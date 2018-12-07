@@ -36,10 +36,7 @@ public interface DocumentedTransactionResource {
   )
   List<TransactionModelDto> getTransactions(
       @Parameter(
-          description = "History since 'LAST_FIVE_DAYS', 'LAST_THIRTY_DAYS' or 'LAST_YEAR'",
-          content = @Content(
-              schema = @Schema(implementation = Since.class)
-          )
+          schema = @Schema(implementation = Since.class)
       )
           String since);
 }
