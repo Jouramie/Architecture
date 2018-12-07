@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.transaction;
 
+import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,9 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 
 public interface DocumentedTransactionResource {
-
   @Operation(
-      summary = "Get transactions for a specific user.",
+      summary = "Get transactions for all users.",
       responses = {
           @ApiResponse(
               responseCode = "200",
@@ -34,7 +34,9 @@ public interface DocumentedTransactionResource {
           )
       }
   )
-  List<TransactionModelDto> getUserTransactions(
-      String email,
-      @Parameter(description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String since);
+  List<TransactionModelDto> getTransactions(
+      @Parameter(
+          schema = @Schema(implementation = SinceParameter.class)
+      )
+          String since);
 }

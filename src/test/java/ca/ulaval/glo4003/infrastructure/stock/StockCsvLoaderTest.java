@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.it.infrastructure.csv;
+package ca.ulaval.glo4003.infrastructure.stock;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,8 +13,9 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
-import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.Before;
@@ -25,6 +26,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StockCsvLoaderTest {
+  private static final Path TEST_BASE_PATH = Paths.get("src", "test", "data");
+  private static final LocalDate TEST_STOCK_DATA_DATE = LocalDate.of(2018, 11, 16);
+
   private final Currency SOME_CURRENCY = Currency.USD;
   @Mock
   private Market someMarket;
@@ -45,15 +49,15 @@ public class StockCsvLoaderTest {
   @Test
   public void whenLoad_thenStockRepositoryIsFilledWithStocks()
       throws IOException, MarketNotFoundException {
-    loader.load();
+    loadStocks();
 
-    assertThat(stockRepository.findAll()).isNotEmpty();
+    assertThat(stockRepository.findAll()).hasSize(2);
   }
 
   @Test
   public void whenLoad_thenLoadTheValuesFromTheCsvFile()
       throws StockNotFoundException, IOException, MarketNotFoundException {
-    loader.load();
+    loadStocks();
 
     Stock msftStock = stockRepository.findByTitle("MSFT");
     assertThat(msftStock.getTitle()).isEqualTo("MSFT");
@@ -65,32 +69,36 @@ public class StockCsvLoaderTest {
   @Test
   public void whenLoad_thenStockStartValueHasCurrencyOfTheMarket()
       throws StockNotFoundException, IOException, MarketNotFoundException {
-    loader.load();
+    loadStocks();
 
-    Stock mmmStock = stockRepository.findByTitle("MMM");
-    assertThat(mmmStock.getCurrentValue().getCurrency()).isEqualTo(SOME_CURRENCY);
+    Stock msftStock = stockRepository.findByTitle("MSFT");
+    assertThat(msftStock.getCurrentValue().getCurrency()).isEqualTo(SOME_CURRENCY);
   }
 
   @Test
   public void whenLoad_thenStockHasLastOpenAndCloseValues()
       throws StockNotFoundException, IOException, MarketNotFoundException {
-    loader.load();
+    loadStocks();
 
     Stock msftStock = stockRepository.findByTitle("MSFT");
     assertThat(msftStock.getOpenValue().getAmount().doubleValue()).isEqualTo(107.08);
     assertThat(msftStock.getCurrentValue().getAmount().doubleValue()).isEqualTo(108.29);
     assertThat(msftStock.getTodayMaximumValue().getAmount().doubleValue()).isEqualTo(108.88);
-    assertThat(msftStock.getValueHistory().getAllStoredValues()).hasSize(5255);
+    assertThat(msftStock.getValueHistory().getAllStoredValues()).hasSize(2);
   }
 
   @Test
   public void whenLoad_thenAllStocksHaveTheSameLastDate() throws IOException, MarketNotFoundException {
-    loader.load();
+    loadStocks();
 
     List<LocalDate> latestDates = stockRepository.findAll().stream().map((stock) ->
         stock.getValueHistory().getLatestHistoricalValue().date)
         .collect(toList());
 
     assertThat(latestDates).containsOnly(latestDates.get(0));
+  }
+
+  private void loadStocks() throws IOException, MarketNotFoundException {
+    loader.load(TEST_BASE_PATH, TEST_STOCK_DATA_DATE);
   }
 }
