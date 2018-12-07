@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.it.infrastructure.csv;
+package ca.ulaval.glo4003.infrastructure.market;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,8 +6,9 @@ import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
 import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.infrastructure.market.MarketCsvLoader;
 import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MarketCsvLoaderTest {
+  private static final Path TEST_BASE_PATH = Paths.get("src", "test", "data");
+
   private MarketRepository marketRepository;
   @Mock
   private StockRepository stockRepository;
@@ -31,11 +34,11 @@ public class MarketCsvLoaderTest {
 
   @Test
   public void whenLoad_thenLoadTheValuesFromTheCsvFile() throws Exception {
-    loader.load();
+    loader.load(TEST_BASE_PATH);
 
-    assertThat(marketRepository.findAll()).hasSize(7);
-    Market randomMarket = marketRepository.findById(new MarketId("New York"));
-    assertThat(randomMarket.getId()).isEqualTo(new MarketId("New York"));
-    assertThat(randomMarket.getCurrency().getName()).isEqualTo("USD");
+    assertThat(marketRepository.findAll()).hasSize(2);
+    Market nasdaqMarket = marketRepository.findById(new MarketId("NASDAQ"));
+    assertThat(nasdaqMarket.getId()).isEqualTo(new MarketId("NASDAQ"));
+    assertThat(nasdaqMarket.getCurrency().getName()).isEqualTo("USD");
   }
 }
