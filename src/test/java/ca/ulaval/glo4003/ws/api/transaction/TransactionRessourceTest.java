@@ -1,11 +1,10 @@
 package ca.ulaval.glo4003.ws.api.transaction;
 
-import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 
+import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.transaction.TransactionService;
 import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
-import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,20 +16,22 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class TransactionRessourceTest {
 
   @Mock
-  private TransactionService transactionService;
+  List<TransactionDto> serviceDtos;
   @Mock
-  TransactionModelDto serviceDto;
-
+  TransactionModelDto expectedDtos;
+  @Mock
+  private TransactionService transactionService;
   private TransactionResource transactionResource;
 
-  //@Before
- /* public void setUp(){
-    given(transactionService.getTransactions).willReturn(Collections.singletonList(serviceDto));
+  @Before
+  public void setUp() {
+    given(transactionService.getAllTransactions()).willReturn(serviceDtos);
     transactionResource = new TransactionResource();
   }
+
   @Test
-  public void whenGetTransactions_thenReturnAllTransactionsForAllUsers(){
-    List<TransactionModelDto> resultingTransactionsDtos = transactionResource.getTransactions();
-    assertThat(resultingTransactionsDtos.get(0)).isEqualsTo(expextedDto);
-  }*/
+  public void whenGetTransactions_thenReturnAllTransactionsForAllUsers() {
+    //List<TransactionModelDto> resultingTransactionsDtos = transactionResource.getTransactions();
+    //assertThat(resultingTransactionsDtos.get(0)).isSameAs(expectedDtos);
+  }
 }

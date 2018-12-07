@@ -7,6 +7,7 @@ import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.cart.dto.TransactionItemDto;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 @Component
@@ -22,5 +23,9 @@ public class TransactionAssembler {
   public TransactionDto toDto(Transaction transaction) {
     List<TransactionItemDto> itemDtos = transaction.items.stream().map(itemAssembler::toDto).collect(toList());
     return new TransactionDto(transaction.type.toString(), itemDtos, transaction.timestamp);
+  }
+
+  public List<TransactionDto> toDtosList(List<Transaction> transactions) {
+    return transactions.stream().map(this::toDto).collect(Collectors.toList());
   }
 }

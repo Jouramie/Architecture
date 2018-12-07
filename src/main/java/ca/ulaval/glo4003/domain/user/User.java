@@ -27,7 +27,8 @@ public abstract class User {
     return roles.contains(getRole());
   }
 
-  /* public List<Transaction> getAllTransaction(LocalDate from, LocalDate to){
-  }*/
+  public List<Transaction> getAllTransaction(LocalDate from, LocalDate to) {
+    return null;
+  }
 }
 
