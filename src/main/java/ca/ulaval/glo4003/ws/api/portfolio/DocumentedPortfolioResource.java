@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.ws.api.portfolio;
 
+import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.ws.api.portfolio.dto.ApiPortfolioReportResponseDto;
 import ca.ulaval.glo4003.ws.api.portfolio.dto.ApiPortfolioResponseDto;
-import ca.ulaval.glo4003.ws.api.portfolio.dto.SinceParameter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -55,9 +55,7 @@ public interface DocumentedPortfolioResource {
   )
   ApiPortfolioReportResponseDto getPortfolioReport(
       @Parameter(
-          content = @Content(
-              schema = @Schema(implementation = SinceParameter.class)
-          )
+          schema = @Schema(implementation = SinceParameter.class)
       )
           String since
   );

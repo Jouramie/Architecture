@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.ws.api.transaction;
 
+import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,5 +35,8 @@ public interface DocumentedTransactionResource {
       }
   )
   List<TransactionModelDto> getTransactions(
-      @Parameter(description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String since);
+      @Parameter(
+          schema = @Schema(implementation = SinceParameter.class)
+      )
+          String since);
 }
