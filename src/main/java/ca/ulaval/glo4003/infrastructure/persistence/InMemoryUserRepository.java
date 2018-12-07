@@ -1,7 +1,11 @@
 package ca.ulaval.glo4003.infrastructure.persistence;
 
+import static java.util.stream.Collectors.toList;
+
+import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
+import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
@@ -48,5 +52,12 @@ public class InMemoryUserRepository implements UserRepository {
   @Override
   public List<User> findAll() {
     return new ArrayList<>(content.values());
+  }
+
+  @Override
+  public List<Investor> findInvestor() {
+    return content.values().stream()
+        .filter(user -> user.getRole().equals(UserRole.INVESTOR))
+        .map(user -> (Investor) user).collect(toList());
   }
 }

@@ -1,7 +1,5 @@
 package ca.ulaval.glo4003.domain.user;
 
-import ca.ulaval.glo4003.domain.transaction.Transaction;
-import java.time.LocalDate;
 import java.util.List;
 
 public abstract class User {
@@ -25,10 +23,6 @@ public abstract class User {
 
   public final boolean haveRoleIn(List<UserRole> roles) {
     return roles.contains(getRole());
-  }
-
-  public List<Transaction> getAllTransaction(LocalDate from, LocalDate to) {
-    return null;
   }
 }
 
