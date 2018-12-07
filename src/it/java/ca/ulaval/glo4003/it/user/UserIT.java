@@ -32,7 +32,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 public class UserIT {
-
   private static final String SOME_EMAIL = "john.smith@investul.com";
   private static final String SOME_PASSWORD = "password";
   private static final InvestorCreationDto SOME_USER_CREATION_REQUEST = new InvestorCreationDto(SOME_EMAIL, SOME_PASSWORD);

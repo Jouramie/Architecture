@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.it.transaction;
 
-import static ca.ulaval.glo4003.context.AbstractContext.DEFAULT_ADMIN_EMAIL;
+import static ca.ulaval.glo4003.context.AbstractContext.DEFAULT_INVESTOR_EMAIL;
 import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
 import static io.restassured.RestAssured.given;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -16,9 +16,55 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 public class TransactionIT {
+  private static final String SINCE_PARAM_NAME = "since";
+  private static final String SINCE_LAST_FIVE_DAYS = "LAST_FIVE_DAYS";
+  private static final String SINCE_LAST_THIRTY_DAYS = "LAST_THIRTY_DAYS";
 
   @ClassRule
   public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+
+  @Test
+  public void whenGettingTransactions_thenReturnListOfTransactions() {
+    String token = givenAdministratorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .queryParam(SINCE_PARAM_NAME, SINCE_LAST_FIVE_DAYS)
+    .when()
+        .get("/api/transactions")
+    .then()
+        .statusCode(OK.getStatusCode())
+        .body("$", is(iterable(TransactionModelDto.class)));
+    //@formatter:on
+  }
+
+  @Test
+  public void givenUnauthenticatedUser_whenGettingTransactions_thenReturn401Unauthorized() {
+    //@formatter:off
+    given()
+        .queryParam(SINCE_PARAM_NAME, SINCE_LAST_THIRTY_DAYS)
+    .when()
+        .get("/api/transactions")
+    .then()
+        .statusCode(UNAUTHORIZED.getStatusCode());
+    //@formatter:on
+  }
+
+  @Test
+  public void givenMalformedScopeParameter_whenGettingTransactions_thenReturn400BadRequest() {
+    String token = givenAdministratorAlreadyAuthenticated();
+    Header tokenHeader = new Header("token", token);
+    //@formatter:off
+    given()
+        .header(tokenHeader)
+        .queryParam(SINCE_PARAM_NAME, "malformed")
+    .when()
+        .get("/api/transactions")
+    .then()
+        .statusCode(BAD_REQUEST.getStatusCode());
+    //@formatter:on
+  }
 
   @Test
   public void whenGettingUserTransactions_thenReturnListOfTransactions() {
@@ -27,9 +73,9 @@ public class TransactionIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .queryParam("since", "LAST_FIVE_DAYS")
+        .queryParam(SINCE_PARAM_NAME, SINCE_LAST_FIVE_DAYS)
     .when()
-        .get("/api/users/{email}/transactions", DEFAULT_ADMIN_EMAIL)
+        .get("/api/users/{email}/transactions", DEFAULT_INVESTOR_EMAIL)
     .then()
         .statusCode(OK.getStatusCode())
         .body("$", is(iterable(TransactionModelDto.class)));
@@ -40,9 +86,9 @@ public class TransactionIT {
   public void givenUnauthenticatedUser_whenGettingUserTransactions_thenReturn401Unauthorized() {
     //@formatter:off
     given()
-        .queryParam("since", "LAST_THIRTY_DAYS")
+        .queryParam(SINCE_PARAM_NAME, SINCE_LAST_THIRTY_DAYS)
     .when()
-        .get("/api/users/{email}/transactions", DEFAULT_ADMIN_EMAIL)
+        .get("/api/users/{email}/transactions", DEFAULT_INVESTOR_EMAIL)
     .then()
         .statusCode(UNAUTHORIZED.getStatusCode());
     //@formatter:on
@@ -55,9 +101,9 @@ public class TransactionIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .queryParam("since", "malformed")
+        .queryParam(SINCE_PARAM_NAME, "malformed")
     .when()
-        .get("/api/users/{email}/transactions", DEFAULT_ADMIN_EMAIL)
+        .get("/api/users/{email}/transactions", DEFAULT_INVESTOR_EMAIL)
     .then()
         .statusCode(BAD_REQUEST.getStatusCode());
     //@formatter:on

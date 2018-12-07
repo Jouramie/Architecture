@@ -10,6 +10,31 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 
 public interface DocumentedTransactionResource {
+  @Operation(
+      summary = "Get transactions for all users.",
+      responses = {
+          @ApiResponse(
+              responseCode = "200",
+              content = @Content(
+                  array = @ArraySchema(
+                      schema = @Schema(
+                          implementation = TransactionModelDto.class
+                      )
+                  )
+              )
+          ),
+          @ApiResponse(
+              responseCode = "401",
+              description = "Administrator is not logged in."
+          ),
+          @ApiResponse(
+              responseCode = "400",
+              description = "Malformed since parameter. Should be 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'."
+          )
+      }
+  )
+  List<TransactionModelDto> getTransactions(
+      @Parameter(description = "History since. 'LAST_FIVE_DAYS' or 'LAST_THIRTY_DAYS'") String since);
 
   @Operation(
       summary = "Get transactions for a specific user.",
