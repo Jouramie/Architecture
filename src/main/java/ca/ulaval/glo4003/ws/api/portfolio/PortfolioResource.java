@@ -17,6 +17,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/portfolio")
@@ -48,7 +49,7 @@ public class PortfolioResource implements DocumentedPortfolioResource {
   @GET
   @Path("/report")
   @Override
-  public ApiPortfolioReportResponseDto getPortfolioReport(String since) {
+  public ApiPortfolioReportResponseDto getPortfolioReport(@QueryParam("since") String since) {
     Since sinceValue = SinceParameterConverter.convertSinceParameter(since);
     PortfolioReportDto reportDto = portfolioService.getPortfolioReport(sinceValue);
     return apiPortfolioReportAssembler.toDto(reportDto);

@@ -55,6 +55,7 @@ public interface DocumentedPortfolioResource {
   )
   ApiPortfolioReportResponseDto getPortfolioReport(
       @Parameter(
+          description = "Report since 'LAST_FIVE_DAYS', 'LAST_THIRTY_DAYS' or 'LAST_YEAR'",
           content = @Content(
               schema = @Schema(implementation = Since.class)
           )
