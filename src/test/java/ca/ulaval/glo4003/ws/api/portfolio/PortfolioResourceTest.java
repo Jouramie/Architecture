@@ -29,7 +29,7 @@ public class PortfolioResourceTest {
 
   @Before
   public void setupPortfolioResource() {
-    portfolioResource = new PortfolioResource(portfolioService, apiPortfolioAssembler, apiPortfolioReportAssembler);
+    portfolioResource = new PortfolioResource(portfolioService, apiPortfolioAssembler, apiPortfolioReportAssembler, sinceParameterConverter);
   }
 
   @Test

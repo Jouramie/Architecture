@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.user;
 
-import ca.ulaval.glo4003.service.date.Since;
+import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
@@ -194,7 +194,7 @@ public interface DocumentedUserResource {
   List<TransactionModelDto> getUserTransactions(
       @Parameter(description = "User's email") String email,
       @Parameter(
-          schema = @Schema(implementation = Since.class)
+          schema = @Schema(implementation = SinceParameter.class)
       )
           String since);
 }

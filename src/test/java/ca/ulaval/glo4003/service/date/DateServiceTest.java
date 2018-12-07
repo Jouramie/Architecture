@@ -11,20 +11,20 @@ import org.junit.Test;
 
 public class DateServiceTest {
 
-  private static final LocalDate START_DATE = LocalDate.of(1984, Month.JANUARY, 24);
+  private static final LocalDate SOME_START_DATE = LocalDate.of(1984, Month.JANUARY, 24);
 
   private Clock clock;
   private DateService dateService;
 
   @Before
   public void initialize() {
-    clock = new Clock(START_DATE.atTime(0, 0, 0), Duration.ZERO);
+    clock = new Clock(SOME_START_DATE.atTime(0, 0, 0), Duration.ZERO);
     dateService = new DateService(clock);
   }
 
   @Test
   public void whenGettingDateFiveDaysAgo_thenReturnAFiveDayEarlierDate() {
-    LocalDate expected = START_DATE.minusDays(5);
+    LocalDate expected = SOME_START_DATE.minusDays(5);
 
     LocalDate fiveDaysAgo = dateService.getFiveDaysAgo();
 
@@ -33,7 +33,7 @@ public class DateServiceTest {
 
   @Test
   public void whenGettingDateStartOfCurrentMonth_thenReturnFirstDayOfTheMonth() {
-    LocalDate expected = START_DATE.withDayOfMonth(1);
+    LocalDate expected = SOME_START_DATE.withDayOfMonth(1);
 
     LocalDate startOfCurrentMonth = dateService.getStartOfCurrentMonth();
 
@@ -42,7 +42,7 @@ public class DateServiceTest {
 
   @Test
   public void whenGettingDateThirtyDaysAgo_thenReturnAThirtyDayEarlierDate() {
-    LocalDate expected = START_DATE.minusDays(30);
+    LocalDate expected = SOME_START_DATE.minusDays(30);
 
     LocalDate thirtyDaysAgo = dateService.getThirtyDaysAgo();
 
@@ -51,7 +51,7 @@ public class DateServiceTest {
 
   @Test
   public void whenGettingDateOneYearAgo_thenReturnAYearEarlierDate() {
-    LocalDate expected = START_DATE.minusYears(1);
+    LocalDate expected = SOME_START_DATE.minusYears(1);
 
     LocalDate oneYearAgo = dateService.getOneYearAgo();
 
@@ -60,7 +60,7 @@ public class DateServiceTest {
 
   @Test
   public void whenGettingDateFiveYearsAgo_thenReturnFiveYearsEarlierDate() {
-    LocalDate expected = START_DATE.minusYears(5);
+    LocalDate expected = SOME_START_DATE.minusYears(5);
 
     LocalDate fiveYearsAgo = dateService.getFiveYearsAgo();
 
@@ -69,7 +69,7 @@ public class DateServiceTest {
 
   @Test
   public void whenGettingDateTenYearsAgo_thenReturnTenYearsEarlierDate() {
-    LocalDate expected = START_DATE.minusYears(10);
+    LocalDate expected = SOME_START_DATE.minusYears(10);
 
     LocalDate tenYearsAgo = dateService.getTenYearsAgo();
 
@@ -78,8 +78,8 @@ public class DateServiceTest {
 
   @Test
   public void whenGettingDateSinceFiveDays_thenReturnADurationEarlierDate() {
-    LocalDate expected = START_DATE.minusDays(5);
-    Since sinceFiveDays = Since.LAST_FIVE_DAYS;
+    LocalDate expected = SOME_START_DATE.minusDays(5);
+    SinceParameter sinceFiveDays = SinceParameter.LAST_FIVE_DAYS;
 
     LocalDate dateSince = dateService.getDateSince(sinceFiveDays);
 
@@ -88,8 +88,8 @@ public class DateServiceTest {
 
   @Test
   public void whenGettingDateSinceThirtyDays_thenReturnADurationEarlierDate() {
-    LocalDate expected = START_DATE.minusDays(30);
-    Since sinceThirtyDays = Since.LAST_THIRTY_DAYS;
+    LocalDate expected = SOME_START_DATE.minusDays(30);
+    SinceParameter sinceThirtyDays = SinceParameter.LAST_THIRTY_DAYS;
 
     LocalDate dateSince = dateService.getDateSince(sinceThirtyDays);
 
@@ -98,8 +98,8 @@ public class DateServiceTest {
 
   @Test
   public void whenGettingDateSinceOneYear_thenReturnADurationEarlierDate() {
-    LocalDate expected = START_DATE.minusYears(1);
-    Since sinceOneYear = Since.LAST_YEAR;
+    LocalDate expected = SOME_START_DATE.minusYears(1);
+    SinceParameter sinceOneYear = SinceParameter.LAST_YEAR;
 
     LocalDate dateSince = dateService.getDateSince(sinceOneYear);
 

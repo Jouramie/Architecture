@@ -39,7 +39,7 @@ public class DateService {
     return clock.getCurrentDate().minusYears(10);
   }
 
-  public LocalDate getDateSince(Since since) {
+  public LocalDate getDateSince(SinceParameter since) {
     return clock.getCurrentDate().minusDays(since.toDays());
   }
 }

@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.stock.resources;
 
-import ca.ulaval.glo4003.service.date.Since;
+import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.ws.api.stock.dtos.ApiStockDto;
 import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -106,7 +106,7 @@ public interface DocumentedStockResource {
   List<TransactionModelDto> getStockTransactions(
       @Parameter(description = "Stock title") String title,
       @Parameter(
-          schema = @Schema(implementation = Since.class)
+          schema = @Schema(implementation = SinceParameter.class)
       )
           String since);
 }

@@ -11,7 +11,7 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.service.date.DateService;
-import ca.ulaval.glo4003.service.date.Since;
+import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
 import java.time.LocalDate;
@@ -53,7 +53,7 @@ public class PortfolioService {
     return dto;
   }
 
-  public PortfolioReportDto getPortfolioReport(Since since) {
+  public PortfolioReportDto getPortfolioReport(SinceParameter since) {
     try {
       LocalDate from = dateService.getDateSince(since);
       Investor investor = currentUserSession.getCurrentUser(Investor.class);

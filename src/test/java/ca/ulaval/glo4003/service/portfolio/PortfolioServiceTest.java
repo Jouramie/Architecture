@@ -15,7 +15,7 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.service.date.DateService;
-import ca.ulaval.glo4003.service.date.Since;
+import ca.ulaval.glo4003.service.date.SinceParameter;
 import java.time.LocalDate;
 import java.util.TreeSet;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -28,7 +28,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class PortfolioServiceTest {
   private final LocalDate SOME_CURRENT_DATE = LocalDate.now();
-  private final Since SOME_SINCE_PARAMETER = Since.LAST_FIVE_DAYS;
+  private final SinceParameter SOME_SINCE_PARAMETER = SinceParameter.LAST_FIVE_DAYS;
   private final LocalDate SOME_FROM_DATE = SOME_CURRENT_DATE.minusDays(SOME_SINCE_PARAMETER.toDays());
   private final String SOME_MOST_INCREASING_STOCK = "MSFT";
   private final String SOME_MOST_DECREASING_STOCK = "AAPL";

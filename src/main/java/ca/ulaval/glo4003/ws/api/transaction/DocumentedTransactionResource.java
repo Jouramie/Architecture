@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.ws.api.transaction;
 
-import ca.ulaval.glo4003.service.date.Since;
+import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.ws.api.transaction.dto.TransactionModelDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,7 +36,7 @@ public interface DocumentedTransactionResource {
   )
   List<TransactionModelDto> getTransactions(
       @Parameter(
-          schema = @Schema(implementation = Since.class)
+          schema = @Schema(implementation = SinceParameter.class)
       )
           String since);
 }

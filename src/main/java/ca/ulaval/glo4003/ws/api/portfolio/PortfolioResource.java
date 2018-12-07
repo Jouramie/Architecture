@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.ws.api.portfolio;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
-import ca.ulaval.glo4003.service.date.Since;
+import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.service.portfolio.PortfolioService;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
@@ -29,14 +29,17 @@ public class PortfolioResource implements DocumentedPortfolioResource {
   private final PortfolioService portfolioService;
   private final ApiPortfolioAssembler apiPortfolioAssembler;
   private final ApiPortfolioReportAssembler apiPortfolioReportAssembler;
+  private SinceParameterConverter sinceParameterConverter;
 
   @Inject
   public PortfolioResource(PortfolioService portfolioService,
                            ApiPortfolioAssembler apiPortfolioAssembler,
-                           ApiPortfolioReportAssembler apiPortfolioReportAssembler) {
+                           ApiPortfolioReportAssembler apiPortfolioReportAssembler,
+                           SinceParameterConverter sinceParameterConverter) {
     this.portfolioService = portfolioService;
     this.apiPortfolioAssembler = apiPortfolioAssembler;
     this.apiPortfolioReportAssembler = apiPortfolioReportAssembler;
+    this.sinceParameterConverter = sinceParameterConverter;
   }
 
   @GET
@@ -50,7 +53,7 @@ public class PortfolioResource implements DocumentedPortfolioResource {
   @Path("/report")
   @Override
   public ApiPortfolioReportResponseDto getPortfolioReport(@QueryParam("since") String since) {
-    Since sinceValue = SinceParameterConverter.convertSinceParameter(since);
+    SinceParameter sinceValue = sinceParameterConverter.convertSinceParameter(since);
     PortfolioReportDto reportDto = portfolioService.getPortfolioReport(sinceValue);
     return apiPortfolioReportAssembler.toDto(reportDto);
   }
