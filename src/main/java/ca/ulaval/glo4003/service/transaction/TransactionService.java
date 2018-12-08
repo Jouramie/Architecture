@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.service.transaction;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionNoName;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
@@ -10,13 +11,16 @@ import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import java.time.LocalDate;
 import java.util.List;
+import javax.inject.Inject;
 
+@Component
 public class TransactionService {
 
   private final TransactionAssembler transactionAssembler;
   private final TransactionNoName transactionNoName;
   private final DateService dateService;
 
+  @Inject
   public TransactionService(TransactionAssembler transactionAssembler,
                             TransactionNoName transactionNoName,
                             DateService dateService) {

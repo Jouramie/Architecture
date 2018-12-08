@@ -9,20 +9,22 @@ import ca.ulaval.glo4003.ws.api.util.SinceParameterConverter;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-@Resource
 @Path("/transactions")
 @Produces(MediaType.APPLICATION_JSON)
+@Resource
 public class TransactionResource implements DocumentedTransactionResource {
   private final TransactionService transactionService;
   private final ApiTransactionAssembler transactionAssembler;
   private final SinceParameterConverter sinceParameterConverter;
 
+  @Inject
   public TransactionResource(TransactionService transactionService, ApiTransactionAssembler transactionAssembler, SinceParameterConverter sinceParameterConverter) {
     this.transactionService = transactionService;
     this.transactionAssembler = transactionAssembler;
