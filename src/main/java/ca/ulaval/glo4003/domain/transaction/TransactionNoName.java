@@ -1,15 +1,19 @@
 package ca.ulaval.glo4003.domain.transaction;
 
+import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
+@Component
 public class TransactionNoName {
   private final UserRepository userRepository;
 
+  @Inject
   public TransactionNoName(UserRepository userRepository) {
     this.userRepository = userRepository;
   }

@@ -17,7 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-@Path("/stocks/{email}/transactions")
+@Path("/users/{email}/transactions")
 @Produces(MediaType.APPLICATION_JSON)
 @Resource
 public class UserTransactionResource implements DocumentedUserTransactionResource {
