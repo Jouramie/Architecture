@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.domain.transaction;
 
+import static java.util.stream.Collectors.toList;
+
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
@@ -42,25 +44,17 @@ public class TransactionNoName {
   }
 
   public List<Transaction> getTransactionsByTitle(String title, LocalDate from, LocalDate to) {
-    List<Transaction> transactions = new ArrayList<>();
-
-    for (Transaction transaction : getAllTransactions()) {
-
-    }
-    return transactions;
+    return getTransactionsByTiTle(title).stream().filter(transaction -> transaction.verifyDatesIsBetween(from, to)).collect(toList());
   }
 
-  //TODO: a retravailler
   private List<Transaction> getAllTransactions() {
     List<Investor> investors = userRepository.findInvestor();
-    List<Transaction> transactions = new ArrayList<>();
+    return investors.stream().flatMap(investor -> investor.getTransactions().stream()).collect(toList());
+  }
 
-    for (Investor investor : investors) {
+  private List<Transaction> getTransactionsByTiTle(String title) {
 
-      for (Transaction transaction : investor.getTransactions()) {
-        transactions.add(transaction);
-      }
-    }
-    return transactions;
+    return getAllTransactions().stream().filter(transaction -> transaction.items.stream().anyMatch(transactionItem -> transactionItem.title.equals(title)))
+        .collect(toList());
   }
 }

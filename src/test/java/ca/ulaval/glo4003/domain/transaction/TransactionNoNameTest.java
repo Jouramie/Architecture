@@ -88,6 +88,7 @@ public class TransactionNoNameTest {
   @Test
   public void whenGetTransactionsByTitlle_thenReturnTransactionsForASpecificStock() {
     //given(userRepository.)
-    //List<Transaction> resultingTransactions = transactionNoName.getTransactionsByTitle(SOME_TITLE, SOME_FROM_DATE, SOME_CURRENT_DATE);
+    List<Transaction> resultingTransactions = transactionNoName.getTransactionsByTitle(SOME_TITLE, SOME_FROM_DATE, SOME_CURRENT_DATE);
+    //TODO: a finir
   }
 }
