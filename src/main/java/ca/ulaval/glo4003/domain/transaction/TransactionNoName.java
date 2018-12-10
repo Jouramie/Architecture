@@ -53,8 +53,9 @@ public class TransactionNoName {
   }
 
   private List<Transaction> getTransactionsByTiTle(String title) {
-
-    return getAllTransactions().stream().filter(transaction -> transaction.items.stream().anyMatch(transactionItem -> transactionItem.title.equals(title)))
+    return getAllTransactions()
+        .stream()
+        .filter(transaction -> transaction.items.stream().anyMatch(transactionItem -> transactionItem.title.equals(title)))
         .collect(toList());
   }
 }
