@@ -64,7 +64,7 @@ import org.glassfish.jersey.servlet.ServletContainer;
 public class ProductionContext extends AbstractContext {
   public static final String DEFAULT_ADMIN_EMAIL = "Archi.test.43@gmail.com";
   public static final String DEFAULT_ADMIN_PASSWORD = "asdfasdf";
-  private final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
+  private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
   private ClockDriver clockDriver;
 
   @Override
@@ -99,7 +99,7 @@ public class ProductionContext extends AbstractContext {
     return context;
   }
 
-   private Set<Object> createRegisteredComponentInstances() {
+  private Set<Object> createRegisteredComponentInstances() {
     List<Class<?>> registeredClasses = Stream.of(Resource.class, ErrorMapper.class, Component.class)
         .map(annotation -> getClassesForAnnotation(WEB_SERVICE_PACKAGE_PREFIX, annotation))
         .flatMap(Collection::stream).collect(toList());
@@ -211,7 +211,6 @@ public class ProductionContext extends AbstractContext {
       System.out.println("Admin user couldn't be added");
       exception.printStackTrace();
     }
-
   }
 
   private void loadCsvData() throws IOException, MarketNotFoundException {

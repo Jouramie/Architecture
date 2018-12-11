@@ -7,7 +7,7 @@ import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepositor
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocatorInitializer;
 
-public class DemoContext extends ProductionContext{
+public class DemoContext extends ProductionContext {
   public static final String DEFAULT_INVESTOR_EMAIL = "Archi.test.42@gmail.com";
   public static final String DEFAULT_INVESTOR_PASSWORD = "asdfasdf";
   public static final String DEFAULT_INVESTOR_TOKEN = "11111111-1111-1111-1111-111111111111";
