@@ -50,8 +50,10 @@ public class TransactionRetrieverTest {
     investors.add(other_investor);
 
     given(userRepository.findInvestors()).willReturn(investors);
-    given(some_investor.getTransactions()).willReturn(SOME_TRANSACTION_INVESTOR);
-    given(other_investor.getTransactions()).willReturn(OTHER_TRANSACTION_INVESTOR);
+    given(some_investor.getTransactions(SOME_FROM_DATE.atStartOfDay(), SOME_TO_DATE.atStartOfDay()))
+        .willReturn(SOME_TRANSACTION_INVESTOR);
+    given(other_investor.getTransactions(SOME_FROM_DATE.atStartOfDay(), SOME_TO_DATE.atStartOfDay()))
+        .willReturn(OTHER_TRANSACTION_INVESTOR);
 
     transactionRetriever = new TransactionRetriever(userRepository);
   }

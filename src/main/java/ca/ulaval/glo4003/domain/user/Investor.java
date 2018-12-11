@@ -16,6 +16,7 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Investor extends User {
@@ -83,7 +84,7 @@ public class Investor extends User {
     notificationSender.sendNotification(notification, new NotificationCoordinates(email));
   }
 
-  public List<Transaction> getTransactions() {
-    return portfolio.getTransactions();
+  public List<Transaction> getTransactions(LocalDateTime from, LocalDateTime to) {
+    return portfolio.getTransactions(from, to);
   }
 }

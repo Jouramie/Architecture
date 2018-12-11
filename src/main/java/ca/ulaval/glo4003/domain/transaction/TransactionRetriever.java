@@ -8,6 +8,7 @@ import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -22,28 +23,24 @@ public class TransactionRetriever {
   }
 
   public List<Transaction> getTransactions(LocalDate from, LocalDate to) {
-    return getAllTransactions()
-        .filter(transaction -> transaction.isDateInRange(from.atStartOfDay(), to.atStartOfDay()))
-        .collect(toList());
+    return getAllTransactions(from, to).collect(toList());
   }
 
   public List<Transaction> getTransactionsByEmail(String email, LocalDate from, LocalDate to)
       throws UserNotFoundException, WrongRoleException {
     Investor investor = userRepository.findByEmail(email, Investor.class);
-    return investor.getTransactions().stream()
-        .filter(transaction -> transaction.isDateInRange(from.atStartOfDay(), to.atStartOfDay()))
-        .collect(toList());
+    return new ArrayList<>(investor.getTransactions(from.atStartOfDay(), to.atStartOfDay()));
   }
 
   public List<Transaction> getTransactionsByTitle(String title, LocalDate from, LocalDate to) {
-    return getAllTransactions()
-        .filter(transaction -> transaction.isDateInRange(from.atStartOfDay(), to.atStartOfDay()))
+    return getAllTransactions(from, to)
         .filter(transaction -> transaction.containsTitle(title))
         .collect(toList());
   }
 
-  private Stream<Transaction> getAllTransactions() {
+  private Stream<Transaction> getAllTransactions(LocalDate from, LocalDate to) {
     List<Investor> investors = userRepository.findInvestors();
-    return investors.stream().flatMap(investor -> investor.getTransactions().stream());
+    return investors.stream()
+        .flatMap(investor -> investor.getTransactions(from.atStartOfDay(), to.atStartOfDay()).stream());
   }
 }

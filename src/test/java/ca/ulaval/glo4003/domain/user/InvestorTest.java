@@ -19,6 +19,7 @@ import ca.ulaval.glo4003.domain.market.states.Market;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
+import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
@@ -29,6 +30,8 @@ import ca.ulaval.glo4003.domain.transaction.TransactionItemBuilder;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +47,7 @@ public class InvestorTest {
   private static final String SOME_OTHER_TITLE = "APPL";
   private static final int SOME_OTHER_QTY = 3;
   private static final String SOME_HALTED_MESSAGE = "STOP";
+  private static final LocalDateTime SOME_DATE = LocalDate.of(2018, 11, 3).atStartOfDay();
 
   @Mock
   private StockRepository stockRepository;
@@ -178,5 +182,17 @@ public class InvestorTest {
         stockRepository, notificationFactory, notificationSender);
 
     assertThatThrownBy(checkout).isInstanceOf(HaltedMarketException.class);
+  }
+
+  @Test
+  public void whenGetTransactions_thenTransactionsAreGottenFromPortfolio() {
+    LocalDateTime from = SOME_DATE;
+    LocalDateTime to = SOME_DATE;
+    Portfolio portfolio = mock(Portfolio.class);
+    Investor investor = new UserBuilder().withPortfolio(portfolio).buildInvestor();
+
+    investor.getTransactions(from, to);
+
+    verify(portfolio).getTransactions(from, to);
   }
 }

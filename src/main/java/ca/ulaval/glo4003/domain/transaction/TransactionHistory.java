@@ -1,8 +1,10 @@
 package ca.ulaval.glo4003.domain.transaction;
 
+import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -14,12 +16,14 @@ public class TransactionHistory {
   }
 
   public TreeSet<Transaction> getTransactions(LocalDate date) {
-    return new TreeSet<>(transactions.stream()
+    return transactions.stream()
         .filter((transaction) -> transaction.timestamp.toLocalDate().isEqual(date))
-        .collect(toList()));
+        .collect(toCollection(TreeSet::new));
   }
 
-  public List<Transaction> getTransactions() {
-    return transactions.stream().collect(toList());
+  public List<Transaction> getTransactions(LocalDateTime from, LocalDateTime to) {
+    return transactions.stream()
+        .filter(transaction -> transaction.isDateInRange(from, to))
+        .collect(toList());
   }
 }

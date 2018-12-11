@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.TreeSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,20 +47,20 @@ public class TransactionHistoryTest {
 
   @Test
   public void whenGettingTransactions_thenReturnTransactionsWithinRange() {
-    LocalDateTime fromDate = SOME_DATE.atStartOfDay();
-    LocalDateTime toDate = SOME_DATE.plusDays(1).atStartOfDay();
+    LocalDateTime from = SOME_DATE.atStartOfDay();
+    LocalDateTime to = SOME_DATE.plusDays(1).atStartOfDay();
 
     Transaction beforeTransaction = new TransactionBuilder().withTime(SOME_DATE.minusDays(10).atStartOfDay()).build();
-    Transaction firstTransaction = new TransactionBuilder().withTime(fromDate).build();
-    Transaction secondTransaction = new TransactionBuilder().withTime(toDate).build();
+    Transaction firstTransaction = new TransactionBuilder().withTime(from).build();
+    Transaction secondTransaction = new TransactionBuilder().withTime(to).build();
     Transaction afterTransaction = new TransactionBuilder().withTime(SOME_DATE.plusDays(10).atStartOfDay()).build();
     transactionHistory.save(beforeTransaction);
     transactionHistory.save(firstTransaction);
     transactionHistory.save(secondTransaction);
     transactionHistory.save(afterTransaction);
 
-    TreeSet<Transaction> transactions = transactionHistory.getTransactions(SOME_DATE);
+    List<Transaction> transactions = transactionHistory.getTransactions(from, to);
 
-    assertThat(transactions).containsExactly(firstTransaction);
+    assertThat(transactions).containsExactly(firstTransaction, secondTransaction);
   }
 }
