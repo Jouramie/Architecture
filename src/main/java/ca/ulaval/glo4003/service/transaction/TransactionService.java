@@ -11,7 +11,6 @@ import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;
-import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
 import java.time.LocalDate;
 import java.util.List;
 import javax.inject.Inject;
@@ -42,14 +41,20 @@ public class TransactionService {
     return transactionAssembler.toDtoList(transactions);
   }
 
-  public List<TransactionDto> getTransactionsByEmail(String email, SinceParameter since) {
+  public List<TransactionDto> getTransactionsByEmail(String email, SinceParameter since)
+      throws UserNotFoundException {
     LocalDate from = dateService.getDateSince(since);
     LocalDate to = dateService.getCurrentDate();
+    List<Transaction> transactions = tryGetTransactionsByEmail(email, from, to);
+    return transactionAssembler.toDtoList(transactions);
+  }
+
+  private List<Transaction> tryGetTransactionsByEmail(String email, LocalDate from, LocalDate to)
+      throws UserNotFoundException {
     try {
-      List<Transaction> transactions = transactionRetriever.getTransactionsByEmail(email, from, to);
-      return transactionAssembler.toDtoList(transactions);
+      return transactionRetriever.getTransactionsByEmail(email, from, to);
     } catch (UserNotFoundException | WrongRoleException e) {
-      throw new UserDoesNotExistException(e);
+      throw new UserNotFoundException(e);
     }
   }
 

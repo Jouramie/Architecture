@@ -10,6 +10,7 @@ import org.junit.Test;
 
 public class TransactionHistoryTest {
 
+  public static final LocalDate SOME_DATE = LocalDate.of(2018, 11, 3);
   private TransactionHistory transactionHistory;
 
   @Before
@@ -28,18 +29,36 @@ public class TransactionHistoryTest {
   }
 
   @Test
-  public void whenGettingTransactions_thenReturnTransactionsWithinRange() {
-    LocalDate date = LocalDate.of(2018, 11, 3);
-    Transaction beforeTransaction = new TransactionBuilder().withTime(date.minusDays(1).atStartOfDay()).build();
-    Transaction firstTransaction = new TransactionBuilder().withTime(date.atStartOfDay()).build();
-    Transaction secondTransaction = new TransactionBuilder().withTime(date.atTime(12, 0, 0)).build();
-    Transaction afterTransaction = new TransactionBuilder().withTime(date.plusDays(1).atStartOfDay()).build();
+  public void whenGettingTransactions_thenReturnTransactionsAtSpecificDate() {
+    Transaction beforeTransaction = new TransactionBuilder().withTime(SOME_DATE.minusDays(1).atStartOfDay()).build();
+    Transaction firstTransaction = new TransactionBuilder().withTime(SOME_DATE.atStartOfDay()).build();
+    Transaction secondTransaction = new TransactionBuilder().withTime(SOME_DATE.atTime(12, 0, 0)).build();
+    Transaction afterTransaction = new TransactionBuilder().withTime(SOME_DATE.plusDays(1).atStartOfDay()).build();
     transactionHistory.save(beforeTransaction);
     transactionHistory.save(firstTransaction);
     transactionHistory.save(secondTransaction);
     transactionHistory.save(afterTransaction);
 
-    TreeSet<Transaction> transactions = transactionHistory.getTransactions(date);
+    TreeSet<Transaction> transactions = transactionHistory.getTransactions(SOME_DATE);
+
+    assertThat(transactions).containsExactly(firstTransaction, secondTransaction);
+  }
+
+  @Test
+  public void whenGettingTransactions_thenReturnTransactionsWithinRange() {
+    LocalDateTime fromDate = SOME_DATE.atStartOfDay();
+    LocalDateTime toDate = SOME_DATE.plusDays(1).atStartOfDay();
+
+    Transaction beforeTransaction = new TransactionBuilder().withTime(SOME_DATE.minusDays(10).atStartOfDay()).build();
+    Transaction firstTransaction = new TransactionBuilder().withTime(fromDate).build();
+    Transaction secondTransaction = new TransactionBuilder().withTime(toDate).build();
+    Transaction afterTransaction = new TransactionBuilder().withTime(SOME_DATE.plusDays(10).atStartOfDay()).build();
+    transactionHistory.save(beforeTransaction);
+    transactionHistory.save(firstTransaction);
+    transactionHistory.save(secondTransaction);
+    transactionHistory.save(afterTransaction);
+
+    TreeSet<Transaction> transactions = transactionHistory.getTransactions(SOME_DATE);
 
     assertThat(transactions).containsExactly(firstTransaction, secondTransaction);
   }
