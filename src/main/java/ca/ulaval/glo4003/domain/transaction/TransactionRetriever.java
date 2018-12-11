@@ -38,7 +38,7 @@ public class TransactionRetriever {
   public List<Transaction> getTransactionsByTitle(String title, LocalDate from, LocalDate to) {
     return getAllTransactions()
         .filter(transaction -> transaction.isDateInRange(from.atStartOfDay(), to.atStartOfDay()))
-        .filter(transaction -> transaction.doContainTitle(title))
+        .filter(transaction -> transaction.containsTitle(title))
         .collect(toList());
   }
 

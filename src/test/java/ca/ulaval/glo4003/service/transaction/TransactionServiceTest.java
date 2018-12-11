@@ -22,7 +22,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransactionServiceTest {
-  public static final String WRONG_TITLE = "wrong";
+  private static final String WRONG_TITLE = "wrong";
   private static final SinceParameter SOME_SINCE_PARAMETER = SinceParameter.LAST_FIVE_DAYS;
   private static final LocalDate SOME_CURRENT_DATE = LocalDate.now();
   private static final LocalDate SOME_FROM_DATE = SOME_CURRENT_DATE.minusDays(SOME_SINCE_PARAMETER.toDays());
@@ -31,7 +31,7 @@ public class TransactionServiceTest {
   @Mock
   private TransactionAssembler transactionAssembler;
   @Mock
-  private TransactionRetriever transactionNoName;
+  private TransactionRetriever transactionRetriever;
   @Mock
   private DateService dateService;
   @Mock
@@ -45,14 +45,14 @@ public class TransactionServiceTest {
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(WRONG_TITLE)).willReturn(false);
 
-    transactionService = new TransactionService(transactionAssembler, transactionNoName, dateService, stockRepository);
+    transactionService = new TransactionService(transactionAssembler, transactionRetriever, dateService, stockRepository);
   }
 
   @Test
   public void whenGetAllTransactions_thenTransactionBetweenFromAndCurrentAreGotten() {
     transactionService.getAllTransactions(SOME_SINCE_PARAMETER);
 
-    verify(transactionNoName).getTransactions(SOME_FROM_DATE, SOME_CURRENT_DATE);
+    verify(transactionRetriever).getTransactions(SOME_FROM_DATE, SOME_CURRENT_DATE);
   }
 
   @Test
@@ -60,14 +60,14 @@ public class TransactionServiceTest {
       throws UserNotFoundException, WrongRoleException {
     transactionService.getTransactionsByEmail(SOME_EMAIL, SOME_SINCE_PARAMETER);
 
-    verify(transactionNoName).getTransactionsByEmail(SOME_EMAIL, SOME_FROM_DATE, SOME_CURRENT_DATE);
+    verify(transactionRetriever).getTransactionsByEmail(SOME_EMAIL, SOME_FROM_DATE, SOME_CURRENT_DATE);
   }
 
   @Test
   public void whenGetTransactionsByTitle_thenTransactionByTitleBetweenFromAndCurrentAreGotten() {
     transactionService.getTransactionsByTitle(SOME_TITLE, SOME_SINCE_PARAMETER);
 
-    verify(transactionNoName).getTransactionsByTitle(SOME_TITLE, SOME_FROM_DATE, SOME_CURRENT_DATE);
+    verify(transactionRetriever).getTransactionsByTitle(SOME_TITLE, SOME_FROM_DATE, SOME_CURRENT_DATE);
   }
 
   @Test

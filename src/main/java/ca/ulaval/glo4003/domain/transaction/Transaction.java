@@ -37,7 +37,7 @@ public class Transaction implements Comparable<Transaction> {
         && timestamp.isBefore(to));
   }
 
-  public boolean doContainTitle(String title) {
+  public boolean containsTitle(String title) {
     return items.stream().anyMatch(item -> item.title.equals(title));
   }
 }

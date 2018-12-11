@@ -54,14 +54,14 @@ public class TransactionService {
   }
 
   public List<TransactionDto> getTransactionsByTitle(String title, SinceParameter since) {
-    ensureStockExist(title);
+    ensureStockExists(title);
     LocalDate from = dateService.getDateSince(since);
     LocalDate to = dateService.getCurrentDate();
     List<Transaction> transactions = transactionRetriever.getTransactionsByTitle(title, from, to);
     return transactionAssembler.toDtoList(transactions);
   }
 
-  private void ensureStockExist(String title) {
+  private void ensureStockExists(String title) {
     if (!stockRepository.exists(title)) {
       throw new StockDoesNotExistException();
     }

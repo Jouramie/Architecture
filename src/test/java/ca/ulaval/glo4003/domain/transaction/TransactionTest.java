@@ -63,7 +63,7 @@ public class TransactionTest {
 
   @Test
   public void whenCheckIfTransactionContainTitle_thenTrue() {
-    assertTrue(transaction.doContainTitle(SOME_TITLE));
+    assertTrue(transaction.containsTitle(SOME_TITLE));
   }
 
   @Test
@@ -71,11 +71,11 @@ public class TransactionTest {
     List<TransactionItem> emptyItemList = emptyList();
     Transaction emptyTransaction = new Transaction(someClock.getCurrentTime(), emptyItemList, SOME_TYPE);
 
-    assertFalse(emptyTransaction.doContainTitle(SOME_TITLE));
+    assertFalse(emptyTransaction.containsTitle(SOME_TITLE));
   }
 
   @Test
   public void givenWrongTitle_whenCheckIfTransactionContainTitle_thenFalse() {
-    assertFalse(transaction.doContainTitle("wrong"));
+    assertFalse(transaction.containsTitle("wrong"));
   }
 }
