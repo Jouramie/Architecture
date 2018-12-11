@@ -2,6 +2,7 @@ package ca.ulaval.glo4003.it;
 
 import ca.ulaval.glo4003.InvestULMain;
 import ca.ulaval.glo4003.context.AbstractContext;
+import ca.ulaval.glo4003.context.DemoContext;
 import ca.ulaval.glo4003.context.ProductionContext;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import org.junit.rules.TestRule;
@@ -14,7 +15,7 @@ public class ResetServerBetweenTest implements TestRule {
   private Thread thread;
 
   public ResetServerBetweenTest() {
-    context = new ProductionContext();
+    context = new TestContext();
   }
 
   public ResetServerBetweenTest(AbstractContext context) {

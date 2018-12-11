@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.context.AbstractContext;
+import ca.ulaval.glo4003.context.DemoContext;
 import ca.ulaval.glo4003.context.ProductionContext;
 import java.net.URL;
 import org.eclipse.jetty.server.Server;
@@ -10,7 +11,7 @@ public class InvestULMain {
   private static Server server;
 
   public static void main(String[] args) throws Exception {
-    AbstractContext context = new ProductionContext();
+    AbstractContext context = new DemoContext();
     startServer(context);
   }
 

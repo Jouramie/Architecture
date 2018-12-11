@@ -1,6 +1,9 @@
 package ca.ulaval.glo4003.it.portfolio;
 
-import ca.ulaval.glo4003.context.AbstractContext;
+import static ca.ulaval.glo4003.context.DemoContext.DEFAULT_INVESTOR_EMAIL;
+
+import ca.ulaval.glo4003.context.DemoContext;
+import ca.ulaval.glo4003.context.ProductionContext;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
@@ -15,7 +18,7 @@ import ca.ulaval.glo4003.service.cart.CheckoutService;
 import java.time.Duration;
 import java.time.LocalDate;
 
-public class PortfolioReportITContext extends AbstractContext {
+public class PortfolioReportITContext extends DemoContext {
   @Override
   public void configureApplication(String apiUrl) {
     super.configureApplication(apiUrl);
@@ -26,7 +29,7 @@ public class PortfolioReportITContext extends AbstractContext {
 
   @Override
   protected ServiceLocatorInitializer createServiceLocatorInitializer() {
-    return super.createServiceLocatorInitializer().register(NotificationSender.class, NullNotificationSender.class);
+    return super.createServiceLocatorInitializer().registerInstance(NotificationSender.class, new NullNotificationSender());
   }
 
   private void setCurrentUserToDefaultAdmin() {

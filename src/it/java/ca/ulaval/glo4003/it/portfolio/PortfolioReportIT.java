@@ -13,6 +13,7 @@ import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.iterableWithSize;
 
+import ca.ulaval.glo4003.context.DemoContext;
 import ca.ulaval.glo4003.context.ProductionContext;
 import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
@@ -42,7 +43,7 @@ public class PortfolioReportIT {
   public void givenPortfolioWithStocksInRequestedRange_whenGetPortfolioReport_thenReturnPortfolioHistory() {
     LocalDate currentDate = ServiceLocator.INSTANCE.get(ReadableClock.class).getCurrentTime().toLocalDate();
 
-    Header tokenHeader = new Header("token", ProductionContext.DEFAULT_INVESTOR_TOKEN);
+    Header tokenHeader = new Header("token", DemoContext.DEFAULT_INVESTOR_TOKEN);
     //@formatter:off
     given()
         .header(tokenHeader)
@@ -60,7 +61,7 @@ public class PortfolioReportIT {
 
   @Test
   public void givenPortfolioContainedStocksInRequestedRange_whenGetPortfolioReport_thenReturnStocksWithGreatestVariation() {
-    Header tokenHeader = new Header("token", ProductionContext.DEFAULT_INVESTOR_TOKEN);
+    Header tokenHeader = new Header("token", DemoContext.DEFAULT_INVESTOR_TOKEN);
     //@formatter:off
     given()
         .header(tokenHeader)
@@ -76,7 +77,7 @@ public class PortfolioReportIT {
 
   @Test
   public void givenTransactionsWereMadeInTimeRange_whenGetPortfolioReport_thenPortfolioContentIsVarying() {
-    Header tokenHeader = new Header("token", ProductionContext.DEFAULT_INVESTOR_TOKEN);
+    Header tokenHeader = new Header("token", DemoContext.DEFAULT_INVESTOR_TOKEN);
     //@formatter:off
     given()
         .header(tokenHeader)

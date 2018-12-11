@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.it.transaction;
 
-import static ca.ulaval.glo4003.context.AbstractContext.DEFAULT_INVESTOR_EMAIL;
+import static ca.ulaval.glo4003.context.DemoContext.DEFAULT_INVESTOR_EMAIL;
 import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
 import static io.restassured.RestAssured.given;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
