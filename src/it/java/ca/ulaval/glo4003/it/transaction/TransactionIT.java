@@ -8,7 +8,6 @@ import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.assertj.core.util.IterableUtil.iterable;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 
 import ca.ulaval.glo4003.it.ResetServerBetweenTest;
