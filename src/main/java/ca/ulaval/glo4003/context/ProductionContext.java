@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.context;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.clock.Clock;
@@ -17,7 +16,6 @@ import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
 import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
 import ca.ulaval.glo4003.infrastructure.clock.ClockDriver;
@@ -34,7 +32,6 @@ import ca.ulaval.glo4003.infrastructure.stock.SimulatedStockValueRetriever;
 import ca.ulaval.glo4003.infrastructure.stock.StockCsvLoader;
 import ca.ulaval.glo4003.investul.live_stock_emulator.StockSimulator;
 import ca.ulaval.glo4003.ws.api.ErrorMapper;
-import ca.ulaval.glo4003.ws.http.FilterRegistration;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
@@ -47,19 +44,9 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 import javax.annotation.Resource;
-import javax.ws.rs.core.Application;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.webapp.WebAppContext;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.ServerProperties;
-import org.glassfish.jersey.servlet.ServletContainer;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
 public class ProductionContext extends AbstractContext {
   public static final String DEFAULT_ADMIN_EMAIL = "Archi.test.43@gmail.com";
@@ -67,47 +54,46 @@ public class ProductionContext extends AbstractContext {
   private static final String WEB_SERVICE_PACKAGE_PREFIX = "ca.ulaval.glo4003";
   private ClockDriver clockDriver;
 
+  public ProductionContext(JerseyApiHandlersCreator jerseyApiHandlersCreator) {
+    super(jerseyApiHandlersCreator);
+  }
+
+  @Override
+  public void configureDestruction() {
+    clockDriver.stop();
+  }
+
   @Override
   public void configureApplication(String apiUrl) {
     super.configureApplication(apiUrl);
+    createSwaggerApi(apiUrl);
     startClockAndMarketsUpdater();
   }
 
-  @Override
-  protected Handler createApiHandler() {
-    Application application = new Application() {
-      @Override
-      public Set<Object> getSingletons() {
-        return createRegisteredComponentInstances();
-      }
-    };
+  private void createSwaggerApi(String apiUrl) {
+    OpenAPI swaggerOpenApi = new OpenAPI();
+    Info info = new Info()
+        .title("Invest-UL")
+        .description("Logiciel transactionnel pour titres boursiers");
 
-    ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-    context.setContextPath("/api/");
-    ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
-    resourceConfig.property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
-    setupJacksonJavaTimeModule(resourceConfig);
-    getClassesForAnnotation(
-        WEB_SERVICE_PACKAGE_PREFIX,
-        FilterRegistration.class)
-        .forEach(resourceConfig::register);
+    Server server = new Server();
+    server.setUrl(apiUrl);
 
-    ServletContainer servletContainer = new ServletContainer(resourceConfig);
-    ServletHolder servletHolder = new ServletHolder(servletContainer);
-    context.addServlet(servletHolder, "/*");
+    swaggerOpenApi
+        .info(info)
+        .servers(Stream.of(server).collect(toList()));
 
-    return context;
-  }
+    SwaggerConfiguration oasConfig = new SwaggerConfiguration()
+        .openAPI(swaggerOpenApi)
+        .prettyPrint(true);
 
-  private Set<Object> createRegisteredComponentInstances() {
-    List<Class<?>> registeredClasses = Stream.of(Resource.class, ErrorMapper.class, Component.class)
-        .map(annotation -> getClassesForAnnotation(WEB_SERVICE_PACKAGE_PREFIX, annotation))
-        .flatMap(Collection::stream).collect(toList());
-    registeredClasses.add(OpenApiResource.class);
-
-    return registeredClasses.stream()
-        .map(serviceLocator::get)
-        .collect(toSet());
+    try {
+      new JaxrsOpenApiContextBuilder()
+          .openApiConfiguration(oasConfig)
+          .buildContext(true);
+    } catch (OpenApiConfigurationException e) {
+      throw new RuntimeException(e.getMessage(), e);
+    }
   }
 
   private void startClockAndMarketsUpdater() {
@@ -120,10 +106,11 @@ public class ProductionContext extends AbstractContext {
     clockDriver.start();
   }
 
-  private AwsEmailNotificationSender createAwsSesSender() {
-    AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
-        .withRegion(Regions.US_EAST_1).build();
-    return new AwsEmailNotificationSender(client);
+  @Override
+  public ContextHandlerCollection createJettyContextHandlers() {
+    ContextHandlerCollection contexts = new ContextHandlerCollection();
+    jerseyApiHandlersCreator.createHandlers(serviceLocator, WEB_SERVICE_PACKAGE_PREFIX).forEach(contexts::addHandler);
+    return contexts;
   }
 
   @Override
@@ -152,44 +139,10 @@ public class ProductionContext extends AbstractContext {
     return new Clock(startDate.atTime(0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION);
   }
 
-  @Override
-  public void configureDestruction() {
-    clockDriver.stop();
-  }
-
-  @Override
-  protected Handler createSwaggerUiHandler() {
-    WebAppContext webapp = new WebAppContext();
-    webapp.setResourceBase("src/main/webapp");
-    webapp.setContextPath("/");
-    return webapp;
-  }
-
-  @Override
-  protected void createSwaggerApi(String apiUrl) {
-    OpenAPI swaggerOpenApi = new OpenAPI();
-    Info info = new Info()
-        .title("Invest-UL")
-        .description("Logiciel transactionnel pour titres boursiers");
-
-    Server server = new Server();
-    server.setUrl(apiUrl);
-
-    swaggerOpenApi
-        .info(info)
-        .servers(Stream.of(server).collect(toList()));
-
-    SwaggerConfiguration oasConfig = new SwaggerConfiguration()
-        .openAPI(swaggerOpenApi)
-        .prettyPrint(true);
-
-    try {
-      new JaxrsOpenApiContextBuilder()
-          .openApiConfiguration(oasConfig)
-          .buildContext(true);
-    } catch (OpenApiConfigurationException e) {
-      throw new RuntimeException(e.getMessage(), e);
-    }
+  private AwsEmailNotificationSender createAwsSesSender() {
+    AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard()
+        .withRegion(Regions.US_EAST_1).build();
+    return new AwsEmailNotificationSender(client);
   }
 
   @Override

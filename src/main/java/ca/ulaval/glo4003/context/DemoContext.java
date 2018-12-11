@@ -13,6 +13,9 @@ public class DemoContext extends ProductionContext {
   public static final String DEFAULT_INVESTOR_TOKEN = "11111111-1111-1111-1111-111111111111";
   public static final String DEFAULT_ADMIN_TOKEN = "00000000-0000-0000-0000-000000000000";
 
+  public DemoContext(JerseyApiHandlersCreator jerseyApiHandlersCreator) {
+    super(jerseyApiHandlersCreator);
+  }
 
   @Override
   public void configureApplication(String apiUrl) {

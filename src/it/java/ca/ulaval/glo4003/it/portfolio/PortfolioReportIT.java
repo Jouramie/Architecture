@@ -14,7 +14,8 @@ import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.Matchers.iterableWithSize;
 
 import ca.ulaval.glo4003.context.DemoContext;
-import ca.ulaval.glo4003.context.ProductionContext;
+import ca.ulaval.glo4003.context.JerseyApiHandlersCreator;
+import ca.ulaval.glo4003.context.SwaggerApiHandlerCreator;
 import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.it.ResetServerBetweenTest;
@@ -37,7 +38,7 @@ public class PortfolioReportIT {
   private static final String DECREASING_STOCK_KEY = "mostDecreasingStock";
 
   @Rule
-  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest(new PortfolioReportITContext());
+  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest(new PortfolioReportITContext(new JerseyApiHandlersCreator()));
 
   @Test
   public void givenPortfolioWithStocksInRequestedRange_whenGetPortfolioReport_thenReturnPortfolioHistory() {

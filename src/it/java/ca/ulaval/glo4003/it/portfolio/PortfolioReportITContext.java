@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.it.portfolio;
 import static ca.ulaval.glo4003.context.DemoContext.DEFAULT_INVESTOR_EMAIL;
 
 import ca.ulaval.glo4003.context.DemoContext;
+import ca.ulaval.glo4003.context.JerseyApiHandlersCreator;
 import ca.ulaval.glo4003.context.ProductionContext;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.clock.ReadableClock;
@@ -19,6 +20,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 
 public class PortfolioReportITContext extends DemoContext {
+
+  public PortfolioReportITContext(JerseyApiHandlersCreator jerseyApiHandlersCreator) {
+    super(jerseyApiHandlersCreator);
+  }
+
   @Override
   public void configureApplication(String apiUrl) {
     super.configureApplication(apiUrl);
