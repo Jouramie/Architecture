@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class TransactionHistoryTest {
 
-  public static final LocalDate SOME_DATE = LocalDate.of(2018, 11, 3);
+  private static final LocalDate SOME_DATE = LocalDate.of(2018, 11, 3);
   private TransactionHistory transactionHistory;
 
   @Before
@@ -60,6 +60,6 @@ public class TransactionHistoryTest {
 
     TreeSet<Transaction> transactions = transactionHistory.getTransactions(SOME_DATE);
 
-    assertThat(transactions).containsExactly(firstTransaction, secondTransaction);
+    assertThat(transactions).containsExactly(firstTransaction);
   }
 }
