@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.domain.transaction;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -8,7 +9,6 @@ import static org.mockito.BDDMockito.given;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
@@ -68,7 +68,7 @@ public class TransactionTest {
 
   @Test
   public void givenNoItem_whenCheckIfTransactionContainTitle_thenFalse() {
-    ArrayList<TransactionItem> emptyItemList = new ArrayList<>();
+    List<TransactionItem> emptyItemList = emptyList();
     Transaction emptyTransaction = new Transaction(someClock.getCurrentTime(), emptyItemList, SOME_TYPE);
 
     assertFalse(emptyTransaction.doContainTitle(SOME_TITLE));

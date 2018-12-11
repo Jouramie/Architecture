@@ -18,7 +18,7 @@ public class ApiTransactionAssemblerTest {
   TransactionDto serviceDto = new TransactionDto(SOME_TRANSACTION_TYPE, SOME_ITEMS, SOME_TIMESTAMP);
 
   @Test
-  public void whenGetTransactions_thenTransactionAllGood() {
+  public void whenToDto_thenTransactionIsMappedCorrectly() {
     ApiTransactionDto resultingDto = transactionAssembler.toDto(serviceDto);
 
     assertThat(resultingDto.type).isEqualTo(serviceDto.type);

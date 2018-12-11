@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.ws.api.transaction;
 
 import ca.ulaval.glo4003.domain.user.UserRole;
+import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.service.transaction.TransactionService;
 import ca.ulaval.glo4003.ws.api.transaction.assemblers.ApiTransactionAssembler;
@@ -38,6 +39,7 @@ public class StockTransactionResource implements DocumentedStockTransactionResou
   public List<ApiTransactionDto> getStockTransactions(@PathParam("title") String title,
                                                       @QueryParam("since") String since) {
     SinceParameter sinceParameter = sinceParameterConverter.convertSinceParameter(since);
-    return transactionAssembler.toDtoList(transactionService.getTransactionsByTitle(title, sinceParameter));
+    List<TransactionDto> transactionsByTitle = transactionService.getTransactionsByTitle(title, sinceParameter);
+    return transactionAssembler.toDtoList(transactionsByTitle);
   }
 }
