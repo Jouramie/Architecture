@@ -25,4 +25,3 @@ public abstract class User {
     return roles.contains(getRole());
   }
 }
-
