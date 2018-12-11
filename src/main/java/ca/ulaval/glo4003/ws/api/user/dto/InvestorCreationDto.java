@@ -3,7 +3,6 @@ package ca.ulaval.glo4003.ws.api.user.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -12,8 +11,7 @@ import javax.validation.constraints.Size;
 )
 public class InvestorCreationDto {
 
-  @NotNull
-  @NotBlank
+  @Size(min = 1)
   public final String email;
 
   @NotNull

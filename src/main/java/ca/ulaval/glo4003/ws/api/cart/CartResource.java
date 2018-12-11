@@ -9,11 +9,11 @@ import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;
 import ca.ulaval.glo4003.ws.api.transaction.assemblers.ApiTransactionAssembler;
 import ca.ulaval.glo4003.ws.api.transaction.dto.ApiTransactionDto;
-import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -35,7 +35,6 @@ public class CartResource implements DocumentedCartResource {
   private final CheckoutService checkoutService;
   private final ApiTransactionAssembler apiTransactionAssembler;
   private final ApiCartItemAssembler apiCartItemAssembler;
-  private final RequestValidator requestValidator;
 
   @Inject
   public CartResource(CartService cartService,
@@ -46,7 +45,6 @@ public class CartResource implements DocumentedCartResource {
     this.checkoutService = checkoutService;
     this.apiTransactionAssembler = apiTransactionAssembler;
     this.apiCartItemAssembler = apiCartItemAssembler;
-    requestValidator = new RequestValidator();
   }
 
   @GET
@@ -60,7 +58,6 @@ public class CartResource implements DocumentedCartResource {
   @Override
   public List<ApiCartItemResponseDto> addStockToCart(@PathParam("title") String title,
                                                      CartStockRequestDto cartStockRequestDto) {
-    requestValidator.validate(cartStockRequestDto);
     cartService.addStockToCart(title, cartStockRequestDto.quantity);
 
     return apiCartItemAssembler.toDtoList(cartService.getCartContent());
@@ -71,7 +68,6 @@ public class CartResource implements DocumentedCartResource {
   @Override
   public List<ApiCartItemResponseDto> updateStockInCart(@PathParam("title") String title,
                                                         CartStockRequestDto cartStockRequestDto) {
-    requestValidator.validate(cartStockRequestDto);
     cartService.updateStockInCart(title, cartStockRequestDto.quantity);
     return apiCartItemAssembler.toDtoList(cartService.getCartContent());
   }

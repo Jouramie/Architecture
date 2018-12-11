@@ -5,7 +5,6 @@ import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
-import ca.ulaval.glo4003.ws.api.validation.InputErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -78,12 +77,7 @@ public interface DocumentedUserResource {
           ),
           @ApiResponse(
               responseCode = "400",
-              description = "Email already exists, email and password should not be empty",
-              content = @Content(
-                  schema = @Schema(
-                      implementation = InputErrorResponse.class
-                  )
-              )
+              description = "Email already exists, email and password should not be empty"
           )
       }
   )

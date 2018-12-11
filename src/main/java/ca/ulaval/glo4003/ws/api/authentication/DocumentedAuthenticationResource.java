@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import javax.validation.Valid;
 import javax.ws.rs.core.Response;
 
 public interface DocumentedAuthenticationResource {
@@ -29,7 +30,7 @@ public interface DocumentedAuthenticationResource {
           )
       }
   )
-  Response authenticate(ApiAuthenticationRequestDto authenticationRequest);
+  Response authenticate(@Valid ApiAuthenticationRequestDto authenticationRequest);
 
   @Operation(
       summary = "Revoke the current user's authentication token.",

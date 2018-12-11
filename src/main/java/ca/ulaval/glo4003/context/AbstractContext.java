@@ -60,6 +60,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.reflections.Reflections;
 
@@ -194,6 +195,7 @@ public abstract class AbstractContext {
     ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
+    resourceConfig.property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
     setupJacksonJavaTimeModule(resourceConfig);
     getClassesForAnnotation(
         WEB_SERVICE_PACKAGE_PREFIX,

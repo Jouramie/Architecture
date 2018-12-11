@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
@@ -18,7 +19,7 @@ public class MoneyAmountLimitCreationDto {
   public final ApplicationPeriod applicationPeriod;
 
   @NotNull
-  @PositiveOrZero
+  @Min(value = 0)
   @Schema(
       description = "The maximum money amount the user can spend in a single transaction."
   )

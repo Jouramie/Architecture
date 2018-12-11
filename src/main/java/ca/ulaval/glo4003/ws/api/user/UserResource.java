@@ -14,11 +14,11 @@ import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
-import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -40,8 +40,6 @@ public class UserResource implements DocumentedUserResource {
 
   private final LimitService limitService;
 
-  private final RequestValidator requestValidator;
-
   private final ApiUserAssembler apiUserAssembler;
 
   private final ApiLimitAssembler apiLimitAssembler;
@@ -49,12 +47,10 @@ public class UserResource implements DocumentedUserResource {
   @Inject
   public UserResource(UserService userService,
                       LimitService limitService,
-                      RequestValidator requestValidator,
                       ApiUserAssembler apiUserAssembler,
                       ApiLimitAssembler apiLimitAssembler) {
     this.userService = userService;
     this.limitService = limitService;
-    this.requestValidator = requestValidator;
     this.apiUserAssembler = apiUserAssembler;
     this.apiLimitAssembler = apiLimitAssembler;
   }
@@ -78,8 +74,7 @@ public class UserResource implements DocumentedUserResource {
 
   @POST
   @Override
-  public Response createInvestor(InvestorCreationDto investorCreationDto) {
-    requestValidator.validate(investorCreationDto);
+  public Response createInvestor(@Valid InvestorCreationDto investorCreationDto) {
     UserDto createdUser = userService.createInvestorUser(investorCreationDto.email, investorCreationDto.password);
 
     ApiUserDto apiCreatedUser = apiUserAssembler.toDto(createdUser);
@@ -91,8 +86,7 @@ public class UserResource implements DocumentedUserResource {
   @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public Response setUserStockLimit(@PathParam("email") String email,
-                                    StockLimitCreationDto stockLimitCreationDto) {
-    requestValidator.validate(stockLimitCreationDto);
+                                    @Valid StockLimitCreationDto stockLimitCreationDto) {
     LimitDto limit = limitService.createStockQuantityLimit(email,
         stockLimitCreationDto.applicationPeriod, stockLimitCreationDto.stockQuantity);
 
@@ -105,8 +99,7 @@ public class UserResource implements DocumentedUserResource {
   @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public Response setUserMoneyAmountLimit(@PathParam("email") String email,
-                                          MoneyAmountLimitCreationDto moneyAmountLimitCreationDto) {
-    requestValidator.validate(moneyAmountLimitCreationDto);
+                                          @Valid MoneyAmountLimitCreationDto moneyAmountLimitCreationDto) {
     LimitDto limit = limitService.createMoneyAmountLimit(email,
         moneyAmountLimitCreationDto.applicationPeriod, moneyAmountLimitCreationDto.moneyAmount);
 
