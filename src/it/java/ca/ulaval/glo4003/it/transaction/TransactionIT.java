@@ -8,9 +8,11 @@ import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.assertj.core.util.IterableUtil.iterable;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 
 import ca.ulaval.glo4003.it.ResetServerBetweenTest;
+import ca.ulaval.glo4003.it.portfolio.PortfolioReportITContext;
 import ca.ulaval.glo4003.ws.api.transaction.dto.ApiTransactionDto;
 import io.restassured.http.Header;
 import org.junit.ClassRule;
@@ -23,7 +25,7 @@ public class TransactionIT {
   private static final String STOCK_TITLE = "MSFT";
 
   @ClassRule
-  public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest();
+  public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest(new PortfolioReportITContext());
 
   @Test
   public void whenGettingTransactions_thenReturnListOfTransactions() {
@@ -32,7 +34,7 @@ public class TransactionIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .queryParam(SINCE_PARAM_NAME, SINCE_LAST_FIVE_DAYS)
+        .queryParam(SINCE_PARAM_NAME, SINCE_LAST_THIRTY_DAYS)
     .when()
         .get("/api/transactions")
     .then()
@@ -75,7 +77,7 @@ public class TransactionIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .queryParam(SINCE_PARAM_NAME, SINCE_LAST_FIVE_DAYS)
+        .queryParam(SINCE_PARAM_NAME, SINCE_LAST_THIRTY_DAYS)
     .when()
         .get("/api/users/{email}/transactions", DEFAULT_INVESTOR_EMAIL)
     .then()
@@ -133,7 +135,7 @@ public class TransactionIT {
     //@formatter:off
     given()
         .header(tokenHeader)
-        .queryParam(SINCE_PARAM_NAME, SINCE_LAST_FIVE_DAYS)
+        .queryParam(SINCE_PARAM_NAME, SINCE_LAST_THIRTY_DAYS)
     .when()
         .get("/api/stocks/{title}/transactions", STOCK_TITLE)
     .then()

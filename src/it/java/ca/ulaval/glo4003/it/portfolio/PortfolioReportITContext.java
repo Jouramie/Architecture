@@ -20,7 +20,7 @@ public class PortfolioReportITContext extends AbstractContext {
   public void configureApplication(String apiUrl) {
     super.configureApplication(apiUrl);
 
-    setCurrentUserToDefaultAdmin();
+    setCurrentUserToDefaultInvestor();
     addStocksToCurrentUserPortfolio();
   }
 
@@ -29,7 +29,7 @@ public class PortfolioReportITContext extends AbstractContext {
     return super.createServiceLocatorInitializer().register(NotificationSender.class, NullNotificationSender.class);
   }
 
-  private void setCurrentUserToDefaultAdmin() {
+  private void setCurrentUserToDefaultInvestor() {
     User user = null;
     try {
       user = serviceLocator.get(UserRepository.class).findByEmail(DEFAULT_INVESTOR_EMAIL);

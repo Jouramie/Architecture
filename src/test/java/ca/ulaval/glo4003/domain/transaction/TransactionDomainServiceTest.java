@@ -19,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TransactionNoNameTest {
+public class TransactionDomainServiceTest {
   private static final LocalDateTime SOME_TIMESTAMP = LocalDateTime.now();
   private static final LocalDate SOME_CURRENT_DATE = SOME_TIMESTAMP.toLocalDate();
   private static final LocalDate SOME_FROM_DATE = SOME_CURRENT_DATE.minusDays(SinceParameter.LAST_FIVE_DAYS.toDays());
@@ -33,7 +33,7 @@ public class TransactionNoNameTest {
   private static final List<Transaction> SOME_TRANSACTION_INVESTOR = Arrays.asList(FIRST_TRANSACTION);
   private static final List<Transaction> OTHER_TRANSACTION_INVESTOR = Arrays.asList(SECOND_TRANSACTION, THIRD_TRANSACTION_LATER);
 
-  private TransactionNoName transactionNoName;
+  private TransactionDomainService transactionNoName;
 
   private List<Investor> investors;
   @Mock
@@ -53,7 +53,7 @@ public class TransactionNoNameTest {
     given(some_investor.getTransactions()).willReturn(SOME_TRANSACTION_INVESTOR);
     given(other_investor.getTransactions()).willReturn(OTHER_TRANSACTION_INVESTOR);
 
-    transactionNoName = new TransactionNoName(userRepository);
+    transactionNoName = new TransactionDomainService(userRepository);
   }
 
   @Test

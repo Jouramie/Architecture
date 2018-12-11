@@ -39,4 +39,8 @@ public class Transaction implements Comparable<Transaction> {
         || (date.isAfter(from)
         && date.isBefore(to));
   }
+
+  public boolean doContainTitle(String title) {
+    return items.stream().anyMatch(item -> item.title.equals(title));
+  }
 }

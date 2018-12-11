@@ -12,11 +12,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 @Component
-public class TransactionNoName {
+public class TransactionDomainService {
   private final UserRepository userRepository;
 
   @Inject
-  public TransactionNoName(UserRepository userRepository) {
+  public TransactionDomainService(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 
@@ -44,18 +44,11 @@ public class TransactionNoName {
   }
 
   public List<Transaction> getTransactionsByTitle(String title, LocalDate from, LocalDate to) {
-    return getTransactionsByTiTle(title).stream().filter(transaction -> transaction.verifyDatesIsBetween(from, to)).collect(toList());
+    return getAllTransactions().stream().filter(transaction -> transaction.verifyDatesIsBetween(from, to) && transaction.doContainTitle(title)).collect(toList());
   }
 
   private List<Transaction> getAllTransactions() {
     List<Investor> investors = userRepository.findInvestor();
     return investors.stream().flatMap(investor -> investor.getTransactions().stream()).collect(toList());
-  }
-
-  private List<Transaction> getTransactionsByTiTle(String title) {
-    return getAllTransactions()
-        .stream()
-        .filter(transaction -> transaction.items.stream().anyMatch(transactionItem -> transactionItem.title.equals(title)))
-        .collect(toList());
   }
 }
