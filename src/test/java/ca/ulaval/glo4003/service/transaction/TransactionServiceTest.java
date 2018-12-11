@@ -6,8 +6,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.domain.transaction.TransactionDomainService;
+import ca.ulaval.glo4003.domain.transaction.TransactionRetriever;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
 import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
 import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.date.SinceParameter;
@@ -30,7 +31,7 @@ public class TransactionServiceTest {
   @Mock
   private TransactionAssembler transactionAssembler;
   @Mock
-  private TransactionDomainService transactionNoName;
+  private TransactionRetriever transactionNoName;
   @Mock
   private DateService dateService;
   @Mock
@@ -55,7 +56,8 @@ public class TransactionServiceTest {
   }
 
   @Test
-  public void whenGetTransactionsByEmail_thenTransactionByEmailBetweenFromAndCurrentAreGotten() throws UserNotFoundException {
+  public void whenGetTransactionsByEmail_thenTransactionByEmailBetweenFromAndCurrentAreGotten()
+      throws UserNotFoundException, WrongRoleException {
     transactionService.getTransactionsByEmail(SOME_EMAIL, SOME_SINCE_PARAMETER);
 
     verify(transactionNoName).getTransactionsByEmail(SOME_EMAIL, SOME_FROM_DATE, SOME_CURRENT_DATE);

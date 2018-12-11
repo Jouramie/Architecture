@@ -39,7 +39,7 @@ public class CartService {
   }
 
   public void addStockToCart(String title, int quantity) {
-    checkIfStockExists(title);
+    ensureStockExists(title);
 
     Cart cart = getCart();
     cart.add(title, quantity, stockRepository);
@@ -48,7 +48,7 @@ public class CartService {
   }
 
   public void updateStockInCart(String title, int quantity) {
-    checkIfStockExists(title);
+    ensureStockExists(title);
 
     Cart cart = getCart();
     try {
@@ -61,7 +61,7 @@ public class CartService {
   }
 
   public void removeStockFromCart(String title) {
-    checkIfStockExists(title);
+    ensureStockExists(title);
 
     Cart cart = getCart();
     cart.removeAll(title);
@@ -80,7 +80,7 @@ public class CartService {
     return currentUserSession.getCurrentUser(Investor.class).getCart();
   }
 
-  private void checkIfStockExists(String title) {
+  private void ensureStockExists(String title) {
     if (!stockRepository.exists(title)) {
       throw new InvalidStockTitleException(title);
     }

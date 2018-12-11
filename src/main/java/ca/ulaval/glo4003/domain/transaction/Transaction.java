@@ -1,7 +1,6 @@
 package ca.ulaval.glo4003.domain.transaction;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,13 +30,11 @@ public class Transaction implements Comparable<Transaction> {
     return timestamp.compareTo(other.timestamp);
   }
 
-  public boolean verifyDatesIsBetween(LocalDate from, LocalDate to) {
-    LocalDate date = timestamp.toLocalDate();
-
-    return date.isEqual(from)
-        || date.isEqual(to)
-        || (date.isAfter(from)
-        && date.isBefore(to));
+  public boolean isDateInRange(LocalDateTime from, LocalDateTime to) {
+    return timestamp.isEqual(from)
+        || timestamp.isEqual(to)
+        || (timestamp.isAfter(from)
+        && timestamp.isBefore(to));
   }
 
   public boolean doContainTitle(String title) {

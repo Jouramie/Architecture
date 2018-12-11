@@ -35,12 +35,12 @@ public class StockCollectionTest {
   }
 
   @Test
-  public void givenStockInCollection_whenCheckIfContains_thenReturnTrue() {
+  public void givenStockInCollection_whenEnsureContains_thenReturnTrue() {
     assertThat(stockCollection.contains(INCLUDED_STOCK_TITLE)).isTrue();
   }
 
   @Test
-  public void givenStockNotInCollection_whenCheckIfContains_thenReturnFalse() {
+  public void givenStockNotInCollection_whenEnsureContains_thenReturnFalse() {
     assertThat(stockCollection.contains(MISSING_STOCK_TITLE)).isFalse();
   }
 

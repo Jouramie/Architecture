@@ -18,7 +18,6 @@ import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -74,7 +73,7 @@ public class UserResource implements DocumentedUserResource {
 
   @POST
   @Override
-  public Response createInvestor(@Valid InvestorCreationDto investorCreationDto) {
+  public Response createInvestor(InvestorCreationDto investorCreationDto) {
     UserDto createdUser = userService.createInvestorUser(investorCreationDto.email, investorCreationDto.password);
 
     ApiUserDto apiCreatedUser = apiUserAssembler.toDto(createdUser);
@@ -86,7 +85,7 @@ public class UserResource implements DocumentedUserResource {
   @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public Response setUserStockLimit(@PathParam("email") String email,
-                                    @Valid StockLimitCreationDto stockLimitCreationDto) {
+                                    StockLimitCreationDto stockLimitCreationDto) {
     LimitDto limit = limitService.createStockQuantityLimit(email,
         stockLimitCreationDto.applicationPeriod, stockLimitCreationDto.stockQuantity);
 
@@ -99,7 +98,7 @@ public class UserResource implements DocumentedUserResource {
   @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
   public Response setUserMoneyAmountLimit(@PathParam("email") String email,
-                                          @Valid MoneyAmountLimitCreationDto moneyAmountLimitCreationDto) {
+                                          MoneyAmountLimitCreationDto moneyAmountLimitCreationDto) {
     LimitDto limit = limitService.createMoneyAmountLimit(email,
         moneyAmountLimitCreationDto.applicationPeriod, moneyAmountLimitCreationDto.moneyAmount);
 

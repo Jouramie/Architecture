@@ -55,7 +55,7 @@ public class InMemoryUserRepository implements UserRepository {
   }
 
   @Override
-  public List<Investor> findInvestor() {
+  public List<Investor> findInvestors() {
     return content.values().stream()
         .filter(user -> user.getRole().equals(UserRole.INVESTOR))
         .map(user -> (Investor) user).collect(toList());

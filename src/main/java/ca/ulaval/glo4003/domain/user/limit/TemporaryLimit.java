@@ -13,7 +13,7 @@ public abstract class TemporaryLimit extends Limit {
   }
 
   @Override
-  public void checkIfTransactionExceed(Transaction transaction) throws TransactionLimitExceededExeption {
+  public void ensureTransactionIsUnderLimit(Transaction transaction) throws TransactionLimitExceededExeption {
     if (isTransactionInsideLimitTimeSpan(transaction)
         && isSpecificCriteriaExceeded(transaction)) {
       throw new TransactionLimitExceededExeption();
@@ -21,10 +21,7 @@ public abstract class TemporaryLimit extends Limit {
   }
 
   private boolean isTransactionInsideLimitTimeSpan(Transaction transaction) {
-    return transaction.timestamp.isEqual(begin)
-        || transaction.timestamp.isEqual(end)
-        || (transaction.timestamp.isAfter(begin)
-        && transaction.timestamp.isBefore(end));
+    return transaction.isDateInRange(begin, end);
   }
 
   protected abstract boolean isSpecificCriteriaExceeded(Transaction transaction);

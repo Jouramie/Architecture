@@ -16,5 +16,5 @@ public interface UserRepository {
 
   List<User> findAll();
 
-  List<Investor> findInvestor();
+  List<Investor> findInvestors();
 }

@@ -30,28 +30,28 @@ public class StockQuantityLimitTest {
   }
 
   @Test
-  public void givenStockOverLimit_whenCheckIfTransactionExceed_thenExceptionIsThrown() {
+  public void givenStockOverLimit_whenEnsureTransactionIsUnderLimit_thenExceptionIsThrown() {
     transaction = generateTransaction(SOME_INSIDE_DATE, MORE_STOCK_QUANTITY);
 
-    ThrowingCallable checkLimit = () -> limit.checkIfTransactionExceed(transaction);
+    ThrowingCallable checkLimit = () -> limit.ensureTransactionIsUnderLimit(transaction);
 
     assertThatThrownBy(checkLimit).isInstanceOf(TransactionLimitExceededExeption.class);
   }
 
   @Test
-  public void givenStockUnderLimit_whenCheckIfTransactionExceed_thenNoExceptionIsThrown()
+  public void givenStockUnderLimit_whenEnsureTransactionIsUnderLimit_thenNoExceptionIsThrown()
       throws TransactionLimitExceededExeption {
     transaction = generateTransaction(SOME_INSIDE_DATE, LESS_STOCK_QUANTITY);
 
-    limit.checkIfTransactionExceed(transaction);
+    limit.ensureTransactionIsUnderLimit(transaction);
   }
 
   @Test
-  public void givenTransactionOutsideLimitTimeSpan_whenCheckIfTransactionExceed_thenNoExceptionIsThrown()
+  public void givenTransactionOutsideLimitTimeSpan_whenEnsureTransactionIsUnderLimit_thenNoExceptionIsThrown()
       throws TransactionLimitExceededExeption {
     transaction = generateTransaction(SOME_OUTSIDE_DATE, MORE_STOCK_QUANTITY);
 
-    limit.checkIfTransactionExceed(transaction);
+    limit.ensureTransactionIsUnderLimit(transaction);
   }
 
   private Transaction generateTransaction(LocalDateTime date, int quantity) {

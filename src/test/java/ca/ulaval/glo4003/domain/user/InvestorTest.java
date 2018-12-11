@@ -155,7 +155,7 @@ public class InvestorTest {
 
   @Test
   public void givenTransactionExceedLimit_whenCheckoutCart_thenExceptionIsThrow() throws TransactionLimitExceededExeption {
-    doThrow(TransactionLimitExceededExeption.class).when(limit).checkIfTransactionExceed(transaction);
+    doThrow(TransactionLimitExceededExeption.class).when(limit).ensureTransactionIsUnderLimit(transaction);
 
     ThrowingCallable checkoutCart = () -> investor.checkoutCart(transactionFactory, marketRepository, paymentProcessor,
         stockRepository, notificationFactory, notificationSender);

@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
 import ca.ulaval.glo4003.service.date.SinceParameter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TransactionDomainServiceTest {
+public class TransactionRetrieverTest {
   private static final LocalDateTime SOME_TIMESTAMP = LocalDateTime.now();
   private static final LocalDate SOME_CURRENT_DATE = SOME_TIMESTAMP.toLocalDate();
   private static final LocalDate SOME_FROM_DATE = SOME_CURRENT_DATE.minusDays(SinceParameter.LAST_FIVE_DAYS.toDays());
@@ -33,7 +34,7 @@ public class TransactionDomainServiceTest {
   private static final List<Transaction> SOME_TRANSACTION_INVESTOR = Arrays.asList(FIRST_TRANSACTION);
   private static final List<Transaction> OTHER_TRANSACTION_INVESTOR = Arrays.asList(SECOND_TRANSACTION, THIRD_TRANSACTION_LATER);
 
-  private TransactionDomainService transactionNoName;
+  private TransactionRetriever transactionRetriever;
 
   private List<Investor> investors;
   @Mock
@@ -49,32 +50,35 @@ public class TransactionDomainServiceTest {
     investors.add(some_investor);
     investors.add(other_investor);
 
-    given(userRepository.findInvestor()).willReturn(investors);
+    given(userRepository.findInvestors()).willReturn(investors);
     given(some_investor.getTransactions()).willReturn(SOME_TRANSACTION_INVESTOR);
     given(other_investor.getTransactions()).willReturn(OTHER_TRANSACTION_INVESTOR);
 
-    transactionNoName = new TransactionDomainService(userRepository);
+    transactionRetriever = new TransactionRetriever(userRepository);
   }
 
   @Test
   public void whenGetTransactions_thenReturnAllTransactions() {
-    List<Transaction> resultingTransactions = transactionNoName.getTransactions(SOME_FROM_DATE, SOME_CURRENT_DATE);
+    List<Transaction> resultingTransactions = transactionRetriever.getTransactions(SOME_FROM_DATE, SOME_CURRENT_DATE);
 
     assertThat(resultingTransactions).containsExactly(FIRST_TRANSACTION, SECOND_TRANSACTION);
   }
 
   @Test
-  public void whenGetTransactionsByEmail_thenReturnTrnsactionsForSpecificUser() throws UserNotFoundException {
-    given(userRepository.findByEmail(SOME_EMAIL)).willReturn(other_investor);
+  public void whenGetTransactionsByEmail_thenReturnTransactionsForSpecificUser()
+      throws UserNotFoundException, WrongRoleException {
+    given(userRepository.findByEmail(SOME_EMAIL, Investor.class)).willReturn(other_investor);
 
-    List<Transaction> resultingTransactions = transactionNoName.getTransactionsByEmail(SOME_EMAIL, SOME_FROM_DATE, SOME_CURRENT_DATE);
+    List<Transaction> resultingTransactions = transactionRetriever
+        .getTransactionsByEmail(SOME_EMAIL, SOME_FROM_DATE, SOME_CURRENT_DATE);
 
     assertThat(resultingTransactions).containsExactly(SECOND_TRANSACTION);
   }
 
   @Test
-  public void whenGetTransactionsByTitlle_thenReturnTransactionsForASpecificStock() {
-    List<Transaction> resultingTransactions = transactionNoName.getTransactionsByTitle(SOME_TITLE, SOME_FROM_DATE, SOME_CURRENT_DATE);
+  public void whenGetTransactionsByTitle_thenReturnTransactionsForASpecificStock() {
+    List<Transaction> resultingTransactions = transactionRetriever
+        .getTransactionsByTitle(SOME_TITLE, SOME_FROM_DATE, SOME_CURRENT_DATE);
 
     assertThat(resultingTransactions).containsExactly(FIRST_TRANSACTION);
   }

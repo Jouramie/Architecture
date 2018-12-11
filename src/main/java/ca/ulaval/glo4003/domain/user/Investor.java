@@ -60,7 +60,7 @@ public class Investor extends User {
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption, HaltedMarketException {
 
     Transaction purchase = cart.checkout(transactionFactory, marketRepository);
-    limit.checkIfTransactionExceed(purchase);
+    limit.ensureTransactionIsUnderLimit(purchase);
 
     processPurchase(purchase, paymentProcessor, stockRepository);
     sendTransactionNotification(notificationFactory, notificationSender, purchase);
