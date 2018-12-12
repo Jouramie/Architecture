@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.LongStream;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -209,7 +208,7 @@ public class PortfolioTest {
 
     List<Transaction> transactions = portfolio.getTransactions(from, to);
 
-    Assertions.assertThat(transactions).containsExactly(firstTransaction, secondTransaction);
+    assertThat(transactions).containsExactly(firstTransaction, secondTransaction);
   }
 
   private void setupPortfolioWithTransactionsOnDifferentDates() {

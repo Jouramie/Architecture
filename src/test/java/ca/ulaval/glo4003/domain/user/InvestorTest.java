@@ -186,7 +186,7 @@ public class InvestorTest {
 
   @Test
   public void whenGetTransactions_thenTransactionsAreGottenFromPortfolio() {
-    LocalDateTime from = SOME_DATE;
+    LocalDateTime from = SOME_DATE.minusDays(1);
     LocalDateTime to = SOME_DATE;
     Portfolio portfolio = mock(Portfolio.class);
     Investor investor = new UserBuilder().withPortfolio(portfolio).buildInvestor();

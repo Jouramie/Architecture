@@ -62,12 +62,12 @@ public class TransactionTest {
   }
 
   @Test
-  public void whenCheckIfTransactionContainTitle_thenTrue() {
+  public void whenCheckIfTransactionContainsTitle_thenTrue() {
     assertTrue(transaction.containsTitle(SOME_TITLE));
   }
 
   @Test
-  public void givenNoItem_whenCheckIfTransactionContainTitle_thenFalse() {
+  public void givenNoItem_whenCheckIfTransactionContainsTitle_thenFalse() {
     List<TransactionItem> emptyItemList = emptyList();
     Transaction emptyTransaction = new Transaction(someClock.getCurrentTime(), emptyItemList, SOME_TYPE);
 
@@ -75,7 +75,7 @@ public class TransactionTest {
   }
 
   @Test
-  public void givenWrongTitle_whenCheckIfTransactionContainTitle_thenFalse() {
+  public void givenWrongTitle_whenCheckIfTransactionContainsTitle_thenFalse() {
     assertFalse(transaction.containsTitle("wrong"));
   }
 }

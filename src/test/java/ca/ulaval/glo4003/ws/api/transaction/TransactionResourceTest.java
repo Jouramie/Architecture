@@ -39,7 +39,7 @@ public class TransactionResourceTest {
   }
 
   @Test
-  public void whenGetTransactions_thenTransactionAreGotten() {
+  public void whenGetTransactions_thenTransactionsAreGottenFromService() {
     transactionResource.getTransactions(SOME_SINCE_VALUE_PARAMETER);
 
     verify(transactionService).getAllTransactions(SOME_SINCE_PARAMETER);

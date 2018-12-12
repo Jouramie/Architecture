@@ -41,7 +41,7 @@ public class StockTransactionResourceTest {
   }
 
   @Test
-  public void whenGetTransactions_thenTransactionAreGotten() {
+  public void whenGetTransactions_thenTransactionsAreGottenFromService() {
     transactionResource.getStockTransactions(SOME_TITLE, SOME_SINCE_VALUE_PARAMETER);
 
     verify(transactionService).getTransactionsByTitle(SOME_TITLE, SOME_SINCE_PARAMETER);

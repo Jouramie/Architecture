@@ -40,7 +40,7 @@ public class UserTransactionResourceTest {
   }
 
   @Test
-  public void whenGetTransactions_thenTransactionAreGotten() {
+  public void whenGetTransactions_thenTransactionsAreGottenFromService() {
     transactionResource.getUserTransactions(SOME_EMAIL, SOME_SINCE_VALUE_PARAMETER);
 
     verify(transactionService).getTransactionsByEmail(SOME_EMAIL, SOME_SINCE_PARAMETER);
