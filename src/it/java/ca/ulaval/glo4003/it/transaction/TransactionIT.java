@@ -7,12 +7,11 @@ import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
-import static org.assertj.core.util.IterableUtil.iterable;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasKey;
 
 import ca.ulaval.glo4003.it.ResetServerBetweenTest;
 import ca.ulaval.glo4003.it.portfolio.PortfolioReportITContext;
-import ca.ulaval.glo4003.ws.api.transaction.dto.ApiTransactionDto;
 import io.restassured.http.Header;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -22,6 +21,9 @@ public class TransactionIT {
   private static final String SINCE_LAST_FIVE_DAYS = "LAST_FIVE_DAYS";
   private static final String SINCE_LAST_THIRTY_DAYS = "LAST_THIRTY_DAYS";
   private static final String STOCK_TITLE = "MSFT";
+  private static final String TYPE = "type";
+  private static final String ITEMS = "items";
+  private static final String TIMESTAMP = "timestamp";
 
   @ClassRule
   public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest(new PortfolioReportITContext());
@@ -38,7 +40,9 @@ public class TransactionIT {
         .get("/api/transactions")
     .then()
         .statusCode(OK.getStatusCode())
-        .body("$", is(iterable(ApiTransactionDto.class)));
+        .body("$", everyItem(hasKey(TYPE)))
+        .body("$", everyItem(hasKey(ITEMS)))
+        .body("$", everyItem(hasKey(TIMESTAMP)));
     //@formatter:on
   }
 
@@ -81,7 +85,9 @@ public class TransactionIT {
         .get("/api/users/{email}/transactions", DEFAULT_INVESTOR_EMAIL)
     .then()
         .statusCode(OK.getStatusCode())
-        .body("$", is(iterable(ApiTransactionDto.class)));
+        .body("$", everyItem(hasKey(TYPE)))
+        .body("$", everyItem(hasKey(ITEMS)))
+        .body("$", everyItem(hasKey(TIMESTAMP)));
     //@formatter:on
   }
 
@@ -139,7 +145,9 @@ public class TransactionIT {
         .get("/api/stocks/{title}/transactions", STOCK_TITLE)
     .then()
         .statusCode(OK.getStatusCode())
-        .body("$", is(iterable(ApiTransactionDto.class)));
+        .body("$", everyItem(hasKey(TYPE)))
+        .body("$", everyItem(hasKey(ITEMS)))
+        .body("$", everyItem(hasKey(TIMESTAMP)));
     //@formatter:on
   }
 
