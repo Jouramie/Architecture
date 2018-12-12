@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.domain.transaction;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
@@ -8,7 +9,6 @@ import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
 import ca.ulaval.glo4003.service.date.SinceParameter;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -20,9 +20,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransactionRetrieverTest {
-  private static final LocalDateTime SOME_TIMESTAMP = LocalDateTime.now();
-  private static final LocalDate SOME_TO_DATE = SOME_TIMESTAMP.toLocalDate();
-  private static final LocalDate SOME_FROM_DATE = SOME_TO_DATE.minusDays(SinceParameter.LAST_FIVE_DAYS.toDays());
+  private static final LocalDateTime SOME_TO_DATE = LocalDateTime.now().toLocalDate().atStartOfDay();
+  private static final LocalDateTime SOME_FROM_DATE = SOME_TO_DATE.minusDays(SinceParameter.LAST_FIVE_DAYS.toDays());
   private static final String SOME_EMAIL = "email@email.com";
   private static final String SOME_TITLE = "some_title";
 
@@ -38,26 +37,22 @@ public class TransactionRetrieverTest {
   private Transaction first_transaction;
   @Mock
   private Transaction second_transaction;
-  @Mock
-  private Transaction third_transaction;
 
   @Before
   public void setUp() {
-    given(first_transaction.isDateInRange(SOME_FROM_DATE.atStartOfDay(), SOME_TO_DATE.atStartOfDay())).willReturn(true);
     given(first_transaction.containsTitle(SOME_TITLE)).willReturn(true);
-    given(second_transaction.isDateInRange(SOME_FROM_DATE.atStartOfDay(), SOME_TO_DATE.atStartOfDay())).willReturn(true);
-    given(third_transaction.isDateInRange(SOME_FROM_DATE.atStartOfDay(), SOME_TO_DATE.atStartOfDay())).willReturn(false);
+    given(second_transaction.containsTitle(SOME_TITLE)).willReturn(false);
 
     given(userRepository.findInvestors()).willReturn(Arrays.asList(some_investor, other_investor));
-    given(some_investor.getTransactions()).willReturn(Arrays.asList(first_transaction));
-    given(other_investor.getTransactions()).willReturn(Arrays.asList(second_transaction, third_transaction));
+    given(some_investor.getTransactions(SOME_FROM_DATE, SOME_TO_DATE)).willReturn(singletonList(first_transaction));
+    given(other_investor.getTransactions(SOME_FROM_DATE, SOME_TO_DATE)).willReturn(singletonList(second_transaction));
 
     transactionRetriever = new TransactionRetriever(userRepository);
   }
 
   @Test
   public void whenGetTransactions_thenReturnTransactionsBetweenDates() {
-    List<Transaction> resultingTransactions = transactionRetriever.getTransactions(SOME_FROM_DATE, SOME_TO_DATE);
+    List<Transaction> resultingTransactions = transactionRetriever.getTransactions(SOME_FROM_DATE.toLocalDate(), SOME_TO_DATE.toLocalDate());
 
     assertThat(resultingTransactions).containsExactly(first_transaction, second_transaction);
   }
@@ -68,7 +63,7 @@ public class TransactionRetrieverTest {
     given(userRepository.findByEmail(SOME_EMAIL, Investor.class)).willReturn(other_investor);
 
     List<Transaction> resultingTransactions = transactionRetriever
-        .getTransactionsByEmail(SOME_EMAIL, SOME_FROM_DATE, SOME_TO_DATE);
+        .getTransactionsByEmail(SOME_EMAIL, SOME_FROM_DATE.toLocalDate(), SOME_TO_DATE.toLocalDate());
 
     assertThat(resultingTransactions).containsExactly(second_transaction);
   }
@@ -76,7 +71,7 @@ public class TransactionRetrieverTest {
   @Test
   public void whenGetTransactionsByTitle_thenReturnTransactionsForASpecificStock() {
     List<Transaction> resultingTransactions = transactionRetriever
-        .getTransactionsByTitle(SOME_TITLE, SOME_FROM_DATE, SOME_TO_DATE);
+        .getTransactionsByTitle(SOME_TITLE, SOME_FROM_DATE.toLocalDate(), SOME_TO_DATE.toLocalDate());
 
     assertThat(resultingTransactions).containsExactly(first_transaction);
   }
