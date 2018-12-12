@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasKey;
 
 import ca.ulaval.glo4003.it.ResetServerBetweenTest;
-import ca.ulaval.glo4003.it.portfolio.PortfolioReportITContext;
+import ca.ulaval.glo4003.it.portfolio.MultipleTransactionsITContext;
 import io.restassured.http.Header;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class TransactionIT {
   private static final String TIMESTAMP = "timestamp";
 
   @ClassRule
-  public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest(new PortfolioReportITContext());
+  public static ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest(new MultipleTransactionsITContext());
 
   @Test
   public void whenGettingTransactions_thenReturnListOfTransactions() {

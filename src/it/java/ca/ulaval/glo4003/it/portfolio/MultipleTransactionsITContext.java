@@ -15,7 +15,7 @@ import ca.ulaval.glo4003.service.cart.CheckoutService;
 import java.time.Duration;
 import java.time.LocalDate;
 
-public class PortfolioReportITContext extends AbstractContext {
+public class MultipleTransactionsITContext extends AbstractContext {
   @Override
   public void configureApplication(String apiUrl) {
     super.configureApplication(apiUrl);

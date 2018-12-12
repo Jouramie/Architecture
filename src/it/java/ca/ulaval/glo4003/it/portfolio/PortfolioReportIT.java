@@ -36,7 +36,7 @@ public class PortfolioReportIT {
   private static final String DECREASING_STOCK_KEY = "mostDecreasingStock";
 
   @Rule
-  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest(new PortfolioReportITContext());
+  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest(new MultipleTransactionsITContext());
 
   @Test
   public void givenPortfolioWithStocksInRequestedRange_whenGetPortfolioReport_thenReturnPortfolioHistory() {
