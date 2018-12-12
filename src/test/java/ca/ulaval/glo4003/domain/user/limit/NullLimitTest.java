@@ -9,9 +9,9 @@ public class NullLimitTest {
   private static final Transaction SOME_TRANSACTION = new TransactionBuilder().build();
 
   @Test
-  public void whenCheckIfTransactionExceed_thenNoExceptionIsThrow() {
+  public void whenEnsureTransactionIsUnderLimit_thenNoExceptionIsThrow() {
     NullLimit limit = new NullLimit();
 
-    limit.checkIfTransactionExceed(SOME_TRANSACTION);
+    limit.ensureTransactionIsUnderLimit(SOME_TRANSACTION);
   }
 }

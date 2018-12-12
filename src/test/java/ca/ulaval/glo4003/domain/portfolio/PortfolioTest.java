@@ -18,6 +18,7 @@ import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.LongStream;
@@ -189,6 +190,25 @@ public class PortfolioTest {
     String mostDecreasingStockTitle = portfolio.getMostDecreasingStockTitle(NOW.minusDays(5), someStockRepository);
 
     assertThat(mostDecreasingStockTitle).isNull();
+  }
+
+  @Test
+  public void whenGetTransactions_thenReturnTransactionsBetweenDates() {
+    LocalDateTime from = NOW.atStartOfDay();
+    LocalDateTime to = NOW.plusDays(1).atStartOfDay();
+
+    Transaction beforeTransaction = new TransactionBuilder().withTime(NOW.minusDays(10).atStartOfDay()).build();
+    Transaction firstTransaction = new TransactionBuilder().withTime(from).build();
+    Transaction secondTransaction = new TransactionBuilder().withTime(to).build();
+    Transaction afterTransaction = new TransactionBuilder().withTime(NOW.plusDays(10).atStartOfDay()).build();
+    portfolio.add(beforeTransaction, someStockRepository);
+    portfolio.add(firstTransaction, someStockRepository);
+    portfolio.add(secondTransaction, someStockRepository);
+    portfolio.add(afterTransaction, someStockRepository);
+
+    List<Transaction> transactions = portfolio.getTransactions(from, to);
+
+    assertThat(transactions).containsExactly(firstTransaction, secondTransaction);
   }
 
   private void setupPortfolioWithTransactionsOnDifferentDates() {

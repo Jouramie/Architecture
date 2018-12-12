@@ -166,7 +166,7 @@ public abstract class AbstractContext {
     stockLoader.load(StocksDataSettings.STOCKS_DATA_PATH, StocksDataSettings.LAST_STOCK_DATA_DATE);
   }
 
-  private Clock createClock() {
+  protected Clock createClock() {
     LocalDate startDate = StocksDataSettings.LAST_STOCK_DATA_DATE;
     return new Clock(startDate.atTime(0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION);
   }

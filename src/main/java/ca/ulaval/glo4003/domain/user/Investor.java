@@ -16,6 +16,8 @@ import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
 import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class Investor extends User {
   private final Cart cart;
@@ -59,7 +61,7 @@ public class Investor extends User {
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption, HaltedMarketException {
 
     Transaction purchase = cart.checkout(transactionFactory, marketRepository);
-    limit.checkIfTransactionExceed(purchase);
+    limit.ensureTransactionIsUnderLimit(purchase);
 
     processPurchase(purchase, paymentProcessor, stockRepository);
     sendTransactionNotification(notificationFactory, notificationSender, purchase);
@@ -80,5 +82,9 @@ public class Investor extends User {
                                            Transaction transaction) {
     Notification notification = notificationFactory.create(transaction);
     notificationSender.sendNotification(notification, new NotificationCoordinates(email));
+  }
+
+  public List<Transaction> getTransactions(LocalDateTime from, LocalDateTime to) {
+    return portfolio.getTransactions(from, to);
   }
 }

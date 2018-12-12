@@ -1,6 +1,5 @@
 package ca.ulaval.glo4003.domain.money;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -174,7 +173,7 @@ public class MoneyAmountTest {
 
     boolean isGreaterThan = amount.isGreaterThan(smallerAmount);
 
-    assertTrue(isGreaterThan);
+    assertThat(isGreaterThan).isTrue();
   }
 
   @Test

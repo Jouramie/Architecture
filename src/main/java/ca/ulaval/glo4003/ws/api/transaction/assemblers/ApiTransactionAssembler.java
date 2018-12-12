@@ -1,11 +1,11 @@
-package ca.ulaval.glo4003.ws.api.cart.assemblers;
+package ca.ulaval.glo4003.ws.api.transaction.assemblers;
 
 import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
-import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionDto;
-import ca.ulaval.glo4003.ws.api.cart.dto.ApiTransactionItemDto;
+import ca.ulaval.glo4003.ws.api.transaction.dto.ApiTransactionDto;
+import ca.ulaval.glo4003.ws.api.transaction.dto.ApiTransactionItemDto;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -16,6 +16,10 @@ public class ApiTransactionAssembler {
   @Inject
   public ApiTransactionAssembler(ApiTransactionItemAssembler itemAssembler) {
     this.itemAssembler = itemAssembler;
+  }
+
+  public List<ApiTransactionDto> toDtoList(List<TransactionDto> transactionDtos) {
+    return transactionDtos.stream().map(this::toDto).collect(toList());
   }
 
   public ApiTransactionDto toDto(TransactionDto transactionDto) {

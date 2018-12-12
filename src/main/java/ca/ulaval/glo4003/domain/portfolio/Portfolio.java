@@ -12,6 +12,7 @@ import ca.ulaval.glo4003.domain.transaction.TransactionHistory;
 import ca.ulaval.glo4003.domain.transaction.TransactionItem;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
@@ -123,5 +124,9 @@ public class Portfolio {
     }
 
     return currentCollection;
+  }
+
+  public List<Transaction> getTransactions(LocalDateTime from, LocalDateTime to) {
+    return transactionHistory.getTransactions(from, to);
   }
 }

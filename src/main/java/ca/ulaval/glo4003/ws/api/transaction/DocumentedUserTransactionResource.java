@@ -10,9 +10,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 
-public interface DocumentedTransactionResource {
+public interface DocumentedUserTransactionResource {
   @Operation(
-      summary = "Get transactions for all users.",
+      summary = "Get transactions for a specific user.",
       responses = {
           @ApiResponse(
               responseCode = "200",
@@ -25,6 +25,10 @@ public interface DocumentedTransactionResource {
               )
           ),
           @ApiResponse(
+              responseCode = "404",
+              description = "User does not exist."
+          ),
+          @ApiResponse(
               responseCode = "401",
               description = "Administrator is not logged in."
           ),
@@ -34,7 +38,8 @@ public interface DocumentedTransactionResource {
           )
       }
   )
-  List<ApiTransactionDto> getTransactions(
+  List<ApiTransactionDto> getUserTransactions(
+      @Parameter(description = "User's email") String email,
       @Parameter(
           schema = @Schema(implementation = SinceParameter.class)
       )

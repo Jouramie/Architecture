@@ -29,4 +29,15 @@ public class Transaction implements Comparable<Transaction> {
   public int compareTo(Transaction other) {
     return timestamp.compareTo(other.timestamp);
   }
+
+  public boolean isDateInRange(LocalDateTime from, LocalDateTime to) {
+    return timestamp.isEqual(from)
+        || timestamp.isEqual(to)
+        || (timestamp.isAfter(from)
+        && timestamp.isBefore(to));
+  }
+
+  public boolean containsTitle(String title) {
+    return items.stream().anyMatch(item -> item.title.equals(title));
+  }
 }

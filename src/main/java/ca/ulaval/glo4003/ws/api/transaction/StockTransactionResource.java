@@ -13,31 +13,33 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-@Path("/transactions")
+@Path("/stocks/{title}/transactions")
 @Produces(MediaType.APPLICATION_JSON)
 @Resource
-public class TransactionResource implements DocumentedTransactionResource {
+public class StockTransactionResource implements DocumentedStockTransactionResource {
   private final TransactionService transactionService;
   private final ApiTransactionAssembler transactionAssembler;
   private final SinceParameterConverter sinceParameterConverter;
 
   @Inject
-  public TransactionResource(TransactionService transactionService, ApiTransactionAssembler transactionAssembler, SinceParameterConverter sinceParameterConverter) {
+  public StockTransactionResource(TransactionService transactionService, ApiTransactionAssembler transactionAssembler, SinceParameterConverter sinceParameterConverter) {
     this.transactionService = transactionService;
     this.transactionAssembler = transactionAssembler;
     this.sinceParameterConverter = sinceParameterConverter;
   }
 
   @GET
-  @AuthenticationRequiredBinding(authorizedRoles = {UserRole.ADMINISTRATOR})
+  @AuthenticationRequiredBinding(authorizedRoles = UserRole.ADMINISTRATOR)
   @Override
-  public List<ApiTransactionDto> getTransactions(@QueryParam("since") String since) {
+  public List<ApiTransactionDto> getStockTransactions(@PathParam("title") String title,
+                                                      @QueryParam("since") String since) {
     SinceParameter sinceParameter = sinceParameterConverter.convertSinceParameter(since);
-    List<TransactionDto> allTransactions = transactionService.getAllTransactions(sinceParameter);
-    return transactionAssembler.toDtoList(allTransactions);
+    List<TransactionDto> transactionsByTitle = transactionService.getTransactionsByTitle(title, sinceParameter);
+    return transactionAssembler.toDtoList(transactionsByTitle);
   }
 }
