@@ -8,7 +8,6 @@ import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -29,7 +28,7 @@ public class TransactionRetriever {
   public List<Transaction> getTransactionsByEmail(String email, LocalDate from, LocalDate to)
       throws UserNotFoundException, WrongRoleException {
     Investor investor = userRepository.findByEmail(email, Investor.class);
-    return new ArrayList<>(investor.getTransactions(from.atStartOfDay(), to.atStartOfDay()));
+    return investor.getTransactions(from.atStartOfDay(), to.atStartOfDay());
   }
 
   public List<Transaction> getTransactionsByTitle(String title, LocalDate from, LocalDate to) {

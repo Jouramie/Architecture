@@ -28,7 +28,7 @@ public class ApiTransactionAssemblerTest {
   }
 
   @Test
-  public void whenToDtoList_thenTransactionItemDtoIsConvertedToApiDto() {
+  public void whenToDto_thenTransactionItemDtoIsConvertedToApiDto() {
     TransactionItemDto transactionItemDto = buildServiceItemDto();
     SOME_ITEMS.add(transactionItemDto);
 
