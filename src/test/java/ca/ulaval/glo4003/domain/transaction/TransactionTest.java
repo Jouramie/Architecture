@@ -2,8 +2,6 @@ package ca.ulaval.glo4003.domain.transaction;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.clock.Clock;
@@ -63,7 +61,7 @@ public class TransactionTest {
 
   @Test
   public void whenCheckIfTransactionContainsTitle_thenTrue() {
-    assertTrue(transaction.containsTitle(SOME_TITLE));
+    assertThat(transaction.containsTitle(SOME_TITLE)).isTrue();
   }
 
   @Test
@@ -71,11 +69,11 @@ public class TransactionTest {
     List<TransactionItem> emptyItemList = emptyList();
     Transaction emptyTransaction = new Transaction(someClock.getCurrentTime(), emptyItemList, SOME_TYPE);
 
-    assertFalse(emptyTransaction.containsTitle(SOME_TITLE));
+    assertThat(emptyTransaction.containsTitle(SOME_TITLE)).isFalse();
   }
 
   @Test
   public void givenWrongTitle_whenCheckIfTransactionContainsTitle_thenFalse() {
-    assertFalse(transaction.containsTitle("wrong"));
+    assertThat(transaction.containsTitle("wrong")).isFalse();
   }
 }
