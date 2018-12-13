@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.ws.api.cart.dto;
+package ca.ulaval.glo4003.ws.api.transaction.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;

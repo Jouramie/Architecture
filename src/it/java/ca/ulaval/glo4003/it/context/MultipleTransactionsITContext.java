@@ -1,10 +1,9 @@
-package ca.ulaval.glo4003.it.portfolio;
+package ca.ulaval.glo4003.it.context;
 
-import static ca.ulaval.glo4003.context.DemoContext.DEFAULT_INVESTOR_EMAIL;
+import static ca.ulaval.glo4003.infrastructure.config.StocksDataSettings.LAST_STOCK_DATA_DATE;
 
 import ca.ulaval.glo4003.context.DemoContext;
 import ca.ulaval.glo4003.context.JerseyApiHandlersCreator;
-import ca.ulaval.glo4003.context.ProductionContext;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
@@ -14,14 +13,16 @@ import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocatorInitializer;
+import ca.ulaval.glo4003.it.util.TestClock;
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
-import java.time.Duration;
 import java.time.LocalDate;
 
-public class PortfolioReportITContext extends DemoContext {
+public class MultipleTransactionsITContext extends DemoContext {
 
-  public PortfolioReportITContext(JerseyApiHandlersCreator jerseyApiHandlersCreator) {
+  private TestClock testClock;
+
+  public MultipleTransactionsITContext(JerseyApiHandlersCreator jerseyApiHandlersCreator) {
     super(jerseyApiHandlersCreator);
   }
 
@@ -29,8 +30,14 @@ public class PortfolioReportITContext extends DemoContext {
   public void configureApplication(String apiUrl) {
     super.configureApplication(apiUrl);
 
-    setCurrentUserToDefaultAdmin();
+    setCurrentUserToDefaultInvestor();
     addStocksToCurrentUserPortfolio();
+  }
+
+  @Override
+  protected Clock createClock() {
+    testClock = new TestClock(LAST_STOCK_DATA_DATE.atTime(0, 0, 0));
+    return testClock;
   }
 
   @Override
@@ -38,7 +45,7 @@ public class PortfolioReportITContext extends DemoContext {
     return super.createServiceLocatorInitializer().registerInstance(NotificationSender.class, new NullNotificationSender());
   }
 
-  private void setCurrentUserToDefaultAdmin() {
+  private void setCurrentUserToDefaultInvestor() {
     User user = null;
     try {
       user = serviceLocator.get(UserRepository.class).findByEmail(DEFAULT_INVESTOR_EMAIL);
@@ -56,12 +63,8 @@ public class PortfolioReportITContext extends DemoContext {
   }
 
   private void addStock(String title, int quantity, LocalDate transactionDate) {
-    ReadableClock currentClock = serviceLocator.get(ReadableClock.class);
-    Clock testClock = new Clock(transactionDate.atTime(0, 0, 0), Duration.ZERO);
-
-    serviceLocator.registerInstance(ReadableClock.class, testClock);
+    testClock.setCurrentTime(transactionDate.atTime(0, 0, 0));
     performTransaction(title, quantity);
-    serviceLocator.registerInstance(ReadableClock.class, currentClock);
   }
 
   private void performTransaction(String title, int quantity) {

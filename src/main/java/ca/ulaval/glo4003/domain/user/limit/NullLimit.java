@@ -4,6 +4,6 @@ import ca.ulaval.glo4003.domain.transaction.Transaction;
 
 public class NullLimit extends Limit {
   @Override
-  public void checkIfTransactionExceed(Transaction transaction) {
+  public void ensureTransactionIsUnderLimit(Transaction transaction) {
   }
 }

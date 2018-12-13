@@ -23,4 +23,8 @@ public class TransactionAssembler {
     List<TransactionItemDto> itemDtos = transaction.items.stream().map(itemAssembler::toDto).collect(toList());
     return new TransactionDto(transaction.type.toString(), itemDtos, transaction.timestamp);
   }
+
+  public List<TransactionDto> toDtoList(List<Transaction> transactions) {
+    return transactions.stream().map(this::toDto).collect(toList());
+  }
 }

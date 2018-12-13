@@ -5,4 +5,8 @@ public class StockDoesNotExistException extends RuntimeException {
   public StockDoesNotExistException(Exception cause) {
     super(cause);
   }
+
+  public StockDoesNotExistException() {
+
+  }
 }

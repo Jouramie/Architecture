@@ -134,7 +134,7 @@ public class ProductionContext extends AbstractContext {
         .registerInstance(NotificationSender.class, createAwsSesSender());
   }
 
-  private Clock createClock() {
+  protected Clock createClock() {
     LocalDate startDate = StocksDataSettings.LAST_STOCK_DATA_DATE;
     return new Clock(startDate.atTime(0, 0, 0), SimulationSettings.CLOCK_TICK_DURATION);
   }

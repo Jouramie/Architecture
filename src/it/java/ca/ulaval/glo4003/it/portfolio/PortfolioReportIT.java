@@ -19,6 +19,7 @@ import ca.ulaval.glo4003.context.SwaggerApiHandlerCreator;
 import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.it.ResetServerBetweenTest;
+import ca.ulaval.glo4003.it.context.MultipleTransactionsITContext;
 import io.restassured.http.Header;
 import java.time.LocalDate;
 import org.junit.Rule;
@@ -38,7 +39,8 @@ public class PortfolioReportIT {
   private static final String DECREASING_STOCK_KEY = "mostDecreasingStock";
 
   @Rule
-  public ResetServerBetweenTest resetServerBetweenTest = new ResetServerBetweenTest(new PortfolioReportITContext(new JerseyApiHandlersCreator()));
+  public ResetServerBetweenTest resetServerBetweenTest =
+      new ResetServerBetweenTest(new MultipleTransactionsITContext(new JerseyApiHandlersCreator()));
 
   @Test
   public void givenPortfolioWithStocksInRequestedRange_whenGetPortfolioReport_thenReturnPortfolioHistory() {

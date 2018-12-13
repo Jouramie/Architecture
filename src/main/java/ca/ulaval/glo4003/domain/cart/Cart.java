@@ -49,25 +49,25 @@ public class Cart {
   public Transaction checkout(TransactionFactory transactionFactory, MarketRepository marketRepository)
       throws StockNotFoundException, HaltedMarketException, EmptyCartException {
 
-    checkIfCartIsEmpty();
-    checkIfMarketOfStocksIsNotHalted(marketRepository);
+    ensureCartIsNotEmpty();
+    ensureMarketsOfStocksAreNotHalted(marketRepository);
     return transactionFactory.createPurchase(stocks);
   }
 
-  private void checkIfCartIsEmpty() throws EmptyCartException {
+  private void ensureCartIsNotEmpty() throws EmptyCartException {
     if (isEmpty()) {
       throw new EmptyCartException();
     }
   }
 
-  private void checkIfMarketOfStocksIsNotHalted(MarketRepository marketRepository)
+  private void ensureMarketsOfStocksAreNotHalted(MarketRepository marketRepository)
       throws StockNotFoundException, HaltedMarketException {
     for (String title : stocks.getTitles()) {
-      validateMarketOfStockIsNotHalted(title, marketRepository);
+      ensureMarketOfStockIsNotHalted(title, marketRepository);
     }
   }
 
-  private void validateMarketOfStockIsNotHalted(String title, MarketRepository marketRepository) throws HaltedMarketException, StockNotFoundException {
+  private void ensureMarketOfStockIsNotHalted(String title, MarketRepository marketRepository) throws HaltedMarketException, StockNotFoundException {
     try {
       Market market = marketRepository.findByStock(title);
       if (market.isHalted()) {

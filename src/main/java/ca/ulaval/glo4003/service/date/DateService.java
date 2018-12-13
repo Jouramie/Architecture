@@ -42,4 +42,8 @@ public class DateService {
   public LocalDate getDateSince(SinceParameter since) {
     return clock.getCurrentDate().minusDays(since.toDays());
   }
+
+  public LocalDate getCurrentDate() {
+    return clock.getCurrentDate();
+  }
 }

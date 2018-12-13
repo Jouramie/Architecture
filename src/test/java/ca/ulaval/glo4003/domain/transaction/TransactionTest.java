@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.domain.transaction;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
@@ -16,7 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransactionTest {
-  private static final TransactionItem AN_ITEM = new TransactionItemBuilder().build();
+  private static final String SOME_TITLE = "title";
+  private static final TransactionItem AN_ITEM = new TransactionItemBuilder().withTitle(SOME_TITLE).build();
   private static final TransactionItem ANOTHER_ITEM = new TransactionItemBuilder().build();
   private static final List<TransactionItem> SOME_TRANSACTION_ITEMS
       = Arrays.asList(AN_ITEM, ANOTHER_ITEM);
@@ -55,5 +57,23 @@ public class TransactionTest {
   @Test
   public void whenCompareToTransactionWithSameDate_thenReturnZero() {
     assertThat(formerTransaction.compareTo(formerTransaction)).isEqualTo(0);
+  }
+
+  @Test
+  public void whenCheckIfTransactionContainsTitle_thenTrue() {
+    assertThat(transaction.containsTitle(SOME_TITLE)).isTrue();
+  }
+
+  @Test
+  public void givenNoItem_whenCheckIfTransactionContainsTitle_thenFalse() {
+    List<TransactionItem> emptyItemList = emptyList();
+    Transaction emptyTransaction = new Transaction(someClock.getCurrentTime(), emptyItemList, SOME_TYPE);
+
+    assertThat(emptyTransaction.containsTitle(SOME_TITLE)).isFalse();
+  }
+
+  @Test
+  public void givenWrongTitle_whenCheckIfTransactionContainsTitle_thenFalse() {
+    assertThat(transaction.containsTitle("wrong")).isFalse();
   }
 }
