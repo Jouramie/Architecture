@@ -49,7 +49,7 @@ public class JerseyApiHandlersCreator {
     context.setContextPath("/api/");
     ResourceConfig resourceConfig = ResourceConfig.forApplication(application);
     resourceConfig.property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
-    setupJacksonJavaTimeModule(resourceConfig);
+    setupJacksonSerialization(resourceConfig);
     getClassesForAnnotation(
         webServicePackagePrefix,
         FilterRegistration.class)
@@ -73,7 +73,7 @@ public class JerseyApiHandlersCreator {
         .collect(toSet());
   }
 
-  private void setupJacksonJavaTimeModule(ResourceConfig resourceConfig) {
+  private void setupJacksonSerialization(ResourceConfig resourceConfig) {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);

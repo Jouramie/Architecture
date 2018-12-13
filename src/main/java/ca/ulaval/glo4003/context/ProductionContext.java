@@ -83,13 +83,13 @@ public class ProductionContext extends AbstractContext {
         .info(info)
         .servers(Stream.of(server).collect(toList()));
 
-    SwaggerConfiguration oasConfig = new SwaggerConfiguration()
+    SwaggerConfiguration swaggerConfiguration = new SwaggerConfiguration()
         .openAPI(swaggerOpenApi)
         .prettyPrint(true);
 
     try {
       new JaxrsOpenApiContextBuilder()
-          .openApiConfiguration(oasConfig)
+          .openApiConfiguration(swaggerConfiguration)
           .buildContext(true);
     } catch (OpenApiConfigurationException e) {
       throw new RuntimeException(e.getMessage(), e);
