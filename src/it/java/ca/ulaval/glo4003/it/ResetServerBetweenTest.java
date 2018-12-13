@@ -2,7 +2,10 @@ package ca.ulaval.glo4003.it;
 
 import ca.ulaval.glo4003.InvestULMain;
 import ca.ulaval.glo4003.context.AbstractContext;
+import ca.ulaval.glo4003.context.DemoContext;
+import ca.ulaval.glo4003.context.JerseyApiHandlersCreator;
 import ca.ulaval.glo4003.context.ProductionContext;
+import ca.ulaval.glo4003.context.SwaggerApiHandlerCreator;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -14,7 +17,7 @@ public class ResetServerBetweenTest implements TestRule {
   private Thread thread;
 
   public ResetServerBetweenTest() {
-    context = new ProductionContext();
+    context = new TestContext(new JerseyApiHandlersCreator());
   }
 
   public ResetServerBetweenTest(AbstractContext context) {

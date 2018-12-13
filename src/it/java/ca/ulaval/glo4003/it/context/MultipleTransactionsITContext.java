@@ -2,7 +2,8 @@ package ca.ulaval.glo4003.it.context;
 
 import static ca.ulaval.glo4003.infrastructure.config.StocksDataSettings.LAST_STOCK_DATA_DATE;
 
-import ca.ulaval.glo4003.context.AbstractContext;
+import ca.ulaval.glo4003.context.DemoContext;
+import ca.ulaval.glo4003.context.JerseyApiHandlersCreator;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
@@ -17,9 +18,13 @@ import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
 import java.time.LocalDate;
 
-public class MultipleTransactionsITContext extends AbstractContext {
+public class MultipleTransactionsITContext extends DemoContext {
 
   private TestClock testClock;
+
+  public MultipleTransactionsITContext(JerseyApiHandlersCreator jerseyApiHandlersCreator) {
+    super(jerseyApiHandlersCreator);
+  }
 
   @Override
   public void configureApplication(String apiUrl) {
@@ -37,7 +42,7 @@ public class MultipleTransactionsITContext extends AbstractContext {
 
   @Override
   protected ServiceLocatorInitializer createServiceLocatorInitializer() {
-    return super.createServiceLocatorInitializer().register(NotificationSender.class, NullNotificationSender.class);
+    return super.createServiceLocatorInitializer().registerInstance(NotificationSender.class, new NullNotificationSender());
   }
 
   private void setCurrentUserToDefaultInvestor() {

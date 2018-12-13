@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.it.market.halt;
 
+import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
 import static io.restassured.RestAssured.given;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -21,9 +22,10 @@ public class MarketHaltIT {
 
   @Test
   public void whenHaltingMarket_thenReturnMarketStatus() {
+    String token = givenAdministratorAlreadyAuthenticated();
     //@formatter:off
     given()
-        .header("token", "00000000-0000-0000-0000-000000000000")
+        .header("token", token)
         .queryParam("message", "foobar")
     .when()
         .post(String.format(API_HALT_MARKET_ROUTE, MARKET))
@@ -36,9 +38,10 @@ public class MarketHaltIT {
 
   @Test
   public void givenInexistentMarket_whenHaltingMarket_thenReturn404NotFound() {
+    String token = givenAdministratorAlreadyAuthenticated();
     //@formatter:off
     given()
-        .header("token", "00000000-0000-0000-0000-000000000000")
+        .header("token", token)
         .queryParam("message", "foobar")
     .when()
         .post(String.format(API_HALT_MARKET_ROUTE, INEXISTENT_MARKET))

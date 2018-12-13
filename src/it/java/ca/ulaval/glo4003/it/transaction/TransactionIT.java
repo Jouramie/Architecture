@@ -1,6 +1,6 @@
 package ca.ulaval.glo4003.it.transaction;
 
-import static ca.ulaval.glo4003.context.AbstractContext.DEFAULT_INVESTOR_EMAIL;
+import static ca.ulaval.glo4003.context.DemoContext.DEFAULT_INVESTOR_EMAIL;
 import static ca.ulaval.glo4003.it.util.UserAuthenticationHelper.givenAdministratorAlreadyAuthenticated;
 import static io.restassured.RestAssured.given;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.iterableWithSize;
 
+import ca.ulaval.glo4003.context.JerseyApiHandlersCreator;
 import ca.ulaval.glo4003.it.ResetServerBetweenTest;
 import ca.ulaval.glo4003.it.context.MultipleTransactionsITContext;
 import io.restassured.http.Header;
@@ -29,7 +30,7 @@ public class TransactionIT {
 
   @ClassRule
   public static ResetServerBetweenTest resetServerBetweenTest =
-      new ResetServerBetweenTest(new MultipleTransactionsITContext());
+      new ResetServerBetweenTest(new MultipleTransactionsITContext(new JerseyApiHandlersCreator()));
 
   @Test
   public void whenGettingTransactions_thenReturnListOfTransactions() {
