@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.ws.api.transaction.assembler;
 import static java.util.stream.Collectors.toList;
 
 import ca.ulaval.glo4003.domain.Component;
-import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
+import ca.ulaval.glo4003.service.transaction.TransactionDto;
 import ca.ulaval.glo4003.ws.api.transaction.dto.ApiTransactionDto;
 import ca.ulaval.glo4003.ws.api.transaction.dto.ApiTransactionItemDto;
 import java.util.List;

@@ -7,8 +7,6 @@ import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
-import ca.ulaval.glo4003.service.cart.assemblers.CartItemAssembler;
-import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
 import ca.ulaval.glo4003.service.cart.exception.InvalidStockTitleException;
 import ca.ulaval.glo4003.service.cart.exception.StockNotInCartException;
 import ca.ulaval.glo4003.service.user.exception.UserDoesNotExistException;

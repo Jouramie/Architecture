@@ -1,8 +1,7 @@
-package ca.ulaval.glo4003.service.cart.assemblers;
+package ca.ulaval.glo4003.service.transaction;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.transaction.TransactionItem;
-import ca.ulaval.glo4003.service.cart.dto.TransactionItemDto;
 
 @Component
 public class TransactionItemAssembler {

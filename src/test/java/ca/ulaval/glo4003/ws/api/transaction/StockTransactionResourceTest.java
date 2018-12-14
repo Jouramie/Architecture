@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.date.SinceParameter;
+import ca.ulaval.glo4003.service.transaction.TransactionDto;
 import ca.ulaval.glo4003.service.transaction.TransactionService;
 import ca.ulaval.glo4003.util.TransactionDtoBuilder;
 import ca.ulaval.glo4003.ws.api.transaction.assembler.ApiTransactionAssembler;

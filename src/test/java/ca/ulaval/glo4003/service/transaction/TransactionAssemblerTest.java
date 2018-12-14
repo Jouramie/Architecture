@@ -1,14 +1,10 @@
-package ca.ulaval.glo4003.service.cart;
+package ca.ulaval.glo4003.service.transaction;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionBuilder;
 import ca.ulaval.glo4003.domain.transaction.TransactionItemBuilder;
-import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
-import ca.ulaval.glo4003.service.cart.assemblers.TransactionItemAssembler;
-import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
-import ca.ulaval.glo4003.service.cart.dto.TransactionItemDto;
 import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;

@@ -3,8 +3,8 @@ package ca.ulaval.glo4003.util;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
-import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
-import ca.ulaval.glo4003.service.cart.dto.TransactionItemDto;
+import ca.ulaval.glo4003.service.transaction.TransactionDto;
+import ca.ulaval.glo4003.service.transaction.TransactionItemDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +18,6 @@ public class TransactionDtoBuilder {
   }
 
   public List<TransactionDto> buildList() {
-    return singletonList(this.build());
+    return singletonList(build());
   }
 }

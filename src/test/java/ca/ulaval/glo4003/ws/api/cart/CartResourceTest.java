@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.service.cart.CartItemDto;
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
-import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
-import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
+import ca.ulaval.glo4003.service.transaction.TransactionDto;
 import ca.ulaval.glo4003.ws.api.cart.assembler.ApiCartItemAssembler;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;

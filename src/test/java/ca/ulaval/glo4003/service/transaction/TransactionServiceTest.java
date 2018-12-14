@@ -9,7 +9,6 @@ import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.TransactionRetriever;
 import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.exception.WrongRoleException;
-import ca.ulaval.glo4003.service.cart.assemblers.TransactionAssembler;
 import ca.ulaval.glo4003.service.date.DateService;
 import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.service.stock.StockDoesNotExistException;

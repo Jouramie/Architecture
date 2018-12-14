@@ -3,7 +3,7 @@ package ca.ulaval.glo4003.ws.api.cart;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.cart.CartService;
 import ca.ulaval.glo4003.service.cart.CheckoutService;
-import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
+import ca.ulaval.glo4003.service.transaction.TransactionDto;
 import ca.ulaval.glo4003.ws.api.cart.assembler.ApiCartItemAssembler;
 import ca.ulaval.glo4003.ws.api.cart.dto.ApiCartItemResponseDto;
 import ca.ulaval.glo4003.ws.api.cart.dto.CartStockRequestDto;

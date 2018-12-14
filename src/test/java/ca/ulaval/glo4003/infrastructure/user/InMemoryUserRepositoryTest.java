@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.infrastructure.persistence;
+package ca.ulaval.glo4003.infrastructure.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -10,7 +10,6 @@ import ca.ulaval.glo4003.domain.user.UserBuilder;
 import ca.ulaval.glo4003.domain.user.exception.UserAlreadyExistsException;
 import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.exception.WrongRoleException;
-import ca.ulaval.glo4003.infrastructure.user.InMemoryUserRepository;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;

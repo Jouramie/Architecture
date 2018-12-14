@@ -1,10 +1,8 @@
-package ca.ulaval.glo4003.infrastructure.market;
+package ca.ulaval.glo4003.domain.market;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
 
-import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.market.MarketUpdater;
 import ca.ulaval.glo4003.domain.market.state.Market;
 import ca.ulaval.glo4003.domain.stock.StockValueRetriever;
 import java.time.LocalDateTime;

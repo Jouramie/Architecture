@@ -37,10 +37,6 @@ public class UserResourceTest {
 
   private static final InvestorCreationDto SOME_CREATION_REQUEST =
       new InvestorCreationDto("email", "password");
-  private static final InvestorCreationDto CREATION_REQUEST_WITH_INVALID_EMAIL =
-      new InvestorCreationDto("", "password");
-  private static final InvestorCreationDto CREATION_REQUEST_WITH_INVALID_PASSWORD =
-      new InvestorCreationDto("email", "");
 
   private static final String SOME_EMAIL = "email";
   private static final UserRole SOME_ROLE = UserRole.INVESTOR;

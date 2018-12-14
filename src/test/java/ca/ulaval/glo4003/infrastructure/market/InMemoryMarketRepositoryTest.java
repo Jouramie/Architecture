@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.infrastructure.persistence;
+package ca.ulaval.glo4003.infrastructure.market;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.domain.market.MarketBuilder;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.exception.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.state.Market;
-import ca.ulaval.glo4003.infrastructure.market.InMemoryMarketRepository;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;

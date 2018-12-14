@@ -1,4 +1,4 @@
-package ca.ulaval.glo4003.service.cart.assemblers;
+package ca.ulaval.glo4003.service.cart;
 
 import static java.util.stream.Collectors.toList;
 
@@ -7,7 +7,6 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
-import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
 import ca.ulaval.glo4003.service.cart.exception.InvalidStockTitleException;
 import java.util.List;
 import javax.inject.Inject;

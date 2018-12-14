@@ -11,8 +11,6 @@ import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
-import ca.ulaval.glo4003.service.cart.assemblers.CartItemAssembler;
-import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
 import ca.ulaval.glo4003.service.cart.exception.InvalidStockTitleException;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.util.List;

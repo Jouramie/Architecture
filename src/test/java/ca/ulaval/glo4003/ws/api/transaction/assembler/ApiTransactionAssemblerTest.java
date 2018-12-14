@@ -3,8 +3,8 @@ package ca.ulaval.glo4003.ws.api.transaction.assembler;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo4003.domain.transaction.TransactionItemBuilder;
-import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
-import ca.ulaval.glo4003.service.cart.dto.TransactionItemDto;
+import ca.ulaval.glo4003.service.transaction.TransactionDto;
+import ca.ulaval.glo4003.service.transaction.TransactionItemDto;
 import ca.ulaval.glo4003.ws.api.transaction.dto.ApiTransactionDto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
