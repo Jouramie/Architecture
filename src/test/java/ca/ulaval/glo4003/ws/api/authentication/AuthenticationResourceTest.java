@@ -9,7 +9,7 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.service.authentication.AuthenticationResponseDto;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
-import ca.ulaval.glo4003.ws.api.authentication.assemblers.ApiAuthenticationResponseAssembler;
+import ca.ulaval.glo4003.ws.api.authentication.assembler.ApiAuthenticationResponseAssembler;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationResponseDto;
 import javax.ws.rs.core.Response;

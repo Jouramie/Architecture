@@ -4,7 +4,7 @@ import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.service.cart.dto.TransactionDto;
 import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.service.transaction.TransactionService;
-import ca.ulaval.glo4003.ws.api.transaction.assemblers.ApiTransactionAssembler;
+import ca.ulaval.glo4003.ws.api.transaction.assembler.ApiTransactionAssembler;
 import ca.ulaval.glo4003.ws.api.transaction.dto.ApiTransactionDto;
 import ca.ulaval.glo4003.ws.api.util.SinceParameterConverter;
 import ca.ulaval.glo4003.ws.http.authentication.AuthenticationRequiredBinding;

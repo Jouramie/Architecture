@@ -11,7 +11,7 @@ import ca.ulaval.glo4003.domain.notification.NullNotificationSender;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocatorInitializer;
 import ca.ulaval.glo4003.it.util.TestClock;
 import ca.ulaval.glo4003.service.cart.CartService;

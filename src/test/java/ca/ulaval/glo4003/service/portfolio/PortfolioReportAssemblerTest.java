@@ -8,10 +8,10 @@ import static org.mockito.Mockito.spy;
 
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
-import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
+import ca.ulaval.glo4003.domain.stock.exception.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
 import ca.ulaval.glo4003.domain.stock.StockValueBuilder;

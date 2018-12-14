@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.infrastructure.stock;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
-import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.market.exception.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;

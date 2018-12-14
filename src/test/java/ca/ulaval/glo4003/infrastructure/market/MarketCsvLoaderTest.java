@@ -4,9 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.market.states.Market;
+import ca.ulaval.glo4003.domain.market.state.Market;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.infrastructure.persistence.InMemoryMarketRepository;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.Before;

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import ca.ulaval.glo4003.domain.stock.exception.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;

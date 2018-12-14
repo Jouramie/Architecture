@@ -7,9 +7,9 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.market.MarketBuilder;
 import ca.ulaval.glo4003.domain.market.MarketId;
-import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.market.states.Market;
+import ca.ulaval.glo4003.domain.market.exception.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.state.Market;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.Before;
 import org.junit.Test;

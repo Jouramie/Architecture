@@ -1,15 +1,18 @@
 package ca.ulaval.glo4003.service.authentication;
 
 import ca.ulaval.glo4003.domain.Component;
+import ca.ulaval.glo4003.domain.authentication.AuthenticationToken;
+import ca.ulaval.glo4003.domain.authentication.AuthenticationTokenFactory;
+import ca.ulaval.glo4003.domain.authentication.AuthenticationTokenRepository;
+import ca.ulaval.glo4003.domain.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
-import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
-import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenFactory;
-import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
-import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
-import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
+import ca.ulaval.glo4003.service.authentication.exception.AuthenticationFailedException;
+import ca.ulaval.glo4003.service.authentication.exception.InvalidTokenException;
+import ca.ulaval.glo4003.service.authentication.exception.UnauthorizedUserException;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
 import java.util.List;

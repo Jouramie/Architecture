@@ -4,8 +4,8 @@ import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import java.time.LocalDate;
 
 public class HistoricalPortfolio implements Comparable<HistoricalPortfolio> {

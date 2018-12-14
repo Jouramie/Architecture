@@ -1,6 +1,7 @@
 package ca.ulaval.glo4003.domain.market;
 
-import ca.ulaval.glo4003.domain.market.states.Market;
+import ca.ulaval.glo4003.domain.market.exception.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.state.Market;
 import java.util.List;
 
 public interface MarketRepository {

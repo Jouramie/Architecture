@@ -2,12 +2,12 @@ package ca.ulaval.glo4003.service.portfolio;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
-import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
+import ca.ulaval.glo4003.domain.stock.exception.NoStockValueFitsCriteriaException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
+import ca.ulaval.glo4003.service.cart.exception.InvalidStockTitleException;
 import ca.ulaval.glo4003.service.portfolio.dto.HistoricalPortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;

@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.domain.user;
 
-import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
-import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
-import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
+import ca.ulaval.glo4003.domain.user.exception.UserAlreadyExistsException;
+import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exception.WrongRoleException;
 import java.util.List;
 
 public interface UserRepository {

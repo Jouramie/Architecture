@@ -6,8 +6,8 @@ import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
-import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
+import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exception.WrongRoleException;
 import ca.ulaval.glo4003.service.date.SinceParameter;
 import java.time.LocalDateTime;
 import java.util.Arrays;

@@ -1,5 +1,7 @@
 package ca.ulaval.glo4003.infrastructure.injection;
 
+import ca.ulaval.glo4003.infrastructure.injection.exception.InjectionInstantiationException;
+import ca.ulaval.glo4003.infrastructure.injection.exception.NonInjectableConstructorException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -45,7 +47,8 @@ public class ServiceLocatorInitializer {
   }
 
   public void configure() {
-    Stream.concat(registeredClasses.keySet().stream(), objects.keySet().stream()).forEach((clazz) -> serviceLocator.registerInstance(clazz, resolve(clazz)));
+    Stream.concat(registeredClasses.keySet().stream(), objects.keySet().stream())
+        .forEach((clazz) -> serviceLocator.registerInstance(clazz, resolve(clazz)));
   }
 
   private <T> T resolve(Class<? extends T> type) {
@@ -59,8 +62,7 @@ public class ServiceLocatorInitializer {
 
   private <T> T instantiate(Class<T> type) {
     Constructor<?> injectableConstructor = findInjectableConstructorForType(type);
-    Object[] parameters = Arrays.stream(injectableConstructor.getParameterTypes()).map(this::resolve)
-        .toArray();
+    Object[] parameters = Arrays.stream(injectableConstructor.getParameterTypes()).map(this::resolve).toArray();
     return injectConstructor(injectableConstructor, parameters);
   }
 
@@ -75,8 +77,8 @@ public class ServiceLocatorInitializer {
   private <T> T injectConstructor(Constructor<?> injectableConstructor, Object[] parameters) {
     try {
       return (T) injectableConstructor.newInstance(parameters);
-    } catch (java.lang.InstantiationException | InvocationTargetException | IllegalAccessException e) {
-      throw new InstantiationException(injectableConstructor.getDeclaringClass());
+    } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+      throw new InjectionInstantiationException(injectableConstructor.getDeclaringClass());
     }
   }
 }

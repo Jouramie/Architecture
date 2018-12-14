@@ -2,7 +2,7 @@ package ca.ulaval.glo4003.service.stock;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.stock.Stock;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategory;
 import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategoryBuilder;

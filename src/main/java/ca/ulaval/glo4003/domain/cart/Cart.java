@@ -1,15 +1,14 @@
 package ca.ulaval.glo4003.domain.cart;
 
-import ca.ulaval.glo4003.domain.market.HaltedMarketException;
-import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.market.states.Market;
+import ca.ulaval.glo4003.domain.market.exception.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.exception.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.state.Market;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
-import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 
 public class Cart {
   private StockCollection stocks;

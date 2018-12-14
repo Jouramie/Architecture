@@ -6,11 +6,11 @@ import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo4003.domain.market.MarketBuilder;
 import ca.ulaval.glo4003.domain.market.MarketId;
-import ca.ulaval.glo4003.domain.market.states.Market;
+import ca.ulaval.glo4003.domain.market.state.Market;
 import ca.ulaval.glo4003.service.market.MarketDoesNotExistException;
 import ca.ulaval.glo4003.service.market.MarketService;
 import ca.ulaval.glo4003.service.market.MarketStatusDto;
-import ca.ulaval.glo4003.ws.api.market.assemblers.ApiMarketStatusAssembler;
+import ca.ulaval.glo4003.ws.api.market.assembler.ApiMarketStatusAssembler;
 import ca.ulaval.glo4003.ws.api.market.dto.MarketStatusResponseDto;
 import org.junit.Before;
 import org.junit.Test;

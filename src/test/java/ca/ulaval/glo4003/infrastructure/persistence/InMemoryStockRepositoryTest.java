@@ -8,8 +8,9 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategory;
+import ca.ulaval.glo4003.infrastructure.stock.InMemoryStockRepository;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.util.Arrays;
 import java.util.List;

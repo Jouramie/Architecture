@@ -5,9 +5,9 @@ import static org.mockito.BDDMockito.given;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
+import ca.ulaval.glo4003.domain.stock.exception.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValueBuilder;
 import ca.ulaval.glo4003.util.TestStockBuilder;

@@ -1,5 +1,6 @@
 package ca.ulaval.glo4003.infrastructure.injection;
 
+import ca.ulaval.glo4003.infrastructure.injection.exception.UnregisteredComponentException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;

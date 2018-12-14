@@ -8,7 +8,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 
 import ca.ulaval.glo4003.domain.stock.Stock;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategory;
 import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategoryBuilder;

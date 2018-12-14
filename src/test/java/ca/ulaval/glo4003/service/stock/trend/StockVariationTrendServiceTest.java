@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.domain.clock.Clock;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockHistory;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.service.date.DateService;
 import java.time.Duration;

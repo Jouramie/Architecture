@@ -3,6 +3,7 @@ package ca.ulaval.glo4003.domain.stock;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import ca.ulaval.glo4003.domain.stock.exception.NoStockValueFitsCriteriaException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;

@@ -1,7 +1,7 @@
 package ca.ulaval.glo4003.domain.market;
 
-import ca.ulaval.glo4003.domain.market.states.ClosedMarketState;
-import ca.ulaval.glo4003.domain.market.states.Market;
+import ca.ulaval.glo4003.domain.market.state.ClosedMarketState;
+import ca.ulaval.glo4003.domain.market.state.Market;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockHistory;
