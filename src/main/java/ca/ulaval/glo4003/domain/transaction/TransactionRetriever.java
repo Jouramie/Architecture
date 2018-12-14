@@ -8,6 +8,7 @@ import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.exception.WrongRoleException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -28,7 +29,7 @@ public class TransactionRetriever {
   public List<Transaction> getTransactionsByEmail(String email, LocalDate from, LocalDate to)
       throws UserNotFoundException, WrongRoleException {
     Investor investor = userRepository.findByEmail(email, Investor.class);
-    return investor.getTransactions(from.atStartOfDay(), to.atStartOfDay());
+    return investor.getTransactions(from.atStartOfDay(), to.atTime(LocalTime.MAX));
   }
 
   public List<Transaction> getTransactionsByTitle(String title, LocalDate from, LocalDate to) {
@@ -40,6 +41,6 @@ public class TransactionRetriever {
   private Stream<Transaction> getAllTransactions(LocalDate from, LocalDate to) {
     List<Investor> investors = userRepository.findInvestors();
     return investors.stream()
-        .flatMap(investor -> investor.getTransactions(from.atStartOfDay(), to.atStartOfDay()).stream());
+        .flatMap(investor -> investor.getTransactions(from.atStartOfDay(), to.atTime(LocalTime.MAX)).stream());
   }
 }
