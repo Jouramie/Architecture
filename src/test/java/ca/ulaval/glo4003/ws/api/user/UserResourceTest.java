@@ -1,9 +1,7 @@
 package ca.ulaval.glo4003.ws.api.user;
 
-import static ca.ulaval.glo4003.util.InputValidationTestUtil.assertThatExceptionContainsErrorFor;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -17,21 +15,17 @@ import ca.ulaval.glo4003.service.user.limit.LimitDto;
 import ca.ulaval.glo4003.service.user.limit.LimitService;
 import ca.ulaval.glo4003.service.user.limit.MoneyAmountLimitDto;
 import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
-import ca.ulaval.glo4003.ws.api.user.assemblers.ApiLimitAssembler;
-import ca.ulaval.glo4003.ws.api.user.assemblers.ApiUserAssembler;
+import ca.ulaval.glo4003.ws.api.user.assembler.ApiLimitAssembler;
+import ca.ulaval.glo4003.ws.api.user.assembler.ApiUserAssembler;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiStockLimitDto;
 import ca.ulaval.glo4003.ws.api.user.dto.ApiUserDto;
 import ca.ulaval.glo4003.ws.api.user.dto.InvestorCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.MoneyAmountLimitCreationDto;
 import ca.ulaval.glo4003.ws.api.user.dto.StockLimitCreationDto;
-import ca.ulaval.glo4003.ws.api.validation.InvalidInputException;
-import ca.ulaval.glo4003.ws.api.validation.RequestValidator;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.ws.rs.core.Response;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,10 +37,6 @@ public class UserResourceTest {
 
   private static final InvestorCreationDto SOME_CREATION_REQUEST =
       new InvestorCreationDto("email", "password");
-  private static final InvestorCreationDto CREATION_REQUEST_WITH_INVALID_EMAIL =
-      new InvestorCreationDto("", "password");
-  private static final InvestorCreationDto CREATION_REQUEST_WITH_INVALID_PASSWORD =
-      new InvestorCreationDto("email", "");
 
   private static final String SOME_EMAIL = "email";
   private static final UserRole SOME_ROLE = UserRole.INVESTOR;
@@ -65,11 +55,11 @@ public class UserResourceTest {
   @Mock
   private LimitService limitService;
 
-  private UserResourceImpl userResource;
+  private UserResource userResource;
 
   @Before
   public void setup() {
-    userResource = new UserResourceImpl(userService, limitService, new RequestValidator(),
+    userResource = new UserResource(userService, limitService,
         new ApiUserAssembler(new ApiLimitAssembler()), new ApiLimitAssembler());
   }
 
@@ -91,22 +81,6 @@ public class UserResourceTest {
 
     ApiUserDto expectedUser = new ApiUserDto(SOME_EMAIL, SOME_ROLE, null);
     assertThat(response.getEntity()).isEqualToComparingFieldByField(expectedUser);
-  }
-
-  @Test
-  public void givenInvalidEmail_whenCreatingUser_thenExceptionIsThrown() {
-    ThrowingCallable createUser = () -> userResource.createInvestor(CREATION_REQUEST_WITH_INVALID_EMAIL);
-
-    InvalidInputException exception = catchThrowableOfType(createUser, InvalidInputException.class);
-    assertThatExceptionContainsErrorFor(exception, "email");
-  }
-
-  @Test
-  public void givenInvalidPassword_whenCreatingUser_thenExceptionIsThrown() {
-    ThrowingCallable createUser = () -> userResource.createInvestor(CREATION_REQUEST_WITH_INVALID_PASSWORD);
-
-    InvalidInputException exception = Assertions.catchThrowableOfType(createUser, InvalidInputException.class);
-    assertThatExceptionContainsErrorFor(exception, "password");
   }
 
   @Test

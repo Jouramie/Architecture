@@ -12,7 +12,8 @@ import static org.mockito.Mockito.verify;
 import ca.ulaval.glo4003.domain.user.UserRole;
 import ca.ulaval.glo4003.infrastructure.injection.ServiceLocator;
 import ca.ulaval.glo4003.service.authentication.AuthenticationService;
-import ca.ulaval.glo4003.service.authentication.InvalidTokenException;
+import ca.ulaval.glo4003.service.authentication.exception.InvalidTokenException;
+import ca.ulaval.glo4003.service.authentication.exception.UnauthorizedUserException;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
 import java.util.List;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -31,19 +32,19 @@ public class AuthenticationFilterTest {
 
   private static final String SOME_TOKEN = "a-token";
 
-  private AuthenticationFilter authenticationFilter;
-
   @Mock
   private ContainerRequestContext requestContext;
   @Mock
   private AuthenticationService authenticationService;
   @Mock
-  private AcceptedRoleReflectionExtractor acceptedRoleReflectionExtractor;
+  private AuthorizedRoleReflectionExtractor authorizedRoleReflectionExtractor;
+
+  private AuthenticationFilter authenticationFilter;
 
   @Before
   public void setup() {
     ServiceLocator.INSTANCE.registerInstance(AuthenticationService.class, authenticationService);
-    ServiceLocator.INSTANCE.registerInstance(AcceptedRoleReflectionExtractor.class, acceptedRoleReflectionExtractor);
+    ServiceLocator.INSTANCE.registerInstance(AuthorizedRoleReflectionExtractor.class, authorizedRoleReflectionExtractor);
 
     authenticationFilter = new AuthenticationFilter();
   }
@@ -56,18 +57,18 @@ public class AuthenticationFilterTest {
   }
 
   @Test
-  public void whenFiltering_thenRequiredRoleIsExtracted() {
+  public void whenFiltering_thenRequiredRoleIsExtracted() throws UnauthorizedUserException, InvalidTokenException {
     List<UserRole> someRoles = singletonList(UserRole.INVESTOR);
-    given(acceptedRoleReflectionExtractor.extractAcceptedRoles(any())).willReturn(someRoles);
+    given(authorizedRoleReflectionExtractor.extractAuthorizedRoles(any())).willReturn(someRoles);
 
     authenticationFilter.filter(requestContext);
 
-    verify(acceptedRoleReflectionExtractor).extractAcceptedRoles(any());
+    verify(authorizedRoleReflectionExtractor).extractAuthorizedRoles(any());
     verify(authenticationService).validateAuthentication(any(), eq(someRoles));
   }
 
   @Test
-  public void whenFiltering_thenTokenIsValidated() {
+  public void whenFiltering_thenTokenIsValidated() throws UnauthorizedUserException, InvalidTokenException {
     ArgumentCaptor<AuthenticationTokenDto> tokenDtoCaptor = ArgumentCaptor.forClass(AuthenticationTokenDto.class);
     AuthenticationTokenDto expectedTokenDto = new AuthenticationTokenDto(SOME_TOKEN);
 
@@ -78,7 +79,8 @@ public class AuthenticationFilterTest {
   }
 
   @Test
-  public void givenInvalidToken_whenFiltering_thenRequestIsAborted() {
+  public void givenInvalidToken_whenFiltering_thenRequestIsAborted()
+      throws UnauthorizedUserException, InvalidTokenException {
     ArgumentCaptor<Response> responseCaptor = ArgumentCaptor.forClass(Response.class);
     doThrow(InvalidTokenException.class).when(authenticationService).validateAuthentication(any(), any());
 
@@ -89,7 +91,8 @@ public class AuthenticationFilterTest {
   }
 
   @Test
-  public void givenInvalidUUID_whenFiltering_thenRequestIsAborted() {
+  public void givenInvalidUUID_whenFiltering_thenRequestIsAborted()
+      throws UnauthorizedUserException, InvalidTokenException {
     ArgumentCaptor<Response> responseCaptor = ArgumentCaptor.forClass(Response.class);
     doThrow(IllegalArgumentException.class).when(authenticationService).validateAuthentication(any(), any());
 

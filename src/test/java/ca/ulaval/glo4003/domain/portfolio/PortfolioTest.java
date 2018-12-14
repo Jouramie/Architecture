@@ -5,18 +5,20 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
-import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
+import ca.ulaval.glo4003.domain.stock.StockValueBuilder;
+import ca.ulaval.glo4003.domain.stock.exception.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
-import ca.ulaval.glo4003.infrastructure.persistence.InMemoryStockRepository;
+import ca.ulaval.glo4003.domain.transaction.TransactionBuilder;
+import ca.ulaval.glo4003.domain.transaction.TransactionItemBuilder;
+import ca.ulaval.glo4003.infrastructure.stock.InMemoryStockRepository;
 import ca.ulaval.glo4003.util.TestStockBuilder;
-import ca.ulaval.glo4003.util.TransactionBuilder;
-import ca.ulaval.glo4003.util.TransactionItemBuilder;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.LongStream;
@@ -35,7 +37,7 @@ public class PortfolioTest {
   private final BigDecimal SOME_RATE_TO_USD = new BigDecimal(12);
   private final Currency SOME_CURRENCY = new Currency(SOME_CURRENCY_NAME, SOME_RATE_TO_USD);
   private final MoneyAmount SOME_VALUE = new MoneyAmount(12.2, SOME_CURRENCY);
-  private final StockValue SOME_STOCK_VALUE = new StockValue(SOME_VALUE, SOME_VALUE, SOME_VALUE);
+  private final StockValue SOME_STOCK_VALUE = new StockValueBuilder().withLatestValue(SOME_VALUE).build();
   private final LocalDate NOW = LocalDate.now();
 
   private Stock someStock;
@@ -190,6 +192,25 @@ public class PortfolioTest {
     assertThat(mostDecreasingStockTitle).isNull();
   }
 
+  @Test
+  public void whenGetTransactions_thenReturnTransactionsBetweenDates() {
+    LocalDateTime from = NOW.atStartOfDay();
+    LocalDateTime to = NOW.plusDays(1).atStartOfDay();
+
+    Transaction beforeTransaction = new TransactionBuilder().withTime(NOW.minusDays(10).atStartOfDay()).build();
+    Transaction firstTransaction = new TransactionBuilder().withTime(from).build();
+    Transaction secondTransaction = new TransactionBuilder().withTime(to).build();
+    Transaction afterTransaction = new TransactionBuilder().withTime(NOW.plusDays(10).atStartOfDay()).build();
+    portfolio.add(beforeTransaction, someStockRepository);
+    portfolio.add(firstTransaction, someStockRepository);
+    portfolio.add(secondTransaction, someStockRepository);
+    portfolio.add(afterTransaction, someStockRepository);
+
+    List<Transaction> transactions = portfolio.getTransactions(from, to);
+
+    assertThat(transactions).containsExactly(firstTransaction, secondTransaction);
+  }
+
   private void setupPortfolioWithTransactionsOnDifferentDates() {
     Transaction firstTransaction = new TransactionBuilder()
         .withItem(new TransactionItemBuilder().withTitle(SOME_TITLE).withQuantity(SOME_QUANTITY).build())
@@ -235,7 +256,7 @@ public class PortfolioTest {
 
   private void setupStockWithHighestVariation(LocalDate from) {
     MoneyAmount someOtherValue = new MoneyAmount(SOME_VALUE.getAmount().multiply(new BigDecimal(0.5)), SOME_CURRENCY);
-    StockValue someOtherStockValue = new StockValue(someOtherValue, someOtherValue, someOtherValue);
+    StockValue someOtherStockValue = new StockValueBuilder().withAllValue(someOtherValue).build();
     someOtherStock.getValueHistory().addValue(from, someOtherStockValue);
   }
 }

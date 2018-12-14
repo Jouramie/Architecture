@@ -4,15 +4,15 @@ import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
-import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
+import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exception.WrongRoleException;
 import ca.ulaval.glo4003.domain.user.limit.ApplicationPeriod;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.LimitFactory;
 import ca.ulaval.glo4003.domain.user.limit.MoneyAmountLimit;
 import ca.ulaval.glo4003.domain.user.limit.NullLimit;
 import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
-import ca.ulaval.glo4003.service.user.UserDoesNotExistException;
+import ca.ulaval.glo4003.service.user.exception.UserDoesNotExistException;
 import java.math.BigDecimal;
 import javax.inject.Inject;
 
@@ -50,7 +50,7 @@ public class LimitService {
 
   private Investor getInvestorByEmail(String email) {
     try {
-      return userRepository.find(email, Investor.class);
+      return userRepository.findByEmail(email, Investor.class);
     } catch (UserNotFoundException | WrongRoleException e) {
       throw new UserDoesNotExistException(e);
     }

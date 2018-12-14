@@ -1,7 +1,9 @@
 package ca.ulaval.glo4003;
 
 import ca.ulaval.glo4003.context.AbstractContext;
+import ca.ulaval.glo4003.context.DemoContext;
 import ca.ulaval.glo4003.context.ProductionContext;
+import ca.ulaval.glo4003.context.SwaggerApiHandlerCreator;
 import java.net.URL;
 import org.eclipse.jetty.server.Server;
 
@@ -10,7 +12,7 @@ public class InvestULMain {
   private static Server server;
 
   public static void main(String[] args) throws Exception {
-    AbstractContext context = new ProductionContext();
+    AbstractContext context = new DemoContext(new SwaggerApiHandlerCreator());
     startServer(context);
   }
 
@@ -42,7 +44,7 @@ public class InvestULMain {
     }
   }
 
-  static boolean isStarted() {
+  public static boolean isStarted() {
     return server != null && server.isStarted();
   }
 }

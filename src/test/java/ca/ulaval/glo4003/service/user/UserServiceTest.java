@@ -10,17 +10,19 @@ import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserBuilder;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
-import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
-import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exception.UserAlreadyExistsException;
+import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.StockQuantityLimit;
+import ca.ulaval.glo4003.service.user.exception.InvalidUserEmailException;
+import ca.ulaval.glo4003.service.user.exception.UserDoesNotExistException;
 import ca.ulaval.glo4003.service.user.limit.LimitAssembler;
 import ca.ulaval.glo4003.service.user.limit.LimitDto;
 import ca.ulaval.glo4003.service.user.limit.StockQuantityLimitDto;
-import ca.ulaval.glo4003.util.UserBuilder;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
@@ -92,18 +94,18 @@ public class UserServiceTest {
 
   @Test
   public void whenGetUser_thenGetUserFromRepository() throws UserNotFoundException {
-    given(userRepository.find(any())).willReturn(SOME_USER);
+    given(userRepository.findByEmail(any())).willReturn(SOME_USER);
 
     userService.getUser(SOME_EMAIL);
 
-    verify(userRepository).find(SOME_EMAIL);
+    verify(userRepository).findByEmail(SOME_EMAIL);
   }
 
   @Test
   public void whenGetUser_thenReturnConvertedUser() throws UserNotFoundException {
     Limit limit = new StockQuantityLimit(SOME_DATE, SOME_DATE, SOME_STOCK_QUANTITY);
     User user = new UserBuilder().withEmail(SOME_EMAIL).withLimit(limit).buildInvestor();
-    given(userRepository.find(any())).willReturn(user);
+    given(userRepository.findByEmail(any())).willReturn(user);
 
     UserDto resultingUser = userService.getUser(SOME_EMAIL);
 
@@ -114,7 +116,7 @@ public class UserServiceTest {
 
   @Test
   public void givenUserNotFound_whenGetUser_thenExceptionIsThrown() throws UserNotFoundException {
-    doThrow(UserNotFoundException.class).when(userRepository).find(any());
+    doThrow(UserNotFoundException.class).when(userRepository).findByEmail(any());
 
     ThrowingCallable getUser = () -> userService.getUser(SOME_EMAIL);
 

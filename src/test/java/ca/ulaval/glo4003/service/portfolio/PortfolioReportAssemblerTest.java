@@ -6,15 +6,15 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
-import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
 import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
-import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
+import ca.ulaval.glo4003.domain.stock.exception.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.stock.StockValue;
+import ca.ulaval.glo4003.domain.stock.StockValueBuilder;
 import ca.ulaval.glo4003.service.portfolio.dto.HistoricalPortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
@@ -34,16 +34,18 @@ public class PortfolioReportAssemblerTest {
   private static final String SOME_INCREASING_STOCK_TITLE = "increasing";
   private static final String SOME_DECREASING_STOCK_TITLE = "decreasing";
   private static final int SOME_QUANTITY = 45;
-  private static final MoneyAmount SOME_FIRST_HISTORICAL_MONEY_AMOUNT = new MoneyAmount(66.66, Currency.USD);
-  private static final StockValue SOME_FIRST_HISTORICAL_STOCK_VALUE = new StockValue(SOME_FIRST_HISTORICAL_MONEY_AMOUNT);
-  private static final MoneyAmount SOME_SECOND_HISTORICAL_MONEY_AMOUNT = new MoneyAmount(77.77, Currency.USD);
-  private static final StockValue SOME_SECOND_HISTORICAL_STOCK_VALUE = new StockValue(SOME_SECOND_HISTORICAL_MONEY_AMOUNT);
-  private static final MoneyAmount SOME_FIRST_PORTFOLIO_TOTAL = SOME_FIRST_HISTORICAL_MONEY_AMOUNT.multiply(SOME_QUANTITY);
+  private static final MoneyAmount SOME_FIRST_HISTORICAL_MONEY_AMOUNT = new MoneyAmount(66.66);
+  private static final StockValue SOME_FIRST_HISTORICAL_STOCK_VALUE =
+      new StockValueBuilder().withLatestValue(SOME_FIRST_HISTORICAL_MONEY_AMOUNT).build();
+  private static final MoneyAmount SOME_SECOND_HISTORICAL_MONEY_AMOUNT = new MoneyAmount(77.77);
+  private static final StockValue SOME_SECOND_HISTORICAL_STOCK_VALUE =
+      new StockValueBuilder().withLatestValue(SOME_SECOND_HISTORICAL_MONEY_AMOUNT).build();
+  private static final MoneyAmount SOME_FIRST_PORTFOLIO_TOTAL =
+      SOME_FIRST_HISTORICAL_MONEY_AMOUNT.multiply(SOME_QUANTITY);
   private static final LocalDate SOME_FIRST_DATE = LocalDate.now().minusDays(5);
   private static final LocalDate SOME_SECOND_DATE = SOME_FIRST_DATE.plusDays(1);
 
   private StockCollection someStockCollection;
-  private Stock someStock;
   @Mock
   private StockRepository someStockRepository;
   @Mock
@@ -63,7 +65,7 @@ public class PortfolioReportAssemblerTest {
   private void setupStockRepository() throws StockNotFoundException {
     given(someStockRepository.exists(SOME_TITLE)).willReturn(true);
     someStockCollection = new StockCollection().add(SOME_TITLE, SOME_QUANTITY, someStockRepository);
-    someStock = new TestStockBuilder()
+    Stock someStock = new TestStockBuilder()
         .withTitle(SOME_TITLE)
         .withHistoricalValue(SOME_FIRST_DATE, SOME_FIRST_HISTORICAL_STOCK_VALUE)
         .withHistoricalValue(SOME_SECOND_DATE, SOME_SECOND_HISTORICAL_STOCK_VALUE)
@@ -136,7 +138,7 @@ public class PortfolioReportAssemblerTest {
   @Test
   public void whenToDto_thenMostVolatileStocksAreMappedCorrectly() throws StockNotFoundException, NoStockValueFitsCriteriaException {
     TreeSet<HistoricalPortfolio> portfolios = new TreeSet<>();
-    
+
     PortfolioReportDto dto = assembler.toDto(portfolios, SOME_INCREASING_STOCK_TITLE, SOME_DECREASING_STOCK_TITLE);
 
     assertThat(dto.mostIncreasingStock).isEqualTo(SOME_INCREASING_STOCK_TITLE);

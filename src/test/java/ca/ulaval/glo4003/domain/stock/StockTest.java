@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.money.Currency;
 import ca.ulaval.glo4003.domain.money.MoneyAmount;
+import ca.ulaval.glo4003.domain.stock.exception.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,7 +34,7 @@ public class StockTest {
         .withName(SOME_NAME)
         .withCategory(SOME_CATEGORY)
         .withMarketId(SOME_MARKET_ID)
-        .withHistoricalValue(SOME_HISTORICAL_DATE, new StockValue(SOME_HISTORICAL_AMOUNT))
+        .withHistoricalValue(SOME_HISTORICAL_DATE, new StockValueBuilder().withAllValue(SOME_HISTORICAL_AMOUNT).build())
         .withOpenValue(SOME_LAST_OPEN_AMOUNT)
         .withCloseValue(SOME_START_AMOUNT)
         .build();
@@ -54,7 +55,7 @@ public class StockTest {
   }
 
   @Test
-  public void whenGetName_thenReturnCategory() {
+  public void whenGetCategory_thenReturnCategory() {
     String category = stock.getCategory();
 
     assertThat(category).isEqualTo(SOME_CATEGORY);
@@ -68,54 +69,57 @@ public class StockTest {
   }
 
   @Test
-  public void whenStockIsCreated_thenStockValueIsFilledWithStartValue() {
-    StockValue stockValue = stock.getValue();
-
-    assertThat(stockValue.getLatestValue()).isEqualTo(SOME_START_AMOUNT);
-  }
-
-  @Test
   public void whenUpdateValue_thenStockValueIsIncrementedByTheAmount() {
     stock.updateValue(new BigDecimal(10.00));
 
-    assertThat(stock.getValue().getLatestValue()).isEqualTo(new MoneyAmount(60.00, SOME_CURRENCY));
+    assertThat(stock.getCurrentValue()).isEqualTo(new MoneyAmount(SOME_START_VALUE + 10, SOME_CURRENCY));
   }
 
   @Test
-  public void whenSavingOpeningPrice_thenCreateNewStockValueInHistoryWithLatestCloseValue() {
-    stock.saveOpeningPrice();
+  public void whenOpeningStock_thenCreateNewStockValueInHistoryWithLatestCloseValue() {
+    stock.open();
 
-    assertThat(stock.getValue().getOpenValue()).isEqualTo(SOME_START_AMOUNT);
+    assertThat(stock.getOpenValue()).isEqualTo(SOME_START_AMOUNT);
     assertThat(stock.getValueHistory().getAllStoredValues()).hasSize(3);
   }
 
   @Test
-  public void whenSavingClosingPrice_thenCloseStockValue() {
-    stock.saveClosingPrice();
+  public void givenOpenStock_whenIsStockClosed_thenFalse() {
+    stock.open();
 
-    assertThat(stock.getValue().isClosed()).isTrue();
+    boolean isStockClosed = stock.isClosed();
+
+    assertThat(isStockClosed).isFalse();
   }
 
   @Test
-  public void givenHistoricalDate_whenGetLatestValueOnDate_thenReturnHistoricalValue()
-      throws NoStockValueFitsCriteriaException {
-    StockValue historicalValue = stock.getLatestValueOnDate(SOME_HISTORICAL_DATE);
+  public void givenOpenStock_whenClosingStock_thenStockIsClosed() {
+    stock.open();
+
+    stock.close();
+
+    assertThat(stock.isClosed()).isTrue();
+  }
+
+  @Test
+  public void givenHistoricalDate_whenGetLatestValueOnDate_thenReturnHistoricalValue() {
+    StockValue historicalValue = stock.getValueOnDate(SOME_HISTORICAL_DATE).get();
 
     assertThat(historicalValue.getLatestValue()).isEqualTo(SOME_HISTORICAL_AMOUNT);
   }
 
   @Test
-  public void givenFutureDate_whenGetLatestValueOnDate_thenReturnLatestKnownValue()
-      throws NoStockValueFitsCriteriaException {
+  public void givenFutureDate_whenGetLatestValueOnDate_thenReturnLatestKnownValue() {
     LocalDate someFutureDate = LocalDate.MAX;
 
-    StockValue latestValue = stock.getLatestValueOnDate(someFutureDate);
+    StockValue latestValue = stock.getValueOnDate(someFutureDate).get();
 
     assertThat(latestValue.getLatestValue()).isEqualTo(SOME_START_AMOUNT);
   }
 
   @Test
-  public void asdf() throws NoStockValueFitsCriteriaException {
+  public void whenStockVariationIsComputed_thenRelativeVariationIsCalculated()
+      throws NoStockValueFitsCriteriaException {
     BigDecimal variation = stock.computeStockValueVariation(SOME_HISTORICAL_DATE);
 
     assertThat(variation).isEqualTo(SOME_START_AMOUNT.divide(SOME_HISTORICAL_AMOUNT));

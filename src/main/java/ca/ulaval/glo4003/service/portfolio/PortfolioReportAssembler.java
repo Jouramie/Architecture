@@ -2,12 +2,12 @@ package ca.ulaval.glo4003.service.portfolio;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
-import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
+import ca.ulaval.glo4003.domain.stock.exception.NoStockValueFitsCriteriaException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
+import ca.ulaval.glo4003.service.cart.exception.InvalidStockTitleException;
 import ca.ulaval.glo4003.service.portfolio.dto.HistoricalPortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
@@ -43,7 +43,7 @@ public class PortfolioReportAssembler {
     return new HistoricalPortfolioDto(historicalPortfolio.date, items, currentTotalValue);
   }
 
-  private List<PortfolioItemDto> historicalStockCollectionToDto(LocalDate date, StockCollection stockCollection) throws NoStockValueFitsCriteriaException {
+  private List<PortfolioItemDto> historicalStockCollectionToDto(LocalDate date, StockCollection stockCollection) {
     List<PortfolioItemDto> items = new ArrayList<>();
     for (String title : stockCollection.getTitles()) {
       items.add(historicalItemToDto(date, title, stockCollection.getQuantity(title)));
@@ -51,9 +51,9 @@ public class PortfolioReportAssembler {
     return items;
   }
 
-  private PortfolioItemDto historicalItemToDto(LocalDate date, String title, int quantity) throws NoStockValueFitsCriteriaException {
+  private PortfolioItemDto historicalItemToDto(LocalDate date, String title, int quantity) {
     Stock stock = getStock(title);
-    BigDecimal currentValue = stock.getLatestValueOnDate(date).getLatestValue().toUsd();
+    BigDecimal currentValue = stock.getValueOnDate(date).get().getLatestValue().toUsd();
     return new PortfolioItemDto(title, currentValue, quantity);
   }
 

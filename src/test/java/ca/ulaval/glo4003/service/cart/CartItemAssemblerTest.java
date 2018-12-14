@@ -9,11 +9,9 @@ import static org.mockito.Mockito.doThrow;
 import ca.ulaval.glo4003.domain.market.MarketId;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.service.cart.assemblers.CartItemAssembler;
-import ca.ulaval.glo4003.service.cart.dto.CartItemDto;
-import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
+import ca.ulaval.glo4003.service.cart.exception.InvalidStockTitleException;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import java.util.List;
 import org.junit.Before;
@@ -90,6 +88,6 @@ public class CartItemAssemblerTest {
     assertThat(dto.name).isEqualTo(SOME_NAME);
     assertThat(dto.category).isEqualTo(SOME_CATEGORY);
     assertThat(dto.market).isEqualTo(SOME_MARKET_ID);
-    assertThat(dto.currentValue).isEqualTo(SOME_STOCK.getValue().getLatestValue().toUsd());
+    assertThat(dto.currentValue).isEqualTo(SOME_STOCK.getCurrentValue().toUsd());
   }
 }

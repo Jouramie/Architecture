@@ -1,8 +1,8 @@
 package ca.ulaval.glo4003.domain.user;
 
-import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
-import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
-import ca.ulaval.glo4003.domain.user.exceptions.WrongRoleException;
+import ca.ulaval.glo4003.domain.user.exception.UserAlreadyExistsException;
+import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exception.WrongRoleException;
 import java.util.List;
 
 public interface UserRepository {
@@ -10,9 +10,11 @@ public interface UserRepository {
 
   void update(User user) throws UserNotFoundException;
 
-  User find(String email) throws UserNotFoundException;
+  User findByEmail(String email) throws UserNotFoundException;
 
-  <T extends User> T find(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException;
+  <T extends User> T findByEmail(String email, Class<T> clazz) throws UserNotFoundException, WrongRoleException;
 
   List<User> findAll();
+
+  List<Investor> findInvestors();
 }

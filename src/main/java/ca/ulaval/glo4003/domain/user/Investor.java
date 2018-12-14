@@ -1,21 +1,23 @@
 package ca.ulaval.glo4003.domain.user;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
-import ca.ulaval.glo4003.domain.market.HaltedMarketException;
+import ca.ulaval.glo4003.domain.cart.EmptyCartException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
+import ca.ulaval.glo4003.domain.market.exception.HaltedMarketException;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationCoordinates;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
-import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class Investor extends User {
   private final Cart cart;
@@ -59,7 +61,7 @@ public class Investor extends User {
       throws StockNotFoundException, EmptyCartException, TransactionLimitExceededExeption, HaltedMarketException {
 
     Transaction purchase = cart.checkout(transactionFactory, marketRepository);
-    limit.checkIfTransactionExceed(purchase);
+    limit.ensureTransactionIsUnderLimit(purchase);
 
     processPurchase(purchase, paymentProcessor, stockRepository);
     sendTransactionNotification(notificationFactory, notificationSender, purchase);
@@ -80,5 +82,9 @@ public class Investor extends User {
                                            Transaction transaction) {
     Notification notification = notificationFactory.create(transaction);
     notificationSender.sendNotification(notification, new NotificationCoordinates(email));
+  }
+
+  public List<Transaction> getTransactions(LocalDateTime from, LocalDateTime to) {
+    return portfolio.getTransactions(from, to);
   }
 }

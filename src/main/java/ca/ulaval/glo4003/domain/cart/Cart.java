@@ -1,15 +1,14 @@
 package ca.ulaval.glo4003.domain.cart;
 
-import ca.ulaval.glo4003.domain.market.HaltedMarketException;
-import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.market.states.Market;
+import ca.ulaval.glo4003.domain.market.exception.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.exception.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.state.Market;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
-import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
 
 public class Cart {
   private StockCollection stocks;
@@ -49,27 +48,27 @@ public class Cart {
   public Transaction checkout(TransactionFactory transactionFactory, MarketRepository marketRepository)
       throws StockNotFoundException, HaltedMarketException, EmptyCartException {
 
-    checkIfCartIsEmpty();
-    checkIfMarketOfStocksIsNotHalted(marketRepository);
+    ensureCartIsNotEmpty();
+    ensureMarketsOfStocksAreNotHalted(marketRepository);
     return transactionFactory.createPurchase(stocks);
   }
 
-  private void checkIfCartIsEmpty() throws EmptyCartException {
+  private void ensureCartIsNotEmpty() throws EmptyCartException {
     if (isEmpty()) {
       throw new EmptyCartException();
     }
   }
 
-  private void checkIfMarketOfStocksIsNotHalted(MarketRepository marketRepository)
+  private void ensureMarketsOfStocksAreNotHalted(MarketRepository marketRepository)
       throws StockNotFoundException, HaltedMarketException {
     for (String title : stocks.getTitles()) {
-      validateMarketOfStockIsNotHalted(title, marketRepository);
+      ensureMarketOfStockIsNotHalted(title, marketRepository);
     }
   }
 
-  private void validateMarketOfStockIsNotHalted(String title, MarketRepository marketRepository) throws HaltedMarketException, StockNotFoundException {
+  private void ensureMarketOfStockIsNotHalted(String title, MarketRepository marketRepository) throws HaltedMarketException, StockNotFoundException {
     try {
-      Market market = marketRepository.findMarketForStock(title);
+      Market market = marketRepository.findByStock(title);
       if (market.isHalted()) {
         throw new HaltedMarketException(market.getHaltMessage());
       }

@@ -20,16 +20,16 @@ public class SimulatedStockValueRetriever implements StockValueRetriever {
 
   @Override
   public void updateStockValue(Stock stock) {
-    double variation = simulator.calculateStockVariation(getPreviousVariation(stock.getTitle()));
+    double variation = simulator.calculateStockVariation(getPreviousVariation(stock));
     stock.updateValue(new BigDecimal(variation));
-    updatePreviousVariation(stock.getTitle(), variation);
+    updatePreviousVariation(stock, variation);
   }
 
-  private double getPreviousVariation(String title) {
-    return stockTitleToPreviousVariation.getOrDefault(title, 0.0);
+  private double getPreviousVariation(Stock stock) {
+    return stockTitleToPreviousVariation.getOrDefault(stock.getTitle(), 0.0);
   }
 
-  private void updatePreviousVariation(String title, double variation) {
-    stockTitleToPreviousVariation.put(title, variation);
+  private void updatePreviousVariation(Stock stock, double variation) {
+    stockTitleToPreviousVariation.put(stock.getTitle(), variation);
   }
 }

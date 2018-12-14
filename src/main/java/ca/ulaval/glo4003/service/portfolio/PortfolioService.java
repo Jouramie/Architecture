@@ -1,15 +1,17 @@
 package ca.ulaval.glo4003.service.portfolio;
 
 import ca.ulaval.glo4003.domain.Component;
-import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import ca.ulaval.glo4003.domain.portfolio.HistoricalPortfolio;
 import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
-import ca.ulaval.glo4003.domain.stock.NoStockValueFitsCriteriaException;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.exception.NoStockValueFitsCriteriaException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.Investor;
+import ca.ulaval.glo4003.service.date.DateService;
+import ca.ulaval.glo4003.service.date.SinceParameter;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioReportDto;
 import java.time.LocalDate;
@@ -21,20 +23,23 @@ public class PortfolioService {
   private final CurrentUserSession currentUserSession;
   private final PortfolioAssembler portfolioAssembler;
   private final PortfolioReportAssembler portfolioReportAssembler;
-  private final Clock clock;
+  private final ReadableClock clock;
   private final StockRepository stockRepository;
+  private final DateService dateService;
 
   @Inject
   public PortfolioService(CurrentUserSession currentUserSession,
                           PortfolioAssembler portfolioAssembler,
                           PortfolioReportAssembler portfolioReportAssembler,
-                          Clock clock,
-                          StockRepository stockRepository) {
+                          ReadableClock clock,
+                          StockRepository stockRepository,
+                          DateService dateService) {
     this.currentUserSession = currentUserSession;
     this.portfolioAssembler = portfolioAssembler;
     this.portfolioReportAssembler = portfolioReportAssembler;
     this.clock = clock;
     this.stockRepository = stockRepository;
+    this.dateService = dateService;
   }
 
   public PortfolioDto getPortfolio() throws InvalidPortfolioException {
@@ -48,11 +53,12 @@ public class PortfolioService {
     return dto;
   }
 
-  public PortfolioReportDto getPortfolioReport(LocalDate from) {
+  public PortfolioReportDto getPortfolioReport(SinceParameter since) {
     try {
+      LocalDate from = dateService.getDateSince(since);
       Investor investor = currentUserSession.getCurrentUser(Investor.class);
       Portfolio portfolio = investor.getPortfolio();
-      TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(from, clock.getCurrentTime().toLocalDate());
+      TreeSet<HistoricalPortfolio> portfolios = portfolio.getHistory(from, clock.getCurrentDate());
       String mostIncreasingStockTitle = portfolio.getMostIncreasingStockTitle(from, stockRepository);
       String mostDecreasingStockTitle = portfolio.getMostDecreasingStockTitle(from, stockRepository);
       return portfolioReportAssembler.toDto(portfolios, mostIncreasingStockTitle, mostDecreasingStockTitle);

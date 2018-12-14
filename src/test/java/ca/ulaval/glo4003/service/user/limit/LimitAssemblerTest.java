@@ -55,7 +55,7 @@ public class LimitAssemblerTest {
   public void givenAnotherTypeOfLimit_whenAssemblingDto_thenExceptionIsThrown() {
     Limit limit = new Limit() {
       @Override
-      public void checkIfTransactionExceed(Transaction transaction) throws TransactionLimitExceededExeption {
+      public void ensureTransactionIsUnderLimit(Transaction transaction) throws TransactionLimitExceededExeption {
       }
     };
 

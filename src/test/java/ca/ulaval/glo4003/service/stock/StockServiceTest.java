@@ -8,8 +8,10 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 
 import ca.ulaval.glo4003.domain.stock.Stock;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategory;
+import ca.ulaval.glo4003.domain.stock.query.StockQueryByNameAndCategoryBuilder;
 import ca.ulaval.glo4003.util.TestStockBuilder;
 import com.google.common.collect.Lists;
 import java.util.Collections;
@@ -74,14 +76,15 @@ public class StockServiceTest {
   public void whenQueryStocks_thenStockIsGotFromRepository() {
     stockService.queryStocks(SOME_NAME, SOME_CATEGORY);
 
-    verify(stockRepository).queryStocks(SOME_NAME, SOME_CATEGORY);
+    StockQueryByNameAndCategory stockQuery = new StockQueryByNameAndCategoryBuilder().withName(SOME_NAME).withCategory(SOME_CATEGORY).build();
+    verify(stockRepository).queryStocks(stockQuery);
   }
 
   @Test
   public void whenQueryStocks_thenWeHaveCorrespondingDto() {
     List<Stock> givenStocks = Collections.singletonList(new TestStockBuilder().build());
     List<StockDto> expectedDtos = Collections.singletonList(new TestStockBuilder().buildDto());
-    given(stockRepository.queryStocks(any(), any())).willReturn(givenStocks);
+    given(stockRepository.queryStocks(any())).willReturn(givenStocks);
     given(stockAssembler.toDtoList(givenStocks)).willReturn(expectedDtos);
 
     List<StockDto> resultingDtos = stockService.queryStocks(SOME_NAME, SOME_CATEGORY);

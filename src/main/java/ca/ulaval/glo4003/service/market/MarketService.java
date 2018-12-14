@@ -2,9 +2,9 @@ package ca.ulaval.glo4003.service.market;
 
 import ca.ulaval.glo4003.domain.Component;
 import ca.ulaval.glo4003.domain.market.MarketId;
-import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.market.states.Market;
+import ca.ulaval.glo4003.domain.market.exception.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.state.Market;
 import javax.inject.Inject;
 
 @Component

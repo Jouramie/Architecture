@@ -1,41 +1,49 @@
 package ca.ulaval.glo4003.service.date;
 
 import ca.ulaval.glo4003.domain.Component;
-import ca.ulaval.glo4003.domain.clock.Clock;
+import ca.ulaval.glo4003.domain.clock.ReadableClock;
 import java.time.LocalDate;
 import javax.inject.Inject;
 
 @Component
 public class DateService {
 
-  private final Clock clock;
+  private final ReadableClock clock;
 
   @Inject
-  public DateService(Clock clock) {
+  public DateService(ReadableClock clock) {
     this.clock = clock;
   }
 
   public LocalDate getFiveDaysAgo() {
-    return clock.getCurrentTime().minusDays(5).toLocalDate();
+    return clock.getCurrentDate().minusDays(5);
   }
 
   public LocalDate getStartOfCurrentMonth() {
-    return clock.getCurrentTime().withDayOfMonth(1).toLocalDate();
+    return clock.getCurrentDate().withDayOfMonth(1);
   }
 
   public LocalDate getThirtyDaysAgo() {
-    return clock.getCurrentTime().minusDays(30).toLocalDate();
+    return clock.getCurrentDate().minusDays(30);
   }
 
   public LocalDate getOneYearAgo() {
-    return clock.getCurrentTime().minusYears(1).toLocalDate();
+    return clock.getCurrentDate().minusYears(1);
   }
 
   public LocalDate getFiveYearsAgo() {
-    return clock.getCurrentTime().minusYears(5).toLocalDate();
+    return clock.getCurrentDate().minusYears(5);
   }
 
   public LocalDate getTenYearsAgo() {
-    return clock.getCurrentTime().minusYears(10).toLocalDate();
+    return clock.getCurrentDate().minusYears(10);
+  }
+
+  public LocalDate getDateSince(SinceParameter since) {
+    return clock.getCurrentDate().minusDays(since.toDays());
+  }
+
+  public LocalDate getCurrentDate() {
+    return clock.getCurrentDate();
   }
 }

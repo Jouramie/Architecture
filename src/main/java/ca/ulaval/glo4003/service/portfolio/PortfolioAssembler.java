@@ -7,9 +7,9 @@ import ca.ulaval.glo4003.domain.portfolio.InvalidStockInPortfolioException;
 import ca.ulaval.glo4003.domain.portfolio.Portfolio;
 import ca.ulaval.glo4003.domain.stock.Stock;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
-import ca.ulaval.glo4003.service.cart.exceptions.InvalidStockTitleException;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
+import ca.ulaval.glo4003.service.cart.exception.InvalidStockTitleException;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioDto;
 import ca.ulaval.glo4003.service.portfolio.dto.PortfolioItemDto;
 import java.math.BigDecimal;
@@ -39,7 +39,7 @@ public class PortfolioAssembler {
 
   private PortfolioItemDto itemToDto(String title, int quantity) {
     Stock stock = getStock(title);
-    BigDecimal currentValue = stock.getValue().getLatestValue().toUsd();
+    BigDecimal currentValue = stock.getCurrentValue().toUsd();
     return new PortfolioItemDto(title, currentValue, quantity);
   }
 

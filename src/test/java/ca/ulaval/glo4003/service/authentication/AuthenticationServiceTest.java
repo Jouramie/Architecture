@@ -8,19 +8,23 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
+import ca.ulaval.glo4003.domain.authentication.AuthenticationToken;
+import ca.ulaval.glo4003.domain.authentication.AuthenticationTokenFactory;
+import ca.ulaval.glo4003.domain.authentication.AuthenticationTokenRepository;
+import ca.ulaval.glo4003.domain.authentication.TokenNotFoundException;
 import ca.ulaval.glo4003.domain.user.CurrentUserSession;
 import ca.ulaval.glo4003.domain.user.User;
+import ca.ulaval.glo4003.domain.user.UserBuilder;
 import ca.ulaval.glo4003.domain.user.UserRepository;
 import ca.ulaval.glo4003.domain.user.UserRole;
-import ca.ulaval.glo4003.domain.user.authentication.AuthenticationToken;
-import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenFactory;
-import ca.ulaval.glo4003.domain.user.authentication.AuthenticationTokenRepository;
-import ca.ulaval.glo4003.domain.user.authentication.TokenNotFoundException;
-import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
-import ca.ulaval.glo4003.util.UserBuilder;
+import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
+import ca.ulaval.glo4003.service.authentication.exception.AuthenticationFailedException;
+import ca.ulaval.glo4003.service.authentication.exception.InvalidTokenException;
+import ca.ulaval.glo4003.service.authentication.exception.UnauthorizedUserException;
 import ca.ulaval.glo4003.ws.api.authentication.dto.ApiAuthenticationRequestDto;
 import ca.ulaval.glo4003.ws.api.authentication.dto.AuthenticationTokenDto;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
@@ -53,13 +57,10 @@ public class AuthenticationServiceTest {
 
   @Mock
   private UserRepository userRepository;
-
   @Mock
   private AuthenticationTokenRepository tokenRepository;
-
   @Mock
   private CurrentUserSession currentUserSession;
-
   @Mock
   private AuthenticationTokenFactory tokenFactory;
 
@@ -72,11 +73,11 @@ public class AuthenticationServiceTest {
   }
 
   @Before
-  public void initializeMocks() throws UserNotFoundException, TokenNotFoundException {
+  public void initializeMocks() throws UserNotFoundException {
     given(currentUserSession.getCurrentUser()).willReturn(SOME_USER);
-    given(userRepository.find(any())).willReturn(SOME_USER);
+    given(userRepository.findByEmail(any())).willReturn(SOME_USER);
     given(tokenRepository.findByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token)))
-        .willReturn(AUTHENTICATION_TOKEN);
+        .willReturn(Optional.of(AUTHENTICATION_TOKEN));
     given(tokenFactory.createToken(any())).willReturn(AUTHENTICATION_TOKEN);
   }
 
@@ -84,7 +85,7 @@ public class AuthenticationServiceTest {
   public void whenAuthenticatingUser_thenUserIsRetrievedFromRepository() throws UserNotFoundException {
     authenticationService.authenticate(AUTHENTICATION_REQUEST);
 
-    verify(userRepository).find(AUTHENTICATION_REQUEST.email);
+    verify(userRepository).findByEmail(AUTHENTICATION_REQUEST.email);
   }
 
   @Test
@@ -109,9 +110,8 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenUserDoesNotExist_whenAuthenticationUser_thenExceptionIsThrown()
-      throws UserNotFoundException {
-    doThrow(UserNotFoundException.class).when(userRepository).find(any());
+  public void givenUserDoesNotExist_whenAuthenticationUser_thenExceptionIsThrown() throws UserNotFoundException {
+    doThrow(UserNotFoundException.class).when(userRepository).findByEmail(any());
 
     ThrowingCallable authenticateUser = () -> authenticationService.authenticate(INVALID_AUTHENTICATION_REQUEST);
 
@@ -119,16 +119,16 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void whenValidatingAuthentication_thenTokenOfUserIsRetrievedFromRepository() throws TokenNotFoundException {
+  public void whenValidatingAuthentication_thenTokenOfUserIsRetrievedFromRepository()
+      throws UnauthorizedUserException, InvalidTokenException {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLES);
 
     verify(tokenRepository).findByUUID(UUID.fromString(AUTHENTICATION_TOKEN_DTO.token));
   }
 
   @Test
-  public void givenUserDoesNotExist_whenValidatingAuthentication_thenExceptionIsThrown()
-      throws UserNotFoundException {
-    doThrow(UserNotFoundException.class).when(userRepository).find(any());
+  public void givenUserDoesNotExist_whenValidatingAuthentication_thenExceptionIsThrown() throws UserNotFoundException {
+    doThrow(UserNotFoundException.class).when(userRepository).findByEmail(any());
 
     ThrowingCallable authenticateUser = () -> authenticationService
         .validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLES);
@@ -137,9 +137,8 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenInvalidToken_whenValidatingToken_thenInvalidTokenExceptionIsThrown()
-      throws TokenNotFoundException {
-    doThrow(TokenNotFoundException.class).when(tokenRepository).findByUUID(any());
+  public void givenInvalidToken_whenValidatingToken_thenInvalidTokenExceptionIsThrown() {
+    given(tokenRepository.findByUUID(any())).willReturn(Optional.empty());
 
     ThrowingCallable validateToken = () -> authenticationService.
         validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLES);
@@ -148,7 +147,7 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenInvalidNumberFormatUUID_whenValidatingToken_thenNumberFormatExceptionIsThrown() {
+  public void givenInvalidNumberFormatUUID_whenValidatingToken_thenExceptionIsThrown() {
     AuthenticationTokenDto invalidUUIDToken = new AuthenticationTokenDto("10110100-0000-0000-0000-000000000000wrong");
 
     ThrowingCallable validateToken = () -> authenticationService
@@ -158,7 +157,7 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenInvalidUUID_whenValidatingToken_thenIllegalArgumentException() {
+  public void givenInvalidUUID_whenValidatingToken_thenExceptionIsThrown() {
     AuthenticationTokenDto invalidUUIDToken = new AuthenticationTokenDto("wrong");
 
     ThrowingCallable validateToken = () -> authenticationService
@@ -171,7 +170,7 @@ public class AuthenticationServiceTest {
   public void givenCurrentUserDoesNotHaveRequiredRole_whenValidatingToken_thenExceptionIsThrown()
       throws UserNotFoundException {
     User currentUser = new UserBuilder().buildAdministrator();
-    given(userRepository.find(any())).willReturn(currentUser);
+    given(userRepository.findByEmail(any())).willReturn(currentUser);
 
     ThrowingCallable validateToken = () -> authenticationService
         .validateAuthentication(AUTHENTICATION_TOKEN_DTO, singletonList(UserRole.INVESTOR));
@@ -180,7 +179,7 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void whenValidatingToken_thenCurrentUserSet() {
+  public void whenValidatingToken_thenCurrentUserSet() throws UnauthorizedUserException, InvalidTokenException {
     authenticationService.validateAuthentication(AUTHENTICATION_TOKEN_DTO, SOME_USER_ROLES);
 
     verify(currentUserSession).setCurrentUser(SOME_USER);
@@ -201,11 +200,12 @@ public class AuthenticationServiceTest {
   }
 
   @Test
-  public void givenInvalidToken_whenRevokingToken_thenInvalidTokenExceptionIsThrown() throws TokenNotFoundException {
+  public void givenInvalidToken_whenRevokingToken_thenNoExceptionIsThrown()
+      throws TokenNotFoundException {
     doThrow(TokenNotFoundException.class).when(tokenRepository).remove(any());
 
-    ThrowingCallable revokeToken = () -> authenticationService.revokeToken();
+    authenticationService.revokeToken();
 
-    assertThatThrownBy(revokeToken).isInstanceOf(InvalidTokenException.class);
+    verify(tokenRepository).remove(SOME_USER.getEmail());
   }
 }

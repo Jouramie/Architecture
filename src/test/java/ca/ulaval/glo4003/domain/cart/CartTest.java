@@ -6,11 +6,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
-import ca.ulaval.glo4003.domain.market.HaltedMarketException;
-import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.MarketBuilder;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
-import ca.ulaval.glo4003.domain.market.states.Market;
+import ca.ulaval.glo4003.domain.market.exception.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.exception.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.state.Market;
 import ca.ulaval.glo4003.domain.stock.StockCollection;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
@@ -143,9 +143,9 @@ public class CartTest {
   @Test
   public void givenMarketHalted_whenCreate_thenExceptionIsThrown() throws MarketNotFoundException {
     givenTwoStocksInCart();
-    Market market = new TestingMarketBuilder().build();
+    Market market = new MarketBuilder().build();
     market.halt("");
-    given(marketRepository.findMarketForStock(any())).willReturn(market);
+    given(marketRepository.findByStock(any())).willReturn(market);
 
     ThrowingCallable checkout = () -> cart.checkout(transactionFactory, marketRepository);
 

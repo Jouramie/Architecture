@@ -5,8 +5,10 @@ import ca.ulaval.glo4003.domain.user.Investor;
 import ca.ulaval.glo4003.domain.user.User;
 import ca.ulaval.glo4003.domain.user.UserFactory;
 import ca.ulaval.glo4003.domain.user.UserRepository;
-import ca.ulaval.glo4003.domain.user.exceptions.UserAlreadyExistsException;
-import ca.ulaval.glo4003.domain.user.exceptions.UserNotFoundException;
+import ca.ulaval.glo4003.domain.user.exception.UserAlreadyExistsException;
+import ca.ulaval.glo4003.domain.user.exception.UserNotFoundException;
+import ca.ulaval.glo4003.service.user.exception.InvalidUserEmailException;
+import ca.ulaval.glo4003.service.user.exception.UserDoesNotExistException;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -46,7 +48,7 @@ public class UserService {
 
   private User tryFindUser(String email) {
     try {
-      return userRepository.find(email);
+      return userRepository.findByEmail(email);
     } catch (UserNotFoundException e) {
       throw new UserDoesNotExistException(e);
     }

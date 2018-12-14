@@ -11,25 +11,27 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import ca.ulaval.glo4003.domain.cart.Cart;
-import ca.ulaval.glo4003.domain.market.HaltedMarketException;
-import ca.ulaval.glo4003.domain.market.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.cart.EmptyCartException;
+import ca.ulaval.glo4003.domain.market.MarketBuilder;
 import ca.ulaval.glo4003.domain.market.MarketRepository;
-import ca.ulaval.glo4003.domain.market.TestingMarketBuilder;
-import ca.ulaval.glo4003.domain.market.states.Market;
+import ca.ulaval.glo4003.domain.market.exception.HaltedMarketException;
+import ca.ulaval.glo4003.domain.market.exception.MarketNotFoundException;
+import ca.ulaval.glo4003.domain.market.state.Market;
 import ca.ulaval.glo4003.domain.notification.Notification;
 import ca.ulaval.glo4003.domain.notification.NotificationFactory;
 import ca.ulaval.glo4003.domain.notification.NotificationSender;
-import ca.ulaval.glo4003.domain.stock.StockNotFoundException;
+import ca.ulaval.glo4003.domain.portfolio.Portfolio;
+import ca.ulaval.glo4003.domain.stock.exception.StockNotFoundException;
 import ca.ulaval.glo4003.domain.stock.StockRepository;
 import ca.ulaval.glo4003.domain.transaction.PaymentProcessor;
 import ca.ulaval.glo4003.domain.transaction.Transaction;
+import ca.ulaval.glo4003.domain.transaction.TransactionBuilder;
 import ca.ulaval.glo4003.domain.transaction.TransactionFactory;
-import ca.ulaval.glo4003.domain.user.exceptions.EmptyCartException;
+import ca.ulaval.glo4003.domain.transaction.TransactionItemBuilder;
 import ca.ulaval.glo4003.domain.user.limit.Limit;
 import ca.ulaval.glo4003.domain.user.limit.TransactionLimitExceededExeption;
-import ca.ulaval.glo4003.util.TransactionBuilder;
-import ca.ulaval.glo4003.util.TransactionItemBuilder;
-import ca.ulaval.glo4003.util.UserBuilder;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +47,7 @@ public class InvestorTest {
   private static final String SOME_OTHER_TITLE = "APPL";
   private static final int SOME_OTHER_QTY = 3;
   private static final String SOME_HALTED_MESSAGE = "STOP";
+  private static final LocalDateTime SOME_DATE = LocalDate.of(2018, 11, 3).atStartOfDay();
 
   @Mock
   private StockRepository stockRepository;
@@ -75,9 +78,9 @@ public class InvestorTest {
         .build();
     notification = new Notification("title", "message");
 
-    market = new TestingMarketBuilder().build();
-    given(marketRepository.findMarketForStock(SOME_TITLE)).willReturn(market);
-    given(marketRepository.findMarketForStock(SOME_OTHER_TITLE)).willReturn(market);
+    market = new MarketBuilder().build();
+    given(marketRepository.findByStock(SOME_TITLE)).willReturn(market);
+    given(marketRepository.findByStock(SOME_OTHER_TITLE)).willReturn(market);
 
     given(stockRepository.exists(SOME_TITLE)).willReturn(true);
     given(stockRepository.exists(SOME_OTHER_TITLE)).willReturn(true);
@@ -156,7 +159,7 @@ public class InvestorTest {
 
   @Test
   public void givenTransactionExceedLimit_whenCheckoutCart_thenExceptionIsThrow() throws TransactionLimitExceededExeption {
-    doThrow(TransactionLimitExceededExeption.class).when(limit).checkIfTransactionExceed(transaction);
+    doThrow(TransactionLimitExceededExeption.class).when(limit).ensureTransactionIsUnderLimit(transaction);
 
     ThrowingCallable checkoutCart = () -> investor.checkoutCart(transactionFactory, marketRepository, paymentProcessor,
         stockRepository, notificationFactory, notificationSender);
@@ -179,5 +182,17 @@ public class InvestorTest {
         stockRepository, notificationFactory, notificationSender);
 
     assertThatThrownBy(checkout).isInstanceOf(HaltedMarketException.class);
+  }
+
+  @Test
+  public void whenGetTransactions_thenTransactionsAreGottenFromPortfolio() {
+    LocalDateTime from = SOME_DATE.minusDays(1);
+    LocalDateTime to = SOME_DATE;
+    Portfolio portfolio = mock(Portfolio.class);
+    Investor investor = new UserBuilder().withPortfolio(portfolio).buildInvestor();
+
+    investor.getTransactions(from, to);
+
+    verify(portfolio).getTransactions(from, to);
   }
 }
